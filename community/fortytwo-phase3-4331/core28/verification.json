@@ -1,14 +1,14 @@
 {
   "core": 28,
-  "candidate": "core28-fastlata012cf49ed",
+  "candidate": "core28-fastfourdefs362683fbb0",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 176,
-  "local_normalized_tokens": 410274,
+  "submitted_files": 173,
+  "local_normalized_tokens": 397815,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "6ec50d422cc47c84849db349f810768c7220037c9cecc4051aaf479db8937df0",
+  "proof_tree_sha256": "353187bf7f6bfad0435cf01c300e7d135652d802c93cce0edbb6967a9073ea6f",
   "modified_files": {
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
       "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
@@ -21,23 +21,40 @@
     "ReciprocityTheory/SemistableReduction/LatAll.lean": {
       "before": "b3ad7388149b404a8691abafebaa8502a2b507961d8e8dad58f1dd744b82651e",
       "after": "a012cf49ed8172939915e4f69d88b8495f85bb666192f99a12e110b7c9eb8e4a"
+    },
+    "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/GROWCountStatement.lean": {
+      "before": "238d4b56550ce08b2f847ff21f3ce23486b5eeb734b71bd89d13ce58f0167c21",
+      "after": "362683fbb08c280db8dc7b16dfe93f46dfe9eeae86e8fa32caece277fe67e65d"
+    },
+    "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourBasic.lean": {
+      "before": "bb260b0ac03628b060c7c300f795079d1f58084f7c7aa18a43ead954e9033482",
+      "after": "abe062c56593606afb8fda2d3579e6e51e670058cc27b4623fd0f8e0445054d6"
+    },
+    "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourSum.lean": {
+      "before": "4e0a9c91b27312a4508de06866f240a3d8b1693cdbdfcab615409b2918230da9",
+      "after": "86e2f497fd31c43d17f43b7a05734ba3d3b09df3fa5d6825392d00695fee6308"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Levent Alpöge authored the Fourier contour-independence and coefficient bounds and the original RH proof. Fortytwo Engine: Deepseek Flash V4.1 1017 removed unrelated imports in FractionalSliceDomains; its native source is retained byte for byte. Codex restored the two exact Fourier support modules at their consumer and directly applied Alpöge’s bound and contour-independence lemmas there. Codex restricted LatAll to its single needed export Closed.approx and its two original dependencies. Its proof term is preserved from Alpöge’s source.",
+    "new_contribution": "Levent Alpöge authored the Fourier contour-independence and coefficient bounds and the original RH proof. Fortytwo Engine: Deepseek Flash V4.1 1017 removed unrelated imports in FractionalSliceDomains; its native source is retained byte for byte. Codex restored the two exact Fourier support modules at their consumer and directly applied Alpöge’s bound and contour-independence lemmas there. Codex restricted LatAll to its single needed export Closed.approx and its two original dependencies. Its proof term is preserved from Alpöge’s source. Codex extracted Alpöge’s original six Fourier declarations into the support module, imported their Mathlib dependencies directly and removed two unused namespace openings.",
     "shared_module_attribution": {
       "inherited_native_module": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains",
       "supervisor_edit": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivityHolds",
       "original_author": "Levent Alpöge",
-      "additional_supervisor_edit": "ReciprocityTheory.SemistableReduction.LatAll"
+      "additional_supervisor_edit": "ReciprocityTheory.SemistableReduction.LatAll",
+      "fourier_support_supervisor_edits": [
+        "ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.GROWCountStatement",
+        "ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourBasic",
+        "ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSum"
+      ]
     }
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T19:55:35.108915+00:00",
+    "completed_utc": "2026-11-23T20:07:21.188545+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -51,9 +68,6 @@
   "pinned_source_files": {
     "Lemmata/GeneralBFactAltForm/Imports.lean": "47c77ae16aa87bc69819d2e94829cefc083f256f612d2b96665962a2ad8172d0",
     "Lemmata/GeneralBFactBisForm/Imports.lean": "d45c1c059028d7285705820791c6bb8f88ed4012d9cafa32c579171537d48e9c",
-    "ReciprocityTheory/L2DbarEstimates/IsLocalHomeomorph.lean": "35d5a4fa00858ed779759fff427f0032c21f638c76317b154dafa0c163cba910",
-    "ReciprocityTheory/L2DbarEstimates/JacobianInterpolationStatement.lean": "9597ccebed4b233c125e1fa9a9186f3cc3e37f6ed098cd278f3d8ab7ec36c1f6",
-    "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FamilyLeCoords.lean": "545ddf6832ae36affa609110c9ef339e68470d902cf022e4003c3d64f81dcdba",
     "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourBasic.lean": "bb260b0ac03628b060c7c300f795079d1f58084f7c7aa18a43ead954e9033482",
     "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourIndep.lean": "5df0c67ff5649219f422e50203cae8aeca71bfed429a1869fe836d041cd0bc52",
     "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourSum.lean": "4e0a9c91b27312a4508de06866f240a3d8b1693cdbdfcab615409b2918230da9",
