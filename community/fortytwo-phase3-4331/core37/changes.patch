@@ -1405,3 +1405,12 @@
  
  end Examples₂
  
+--- a/Formalism/SharpRestriction/GlobalSchurBounds/QuadraticLogDerivCongr.lean
++++ b/Formalism/SharpRestriction/GlobalSchurBounds/QuadraticLogDerivCongr.lean
+@@ -1,6 +1,5 @@
+ import Formalism.SharpRestriction.GlobalTheoremInputs
+ import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+-import Formalism.SizeWindowBrackets.ChainSlopeWindows.GaloisMapComplexConjugation
+ import Formalism.SizeWindowBrackets.ChainSlopeWindows.JointDModelAppliesUnitLattice
+ import Formalism.SizeWindowBrackets.ChainSlopeWindows.SubThreeMulLogTwoLe
+ import Formalism.SharpRestriction.AdmissibleParameterJoins.SumLogPrimeFactorsLe

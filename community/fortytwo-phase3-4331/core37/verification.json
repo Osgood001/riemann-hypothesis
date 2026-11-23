@@ -1,29 +1,33 @@
 {
   "core": 37,
-  "candidate": "core37-fast34ad057412",
+  "candidate": "core37-fastmix006636d058",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 482,
-  "local_normalized_tokens": 1808176,
+  "submitted_files": 479,
+  "local_normalized_tokens": 1781302,
   "published_baseline_tokens": 1852115,
-  "proof_tree_sha256": "4818750b96be75de59a17aa5fa939b12894ea3f3201a0348ccf20ee5bdff30d8",
+  "proof_tree_sha256": "3e4e1a9515c5d0f713e14b4259a94b8de50bccbcc234694fb86c6b829cebf68e",
   "modified_files": {
     "Formalism/LocalToGlobal/IndefiniteForms/IndefiniteTree/ExampleSatisfiesConditionsAtFive.lean": {
       "before": "e6e4335796382da8798ba660c3472b9e726c3866b0648639769a37d224477920",
       "after": "96600780875c4443b4812bf3ce99576e6ff39bb69e611bc15154143cf8725c4d"
+    },
+    "Formalism/SharpRestriction/GlobalSchurBounds/QuadraticLogDerivCongr.lean": {
+      "before": "3c863264dc9f4fd63a46d3ee2b5ae5fd6fba7d64a572466ef5388b76830618bf",
+      "after": "b9472c442ea43433317efb2ada095bdecae95af077705956ef28a1465ecb4c53"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo native Lean proof simplification in Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.ExampleSatisfiesConditionsAtFive, from phase3-core22-compile-r02-resume1023-cont009, adapted to the published Core 37 target. Original proof by Levent Alpöge."
+    "new_contribution": "Fortytwo native Lean proof simplification in Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.ExampleSatisfiesConditionsAtFive, from phase3-core22-compile-r02-resume1023-cont009, adapted to the published Core 37 target. Original proof by Levent Alpöge. Added the native proof edit in Formalism.SharpRestriction.GlobalSchurBounds.QuadraticLogDerivCongr and remeasured the full import closure."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T18:36:03.323015+00:00",
+    "completed_utc": "2026-11-23T18:46:23.290649+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -424,9 +428,7 @@
     "Formalism/SharpRestriction/RamificationFrobenius/TotientGaloisClasses/NonemptyFieldAxiomsCyclicPow.lean": "bf171e8d0eff1464a6c9a44ad08115ce5728ff73700c00f6799b92521800296a",
     "Formalism/SizeWindowBrackets/ChainSlopeWindows/CorollaryModelSideCondition.lean": "d7a5ee11b8923d3e6552a48f1465364570fd5357f599133c62e38f0045930485",
     "Formalism/SizeWindowBrackets/ChainSlopeWindows/ExistsNsmulMem.lean": "e260847f1d1dc467e894a52727ae6a45db1f42e0729dcb0aafcc59a594f9b4b7",
-    "Formalism/SizeWindowBrackets/ChainSlopeWindows/GaloisMapComplexConjugation.lean": "a2103b58ff829b63399edc4126b0cdc842ef18fe2cd3791b4bc07f4fa56bfe01",
     "Formalism/SizeWindowBrackets/ChainSlopeWindows/JointDModelAppliesUnitLattice.lean": "07ec76e7f620ab0d88a42e2da3d1b714665a9476690ebcdd89838014177e3295",
-    "Formalism/SizeWindowBrackets/ChainSlopeWindows/StronglyIrreducible.lean": "8871c7b007650900936033e9d830127bdd116de6fe04ce5f567a996714eea5a3",
     "Formalism/SizeWindowBrackets/ChainSlopeWindows/SubThreeMulLogTwoLe.lean": "fd4d5681f52473477e8e04e8aed6dc14d81bc7daf63b354037a02d585dcdd00a",
     "Formalism/SizeWindowBrackets/ChainSlopeWindows/TraceConjTransposeMulSelf.lean": "8b2afe7d7f80e919c8b6317e9236393c96c5dd4251c438ac25bb3e38b8b89acb",
     "Formalism/SizeWindowBrackets/ChainSlopeWindows/WeightedMeanLemmaNeedsDegree.lean": "83471d359a412fa2d4078d4e932bb835a15cbdf5e903e1589b848623c91300af",
@@ -444,7 +446,6 @@
     "Formalism/SizeWindowBrackets/TraceSquareAndDiagBounds.lean": "f1baa428bebdc0d62dce1f5bf29a4960f26e8ad02ceea3033198b76f752b346f",
     "Formalism/ThickAverageLoss/PartnersToFactorsAt.lean": "bebc91c34ad8abca4bdea86738be95217a72884c9fb7397ea73b91d723a5c39e",
     "Formalism/ThickAverageLoss/Statement.lean": "1db46e2d86336d8007edff7c385231c491c4ba83ce9c2695b63a19b5dd90e239",
-    "Formalism/ThickAverageLoss/ThickAverageProofs/Balance.lean": "38f914bad2ebc1a7adc08a157dadf9f5a267e19711b1e3c82ad80083928e06b9",
     "Formalism/WeaklyAdmissibleFiltrations/StatementTor.lean": "c6a95692c4a1486235e241c0e810fd9fdb4a8ddfe162947eb392eefde5cbc56e",
     "Formalism/WideWeightTheorem/Statement.lean": "05429530cd6d66ebbafba6133638334198000be4811273d0951070db63ffba52",
     "GroundTheory/AutomorphicForms/AdmissibleInduction.lean": "5fae832b931fa818e48464fd00329ff4324f4ca4e4db50eeb596b745fda145f3",
