@@ -1,3 +1,30 @@
+--- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean
++++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean
+@@ -31,15 +31,5 @@
+   rw [hG, hG', hD, hR] at key
+   exact key
+ 
+-theorem functional_equation_of_unramified :
+-    ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (χ : HeckeCharacter F),
+-      standardOpenSubgroup F ≤ χ.toIdele.ker → ∀ s : ℂ, (∀ n : ℕ, s ≠ -2 * n) →
+-      (∀ n : ℕ, 1 - s ≠ -2 * n) →
+-      (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F : ℂ) ^ (s / 2) * Complex.Gammaℝ s ^ Module.finrank ℚ F * χ.continuedLFunction s =
+-        χ.coeff (differentIdeal ℤ (𝓞 F)) * ((GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F : ℂ) ^ ((1 - s) / 2) *
+-          Complex.Gammaℝ (1 - s) ^ Module.finrank ℚ F * (χ⁻¹).continuedLFunction (1 - s)) := by
+-  intro F _ _ _ χ hχ s h1 h2
+-  exact fe_of_parts F χ (discrNormConductor_eq_dF_of_unramified F χ hχ) (gammaFactor_eq_of_unramified F χ hχ)
+-    (gammaFactor_eq_of_unramified F χ⁻¹ (standardOpenSubgroup_le_ker_inv F χ hχ)) (GlobalTheory.T.root_number_eq_different_coeff F χ hχ) s h1 h2
+ 
+ end GlobalTheory.CompanionTheory.PartialZeta
+--- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeffStatement.lean
++++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeffStatement.lean
+@@ -6,6 +6,3 @@
+ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
+ open NumberField GroundTheory.Global GroundTheory.Global.IdeleGroup
+ open scoped nonZeroDivisors
+-set_option maxHeartbeats 1000000 in
+-theorem _root_.GlobalTheory.T.root_number_eq_different_coeff : ∀ (F : Type) [Field F] [NumberField F] (χ : HeckeCharacter F), standardOpenSubgroup F ≤ χ.toIdele.ker → χ.rootNumber = χ.coeff (differentIdeal ℤ (𝓞 F)) := by
+-  first | exact @GlobalTheory.CompanionTheory.PartialZeta.rootNumber_eq_coeff_different | exact GlobalTheory.CompanionTheory.PartialZeta.rootNumber_eq_coeff_different | (intros; apply GlobalTheory.CompanionTheory.PartialZeta.rootNumber_eq_coeff_different <;> assumption)
 --- a/GroundTheory/AutomorphicForms/GL2/FiniteIdeleDecomp.lean
 +++ b/GroundTheory/AutomorphicForms/GL2/FiniteIdeleDecomp.lean
 @@ -2,7 +2,6 @@
@@ -8,3 +35,403 @@
  import GroundTheory.LocalFields.LocalFourierHaar
  
  open NumberField IsDedekindDomain MeasureTheory Filter Topology GroundTheory.Global GroundTheory.LocalField
+--- a/GroundTheory/GlobalFields/TateThesis/RootNumberLocalFinite.lean
++++ b/GroundTheory/GlobalFields/TateThesis/RootNumberLocalFinite.lean
+@@ -17,87 +17,15 @@
+ 
+ variable {K : Type*} [Field K] [NumberField K]
+ 
+-theorem sqrt_natCast_prod {ι : Type*} (s : Finset ι) (f : ι → ℕ) :
+-    Real.sqrt ((∏ i ∈ s, f i : ℕ) : ℝ) = ∏ i ∈ s, Real.sqrt (f i : ℝ) := by
+-  classical
+-  induction s using Finset.induction_on with
+-  | empty => simp
+-  | insert a s ha ih =>
+-    rw [Finset.prod_insert ha, Finset.prod_insert ha, Nat.cast_mul,
+-      Real.sqrt_mul (Nat.cast_nonneg _), ih]
+ 
+ namespace HeckeCharacter
+ 
+ variable (χ : HeckeCharacter K)
+ 
+-theorem mem_units_of_isIntegralUnitAt {b : (FiniteAdeleRing (𝓞 K) K)ˣ} {v : HeightOneSpectrum (𝓞 K)}
+-    (h : IsIntegralUnitAt b v) :
+-    finiteComponent v b ∈ (Submonoid.ofClass (v.adicCompletionIntegers K)).units := by
+-  rw [Submonoid.mem_units_iff]
+-  refine ⟨?_, ?_⟩
+-  · rw [coe_finiteComponent]
+-    exact h.1
+-  · rw [← map_inv, coe_finiteComponent]
+-    exact h.2
+ 
+-theorem finite_mulSupport_localComponent (b : (FiniteAdeleRing (𝓞 K) K)ˣ) :
+-    (Function.mulSupport fun v ↦ (χ.localComponent v (finiteComponent v b) : ℂ)).Finite := by
+-  refine ((finite_setOf_not_isIntegralUnitAt b).union χ.finite_setOf_dvd_conductor).subset
+-    fun v hv ↦ ?_
+-  by_contra h
+-  rw [Set.mem_union, not_or] at h
+-  have h1 : IsIntegralUnitAt b v := not_not.1 h.1
+-  have h2 : ¬ v.asIdeal ∣ χ.conductor := h.2
+-  apply hv
+-  change (χ.localComponent v (finiteComponent v b) : ℂ) = 1
+-  rw [χ.localComponent_eq_one_of_not_dvd h2 (mem_units_of_isIntegralUnitAt h1), Circle.coe_one]
+ 
+-theorem toIdele_ofFinite_eq_finprod (b : (FiniteAdeleRing (𝓞 K) K)ˣ) :
+-    (χ.toIdele (ofFinite b) : ℂ) = ∏ᶠ v, (χ.localComponent v (finiteComponent v b) : ℂ) := by
+-  classical
+-  set T : Finset (HeightOneSpectrum (𝓞 K)) :=
+-    ((finite_setOf_not_isIntegralUnitAt b).union χ.finite_setOf_dvd_conductor).toFinset with hTdef
+-  have hT : ∀ w ∉ T, IsIntegralUnitAt b w ∧ ¬ w.asIdeal ∣ χ.conductor := by
+-    intro w hw
+-    rw [hTdef, Set.Finite.mem_toFinset, Set.mem_union, not_or] at hw
+-    exact ⟨not_not.1 hw.1, hw.2⟩
+-  have haway : χ.toIdele (ofFinite (awayPart T b)) = 1 := by
+-    have hmem : awayPart T b ∈ idealLevel χ.conductor := by
+-      rw [idealLevel, mem_finiteLevel]
+-      intro w
+-      rw [finiteComponent_awayPart]
+-      split_ifs with hw
+-      · exact one_mem _
+-      · obtain ⟨h1, h2⟩ := hT w hw
+-        rw [multiplicity_eq_zero.2 h2, unitsLevel_zero]
+-        exact mem_units_of_isIntegralUnitAt h1
+-    exact χ.map_idealLevel_conductor_le_ker (Subgroup.mem_map_of_mem ofFinite hmem)
+-  conv_lhs => rw [← partAt_mul_awayPart T b]
+-  rw [map_mul, map_mul, haway, mul_one, toIdele_ofFinite_partAt]
+-  symm
+-  refine finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ ?_
+-  by_contra hvT
+-  apply hv
+-  obtain ⟨h1, h2⟩ := hT v hvT
+-  change (χ.localComponent v (finiteComponent v b) : ℂ) = 1
+-  rw [χ.localComponent_eq_one_of_not_dvd h2 (mem_units_of_isIntegralUnitAt h1), Circle.coe_one]
+ 
+-theorem conductor_eq_prod :
+-    χ.conductor = ∏ v ∈ χ.conductorPrimes, v.asIdeal ^ multiplicity v.asIdeal χ.conductor := by
+-  conv_lhs => rw [conductor, IdeleGroup.conductor]
+-  rw [finprod_congr fun v ↦ by rw [← χ.multiplicity_conductor v]]
+-  refine finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ ?_
+-  by_contra hvS
+-  apply hv
+-  change v.asIdeal ^ multiplicity v.asIdeal χ.conductor = 1
+-  rw [multiplicity_eq_zero.2 fun h ↦ hvS (χ.mem_conductorPrimes.2 h), pow_zero]
+ 
+-theorem absNorm_conductor :
+-    Ideal.absNorm χ.conductor =
+-      ∏ v ∈ χ.conductorPrimes, Ideal.absNorm v.asIdeal ^ multiplicity v.asIdeal χ.conductor := by
+-  conv_lhs => rw [χ.conductor_eq_prod]
+-  rw [map_prod]
+-  exact Finset.prod_congr rfl fun v _ ↦ map_pow _ _ _
+ 
+ variable {χ}
+ 
+@@ -116,11 +44,6 @@
+         rw [← mul_assoc, ← exp_add, add_neg_cancel, exp_zero, one_mul]
+     _ = exp (χ.condExp v + differentExp v) := by rw [h2, mul_one]
+ 
+-theorem inv_apply_eq {δ : (FiniteAdeleRing (𝓞 K) K)ˣ} (v : HeightOneSpectrum (𝓞 K)) :
+-    ((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) v =
+-      ((finiteComponent v δ : (v.adicCompletion K)ˣ) : v.adicCompletion K)⁻¹ := by
+-  rw [coe_finiteComponent]
+-  exact (eq_inv_of_mul_eq_one_right (units_mul_inv_apply δ v))
+ 
+ variable (χ)
+ 
+@@ -207,80 +130,10 @@
+     ← integral_fintype_prod_eq_prod]
+   exact h
+ 
+-theorem ord_finiteComponent_of_toFractionalIdeal_eq {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
+-    (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
+-    (v : HeightOneSpectrum (𝓞 K)) :
+-    ord ((finiteComponent v δ : (v.adicCompletion K)ˣ) : v.adicCompletion K) =
+-      χ.condExp v + differentExp v := by
+-  have h1 := χ.valued_of_toFractionalIdeal_eq hδ v
+-  rw [← coe_finiteComponent, valued_eq_exp_neg_ord (Units.ne_zero _), exp_inj] at h1
+-  omega
+ 
+-open Classical in
+ 
+-theorem localEpsilon_half_eq {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
+-    (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
+-    (v : HeightOneSpectrum (𝓞 K)) :
+-    localEpsilon (localChar χ v) (localAdelicChar K v) (1 / 2) =
+-      (χ.localComponent v (finiteComponent v δ) : ℂ) *
+-        (if v ∈ χ.conductorPrimes then
+-          (Real.sqrt ((Ideal.absNorm v.asIdeal ^ multiplicity v.asIdeal χ.conductor : ℕ) : ℝ) : ℂ) *
+-            ∫ y, χ.finiteTest v y *
+-              (localAdelicChar K v (((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) v * y) : ℂ)
+-              ∂haarIntegers (v.adicCompletion K)
+-        else 1) := by
+-  split_ifs with hv
+-  · rw [χ.localEpsilon_half_of_dvd v (χ.mem_conductorPrimes.1 hv) _
+-      (χ.ord_finiteComponent_of_toFractionalIdeal_eq hδ v), inv_apply_eq]
+-    ring
+-  · have hv' : ¬ v.asIdeal ∣ χ.conductor := fun h ↦ hv (χ.mem_conductorPrimes.2 h)
+-    rw [χ.localEpsilon_half_of_not_dvd v hv' _
+-      (by rw [χ.ord_finiteComponent_of_toFractionalIdeal_eq hδ v, χ.condExp_eq_zero hv', zero_add]),
+-      mul_one]
+ 
+-open Classical in
+ 
+-theorem finiteFourier_mul_eq_finprod_localEpsilon {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
+-    (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit) :
+-    finiteFourier K χ.finiteTestFun ((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) *
+-        (χ.toIdele (ofFinite δ) : ℂ) * (χ.discrNormConductor : ℂ) ^ (1 / 2 : ℂ) =
+-      ∏ᶠ v, localEpsilon (localChar χ v) (localAdelicChar K v) (1 / 2) := by
+-  set S := χ.conductorPrimes with hSdef
+-  set I : HeightOneSpectrum (𝓞 K) → ℂ := fun v ↦ ∫ y, χ.finiteTest v y *
+-    (localAdelicChar K v (((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) v * y) : ℂ)
+-    ∂haarIntegers (v.adicCompletion K) with hIdef
+-  set s : HeightOneSpectrum (𝓞 K) → ℂ := fun v ↦
+-    (Real.sqrt ((Ideal.absNorm v.asIdeal ^ multiplicity v.asIdeal χ.conductor : ℕ) : ℝ) : ℂ) with hsdef
+-  set c : HeightOneSpectrum (𝓞 K) → ℂ := fun v ↦ if v ∈ S then s v * I v else 1 with hcdef
+-  have hc : (Function.mulSupport c).Finite := S.finite_toSet.subset fun v hv ↦ by
+-    by_contra h
+-    exact hv (if_neg h)
+-  have hcS : ∏ᶠ v, c v = ∏ v ∈ S, s v * I v := by
+-    rw [finprod_eq_prod_of_mulSupport_subset c (s := S) fun v hv ↦ by
+-      by_contra h
+-      exact hv (if_neg h)]
+-    exact Finset.prod_congr rfl fun v hv ↦ if_pos hv
+-  rw [finprod_congr (χ.localEpsilon_half_eq hδ),
+-    finprod_mul_distrib (χ.finite_mulSupport_localComponent δ) hc, ← χ.toIdele_ofFinite_eq_finprod δ,
+-    hcS, χ.finiteFourier_finiteTestFun_inv_eq hδ]
+-
+-  have hd0 : (0 : ℝ) ≤ |(discr K : ℝ)| := abs_nonneg _
+-  have hA0 : (0 : ℝ) ≤ χ.discrNormConductor := χ.discrNormConductor_pos.le
+-  have hA : (χ.discrNormConductor : ℂ) ^ (1 / 2 : ℂ) =
+-      (Real.sqrt |(discr K : ℝ)| : ℂ) * ∏ v ∈ S, s v := by
+-    rw [show (1 / 2 : ℂ) = ((1 / 2 : ℝ) : ℂ) by push_cast; ring, ← Complex.ofReal_cpow hA0,
+-      ← Real.sqrt_eq_rpow, discrNormConductor, Real.sqrt_mul hd0, χ.absNorm_conductor,
+-      sqrt_natCast_prod, Complex.ofReal_mul, Complex.ofReal_prod]
+-  have hdisc : (((NNReal.sqrt ‖discr K‖₊)⁻¹ : ℝ≥0) : ℂ) * (Real.sqrt |(discr K : ℝ)| : ℂ) = 1 := by
+-    have hne : Real.sqrt |(discr K : ℝ)| ≠ 0 := by
+-      rw [Ne, Real.sqrt_eq_zero hd0, abs_eq_zero]
+-      exact_mod_cast discr_ne_zero K
+-    have h1 : (((NNReal.sqrt ‖discr K‖₊)⁻¹ : ℝ≥0) : ℝ) = (Real.sqrt |(discr K : ℝ)|)⁻¹ := by
+-      rw [NNReal.coe_inv, Real.coe_sqrt, coe_nnnorm, Int.norm_eq_abs]
+-    rw [show (((NNReal.sqrt ‖discr K‖₊)⁻¹ : ℝ≥0) : ℂ) = ((((NNReal.sqrt ‖discr K‖₊)⁻¹ : ℝ≥0) : ℝ) : ℂ)
+-      from rfl, h1, Complex.ofReal_inv, inv_mul_cancel₀ (Complex.ofReal_ne_zero.2 hne)]
+-  rw [hA, Finset.prod_mul_distrib, Finset.prod_coe_sort S I]
+-  linear_combination ((χ.toIdele (ofFinite δ) : ℂ) * (∏ v ∈ S, s v) * ∏ v ∈ S, I v) * hdisc
+ 
+ end HeckeCharacter
+ 
+--- a/GroundTheory/GlobalFields/TateThesis/RootNumberLocalPlace.lean
++++ b/GroundTheory/GlobalFields/TateThesis/RootNumberLocalPlace.lean
+@@ -2,7 +2,6 @@
+ import GroundTheory.GlobalFields.TateThesis.EulerFactorsFourierFinite
+ import GroundTheory.GlobalFields.TateThesis.AdelicCharLocal
+ import GroundTheory.GlobalFields.KummerTheory.LocalIndexAtPlace
+-import GroundTheory.GlobalFields.Artin.ConductorOneDim
+ import GroundTheory.AutomorphicForms.GL2.FiniteAdeleDecomp
+ import GroundTheory.LocalFields.LocalZeta
+ 
+@@ -46,10 +45,6 @@
+   · rw [mem_valBall_iff_le_ord hx, valued_eq_exp_neg_ord hx, exp_le_exp]
+     omega
+ 
+-theorem valued_eq_one_iff_ord {x : v.adicCompletion K} (hx : x ≠ 0) :
+-    Valued.v x = 1 ↔ ord x = 0 := by
+-  rw [valued_eq_exp_neg_ord hx, ← exp_zero, exp_inj]
+-  omega
+ 
+ end Valuation
+ 
+@@ -57,50 +52,8 @@
+ 
+ variable (v : HeightOneSpectrum (𝓞 K))
+ 
+-theorem isTrivialOn_localAdelicChar_iff (n : ℤ) :
+-    IsTrivialOn (localAdelicChar K v) n ↔ -differentExp v ≤ n := by
+-  have hM : ∀ a ∈ v.adicCompletionIntegers K, ∀ x ∈ valBall (v.adicCompletion K) n,
+-      a * x ∈ valBall (v.adicCompletion K) n := by
+-    intro a ha x hx
+-    rw [mem_valBall_iff_valued] at hx ⊢
+-    rw [map_mul]
+-    calc Valued.v a * Valued.v x ≤ 1 * Valued.v x := by
+-          gcongr
+-          exact (mem_adicCompletionIntegers _ _ _).1 ha
+-      _ = Valued.v x := one_mul _
+-      _ ≤ exp (-n) := hx
+-  change (∀ x ∈ valBall (v.adicCompletion K) n, localAdelicChar K v x = 1) ↔ _
+-  rw [forall_localAdelicChar_eq_one_iff_le v _ hM]
+-  constructor
+-  · intro h
+-    by_contra hlt
+-    push Not at hlt
+-    have hx : ((unifUnit (v.adicCompletion K) ^ n : (v.adicCompletion K)ˣ) : v.adicCompletion K) ∈
+-        valBall (v.adicCompletion K) n := by
+-      rw [mem_valBall_iff_le_ord (Units.ne_zero _), ord_unifUnit_zpow]
+-    have h2 := (mem_localInvDifferent_iff_valued v _).1 (h hx)
+-    rw [valued_eq_exp_neg_ord (Units.ne_zero _), ord_unifUnit_zpow, exp_le_exp] at h2
+-    change -n ≤ differentExp v at h2
+-    omega
+-  · intro h x hx
+-    rw [mem_localInvDifferent_iff_valued]
+-    exact ((mem_valBall_iff_valued).1 hx).trans (exp_le_exp.2 (by change -n ≤ differentExp v; omega))
+ 
+-theorem localAdelicChar_ne_one : localAdelicChar K v ≠ 1 := by
+-  intro h
+-  have h1 : IsTrivialOn (localAdelicChar K v) (-differentExp v - 1) := fun x _ ↦ by
+-    rw [h]
+-    rfl
+-  have := (isTrivialOn_localAdelicChar_iff v _).1 h1
+-  omega
+ 
+-theorem addCharConductor_localAdelicChar :
+-    addCharConductor (localAdelicChar K v) = -differentExp v := by
+-  have hc := continuous_localAdelicChar v
+-  have hne := localAdelicChar_ne_one v
+-  apply le_antisymm
+-  · exact (isTrivialOn_iff hc hne _).1 ((isTrivialOn_localAdelicChar_iff v _).2 le_rfl)
+-  · exact (isTrivialOn_localAdelicChar_iff v _).1 (isTrivialOn_addCharConductor hc hne)
+ 
+ end AddChar
+ 
+@@ -108,38 +61,9 @@
+ 
+ variable (χ : HeckeCharacter K) (v : HeightOneSpectrum (𝓞 K))
+ 
+-theorem ker_localChar :
+-    (localChar χ v).ker = (χ.localComponent v : (v.adicCompletion K)ˣ →* Circle).ker := by
+-  ext a
+-  rw [MonoidHom.mem_ker, MonoidHom.mem_ker, ← Units.val_eq_one, coe_localChar]
+-  exact Circle.coe_eq_one
+ 
+-theorem unitFiltrationUnits_le_ker_localChar_iff (n : ℕ) :
+-    unitFiltrationUnits (v.adicCompletion K) n ≤ (localChar χ v).ker ↔
+-      multiplicity v.asIdeal χ.conductor ≤ n := by
+-  have hloc : ((χ.toIdele.comp ofFinite).comp (finiteUnitsSingle v)) =
+-      (χ.localComponent v : (v.adicCompletion K)ˣ →* Circle) := by
+-    ext a
+-    simp only [MonoidHom.comp_apply, ofFinite_finiteUnitsSingle]
+-    rfl
+-  have hcont : Continuous ((χ.toIdele.comp ofFinite).comp (finiteUnitsSingle v)) :=
+-    (χ.continuous_toIdele.comp continuous_ofFinite).comp (continuous_finiteUnitsSingle v)
+-  rw [unitFiltrationUnits_eq_unitsLevel, ker_localChar, ← hloc,
+-    unitsLevel_le_ker_iff v Circle.noSmallSubgroups _ hcont]
+-  change conductorExponentAt (χ.toIdele.comp ofFinite) v ≤ n ↔ _
+-  rw [← χ.multiplicity_conductor]
+ 
+-theorem quasiCharConductor_localChar :
+-    quasiCharConductor (localChar χ v) = multiplicity v.asIdeal χ.conductor := by
+-  apply le_antisymm
+-  · exact Nat.sInf_le ((χ.unitFiltrationUnits_le_ker_localChar_iff v _).2 le_rfl)
+-  · exact (χ.unitFiltrationUnits_le_ker_localChar_iff v _).1
+-      (unitFiltrationUnits_quasiCharConductor_le_ker (continuous_localChar χ v))
+ 
+-theorem isUnramifiedChar_localChar_iff :
+-    IsUnramifiedChar (localChar χ v) ↔ ¬ v.asIdeal ∣ χ.conductor := by
+-  rw [IsUnramifiedChar, χ.unitFiltrationUnits_le_ker_localChar_iff v 0, Nat.le_zero,
+-    multiplicity_eq_zero]
+ 
+ theorem isLocallyConstant_finiteTest : IsLocallyConstant (χ.finiteTest v) := by
+   refine (IsLocallyConstant.iff_eventually_eq _).2 fun x₀ ↦ ?_
+@@ -167,105 +91,7 @@
+     ((continuous_localAdelicChar v).comp (continuous_const_mul b)))).integrable_of_hasCompactSupport
+     (χ.hasCompactSupport_finiteTest_mul v _)
+ 
+-theorem localEpsilon_half_of_not_dvd (hv : ¬ v.asIdeal ∣ χ.conductor) (a : (v.adicCompletion K)ˣ)
+-    (ha : ord (a : v.adicCompletion K) = differentExp v) :
+-    localEpsilon (localChar χ v) (localAdelicChar K v) (1 / 2) = (χ.localComponent v a : ℂ) := by
+-  have hu := (χ.isUnramifiedChar_localChar_iff v).2 hv
+-  rw [localEpsilon_of_isUnramified hu, addCharConductor_localAdelicChar, sub_self, mul_zero,
+-    Complex.cpow_zero, mul_one, ← coe_localChar, quasiChar_apply_of_isUnramified hu a, ha, neg_neg,
+-    Units.val_zpow_eq_zpow_val]
+ 
+-theorem localEpsilon_half_of_dvd (hv : v.asIdeal ∣ χ.conductor) (a : (v.adicCompletion K)ˣ)
+-    (ha : ord (a : v.adicCompletion K) = χ.condExp v + differentExp v) :
+-    localEpsilon (localChar χ v) (localAdelicChar K v) (1 / 2) =
+-      (Real.sqrt ((Ideal.absNorm v.asIdeal ^ multiplicity v.asIdeal χ.conductor : ℕ) : ℝ) : ℂ) *
+-        (χ.localComponent v a : ℂ) *
+-        ∫ y, χ.finiteTest v y * (localAdelicChar K v ((a : v.adicCompletion K)⁻¹ * y) : ℂ)
+-          ∂haarIntegers (v.adicCompletion K) := by
+-  have hr : ¬ IsUnramifiedChar (localChar χ v) := fun h ↦ ((χ.isUnramifiedChar_localChar_iff v).1 h) hv
+-  have hn := addCharConductor_localAdelicChar v
+-  have hc := χ.quasiCharConductor_localChar v
+-  have hf : χ.condExp v = (multiplicity v.asIdeal χ.conductor : ℤ) := χ.condExp_eq v
+-  set m := multiplicity v.asIdeal χ.conductor with hm
+-  set d := differentExp v with hd
+-  have ha0 : (a : v.adicCompletion K) ≠ 0 := a.ne_zero
+-  have hai : (a : v.adicCompletion K)⁻¹ ≠ 0 := inv_ne_zero ha0
+-  rw [localEpsilon_of_not_isUnramified hr, hn, hc]
+-  set A : Set (v.adicCompletion K) :=
+-    (valBall (v.adicCompletion K) (-d - (m : ℤ)) : Set (v.adicCompletion K)) \
+-      valBall (v.adicCompletion K) (-d - (m : ℤ) + 1) with hAdef
+-  have hA : MeasurableSet A := (measurableSet_valBall _).diff (measurableSet_valBall _)
+-  set F : v.adicCompletion K → ℂ := fun x ↦ quasiCharExt (localChar χ v)⁻¹ x *
+-    ((modulus x : ℝ) : ℂ) ^ (-(1 / 2 : ℂ)) * (localAdelicChar K v x : ℂ) with hFdef
+-  set M : ℝ := (modulus ((a : v.adicCompletion K)⁻¹) : ℝ) with hMdef
+-  have hM0 : 0 < M := NNReal.coe_pos.2 (modulus_pos hai)
+-  rw [← integral_indicator hA]
+-  unfold LocalField.selfDualMeasure
+-  rw [hn, integral_smul_nnreal_measure]
+-
+-  have hsub : ∫ x, A.indicator F x ∂haarIntegers (v.adicCompletion K) =
+-      M • ∫ y, A.indicator F ((a : v.adicCompletion K)⁻¹ * y) ∂haarIntegers (v.adicCompletion K) := by
+-    rw [integral_comp_mul_left (haarIntegers (v.adicCompletion K)) hai, smul_smul,
+-      mul_inv_cancel₀ hM0.ne', one_smul]
+-
+-  have hpt : ∀ y, A.indicator F ((a : v.adicCompletion K)⁻¹ * y) =
+-      (χ.localComponent v a : ℂ) * ((M : ℂ) ^ (-(1 / 2 : ℂ))) *
+-        (χ.finiteTest v y * (localAdelicChar K v ((a : v.adicCompletion K)⁻¹ * y) : ℂ)) := by
+-    intro y
+-    by_cases hy : Valued.v y = 1
+-    · have hy0 : y ≠ 0 := fun h ↦ by simp [h] at hy
+-      set u : (v.adicCompletion K)ˣ := Units.mk0 y hy0
+-      have hu : ((a⁻¹ * u : (v.adicCompletion K)ˣ) : v.adicCompletion K) =
+-          (a : v.adicCompletion K)⁻¹ * y := by
+-        simp [u]
+-      have hyo : ord y = 0 := (valued_eq_one_iff_ord hy0).1 hy
+-      have hmem : (a : v.adicCompletion K)⁻¹ * y ∈ A := by
+-        rw [hAdef, mem_shellSet_iff (mul_ne_zero hai hy0), ord_mul hai hy0, ord_inv ha0, hyo, ha, hf]
+-        ring
+-      rw [Set.indicator_of_mem hmem, hFdef]
+-      simp only
+-      rw [← hu, quasiCharExt_units, MonoidHom.inv_apply, map_mul, map_inv, Units.val_inv_eq_inv_val,
+-        Units.val_mul, Units.val_inv_eq_inv_val, coe_localChar, coe_localChar, hu, modulus_mul,
+-        modulus_of_ne_zero hy0, hyo, neg_zero, zpow_zero, mul_one]
+-      have hft : χ.finiteTest v y = ((χ.localComponent v u : ℂ))⁻¹ := χ.finiteTest_of_dvd hv u hy
+-      rw [← hMdef, hft]
+-      simp only [mul_inv, inv_inv]
+-      ring
+-    · have hnot : (a : v.adicCompletion K)⁻¹ * y ∉ A := by
+-        by_cases hy0 : y = 0
+-        · rw [hy0, mul_zero]
+-          exact zero_notMem_shellSet _
+-        · rw [hAdef, mem_shellSet_iff (mul_ne_zero hai hy0), ord_mul hai hy0, ord_inv ha0, ha, hf]
+-          intro h
+-          exact hy ((valued_eq_one_iff_ord hy0).2 (by linarith))
+-      rw [Set.indicator_of_notMem hnot, χ.finiteTest_eq_zero_of_dvd hv hy, zero_mul, mul_zero]
+-  rw [hsub, integral_congr_ae (Filter.Eventually.of_forall hpt), integral_const_mul]
+-
+-  have hq : (residueCard (v.adicCompletion K) : ℝ) = (Ideal.absNorm v.asIdeal : ℝ) := by
+-    rw [residueCard_adicCompletion]
+-  have hN : (0 : ℝ) < Ideal.absNorm v.asIdeal := by
+-    rw [← hq]
+-    exact_mod_cast (zero_lt_one.trans (one_lt_residueCard (K := v.adicCompletion K)))
+-  have hMe : M = (Ideal.absNorm v.asIdeal : ℝ) ^ ((m : ℝ) + d) := by
+-    rw [hMdef, modulus_of_ne_zero hai, NNReal.coe_zpow, NNReal.coe_natCast, hq, ord_inv ha0, neg_neg,
+-      ha, hf, ← Real.rpow_intCast]
+-    push_cast
+-    ring_nf
+-  have hkey : (((residueCard (v.adicCompletion K) : ℝ≥0) ^ (((-d : ℤ) : ℝ) / 2) : ℝ≥0) : ℝ) * M *
+-      M ^ (-(1 / 2 : ℝ)) = Real.sqrt ((Ideal.absNorm v.asIdeal ^ m : ℕ) : ℝ) := by
+-    rw [NNReal.coe_rpow, NNReal.coe_natCast, hq, hMe, ← Real.rpow_mul hN.le, Real.sqrt_eq_rpow,
+-      Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_mul hN.le, ← Real.rpow_add hN,
+-      ← Real.rpow_add hN]
+-    congr 1
+-    push_cast
+-    ring
+-  have hMc : (M : ℂ) ^ (-(1 / 2 : ℂ)) = ((M ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) := by
+-    rw [Complex.ofReal_cpow hM0.le]
+-    push_cast
+-    ring_nf
+-  rw [hMc, NNReal.smul_def, Complex.real_smul, Complex.real_smul, ← hkey]
+-  push_cast
+-  ring
+ 
+ end HeckeCharacter
+ 
