@@ -1,14 +1,14 @@
 {
   "core": 37,
-  "candidate": "core37-fastmix06264f4926",
+  "candidate": "core37-fastmix4465ce909b",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 226,
-  "local_normalized_tokens": 827301,
+  "local_normalized_tokens": 817482,
   "published_baseline_tokens": 1852115,
-  "proof_tree_sha256": "8bd7df3734041bcbf9d74fb3199d6c0ba1fe8d736afaa60732e5e20bcb58e4e0",
+  "proof_tree_sha256": "a105f11057b65879741631e552d9dfc18bd25261359f1ea14257f2c527ff88fd",
   "modified_files": {
     "Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/IsIrreducibleSecondFactorOfIrreducibleProduct.lean": {
       "before": "95941c7424104e240927152e756becff643204be4353dabc3c08cdd3bd6d5308",
@@ -33,17 +33,21 @@
     "Formalism/SizeWindowBrackets/ChainSlopeWindows/JointDModelAppliesUnitLattice.lean": {
       "before": "07ec76e7f620ab0d88a42e2da3d1b714665a9476690ebcdd89838014177e3295",
       "after": "f1e2815018075dad73e72d66c9097adf7e6c36ed128d77db9f733b80f220b242"
+    },
+    "Formalism/SizeWindowBrackets/ChainSlopeWindows/SubThreeMulLogTwoLe.lean": {
+      "before": "fd4d5681f52473477e8e04e8aed6dc14d81bc7daf63b354037a02d585dcdd00a",
+      "after": "0e69758366a0d155b0fe49f338b3bf00f888cab0c7a29dbe25b8b84a57f943a5"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo native Lean proof simplification in Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.ExampleSatisfiesConditionsAtFive, from phase3-core22-compile-r02-resume1023-cont009, adapted to the published Core 37 target. Original proof by Levent Alpöge. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Added the native proof edit in Formalism.SharpRestriction.GlobalSchurBounds.QuadraticLogDerivCongr and remeasured the full import closure. Added the native proof edit in Formalism.SizeWindowBrackets.ChainSlopeWindows.JointDModelAppliesUnitLattice and remeasured the full import closure. Added the native proof edit in Formalism.QuotientMetricDivisors.HermitianTwistDivisors.SecondComplementParameterBounds and remeasured the full import closure. Added the native proof edit in Formalism.SharpRestriction.AdmissibleParameterJoins.SumLogPrimeFactorsLe and remeasured the full import closure."
+    "new_contribution": "Fortytwo native Lean proof simplification in Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.ExampleSatisfiesConditionsAtFive, from phase3-core22-compile-r02-resume1023-cont009, adapted to the published Core 37 target. Original proof by Levent Alpöge. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Added the native proof edit in Formalism.SharpRestriction.GlobalSchurBounds.QuadraticLogDerivCongr and remeasured the full import closure. Added the native proof edit in Formalism.SizeWindowBrackets.ChainSlopeWindows.JointDModelAppliesUnitLattice and remeasured the full import closure. Added the native proof edit in Formalism.QuotientMetricDivisors.HermitianTwistDivisors.SecondComplementParameterBounds and remeasured the full import closure. Added the native proof edit in Formalism.SharpRestriction.AdmissibleParameterJoins.SumLogPrimeFactorsLe and remeasured the full import closure. Added the native proof edit in Formalism.SizeWindowBrackets.ChainSlopeWindows.SubThreeMulLogTwoLe and remeasured the full import closure."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T19:19:06.028864+00:00",
+    "completed_utc": "2026-11-23T19:26:08.370530+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
