@@ -1,18 +1,22 @@
 {
   "core": 33,
-  "candidate": "core33-fastslice313c3fde98",
+  "candidate": "core33-fastslice18ef9d1842",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 42,
-  "local_normalized_tokens": 74366,
+  "local_normalized_tokens": 69093,
   "published_baseline_tokens": 826075,
-  "proof_tree_sha256": "8c621d24bac5627db3c1e196dd7d4ea42cad37e9a3919fb22a4916a372e25804",
+  "proof_tree_sha256": "3beb31d5bb95d27abe623baee40a99124873b23917af85b11d6bcbfa679598b8",
   "modified_files": {
     "Formalism/GL3MeanSquares/HookFormulaTorsion/GlobalBoundRefinements.lean": {
       "before": "137f8b07f001e72474cb52e915ed97517dd841fdd569ce481b08c1b403c8936b",
       "after": "0df9beb44e47463a317aa40b29f74811fca10dbdca5371baee951867a04b440c"
+    },
+    "Formalism/GL3MeanSquares/HookFormulaTorsion/SumWeightsOverPrimeLeHalfDegree.lean": {
+      "before": "55c4f4a188c2e169ce968c7413c23788ddb23f032ad7cd2219af437e5ba27b19",
+      "after": "98feab0c132cad902297f9a31c0e24b359b7e5862083e0f96e1bd227c04558b2"
     },
     "Formalism/GL3MeanSquares/InvNormSqConjRatioPowIdentities.lean": {
       "before": "ab9958a551be152a3ef280a517878579b1aa4d34339671583911220e8394579a",
@@ -21,6 +25,34 @@
     "Formalism/HermitianLattices/FinalNeighbourConstruct.lean": {
       "before": "8501c5e7087472a18ffc75b982eeaefe587d0be9e577e530d6c7b3ea34b2714a",
       "after": "ac2e45037bfb873244e93fd0eecfd42d38b86403adfea99d660c2b1f2ab0b996"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/ClassSetAssembly.lean": {
+      "before": "963087a292366936a0a11866a127c19e6a5a1f21a16b4a73d97cf6a0ae590519",
+      "after": "6e039de2f5bdb143a1e78efd0f36ceaae57f46b93a7dd7bf7e6c5b0f63f6fef8"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/GenusBasic.lean": {
+      "before": "aacb65dff1755b27a7d437bc765f42b57f09ac1f9f458f55aa517efdc601d227",
+      "after": "70df46875f118f243b12b2d86bd6383255609879e24a7b464a2c71e1b2fb6c53"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/IsomAct.lean": {
+      "before": "87c8687f9ef7561f10da61c66f64e11d38b2321d4e906c11871125743e159c2b",
+      "after": "73c80dca72f32d44cfdf8dbd574283beaa313accb300d16df55802359cf5c851"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/LocBasic.lean": {
+      "before": "9e8f4a2384f6297a12f5b4ac7d485f8ce9612971cda0c5c839e02c08de496c48",
+      "after": "dcbe2d29b2847ab5c9782aae052bba7080209acd29047e5ff5056e65fbed4a73"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/MassTelescope.lean": {
+      "before": "0d140105f16745397fca1cdbe617be668b1092404260ef9a10a39347facc9b51",
+      "after": "bbb22f1d89b41d4eddcbeb0b4f442707ec639f390cdf9784c1f9fe0d51075542"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/TraceReal.lean": {
+      "before": "320305398ce381b1162afa96f2527e2efb91da404051ddf1a8baf38f7477f19a",
+      "after": "172d779172aebfbd9c6c11306ca60a68657d1ca269a8ff2682d9b36adc127d96"
+    },
+    "Formalism/LogVandermondeBounds/LogVandermondeProofs/PrimePowerSubgroupTrivial.lean": {
+      "before": "e0e1a29f5e7fefc1162ee83cbbae383ce3d996586b4f14c544785c0990f3d788",
+      "after": "6e4bc9592dda64c137b87d0c4dc25075a933bc1538262ad5f97f1ccfd5ab16b2"
     },
     "Formalism/SharpRestriction/GlobalSchurBounds/ThickPlacesCorollaryOfAnyTranslate.lean": {
       "before": "e53a3678fb09fff3429bae30bfa65ac93b2c5ca36a1100bf8f0f1f8cc52e00fd",
@@ -38,12 +70,12 @@
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo donor identified suffix deletion. The supervisor restored the three recipient theorems then traced their transitive local kernel proof terms, retained the exact original Lean declaration source ranges, and narrowed imports to modules defining the surviving external constants. The recipient source and compiled wrapper were verified separately. The supervisor substituted the direct host embedding composed with its Galois equivalence in finrank_host, removed an unused cardinality fact, and imported the theorem’s defining HostFacts module. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle."
+    "new_contribution": "Fortytwo donor identified suffix deletion. The supervisor restored the three recipient theorems then traced their transitive local kernel proof terms, retained the exact original Lean declaration source ranges, and narrowed imports to modules defining the surviving external constants. The recipient source and compiled wrapper were verified separately. The supervisor substituted the direct host embedding composed with its Galois equivalence in finrank_host, removed an unused cardinality fact, and imported the theorem’s defining HostFacts module. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T19:40:21.602022+00:00",
+    "completed_utc": "2026-11-23T20:36:16.817165+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
