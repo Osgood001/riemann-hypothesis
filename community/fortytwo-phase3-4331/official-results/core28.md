@@ -1,6 +1,6 @@
 # Core 28 · Fundamental-domain point bound
 
-Playground confirmed **58.049504** for submission **#102547** at 22:24 UTC on 2026-11-23. At that check it ranked first, 0.123969 points ahead of #102537. [Official submission](https://play.bohrium.com/submission/102547) · [Core 28 leaderboard](https://play.bohrium.com/api/challenges/lean-4-verification-rh-fast-sub-pillar-28-fundamen-7b3737ce/attempts?sort=score&limit=20&page=1)
+Playground confirmed **58.126391** for submission **#102563** at 23:10 UTC on 2026-11-23. At that check it ranked first, 0.076887 points ahead of #102547. [Official submission](https://play.bohrium.com/submission/102563) · [Core 28 leaderboard](https://play.bohrium.com/api/challenges/lean-4-verification-rh-fast-sub-pillar-28-fundamen-7b3737ce/attempts?sort=score&limit=20&page=1)
 
 Each submission preserves Levent Alpöge’s statement that the Fundamental-domain point bound have finite length. Each revision links to the source that received its score. The token counts come from the pinned verification environment.
 
@@ -11,6 +11,7 @@ Each submission preserves Levent Alpöge’s statement that the Fundamental-doma
 | [#102529](https://play.bohrium.com/submission/102529) | 57.703401 | First | 397,815 | 173 | [`aac6e7ae2ee3`](https://github.com/vlarin/riemann-hypothesis/tree/aac6e7ae2ee3160b984992c5b52634b81f5a2b74/community/fortytwo-phase3-4331/core28) |
 | [#102537](https://play.bohrium.com/submission/102537) | 57.925535 | First | 386,544 | 173 | [`0fca09d75ba5`](https://github.com/vlarin/riemann-hypothesis/tree/0fca09d75ba5ce47118dfdccdb3d4052b53dd7c8/community/fortytwo-phase3-4331/core28) |
 | [#102547](https://play.bohrium.com/submission/102547) | 58.049504 | First | 380,343 | 170 | [`e010d2b2088d`](https://github.com/vlarin/riemann-hypothesis/tree/e010d2b2088d46f39f996a6fc0d178644eac2559/community/fortytwo-phase3-4331/core28) |
+| [#102563](https://play.bohrium.com/submission/102563) | 58.126391 | First | 376,529 | 170 | [`7c45d522c5dc`](https://github.com/vlarin/riemann-hypothesis/tree/7c45d522c5dce2aa274fcc6db0df3374277d3ba2/community/fortytwo-phase3-4331/core28) |
 
 ## Changes in the scored proofs
 
@@ -25,3 +26,5 @@ Levent Alpöge authored the Fourier sign, contour-independence and coefficient-b
 - **#102537** Codex retained the torus projection and lift, the normalized bounds and positivity lemmas for sections, and the majorant transfer along the real flow. It removed later results unused by the target, saving a further 11,271 tokens. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/0fca09d75ba5ce47118dfdccdb3d4052b53dd7c8/community/fortytwo-phase3-4331/core28/changes.patch)
 
 - **#102547** Codex removed unused imports for trace-form independence and weighted telescoping sums. The proof retained Alpöge’s transfer, nonnegativity and zero lemmas for the Fourier majorant. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/e010d2b2088d46f39f996a6fc0d178644eac2559/community/fortytwo-phase3-4331/core28/changes.patch)
+
+- **#102563** Codex restricted the conjugation and isotropic-flow modules to the proofs used for integral conjugation, the rank-one flow action, column transport and linearity. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/7c45d522c5dce2aa274fcc6db0df3374277d3ba2/community/fortytwo-phase3-4331/core28/changes.patch)
