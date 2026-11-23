@@ -1,14 +1,14 @@
 {
   "core": 24,
-  "candidate": "core24-mergeda613895794",
+  "candidate": "core24-fourier8d4114c54d",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 12996,
-  "local_normalized_tokens": 26697100,
+  "submitted_files": 12931,
+  "local_normalized_tokens": 26514268,
   "published_baseline_tokens": 30828159,
-  "proof_tree_sha256": "d1a0daa6ebd6c7ed556aba09769ce7eeb1f0ce15288a36f406ae10703604c70a",
+  "proof_tree_sha256": "3a03b9adcefd1850b26413a17a8be6eb4c43262d84bd2182f2cb7cc254fd73f7",
   "modified_files": {
     "Development/AbelianVarietyTheory/Definitions/Divisors/NormNegCmConstantEqAtAllEmbeddings.lean": {
       "before": "d07c8d791d45bd5f9a8b4e9fd99192dd1a0b8fc61c0471e06c98fc5f96da98c1",
@@ -21,6 +21,10 @@
     "Development/WeilBound/CoreStatements/TemperedRepresentationTheory/ArakelovCycleHeights/CycleHeightFormulas/TopSelfTower.lean": {
       "before": "86455794c33aaf612eea23b4b98f8d7950e3a07fb1252e8109adf2c1be3c7ebd",
       "after": "4e9c145b0603e39e4102c0daa66f4b8255667bcbee5e84b5ce2a416593f652cc"
+    },
+    "Formalism/SharpRestriction/Divisibility/LiftErrorLocal.lean": {
+      "before": "9320a897d2b8b4f093fc695f193102deffe8a7014275a7af1ce692e96dba8dc8",
+      "after": "a963081c29620632210d019b63bd269edd972634529bc5c42a2b9e652828ce6a"
     },
     "GroundTheory/HeightsAndTheta/Heights/HilbertSamuel/AssemblyBase.lean": {
       "before": "97995622b7e52f0b9f091eb6db6aa468833c6dcb2e2fd69c26f7e33980de4681",
@@ -41,17 +45,45 @@
     "GroundTheory/HeightsAndTheta/Heights/LocalFiniteness/NumbersDVRC3ResidualContractionComponent.lean": {
       "before": "d7b99d2aed4aee3b46f86be3a469c91a5d1b50bce6f1da479bbc2168b1a71588",
       "after": "8d1832b9f57deac774e2fa4fdb1d838b622c97e0f028a7b9cd6b0ddb38440a9e"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
+      "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
+      "after": "eb36319eb4b1ea4b6f1080df1fdb8ccc880f064053b20c1a44baed1044e69952"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ModerateCoefficientPositivityHolds.lean": {
+      "before": "49693fe6c44679e7c9453811d43617c7b80bf0c11d83b9d0383f8f081d951d1e",
+      "after": "20a5c313e44c162039f1958fee785a88e76ab7646051519f30c2f7cd679536fb"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "The Fortytwo DeepSeek runs supply the inherited recipient proof. Codex identified the shared cover dependency, wrote this additional source reduction, and checked the modified source and retained callers in the recipient environment. Original formalization by Levent Alpöge. Fortytwo checkpoints combined on the exact reachable source: GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.HilbertSamuelGrowthOffHypersurfacePolynomial (phase3-core24-compile-r03-resume1023-cont012), GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase (phase3-core24-compile-r03-resume1023-cont005), GroundTheory.HeightsAndTheta.Heights.Intersections.Assembly (phase3-core24-compile-r03-resume1023-cont002). Full independent replay is required for the combined source."
+    "new_contribution": "The Fortytwo DeepSeek runs supply the inherited recipient proof. Codex identified the shared cover dependency, wrote this additional source reduction, and checked the modified source and retained callers in the recipient environment. Original formalization by Levent Alpöge. Fortytwo checkpoints combined on the exact reachable source: GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.HilbertSamuelGrowthOffHypersurfacePolynomial (phase3-core24-compile-r03-resume1023-cont012), GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase (phase3-core24-compile-r03-resume1023-cont005), GroundTheory.HeightsAndTheta.Heights.Intersections.Assembly (phase3-core24-compile-r03-resume1023-cont002). Full independent replay is required for the combined source. Starting with core24-mergeda613895794, the supervisor incorporated the archived source for ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains independently verified in core28-fastlata012cf49ed. Independent target replay is required for this combination. Starting with core24-autoee4dd8b6b1, the supervisor incorporated the archived source for Formalism.SharpRestriction.Divisibility.LiftErrorLocal independently verified in core40-fast427710ac73. Independent target replay is required for this combination. Codex restored the exact Core 28 Fourier consumer from campaign submission #102518, applying Levent Alpöge’s four_sign to his four_indep and four_bound lemmas with their two precise imports. The recipient retains the genuine Fortytwo FractionalSliceDomains source byte for byte, all existing Core 24 native checkpoints, and the original Core 24 public target. All three direct recipients of the changed lemma were rebuilt locally before the independent full Comparator.",
+    "shared_module_attribution": {
+      "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains": {
+        "donor": "core28-fastlata012cf49ed",
+        "sha256": "eb36319eb4b1ea4b6f1080df1fdb8ccc880f064053b20c1a44baed1044e69952",
+        "new_contribution": "Levent Alpöge authored the Fourier contour-independence and coefficient bounds and the original RH proof. Fortytwo Engine: Deepseek Flash V4.1 1017 removed unrelated imports in FractionalSliceDomains; its native source is retained byte for byte. Codex restored the two exact Fourier support modules at their consumer and directly applied Alpöge’s bound and contour-independence lemmas there. Codex restricted LatAll to its single needed export Closed.approx and its two original dependencies. Its proof term is preserved from Alpöge’s source."
+      },
+      "Formalism.SharpRestriction.Divisibility.LiftErrorLocal": {
+        "donor": "core40-fast427710ac73",
+        "sha256": "a963081c29620632210d019b63bd269edd972634529bc5c42a2b9e652828ce6a",
+        "new_contribution": "Fortytwo native Lean proof simplification in Formalism.SharpRestriction.Divisibility.LiftErrorLocal, from phase3-core22-compile-r02-resume1023-cont002, adapted to the published Core 40 target. Original proof by Levent Alpöge."
+      },
+      "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivityHolds": {
+        "donor": "core28-fastlata012cf49ed",
+        "official_submission": 102518,
+        "sha256": "20a5c313e44c162039f1958fee785a88e76ab7646051519f30c2f7cd679536fb",
+        "source_author": "Levent Alpöge",
+        "adaptation": "Codex composed the original two Fourier lemmas directly and restored their defining imports.",
+        "retained_native_module": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains"
+      }
+    }
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T18:45:36.985958+00:00",
+    "completed_utc": "2026-11-23T22:56:22.238029+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
