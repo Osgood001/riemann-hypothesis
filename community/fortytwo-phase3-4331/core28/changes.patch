@@ -302,10 +302,18 @@
  
  def tube (f : ℕ) (Ω : Set (Fin f → ℝ)) : Set (Fin f → ℂ) :=
    {s | (fun k => (s k).im) ∈ Ω}
-@@ -257,36 +44,6 @@
-     ∀ x : Fin f → ℝ, HasSum (fun ν : Fin f → ℤ => fourCoeff h 0 ν *
-       Complex.exp (2 * Real.pi * Complex.I * ∑ k, (ν k : ℂ) * (x k : ℂ))) (h (fun k => (x k : ℂ)))
+@@ -249,43 +36,6 @@
+       ‖h (fun k => (x k : ℂ) + ((b0 + t • κ) k : ℂ) * Complex.I)‖ ≤ C * (1 + t) ^ E) →
+     ∀ ν : Fin f → ℤ, fourCoeff h b0 ν ≠ 0 → 0 ≤ ∑ k, (ν k : ℝ) * κ k
  
+-def FOURSumStatement (f : ℕ) : Prop :=
+-  ∀ (Ω : Set (Fin f → ℝ)) (h : (Fin f → ℂ) → ℂ),
+-    IsOpen Ω → DifferentiableOn ℂ h (tube f Ω) →
+-    (∀ s ∈ tube f Ω, ∀ m : Fin f → ℤ, h (s + fun k => (m k : ℂ)) = h s) → (0 : Fin f → ℝ) ∈ Ω →
+-    Summable (fun ν : Fin f → ℤ => ‖fourCoeff h 0 ν‖) →
+-    ∀ x : Fin f → ℝ, HasSum (fun ν : Fin f → ℤ => fourCoeff h 0 ν *
+-      Complex.exp (2 * Real.pi * Complex.I * ∑ k, (ν k : ℂ) * (x k : ℂ))) (h (fun k => (x k : ℂ)))
+-
 -def UNITrStatement : Prop :=
 -  ∀ (E : Type) [Field E] [NumberField E] (r : ℕ) (γ : Matrix (Fin r) (Fin r) E) (g : ℤ),
 -    3 * (r : ℤ) < g →
@@ -335,10 +343,9 @@
 -    (∀ ρ ∈ R, φ * ρ = ρ * φ) →
 -    (∀ x : Fin N → ℝ, qf G (φ.map (Int.cast : ℤ → ℝ) *ᵥ x) ≤ c ^ 2 * qf G x) →
 -    φ = 0
--
+ 
  end
  
- end ReciprocityTheory.L2DbarEstimates.Y
 --- a/ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourBasic.lean
 +++ b/ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourBasic.lean
 @@ -2,7 +2,7 @@
@@ -352,7 +359,20 @@
  noncomputable section
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BoundedSectionAlgebra.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BoundedSectionAlgebra.lean
-@@ -34,307 +34,6 @@
+@@ -14,12 +14,7 @@
+ lemma pnorm_eq (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
+     X.pnorm la P x = ‖P x‖ * X.nfac la x := rfl
+ 
+-lemma nfac_nonneg (la : Wt X.Ψ r) (x : Frame X.Ψ r) : 0 ≤ X.nfac la x :=
+-  Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _
+ 
+-lemma pnorm_nonneg (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) : 0 ≤ X.pnorm la P x := by
+-  rw [pnorm_eq]
+-  exact mul_nonneg (norm_nonneg _) (nfac_nonneg X la x)
+ 
+ lemma dmin_ne {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 1)) : dmin X.Gm x τ i ≠ 0 := by
+   intro h
+@@ -34,307 +29,6 @@
  lemma nfac_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r) : 0 < X.nfac la x :=
    Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (ratio_pos X hx τ i) _
  
@@ -802,7 +822,64 @@
  end ReciprocityTheory.ChartRestriction.G.FD
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/SquareIntegrability/ContinuousRl.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/SquareIntegrability/ContinuousRl.lean
-@@ -100,237 +100,4 @@
+@@ -16,9 +16,7 @@
+ local instance : IsProbabilityMeasure (volume : Measure UnitAddCircle) :=
+   inferInstanceAs (IsProbabilityMeasure AddCircle.haarAddCircle)
+ 
+-def rl (t : Fin k → ℝ) : Fin k → ℂ := fun i => (t i : ℂ)
+ 
+-def iz (n : Fin k → ℤ) : Fin k → ℂ := fun i => (n i : ℂ)
+ 
+ def ubox (k : ℕ) : Set (Fin k → ℝ) :=
+   {x | ∀ i, x i ∈ Ioc ((0 : Fin k → ℝ) i) ((0 : Fin k → ℝ) i + 1)}
+@@ -28,8 +26,6 @@
+ theorem tproj_oqm : IsOpenQuotientMap (tproj (k := k)) :=
+   IsOpenQuotientMap.piMap (fun _ => QuotientAddGroup.isOpenQuotientMap_mk)
+ 
+-theorem tproj_add (s t : Fin k → ℝ) : tproj (s + t) = tproj s + tproj t := by
+-  funext i; simp [tproj]
+ 
+ theorem tproj_eq {s t : Fin k → ℝ} (h : tproj s = tproj t) :
+     ∃ n : Fin k → ℤ, t = s + fun i => (n i : ℝ) := by
+@@ -60,37 +56,6 @@
+   have : D0 ∘ tproj = φ := funext hD
+   rw [this]; exact hφ
+ 
+-theorem box_shift (φ : (Fin k → ℝ) → ℂ) (hφ : Continuous φ)
+-    (hp : ∀ (n : Fin k → ℤ) t, φ (t + fun i => (n i : ℝ)) = φ t) (s : Fin k → ℝ) :
+-    ∫ x in ubox k, φ (x + s) = ∫ x in ubox k, φ x := by
+-  obtain ⟨D, hD⟩ := descend φ hφ hp
+-  let D' : C(UnitAddTorus (Fin k), ℂ) := ⟨fun θ => D (θ + tproj s), by fun_prop⟩
+-  have h1 : ∀ x, φ (x + s) = D' (tproj x) := fun x => by
+-    rw [← hD, tproj_add]; rfl
+-  have h2 : ∀ x, φ x = D (tproj x) := fun x => (hD x).symm
+-  have e0 := UnitAddTorus.integral_preimage (fun θ => D θ) 0
+-  have es := UnitAddTorus.integral_preimage (fun θ => D θ) s
+-  have m0 : MeasurableSet (ubox k) := by
+-    have := MeasurableSet.univ_pi (fun i : Fin k =>
+-      (measurableSet_Ioc : MeasurableSet (Ioc ((0 : Fin k → ℝ) i) ((0 : Fin k → ℝ) i + 1))))
+-    convert this using 1; ext x; simp [ubox]
+-  have ms : MeasurableSet {x : Fin k → ℝ | ∀ i, x i ∈ Ioc (s i) (s i + 1)} := by
+-    have := MeasurableSet.univ_pi (fun i : Fin k =>
+-      (measurableSet_Ioc : MeasurableSet (Ioc (s i) (s i + 1))))
+-    convert this using 1; ext x; simp
+-  have key : ∫ x in ubox k, φ (x + s) = ∫ x in {x : Fin k → ℝ | ∀ i, x i ∈ Ioc (s i) (s i + 1)}, φ x := by
+-    rw [← integral_indicator m0, ← integral_indicator ms,
+-      ← integral_add_right_eq_self (μ := volume)
+-        (indicator {x : Fin k → ℝ | ∀ i, x i ∈ Ioc (s i) (s i + 1)} φ) s]
+-    congr 1; funext x
+-    simp only [indicator, ubox, Pi.zero_apply, zero_add, mem_Ioc]
+-    congr 1
+-    apply propext
+-    refine forall_congr' fun i => ?_
+-    constructor <;> intro h <;> simp only [Pi.add_apply] at h ⊢ <;> constructor <;> linarith [h.1, h.2]
+-  rw [key]
+-  simp_rw [h2]
+-  exact es.symm.trans e0
+ 
+ theorem mF_tproj (m : Fin k → ℤ) (x : Fin k → ℝ) :
+     UnitAddTorus.mFourier m (tproj x) = cexp (2 * Real.pi * I * ∑ l, (m l : ℂ) * (x l : ℂ)) := by
+@@ -100,237 +65,4 @@
    refine Finset.sum_congr rfl fun i _ => ?_
    simp; ring
  
@@ -1049,9 +1126,37 @@
  
  namespace ReciprocityTheory.ChartRestriction.G.FD.FlowMeanContinuity
  
+@@ -54,27 +54,6 @@
+   apply DifferentiableAt.const_mul
+   exact (differentiable_apply τ) s
+ 
+-lemma fjI_continuous (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r → E}
+-    (hξ : herm X.Gm ξ ξ = 0) (ν : X.Ψ → ℝ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
+-    Continuous (fjI X ξ ν P x) := by
+-  have hflow0 : X.flow ξ (fun _ => (0 : ℂ)) x = x := by
+-    funext τ
+-    change X.flowMat ξ τ 0 * mat x τ = x τ
+-    rw [flowMat_eq]
+-    simp only [mul_zero, neg_zero, zero_smul, add_zero, one_mul]
+-    rfl
+-  have hmaps : ∀ s : X.Ψ → ℝ, X.flow ξ (fun τ => (s τ : ℂ)) x ∈ X.dom := by
+-    intro s
+-    have h0 := (flow_mem_dom_iff (X := X) hξ x hx (fun _ => (0 : ℂ))).mp (by rw [hflow0]; exact hx)
+-    rw [flow_mem_dom_iff (X := X) hξ x hx]
+-    simpa using h0
+-  have hc1 : Continuous (fun s : X.Ψ → ℝ => X.flow ξ (fun τ => (s τ : ℂ)) x) :=
+-    (flow_differentiable X ξ x).continuous.comp
+-      (continuous_pi fun τ => Complex.continuous_ofReal.comp (continuous_apply τ))
+-  have hc2 : Continuous (fun s : X.Ψ → ℝ => P (X.flow ξ (fun τ => (s τ : ℂ)) x)) :=
+-    hP.1.continuousOn.comp_continuous hc1 hmaps
+-  unfold fjI
+-  exact hc2.mul (by fun_prop)
+ 
+ lemma fjI_periodic (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r → E} (hξΛ : ξ ∈ X.Λ)
+     (hξ : herm X.Gm ξ ξ = 0) (ν : X.Ψ → ℝ)
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthogonalComplementLines.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthogonalComplementLines.lean
-@@ -1,10 +1,9 @@
+@@ -1,34 +1,23 @@
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnitaryComplementMoveOfIsotropic
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermitianTraceFormVanishing
 -import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TraceFormIndependence
@@ -1063,6 +1168,30 @@
  open scoped ComplexConjugate
  
  variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
+ 
+-private lemma hermC_add_left_of_ringHom (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u u' v : Fin r → ℂ) :
+-    hermC τ G (u + u') v = hermC τ G u v + hermC τ G u' v := by
+-  simp only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]
+ 
+ private lemma hermC_sub_left_of_ringHom (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u u' v : Fin r → ℂ) :
+     hermC τ G (u - u') v = hermC τ G u v - hermC τ G u' v := by
+   simp only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
+ 
+-lemma ppos_add (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
+-    X.ppos x τ (u + v) = X.ppos x τ u + X.ppos x τ v := by
+-  simp only [Data.ppos, hermC_add_left_of_ringHom, add_mul, Finset.sum_add_distrib, add_smul]
+ 
+ lemma ppos_sub (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
+     X.ppos x τ (u - v) = X.ppos x τ u - X.ppos x τ v := by
+   simp only [Data.ppos, hermC_sub_left_of_ringHom, sub_mul, Finset.sum_sub_distrib, sub_smul]
+ 
+-lemma emb_smul (τ : E →+* ℂ) (a : E) (v : Fin r → E) :
+-    Data.emb τ (a • v) = τ a • Data.emb τ v := by
+-  funext a
+-  simp only [Data.emb, Pi.smul_apply, smul_eq_mul, map_mul]
+ 
+ variable {X : Data E r}
+ 
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/M3bNormHolds.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/M3bNormHolds.lean
 @@ -1,11 +1,10 @@
@@ -1474,3 +1603,1005 @@
 -  ⟨inhab⟩
 -
  end ReciprocityTheory.ChartRestriction.G.FD
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/EmbeddingHermitianPairs.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/EmbeddingHermitianPairs.lean
+@@ -13,29 +13,10 @@
+ 
+ variable (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
+ 
+-lemma hermC_add_left (u u' v : Fin r → ℂ) : hermC τ G (u + u') v = hermC τ G u v + hermC τ G u' v := by
+-  simp only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]
+ 
+-lemma hermC_add_right (u v v' : Fin r → ℂ) : hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
+-  simp only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
+ 
+-lemma hermC_smul_left (a : ℂ) (u v : Fin r → ℂ) : hermC τ G (a • u) v = a * hermC τ G u v := by
+-  simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
+ 
+-lemma hermC_smul_right (a : ℂ) (u v : Fin r → ℂ) : hermC τ G u (a • v) = conj a * hermC τ G u v := by
+-  simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
+ 
+-lemma hermC_conj (hG : ∀ a b, cc (G a b) = G b a) (u v : Fin r → ℂ) :
+-    conj (hermC τ G u v) = hermC τ G v u := by
+-  simp only [hermC, map_sum, map_mul, Complex.conj_conj]
+-  rw [Finset.sum_comm]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  rw [← emb_cc' τ (G b a), hG]
+-  ring
+ 
+ lemma hermC_emb (x y : Fin r → E) :
+     hermC τ G (fun a => τ (x a)) (fun a => τ (y a)) = τ (herm G x y) := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMatMulVec.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMatMulVec.lean
+@@ -71,8 +71,6 @@
+   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => ?_
+   ring
+ 
+-lemma mat_flow (ξ : Fin r → E) (s : X.Ψ → ℂ) (x : Frame X.Ψ r) (τ : X.Ψ) :
+-    mat (X.flow ξ s x) τ = X.flowMat ξ τ (s τ) * mat x τ := rfl
+ 
+ lemma ppos_eq_of (x : Frame X.Ψ r) (τ : X.Ψ) (hA : (X.gramPos x τ).det ≠ 0) (u : Fin r → ℂ)
+     (β : Fin X.p0 → ℂ)
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientLattice.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientLattice.lean
+@@ -26,29 +26,6 @@
+   simp only [Finset.sum_apply, Fin.sum_univ_two]
+   fin_cases i <;> fin_cases k <;> simp [position_apply]
+ 
+-lemma norm_th_lt {y : ι → Fin 2 → Fin 2 → ℝ} (hy : ‖y‖ < 1) (τ : ι) (i k : Fin 2) :
+-    ‖th y τ i k‖ < 2 := by
+-  have h1 : ∀ a b : Fin 2, |y τ a b| < 1 := fun a b => by
+-    have h := (norm_le_pi_norm (y τ a) b).trans ((norm_le_pi_norm (y τ) a).trans (norm_le_pi_norm y τ))
+-    rw [Real.norm_eq_abs] at h
+-    linarith
+-  have hadd : ∀ a b : ℝ, |a| < 1 → |b| < 1 → ‖(a : ℂ) + I * b‖ < 2 := fun a b ha hb => by
+-    have e1 : ‖(a : ℂ)‖ = |a| := by simp
+-    have e2 : ‖I * (b : ℂ)‖ = |b| := by simp
+-    have := norm_add_le (a : ℂ) (I * b)
+-    linarith
+-  have hsub : ∀ a b : ℝ, |a| < 1 → |b| < 1 → ‖(a : ℂ) - I * b‖ < 2 := fun a b ha hb => by
+-    have e1 : ‖(a : ℂ)‖ = |a| := by simp
+-    have e2 : ‖I * (b : ℂ)‖ = |b| := by simp
+-    have := norm_sub_le (a : ℂ) (I * b)
+-    linarith
+-  simp only [th]
+-  split_ifs
+-  · have e1 : ‖(y τ i k : ℂ)‖ = |y τ i k| := by simp
+-    have := h1 i k
+-    linarith
+-  · exact hadd _ _ (h1 i k) (h1 k i)
+-  · exact hsub _ _ (h1 k i) (h1 i k)
+ 
+ end Slot
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientMatrices.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientMatrices.lean
+@@ -55,13 +55,6 @@
+   funext τ i k
+   simp [th]
+ 
+-def hermSub : Submodule ℝ (ι → Fin 2 → Fin 2 → ℂ) where
+-  carrier := {b | IsHermFam b}
+-  add_mem' {a b} ha hb τ i k := by
+-    simp only [Pi.add_apply, map_add]; rw [ha τ i k, hb τ i k]
+-  zero_mem' τ i k := by simp
+-  smul_mem' s b hb τ i k := by
+-    simp only [Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal]; rw [hb τ i k]
+ 
+ lemma conj_herm {χ : ι → Fin 2 → Fin 2 → ℂ} (h : IsHermFam χ) :
+     IsHermFam (fun τ i k => conj (χ τ i k)) := by
+@@ -228,14 +221,6 @@
+   rw [zmat_zero, one_mul]
+   rfl
+ 
+-lemma gram_unitary {n : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hn : X.IsUnitaryC n) (τ : X.Ψ)
+-    (A : Matrix (Fin r) (Fin r) ℂ) : gram τ.1 X.Gm (n τ * A) = gram τ.1 X.Gm A := by
+-  have hcol : ∀ a, col (n τ * A) a = (n τ).mulVec (col A a) := by
+-    intro a
+-    funext k
+-    simp [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]
+-  ext a c'
+-  simp only [gram, Matrix.of_apply, hcol, hn τ]
+ 
+ def fac (la : Wt X.Ψ r) (x : Frame X.Ψ r) : ℝ :=
+   ∏ τ, ∏ i : Fin r, ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2)
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientSupportHolds.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientSupportHolds.lean
+@@ -10,9 +10,6 @@
+ 
+ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
+ 
+-theorem norm_cexp_neg_four_pi_I_real (a : ℝ) : ‖cexp (-(4 * Real.pi * I) * (a : ℂ))‖ = 1 := by
+-  rw [Complex.norm_exp]
+-  simp
+ 
+ theorem isHermFam_real_linear_comb {r : ℕ} (X : Data E r) (g N : ℕ) (ω : Fin N → X.Ψ → Fin 2 → Fin 2 → ℂ)
+     (hω : ∀ j, ω j ∈ X.LZ g) (t : Fin N → ℝ) : IsHermFam (∑ j, (t j : ℂ) • ω j) := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/BotMulVecExt.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/BotMulVecExt.lean
+@@ -192,10 +192,6 @@
+     show (i : ℕ) = X.p0 + ((i : ℕ) - X.p0)
+     omega
+ 
+-lemma col_mul (P Q : Matrix (Fin r) (Fin r) ℂ) (j : Fin r) : col (P * Q) j = P *ᵥ col Q j := by
+-  first
+-    | rfl
+-    | (funext k; simp [col, Matrix.mul_apply, Matrix.mulVec, dotProduct])
+ 
+ lemma span_cols_eq {p : ℕ} (u w : Fin p → Fin r → ℂ) (A : Matrix (Fin p) (Fin p) ℂ)
+     (hA : IsUnit A.det) (h : ∀ a, u a = ∑ b, A b a • w b) :
+@@ -312,17 +308,7 @@
+ 
+ private lemma nsq_mulVec_le_sum_norm_sq_mul_nsq {m n : ℕ} (W : Matrix (Fin m) (Fin n) ℂ) (v : Fin n → ℂ) :
+     nsq (W *ᵥ v) ≤ (∑ i, ∑ j, ‖W i j‖ ^ 2) * nsq v := by
+-  unfold nsq
+-  rw [Finset.sum_mul]
+-  apply Finset.sum_le_sum
+-  intro i _
+-  have h1 : ‖(W *ᵥ v) i‖ ≤ ∑ j, ‖W i j‖ * ‖v j‖ := by
+-    calc ‖(W *ᵥ v) i‖ = ‖∑ j, W i j * v j‖ := rfl
+-      _ ≤ ∑ j, ‖W i j * v j‖ := norm_sum_le _ _
+-      _ = ∑ j, ‖W i j‖ * ‖v j‖ := Finset.sum_congr rfl fun j _ => norm_mul _ _
+-  have h2 := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => ‖W i j‖) (fun j => ‖v j‖)
+-  calc ‖(W *ᵥ v) i‖ ^ 2 ≤ (∑ j, ‖W i j‖ * ‖v j‖) ^ 2 := by gcongr
+-    _ ≤ _ := h2
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.OrthonormalChartBounds.nsq_mulVec_le <;> assumption
+ 
+ private lemma en_mulVec_le_opN_mul_en {m n : ℕ} (W : Matrix (Fin m) (Fin n) ℂ) (v : Fin n → ℂ) :
+     en (W *ᵥ v) ≤ Data.opN W * en v := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/HermLinApply.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/HermLinApply.lean
+@@ -49,12 +49,6 @@
+   rw [e, Complex.re_ofReal_mul]
+   ring
+ 
+-lemma herm_smul_right {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) (c : E) :
+-    herm G x (c • y) = cc c * herm G x y := by
+-  unfold herm cc
+-  simp only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
+ 
+ lemma O_smul {r : ℕ} (β : 𝓞 E) (v : Fin r → E) : β • v = (β : E) • v := rfl
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/KatoNormRelationTamePrime.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/KatoNormRelationTamePrime.lean
+@@ -19,9 +19,6 @@
+   intro r X x x' hx hx' h
+   exact (((orthonormalFlagTranslate_holds (E := E)) r X).2.2 x hx x' hx' h).2
+ 
+-theorem majorant_chart_of_normControl (h : OrthonormalChartNormControl (E := E)) : SMajXZ E := by
+-  intro r X x hx ho ρ hρ hρ1 Z hZ τ v
+-  exact ((h r X x hx ho ρ hρ hρ1).1 Z hZ).2.2 τ v
+ 
+ theorem sCmp_of (hm : SMajXZ E) : SCmp E := by
+   intro r X x0 hx0 ho ρ' h1 h2 Z1 hZ1 z hz hsf τ v
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramDeterminantReal.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramDeterminantReal.lean
+@@ -118,9 +118,6 @@
+     hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
+   simp only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
+ 
+-theorem hC_sub_right (u v v' : Fin r → ℂ) :
+-    hermC τ G u (v - v') = hermC τ G u v - hermC τ G u v' := by
+-  simp only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
+ 
+ theorem hermC_smul_right (a : ℂ) (u v : Fin r → ℂ) :
+     hermC τ G u (a • v) = conj a * hermC τ G u v := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HCSumRight.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HCSumRight.lean
+@@ -13,23 +13,6 @@
+ 
+ variable {r : ℕ} (X : Data E r)
+ 
+-theorem sum_split' {M : Type*} [AddCommMonoid M] (f : Fin r → M) :
+-    ∑ j, f j = ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) +
+-      ∑ m : Fin (r - X.p0), f ⟨X.p0 + m, by have := m.isLt; have := X.p0_le; omega⟩ := by
+-  obtain ⟨g, hg⟩ : ∃ g : ℕ → M, ∀ j (h : j < r), g j = f ⟨j, h⟩ :=
+-    ⟨fun j => if h : j < r then f ⟨j, h⟩ else 0, fun j h => dif_pos h⟩
+-  have h1 : ∑ j, f j = ∑ j : Fin r, g j :=
+-    Finset.sum_congr rfl fun j _ => (hg j j.isLt).symm
+-  have h2 : ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) = ∑ a : Fin X.p0, g a :=
+-    Finset.sum_congr rfl fun a _ => (hg a (lt_of_lt_of_le a.isLt X.p0_le)).symm
+-  have h3 : ∑ m : Fin (r - X.p0), f ⟨X.p0 + m, by have := m.isLt; have := X.p0_le; omega⟩ =
+-      ∑ m : Fin (r - X.p0), g (X.p0 + m) :=
+-    Finset.sum_congr rfl fun m _ =>
+-      (hg (X.p0 + m) (by have := m.isLt; have := X.p0_le; omega)).symm
+-  rw [h1, h2, h3, Fin.sum_univ_eq_sum_range g r, Fin.sum_univ_eq_sum_range g X.p0,
+-    Fin.sum_univ_eq_sum_range (fun m => g (X.p0 + m)) (r - X.p0)]
+-  conv_lhs => rw [← Nat.add_sub_of_le X.p0_le]
+-  exact Finset.sum_range_add g X.p0 (r - X.p0)
+ 
+ theorem hC_sum_right' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Type*} (s : Finset ι)
+     (u : Fin r → ℂ) (f : ι → Fin r → ℂ) : hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) := by
+@@ -69,8 +52,7 @@
+ 
+ private theorem hermC_smul_right_eq_conj_mul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : ℂ)
+     (u v : Fin r → ℂ) : hermC τ G u (c • v) = conj c * hermC τ G u v := by
+-  simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
+-  exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.hC_smul_right <;> assumption
+ 
+ theorem comb_comb {x0 : Frame X.Ψ r} (ho : X.IsOrtho x0) (τ : X.Ψ) (c d : Fin r → ℂ) :
+     hermC τ.1 X.Gm (∑ a, c a • col (mat x0 τ) a) (∑ b, d b • col (mat x0 τ) b) =
+@@ -79,10 +61,7 @@
+   simp only [hermC_smul_right_eq_conj_mul, comb_col X ho τ c]
+   exact Finset.sum_congr rfl fun a _ => by ring
+ 
+-def extP (g : Fin X.p0 → ℂ) : Fin r → ℂ := fun a => if h : (a : ℕ) < X.p0 then g ⟨a, h⟩ else 0
+ 
+-def extN (g : Fin (r - X.p0) → ℂ) : Fin r → ℂ :=
+-  fun a => if h : X.p0 ≤ (a : ℕ) then g ⟨a - X.p0, by have := a.isLt; omega⟩ else 0
+ 
+ end
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermitianPairingAlgebra.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermitianPairingAlgebra.lean
+@@ -18,8 +18,6 @@
+ lemma cc_add (a b : E) : cc (a + b) = cc a + cc b := by
+   exact map_add (IsCMField.complexConj E) a b
+ 
+-lemma cc_zero : cc (0 : E) = 0 := by
+-  exact map_zero (IsCMField.complexConj E)
+ 
+ lemma cc_sum {ι : Type*} (s : Finset ι) (f : ι → E) : cc (∑ i ∈ s, f i) = ∑ i ∈ s, cc (f i) := by
+   exact map_sum (IsCMField.complexConj E) f s
+@@ -37,10 +35,6 @@
+     herm G (x - x') y = herm G x y - herm G x' y := by
+   simp only [herm, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
+ 
+-lemma herm_smul_right {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : Fin r → E) :
+-    herm G x (a • y) = cc a * herm G x y := by
+-  simp only [herm, Pi.smul_apply, smul_eq_mul, cc_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
+ 
+ lemma herm_symm {r : ℕ} {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, cc (G a b) = G b a)
+     (x y : Fin r → E) : cc (herm G x y) = herm G y x := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermitianTraceFormVanishing.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermitianTraceFormVanishing.lean
+@@ -96,25 +96,6 @@
+   have := eq_zero_of_herm G hG _ hall
+   exact sub_eq_zero.mp this
+ 
+-lemma eq_zero_of_trace (a : E) (h : ∀ β : 𝓞 E, Algebra.trace ℚ E (cc (β : E) * a) = 0) :
+-    a = 0 := by
+-  by_contra ha
+-  have halg : IsAlgebraic ℤ (cc a⁻¹) :=
+-    (IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic _)
+-  obtain ⟨y, hy, hint⟩ := halg.exists_integral_multiple
+-  let β : 𝓞 E := ⟨y • cc a⁻¹, hint⟩
+-  have hβ : (β : E) = y • cc a⁻¹ := rfl
+-  have h1 := h β
+-  have h2 : cc (y • cc a⁻¹) * a = algebraMap ℚ E (y : ℚ) := by
+-    rw [zsmul_eq_mul, cc_mul, cc_intCast, cc_cc, mul_assoc, inv_mul_cancel₀ ha, mul_one]
+-    simp
+-  rw [hβ, h2, Algebra.trace_algebraMap] at h1
+-  have hd : (Module.finrank ℚ E : ℚ) ≠ 0 := by
+-    exact_mod_cast (Module.finrank_pos (R := ℚ) (M := E)).ne'
+-  rw [nsmul_eq_mul] at h1
+-  rcases mul_eq_zero.mp h1 with h3 | h3
+-  · exact hd h3
+-  · exact hy (by exact_mod_cast h3)
+ 
+ theorem exists_smul_mem {R F X : Type*} [CommRing R] [IsDomain R] [Field F] [Algebra R F]
+     [IsFractionRing R F] [AddCommGroup X] [Module F X] [Module R X] [IsScalarTower R F X]
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicOutsideLine.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicOutsideLine.lean
+@@ -139,16 +139,6 @@
+       ((Real.sqrt (X.c τ * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)))⁻¹ : ℂ) •
+         X.ucomp z0 ξ (X.embV x) τ
+ 
+-def FlowIntoDomain : Prop :=
+-  ∀ (r : ℕ) (X : DataX E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (ξ : Fin r → E) (ν : X.Ψ → ℝ)
+-    (c1 w : ℝ) (z0 : Frame X.Ψ r) (x : Fin r → E) (a : X.Ψ → Fin 2 → ℂ),
+-    IsotropicFlowSetting X la P ξ ν c1 w z0 x a →
+-    (∀ z ∈ X.dom, X.SameFlag z0 z →
+-      X.flowV (X.uvec ![ξ, (X.NC : E) • x] a) (fun _ => -(I / 2)) z ∈ X.FramesOverBasis ξ) ∧
+-    ∀ χ : X.Ψ → Fin 2 → Fin 2 → ℂ,
+-      X.hatN la (X.fz ![ξ, (X.NC : E) • x] X.g χ (X.fj la ξ ν P)) z0 ≤
+-        2 ^ (w / 2) * Real.exp (-Real.pi * (2 * ∑ τ, (X.chiAt χ a τ).re)) *
+-          sSup {t | ∃ y ∈ X.FramesOverBasis ξ, t = X.hatN la (X.fj la ξ ν P) y}
+ 
+ def CoefficientIndexLowerBound : Prop :=
+   ∀ (r : ℕ) (X : DataX E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (ξ : Fin r → E) (ν : X.Ψ → ℝ)
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LminorSubmatrixCastSucc.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LminorSubmatrixCastSucc.lean
+@@ -255,10 +255,6 @@
+   show hermC τ.1 X.Gm ((2 : ℂ) • X.ppos x τ u - u) w = _
+   rw [hermC_sub_left, hermC_smul_left]
+ 
+-theorem mulVec_eq_sum_col (P : Matrix (Fin r) (Fin r) ℂ) (c : Fin r → ℂ) :
+-    P *ᵥ c = ∑ i, c i • col P i := by
+-  ext k
+-  simp [Matrix.mulVec, dotProduct, col, Finset.sum_apply, mul_comm]
+ 
+ private theorem hermC_sum_smul_col_negative_block {p0 : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
+     (P : Matrix (Fin r) (Fin r) ℂ)
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatMulVec.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatMulVec.lean
+@@ -50,9 +50,6 @@
+     simp [h, Matrix.map_apply, Data.Mmat, Data.zmat, Data.embH, Data.emb, map_add, map_mul, map_sum,
+       X.tau_kappa0 τ, cc, NumberField.IsCMField.complexEmbedding_complexConj] <;> ring
+ 
+-theorem embH_add (β β' : Matrix (Fin 2) (Fin 2) E) : X.embH (β + β') = X.embH β + X.embH β' := by
+-  funext τ i k
+-  simp [Data.embH]
+ 
+ theorem Mmat_zero (u : Fin 2 → Fin r → E) : X.Mmat u 0 = 1 := by
+   ext a j
+@@ -107,10 +104,6 @@
+   ⟨X.Mmat u β, X.Mmat u (-β), by rw [X.Mmat_mul u hu, add_neg_cancel, Mmat_zero],
+     by rw [X.Mmat_mul u hu, neg_add_cancel, Mmat_zero]⟩
+ 
+-theorem emb_mulVec (τ : E →+* ℂ) (M : Matrix (Fin r) (Fin r) E) (v : Fin r → E) :
+-    emb τ (M *ᵥ v) = (M.map τ) *ᵥ emb τ v := by
+-  funext a
+-  simp [Data.emb, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]
+ 
+ private lemma cc_herm_Gm_eq_herm_swap (x y : Fin r → E) : cc (herm X.Gm x y) = herm X.Gm y x := by
+   simp only [herm, cc, map_sum, map_mul, NumberField.IsCMField.complexConj_apply_apply]
+@@ -139,16 +132,7 @@
+ 
+ theorem Mmat_mulVec (u : Fin 2 → Fin r → E) (β : Matrix (Fin 2) (Fin 2) E) (v : Fin r → E) :
+     X.Mmat u β *ᵥ v = v + ∑ i, (X.κ0 * ∑ k, β i k * herm X.Gm v (u k)) • u i := by
+-  funext a
+-  simp only [Matrix.mulVec, dotProduct, Data.Mmat, Matrix.of_apply, add_mul, Finset.sum_add_distrib,
+-    ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte, Pi.add_apply,
+-    Finset.sum_apply, Pi.smul_apply, smul_eq_mul, herm, Finset.mul_sum, Finset.sum_mul]
+-  congr 1
+-  rw [Finset.sum_comm]
+-  refine Finset.sum_congr rfl fun i _ => ?_
+-  rw [Finset.sum_comm]
+-  refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_
+-  ring
++  apply Mmat_mulVec_eq_add_sum <;> assumption
+ 
+ end Data
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpBasisExistence.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpBasisExistence.lean
+@@ -31,10 +31,6 @@
+   | empty => simp [herm, cc]
+   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, herm_add_right', ih]
+ 
+-lemma herm_comb (G : Matrix (Fin r) (Fin r) E) {n : ℕ} (p q : Fin n → E) (f : Fin n → Fin r → E) :
+-    herm G (∑ i, p i • f i) (∑ j, q j • f j) = ∑ i, ∑ j, p i * herm G (f i) (f j) * cc (q j) := by
+-  simp_rw [herm_sum_left', HermitianPairingAlgebra.herm_smul_left, herm_sum_right', HermitianPairingAlgebra.herm_smul_right, Finset.mul_sum]
+-  exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
+ 
+ def hxi (G : Matrix (Fin r) (Fin r) E) (ξ : Fin r → E) : (Fin r → E) →ₗ[E] E where
+   toFun x := herm G x ξ
+@@ -156,8 +152,6 @@
+     rw [h]
+     exact X.L'.smul_mem a he
+ 
+-lemma mem_LBsub {n : ℕ} (β : Fin n → Fin r → E) (ξ : Fin r → E) (c : Fin n → E) :
+-    c ∈ LBsub X β ξ ↔ ∃ e : E, ∑ k, c k • β k + e • ξ ∈ X.L' := Iff.rfl
+ 
+ end
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpComponentCombination.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpComponentCombination.lean
+@@ -14,9 +14,6 @@
+ 
+ def eps' (p : ℕ) {n : ℕ} (k : Fin n) : ℂ := if (k : ℕ) < p then 1 else -1
+ 
+-lemma eps'_sq (p : ℕ) {n : ℕ} (k : Fin n) : eps' p k * eps' p k = 1 := by
+-  unfold eps'
+-  split_ifs <;> norm_num
+ 
+ section Coord
+ 
+@@ -44,17 +41,6 @@
+   simp only [hsmulR, hf, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+   ring
+ 
+-lemma coord_f {v : Fin r → ℂ} (hv : v ∈ Submodule.span ℂ (Set.range f)) :
+-    v = ∑ j, (eps' p j * hermC τ.1 X.Gm v (f j)) • f j := by
+-  obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).mp hv
+-  have key : ∀ j, hermC τ.1 X.Gm (∑ i, c i • f i) (f j) = c j * eps' p j := by
+-    intro j
+-    rw [hermC_sum_left]
+-    simp only [hermC_smul_left, hf, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+-  refine Finset.sum_congr rfl fun j _ => ?_
+-  rw [key]
+-  congr 1
+-  linear_combination (-(c j)) * eps'_sq p j
+ 
+ end Coord
+ 
+@@ -114,10 +100,6 @@
+ 
+ end Uc
+ 
+-lemma emb_sum {n : ℕ} (τ : E →+* ℂ) (c : Fin n → E) (β : Fin n → Fin r → E) :
+-    Data.emb τ (∑ k, c k • β k) = ∑ k, τ (c k) • Data.emb τ (β k) := by
+-  funext a
+-  simp [Data.emb, Finset.sum_apply, map_sum, smul_eq_mul]
+ 
+ end
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PositiveSpanMatrices.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PositiveSpanMatrices.lean
+@@ -11,8 +11,6 @@
+ 
+ def kap {n p : ℕ} (hp : p ≤ n) (a : Fin (n - p)) : Fin n := ⟨p + a, by have := a.isLt; omega⟩
+ 
+-def ext0 {M : Type*} [AddCommMonoid M] {n : ℕ} (F : Fin n → M) (i : ℕ) : M :=
+-  if h : i < n then F ⟨i, h⟩ else 0
+ 
+ lemma sum_split {M : Type*} [AddCommMonoid M] {n p : ℕ} (hp : p ≤ n) (F : Fin n → M) :
+     ∑ c : Fin n, F c = ∑ b : Fin p, F (Fin.castLE hp b) + ∑ a : Fin (n - p), F (kap hp a) := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealEmbeddingCharacters.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealEmbeddingCharacters.lean
+@@ -186,15 +186,6 @@
+ 
+ def resChar (τ : X.Ψ) : (fixF (E := E)) →* ℂ := (τ.1.comp (fixF (E := E)).subtype).toMonoidHom
+ 
+-lemma resChar_linInd :
+-    LinearIndependent ℂ (fun τ : X.Ψ => ((resChar X τ : (fixF (E := E)) →* ℂ) : (fixF (E := E)) → ℂ)) := by
+-  have hinj : Function.Injective (fun τ : X.Ψ => resChar X τ) := by
+-    intro τ τ' h
+-    apply restrict_inj X
+-    intro a ha
+-    have := DFunLike.congr_fun h ⟨a, ha⟩
+-    exact this
+-  exact (linearIndependent_monoidHom (fixF (E := E)) ℂ).comp _ hinj
+ 
+ open Classical in
+ lemma periods_span : Submodule.span ℝ (X.periods la : Set (X.Ψ → ℝ)) = ⊤ := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TraceIntegralBasis.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TraceIntegralBasis.lean
+@@ -23,13 +23,6 @@
+ 
+ lemma iota_apply (x : E) (w : CP E) : iota E x w = w.1.embedding x := rfl
+ 
+-lemma emb_cc (φ : E →+* ℂ) (y : E) : φ (cc y) = conj (φ y) := by
+-  unfold cc
+-  first
+-    | exact (IsCMField.isConj_complexConj E φ).eq y
+-    | exact ComplexEmbedding.IsConj.eq (IsCMField.isConj_complexConj φ) y
+-    | exact IsCMField.complexEmbedding_complexConj E φ y
+-    | simp
+ 
+ lemma conj_conj (φ : E →+* ℂ) :
+     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TransvectionPeriodicity.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TransvectionPeriodicity.lean
+@@ -150,9 +150,6 @@
+   funext τ
+   simp [cR]
+ 
+-lemma cR_neg (p : X.Ψ → ℝ) : cR X (-p) = -cR X p := by
+-  funext τ
+-  simp [cR]
+ 
+ lemma cR_zero : cR X 0 = 0 := by
+   funext τ
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentVectorEqSmulComponent.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentVectorEqSmulComponent.lean
+@@ -32,10 +32,6 @@
+   obtain ⟨x', -, -, rfl⟩ := ht
+   exact X.pointNorm_nonneg la G x'
+ 
+-theorem herm_Gm_smul_left (c : E) (x y : Fin r → E) : herm X.Gm (c • x) y = c * herm X.Gm x y := by
+-  simp only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
+ 
+ end Data
+ 
+--- a/ReciprocityTheory/SemistableReduction/ApproxBasisA.lean
++++ b/ReciprocityTheory/SemistableReduction/ApproxBasisA.lean
+@@ -7,18 +7,12 @@
+ open Matrix NumberField ComplexConjugate
+ open scoped ComplexOrder
+ 
+-theorem approxB_jForm_add_right (p : ℕ) {r : ℕ} (x y z : Fin r → ℂ) :
+-    jForm p x (y + z) = jForm p x y + jForm p x z := by
+-  simp only [jForm, Pi.add_apply, mul_add, Finset.sum_add_distrib]
+ 
+ theorem approxB_jForm_smul_right (p : ℕ) {r : ℕ} (x y : Fin r → ℂ) (a : ℂ) :
+     jForm p x (a • y) = a * jForm p x y := by
+   simp only [jForm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+   exact Finset.sum_congr rfl fun k _ => by ring
+ 
+-theorem approxB_jForm_sub_right (p : ℕ) {r : ℕ} (x y z : Fin r → ℂ) :
+-    jForm p x (y - z) = jForm p x y - jForm p x z := by
+-  simp only [jForm, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
+ 
+ theorem approxB_jForm_sum_right (p : ℕ) {r : ℕ} {α : Type*} (s : Finset α) (x : Fin r → ℂ)
+     (f : α → Fin r → ℂ) : jForm p x (∑ j ∈ s, f j) = ∑ j ∈ s, jForm p x (f j) := by
+@@ -96,12 +90,6 @@
+     (fun j _ hj => hf j (by simpa using hj))]
+   exact Finset.sum_subtype _ (fun j => by simp) f
+ 
+-theorem approxB_sum_neg {M : Type*} [AddCommMonoid M] {r p : ℕ} (f : Fin r → M)
+-    (hf : ∀ j : Fin r, (j : ℕ) < p → f j = 0) :
+-    ∑ j, f j = ∑ k : {j : Fin r // ¬ (j : ℕ) < p}, f k := by
+-  rw [← Finset.sum_subset (Finset.subset_univ (Finset.univ.filter fun j : Fin r => ¬ (j : ℕ) < p))
+-    (fun j _ hj => hf j (by simpa using hj))]
+-  exact Finset.sum_subtype _ (fun j => by simp) f
+ 
+ theorem approxB_card_pos {r p : ℕ} (hp : p ≤ r) : Fintype.card (ApproxPosIdx r p) = p := by
+   let e : ApproxPosIdx r p ≃ Fin p :=
+--- a/ReciprocityTheory/SemistableReduction/ApproxGraphA.lean
++++ b/ReciprocityTheory/SemistableReduction/ApproxGraphA.lean
+@@ -134,13 +134,6 @@
+   rw [EuclideanSpace.norm_eq]
+   simpa [euc] using h
+ 
+-lemma sum_smul_eq {r : ℕ} (X : Fin r → Fin r → ℂ) (w : Fin r → ℂ) (c : ℂ) :
+-    ∑ j, w j • X j = c • w + ∑ j, w j • (X j - c • (Pi.single j 1 : Fin r → ℂ)) := by
+-  funext k
+-  simp only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, mul_sub,
+-    Finset.sum_sub_distrib, Pi.single_apply]
+-  simp [Finset.mul_sum]
+-  ring
+ 
+ lemma norm_err_le {r p : ℕ} {μ R : ℝ} (X : Fin r → Fin r → ℂ)
+     (hX : ∀ j : Fin r, (j : ℕ) < p → normSq (X j - (R : ℂ) • (Pi.single j 1 : Fin r → ℂ)) ≤ μ ^ 2)
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentOnHyperbolicComplement.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentOnHyperbolicComplement.lean
+@@ -23,9 +23,7 @@
+ 
+ private lemma hermC_smul_right_section (c : ℂ) (u v : Fin r → ℂ) :
+     hermC τ G u (c • v) = conj c * hermC τ G u v := by
+-  simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.hC_smul_right <;> assumption
+ 
+ lemma hC_sub_right (u v v' : Fin r → ℂ) :
+     hermC τ G u (v - v') = hermC τ G u v - hermC τ G u v' := by
+@@ -96,9 +94,7 @@
+ private lemma hermC_finset_sum_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Type*}
+     (s : Finset ι) (f : ι → Fin r → ℂ) (w : Fin r → ℂ) :
+     hermC τ G (∑ i ∈ s, f i) w = ∑ i ∈ s, hermC τ G (f i) w := by
+-  induction s using Finset.cons_induction with
+-  | empty => simp [hC_zero_left]
+-  | cons i s hi ih => rw [Finset.sum_cons, Finset.sum_cons, hC_add_left, ih]
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.hC_sum_left <;> assumption
+ 
+ private lemma hermC_finset_sum_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Type*}
+     (s : Finset ι) (f : ι → Fin r → ℂ) (u : Fin r → ℂ) :
+@@ -115,26 +111,7 @@
+ 
+ lemma ppos_idem {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (v : Fin r → ℂ) :
+     X.ppos x τ (X.ppos x τ v) = X.ppos x τ v := by
+-  have hdet : (X.gramPos x τ).det ≠ 0 := by
+-    have h := (hx τ).2 ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩
+-    intro h0
+-    have h1 : dmin X.Gm x τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ = 0 := h0
+-    rw [h1] at h
+-    simp at h
+-  have hinv : X.gramPos x τ * (X.gramPos x τ)⁻¹ = 1 :=
+-    Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hdet)
+-  have hP : ∀ b, hermC τ.1 X.Gm (X.ppos x τ v) (col (mat x τ) (Fin.castLE X.p0_le b)) =
+-      ∑ a', (∑ b', hermC τ.1 X.Gm v (col (mat x τ) (Fin.castLE X.p0_le b')) * (X.gramPos x τ)⁻¹ b' a') *
+-        X.gramPos x τ a' b := by
+-    intro b
+-    simp only [ppos, hermC_finset_sum_left, hC_smul_left]
+-    rfl
+-  show ∑ a : Fin X.p0, (∑ b : Fin X.p0, hermC τ.1 X.Gm (X.ppos x τ v) (col (mat x τ) (Fin.castLE X.p0_le b)) *
+-    (X.gramPos x τ)⁻¹ b a) • col (mat x τ) (Fin.castLE X.p0_le a) = X.ppos x τ v
+-  simp only [hP]
+-  simp only [sum_mul_mul_eq_of_mul_eq_one (fun a' => ∑ b', hermC τ.1 X.Gm v (col (mat x τ) (Fin.castLE X.p0_le b')) * (X.gramPos x τ)⁻¹ b' a')
+-    _ _ hinv]
+-  rfl
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.ppos_ppos <;> assumption
+ 
+ def Jp (x : Frame X.Ψ r) (τ : X.Ψ) (v : Fin r → ℂ) : Fin r → ℂ := (2 : ℂ) • X.ppos x τ v - v
+ 
+@@ -150,9 +127,7 @@
+ 
+ private lemma ppos_sub' (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
+     X.ppos x τ (u - v) = X.ppos x τ u - X.ppos x τ v := by
+-  have h := X.positive_part_add x τ u ((-1 : ℂ) • v)
+-  rw [ppos_smul'] at h
+-  simpa [sub_eq_add_neg, neg_one_smul] using h
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.ppos_sub <;> assumption
+ 
+ lemma Jp_smul (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ) (v : Fin r → ℂ) :
+     X.Jp x τ (c • v) = c • X.Jp x τ v := by
+@@ -227,18 +202,7 @@
+ variable {x τ e}
+ 
+ lemma hsym (u w : Fin r → ℂ) : hermC τ.1 X.Gm u w = conj (hermC τ.1 X.Gm w u) := by
+-  have hG : ∀ a b, τ.1 (X.Gm a b) = conj (τ.1 (X.Gm b a)) := fun a b => by
+-    rw [← X.Gm_herm b a, cc]
+-    first
+-      | exact NumberField.IsCMField.complexEmbedding_complexConj E _ _
+-      | exact (NumberField.IsCMField.complexEmbedding_complexConj E _ _).symm
+-      | exact NumberField.IsCMField.complexEmbedding_complexConj E _
+-      | exact (NumberField.IsCMField.complexEmbedding_complexConj E _).symm
+-  simp only [hermC, map_sum, map_mul, Complex.conj_conj]
+-  conv_rhs => rw [Finset.sum_comm]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  rw [hG a b]
+-  ring
++  apply hermC_Gm_eq_conj_swap <;> assumption
+ 
+ lemma hermitian_pairing_Je_e : hermC τ.1 X.Gm (X.Jp x τ e) e = X.d2q x τ e := rfl
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CuspCoefficientFlow.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CuspCoefficientFlow.lean
+@@ -182,17 +182,7 @@
+   exact tendsto_finset_prod _ fun τ _ => tendsto_finset_prod _ fun i _ => h τ i
+ 
+ private theorem isOpen_dom_upper_bounds : IsOpen X.dom := by
+-  have hset : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩
+-      ⋂ i : Fin (r + 1), {x | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re}) := by
+-    ext x
+-    simp [Data.dom, GG]
+-  rw [hset]
+-  refine isOpen_iInter_of_finite fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)
+-  · exact isOpen_ne_fun
+-      ((show Continuous fun x : Frame X.Ψ r => mat x τ from continuous_apply τ).matrix_det)
+-      continuous_const
+-  · exact isOpen_lt continuous_const
+-      (continuous_const.mul (Complex.continuous_re.comp (cont_dmin X τ i)))
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom <;> assumption
+ 
+ lemma fj_hbd (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P) {ξ : Fin r → E}
+     (hξ : X.IsIso ξ) : ∀ x0 ∈ X.dom, ∃ ρ > 0, ∃ C, closedBall x0 ρ ⊆ X.dom ∧
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BlockIdentityExpansion.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BlockIdentityExpansion.lean
+@@ -64,23 +64,11 @@
+ 
+ private lemma hermC_smul_left_fundamental_domains (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : ℂ) (u v : Fin r → ℂ) :
+     hermC τ G (c • u) v = c * hermC τ G u v := by
+-  unfold hermC
+-  rw [Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => ?_
+-  rw [Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun b _ => ?_
+-  simp only [Pi.smul_apply, smul_eq_mul]
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left <;> assumption
+ 
+ private lemma hermC_smul_right_fundamental_domains (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : ℂ) (u v : Fin r → ℂ) :
+     hermC τ G u (c • v) = conj c * hermC τ G u v := by
+-  unfold hermC
+-  rw [Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => ?_
+-  rw [Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun b _ => ?_
+-  simp only [Pi.smul_apply, smul_eq_mul, map_mul]
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.hC_smul_right <;> assumption
+ 
+ private lemma hermC_zero_left' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (v : Fin r → ℂ) :
+     hermC τ G 0 v = 0 := by
+@@ -94,13 +82,7 @@
+ 
+ private lemma ppos_smul_fundamental_domains (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ) (u : Fin r → ℂ) :
+     X.ppos x τ (c • u) = c • X.ppos x τ u := by
+-  rw [Data.ppos_eq, Data.ppos_eq, Finset.smul_sum]
+-  refine Finset.sum_congr rfl fun a _ => ?_
+-  rw [smul_smul, Finset.mul_sum]
+-  congr 1
+-  refine Finset.sum_congr rfl fun b _ => ?_
+-  rw [hermC_smul_left_fundamental_domains]
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.ppos_smul_eq <;> assumption
+ 
+ private lemma hermC_add_right_fundamental_domains (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u v v' : Fin r → ℂ) :
+     hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscriminantTraceBounds.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscriminantTraceBounds.lean
+@@ -148,16 +148,11 @@
+ 
+ private theorem herm_smul_left_eq_mul (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
+     herm G (c • x) y = c * herm G x y := by
+-  simp only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+-  exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_left <;> assumption
+ 
+ private theorem herm_smul_right_fundamental_domains (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
+     herm G x (c • y) = cc c * herm G x y := by
+-  have hcc_mul : ∀ a b : E, cc (a * b) = cc a * cc b := fun a b => by
+-    unfold cc
+-    exact map_mul _ a b
+-  simp only [herm, Pi.smul_apply, smul_eq_mul, hcc_mul, Finset.mul_sum]
+-  exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_right <;> assumption
+ 
+ theorem trace_int (hr : 0 < r) (c : 𝓞 E) :
+     ∃ m : ℤ, Algebra.trace ℚ E ((X.NC : E) ^ 2 * X.ξ0 * c) = m := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicIndexSums.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicIndexSums.lean
+@@ -25,15 +25,11 @@
+ 
+ private lemma hermC_const_smul_left (c : ℂ) (u w : Fin r → ℂ) :
+     hermC τ G (c • u) w = c * hermC τ G u w := by
+-  simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left <;> assumption
+ 
+ private lemma hermC_smul_right_section (c : ℂ) (u w : Fin r → ℂ) :
+     hermC τ G u (c • w) = conj c * hermC τ G u w := by
+-  simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.hC_smul_right <;> assumption
+ 
+ lemma hC_sum_right {ι : Type*} (s : Finset ι) (f : ι → Fin r → ℂ) (u : Fin r → ℂ) :
+     hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) := by
+@@ -44,10 +40,7 @@
+ 
+ private lemma hermC_finset_sum_left_eq_sum {ι : Type*} (s : Finset ι) (f : ι → Fin r → ℂ) (w : Fin r → ℂ) :
+     hermC τ G (∑ i ∈ s, f i) w = ∑ i ∈ s, hermC τ G (f i) w := by
+-  classical
+-  induction s using Finset.induction_on with
+-  | empty => simp [hermC]
+-  | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_left_eq_add, ih]
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.hC_sum_left <;> assumption
+ 
+ lemma hC_comb {n : ℕ} (c : Fin n → ℂ) (v : Fin n → Fin r → ℂ) :
+     hermC τ G (∑ k, c k • v k) (∑ l, c l • v l) =
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealTangentSpace.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealTangentSpace.lean
+@@ -161,11 +161,7 @@
+ 
+ private lemma Hf_smul_left_frame (y : Frame X.Ψ r) (σ : X.Ψ) (c : ℂ) (v w : Fin r → ℂ) :
+     X.Hf y σ (c • v) w = c * X.Hf y σ v w := by
+-  have hp : X.ppos y σ (c • v) = c • X.ppos y σ v := by
+-    simp only [Data.ppos, hermC_smul_left, Finset.smul_sum, smul_smul, mul_assoc, ← Finset.mul_sum]
+-  rw [Data.Hf, Data.Hf, hp, ← hermC_smul_left]
+-  congr 1
+-  rw [smul_sub, smul_smul, smul_smul, mul_comm]
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.UnipotentCoefficientShift.Hf_smul_left <;> assumption
+ 
+ theorem ucomp_line (hξ : X.IsIso ξ) (e : E) : X.ucomp z ξ (X.embV (e • ξ)) = 0 := by
+   funext τ
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowIsotropicPairs.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowIsotropicPairs.lean
+@@ -27,17 +27,11 @@
+ 
+ private lemma herm_smul_left_fundamental_domains (G : Matrix (Fin r) (Fin r) E) (c : E) (x z : Fin r → E) :
+     herm G (c • x) z = c * herm G x z := by
+-  simp only [herm, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  simp only [Pi.smul_apply, smul_eq_mul]
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_left <;> assumption
+ 
+ private lemma herm_smul_right_eq_cc_mul (G : Matrix (Fin r) (Fin r) E) (c : E) (x z : Fin r → E) :
+     herm G x (c • z) = cc c * herm G x z := by
+-  simp only [herm, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  simp only [Pi.smul_apply, smul_eq_mul, cc, map_mul]
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_right <;> assumption
+ 
+ theorem isIsoPair_of (X : DataX E r) {ξ x : Fin r → E} (hξ : X.IsIso ξ) (hxξ : herm X.Gm x ξ = 0)
+     (hxx : herm X.Gm x x = 0) (hne : ∀ e : E, x ≠ e • ξ) :
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LowBlock.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LowBlock.lean
+@@ -102,10 +102,7 @@
+ 
+ private lemma gram_eq_upper_bounds (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
+     gram τ G x = xᵀ * G.map τ * x.map (starRingEnd ℂ) := by
+-  ext a b
+-  simp only [ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply,
+-    Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
+-  exact Finset.sum_comm
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_eq <;> assumption
+ 
+ lemma gram_xZ {x : Frame X.Ψ r} (ho : X.IsOrtho x) (Z : X.Coord) (τ : X.Ψ) :
+     gram τ.1 X.Gm (mat (X.xZ x Z) τ) = Gp X Z τ := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpLatticeTransfer.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpLatticeTransfer.lean
+@@ -155,17 +155,11 @@
+ 
+ private lemma herm_smul_left_of_matrix (G : Matrix (Fin r) (Fin r) E) (e : E) (x y : Fin r → E) :
+     herm G (e • x) y = e * herm G x y := by
+-  unfold herm
+-  simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianPairingAlgebra.herm_smul_left <;> assumption
+ 
+ private lemma herm_smul_right_lemma_6 (G : Matrix (Fin r) (Fin r) E) (e : E) (x y : Fin r → E) :
+     herm G x (e • y) = cc e * herm G x y := by
+-  unfold herm cc
+-  simp only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_right <;> assumption
+ 
+ lemma herm_cross (hβξ : ∀ k, herm X.Gm (β k) ξ = 0) (hξξ : herm X.Gm ξ ξ = 0)
+     (c c' : Fin n → E) (e e' : E) :
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HolomorphicPeriodicityExtension.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HolomorphicPeriodicityExtension.lean
+@@ -9,9 +9,7 @@
+ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
+ 
+ theorem d4l4_c_pos {r : ℕ} (X : Data E r) (τ : X.Ψ) : 0 < X.c τ := by
+-  have h : τ.1 X.ξ0 ≠ 0 := (map_ne_zero τ.1).mpr X.ξ0_ne
+-  show 0 < 2 * ‖τ.1 X.ξ0‖
+-  exact mul_pos two_pos (norm_pos_iff.mpr h)
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantFamilyNorms.c_pos <;> assumption
+ 
+ open Classical in
+ theorem d4l4_diff_flow {r : ℕ} (X : Data E r) (e : X.Ψ → Fin r → ℂ) (x : Frame X.Ψ r)
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantOperators.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantOperators.lean
+@@ -28,9 +28,7 @@
+ 
+ private theorem hermC_smul_right_embedding (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (k : ℂ) (u v : Fin r → ℂ) :
+     hermC τ G u (k • v) = conj k * hermC τ G u v := by
+-  simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.hC_smul_right <;> assumption
+ 
+ private theorem hermC_emb_emb_eq_tau_herm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
+     hermC τ G (Data.emb τ x) (Data.emb τ y) = τ (herm G x y) := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientDomain.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientDomain.lean
+@@ -15,7 +15,7 @@
+ lemma norm_fderiv_le {U : Set F} (hU : IsOpen U) {G : F → ℂ} (hG : DifferentiableOn ℂ G U)
+     {y : F} {R C : ℝ} (hR : 0 < R) (hball : closedBall y R ⊆ U)
+     (hC : ∀ z ∈ closedBall y R, ‖G z‖ ≤ C) : ‖fderiv ℂ G y‖ ≤ C / R := by
+-  first | exact Bl.general_b_fact_bis_form.goal1 .. | (apply Bl.general_b_fact_bis_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_bis_form.goal1 <;> assumption)
++  apply _root_.Bl.general_b_fact_bis_form.goal1 <;> assumption
+ 
+ end Cauchy
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalFlagTranslateHolds.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalFlagTranslateHolds.lean
+@@ -36,10 +36,7 @@
+ private theorem gram_eq_lemma {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
+     (M : Matrix (Fin r) (Fin r) ℂ) :
+     gram τ G M = Mᵀ * G.map τ * M.map (starRingEnd ℂ) := by
+-  ext a c
+-  simp only [gram, Matrix.of_apply, hermC, col, Matrix.mul_apply, Matrix.transpose_apply,
+-    Matrix.map_apply, Finset.sum_mul]
+-  rw [Finset.sum_comm]
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_eq <;> assumption
+ 
+ lemma dmin_rmul (x : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
+     dmin X.Gm (rmul x b) τ i =
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajPos.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajPos.lean
+@@ -38,9 +38,7 @@
+ 
+ private theorem hermC_smul_left_embedding (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : ℂ)
+     (u w : Fin r → ℂ) : hermC τ G (c • u) w = c * hermC τ G u w := by
+-  simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+-  ring
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left <;> assumption
+ 
+ private theorem hermC_finset_sum_left' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Type*}
+     [Fintype ι] (c : ι → ℂ) (u : ι → Fin r → ℂ) (w : Fin r → ℂ) :
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TwoSidedBoostBounds.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TwoSidedBoostBounds.lean
+@@ -35,10 +35,7 @@
+     _ ≤ max (σ ^ 2) (σ ^ 2)⁻¹ * X.maj z τ w := mul_le_mul_of_nonneg_left hl hM
+ 
+ theorem c_pos (τ : X.Ψ) : 0 < X.c τ := by
+-  unfold Data.c
+-  have h : τ.1 X.ξ0 ≠ 0 := (map_ne_zero _).2 X.ξ0_ne
+-  have := norm_pos_iff.2 h
+-  linarith
++  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantFamilyNorms.c_pos <;> assumption
+ 
+ theorem maj_two_sided {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : X.IsIso ξ)
+     (s : X.Ψ → ℂ) (hy : X.flow ξ s x ∈ X.dom) (τ : X.Ψ) (w : Fin r → ℂ) :
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientIndexLowerBound.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientIndexLowerBound.lean
+@@ -7,33 +7,20 @@
+ 
+ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
+ 
++private lemma log_product_gap {ι : Type} [Fintype ι] (v : ι → ℝ) (hv : ∀ i, 0 < v i) :
++    Real.log (∏ i, v i) ≤ (∑ i, v i) - Fintype.card ι := by
++  rw [Real.log_prod (fun i _ => (hv i).ne')]
++  simpa [Finset.sum_sub_distrib] using
++    Finset.sum_le_sum (s := Finset.univ) (fun i _ => Real.log_le_sub_one_of_pos (hv i))
++
+ private lemma card_le_sum_of_one_le_prod {ι : Type} [Fintype ι] [Nonempty ι] (z : ι → ℝ) (hz : ∀ i, 0 < z i)
+     (h1 : 1 ≤ ∏ i, z i) : (Fintype.card ι : ℝ) ≤ ∑ i, z i := by
+-  have hn : (0 : ℝ) < Fintype.card ι := by exact_mod_cast Fintype.card_pos
+-  have hw : ∑ _i : ι, (1 / (Fintype.card ι : ℝ)) = 1 := by
+-    rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]; field_simp
+-  have key := Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ => 1 / (Fintype.card ι : ℝ)) z
+-    (fun i _ => by positivity) hw (fun i _ => (hz i).le)
+-  rw [Real.finset_prod_rpow _ _ (fun i _ => (hz i).le), ← Finset.mul_sum] at key
+-  have h2 : 1 ≤ (∏ i, z i) ^ (1 / (Fintype.card ι : ℝ)) := Real.one_le_rpow h1 (by positivity)
+-  have h3 := h2.trans key
+-  rw [one_div, inv_mul_eq_div, le_div_iff₀ hn] at h3
+-  linarith
++  linarith [log_product_gap z hz, Real.log_nonneg h1]
+ 
+ private lemma prod_le_one_of_sum_le_card {ι : Type} [Fintype ι] [Nonempty ι] (v : ι → ℝ) (hv : ∀ i, 0 < v i)
+     (hs : ∑ i, v i ≤ Fintype.card ι) : ∏ i, v i ≤ 1 := by
+-  have hn : (0 : ℝ) < Fintype.card ι := by exact_mod_cast Fintype.card_pos
+-  have hw : ∑ _i : ι, (1 / (Fintype.card ι : ℝ)) = 1 := by
+-    rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]; field_simp
+-  have key := Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ => 1 / (Fintype.card ι : ℝ)) v
+-    (fun i _ => by positivity) hw (fun i _ => (hv i).le)
+-  rw [Real.finset_prod_rpow _ _ (fun i _ => (hv i).le), ← Finset.mul_sum] at key
+-  have h3 : 1 / (Fintype.card ι : ℝ) * ∑ i, v i ≤ 1 := by
+-    rw [one_div, inv_mul_le_iff₀ hn]; linarith
+-  by_contra hgt
+-  push_neg at hgt
+-  have := Real.one_lt_rpow hgt (by positivity : (0 : ℝ) < 1 / (Fintype.card ι : ℝ))
+-  linarith
++  apply (Real.log_nonpos_iff (Finset.prod_nonneg fun i _ => (hv i).le)).1
++  linarith [log_product_gap v hv]
+ 
+ private lemma card_sq_div_le_two_mul_sum_of_bounds {ι : Type} [Fintype ι] [Nonempty ι] (d ν A R : ι → ℝ) (N NC k0 c1 ε : ℝ)
+     (hN : 0 < N) (hNC : 0 < NC) (hk0 : 0 < k0) (hk2 : k0 ≤ 2) (hε : 0 < ε) (hc1 : 0 < c1)
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SchwarzLemmaBallHolds.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SchwarzLemmaBallHolds.lean
+@@ -5,22 +5,14 @@
+ open Metric Set
+ 
+ lemma exp_nine_quarters_lt : Real.exp (9 / 4) < 9.5 := by
+-  have h1 := Real.exp_one_lt_d9
+-  have h2 : |Real.exp (1 / 4) - ∑ m ∈ Finset.range 4, (1 / 4 : ℝ) ^ m / m.factorial| ≤
+-      |(1 / 4 : ℝ)| ^ 4 * ((Nat.succ 4 : ℕ) / ((Nat.factorial 4 : ℕ) * 4)) :=
+-    Real.exp_bound (by norm_num [abs_of_pos]) (by norm_num)
+-  have h3 : Real.exp (1 / 4) < 1.2841 := by
+-    have := (abs_le.mp h2).2
+-    norm_num [Finset.sum_range_succ, Nat.factorial] at this
+-    linarith
+-  have h4 : Real.exp (9 / 4) = Real.exp 1 * Real.exp 1 * Real.exp (1 / 4) := by
+-    rw [← Real.exp_add, ← Real.exp_add]; norm_num
+-  have he : 0 < Real.exp 1 := Real.exp_pos 1
+-  have he4 : 0 < Real.exp (1 / 4) := Real.exp_pos _
+-  rw [h4]
+-  calc Real.exp 1 * Real.exp 1 * Real.exp (1 / 4) ≤ 2.7182818286 * 2.7182818286 * 1.2841 := by
+-        gcongr
+-    _ < 9.5 := by norm_num
++  have h : Real.exp (9 / 4) ^ 4 = Real.exp 1 ^ 9 := by
++    rw [← Real.exp_nat_mul, ← Real.exp_nat_mul]; norm_num
++  by_contra! hn
++  have h₁ := pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 9.5) hn 4
++  have h₂ := pow_le_pow_left₀ (Real.exp_pos 1).le Real.exp_one_lt_d9.le 9
++  rw [h] at h₁
++  norm_num at h₁ h₂
++  linarith
+ 
+ theorem schwarzLemmaBall_holds : SchwarzLemmaBall := by
+   intro V _ _ γ ρ S hρ hd hb h1 h2 Z hZ
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalChartNormControlHolds.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalChartNormControlHolds.lean
+@@ -20,24 +20,11 @@
+     refine differentiable_pi.mpr fun a => ?_
+     refine differentiable_pi.mpr fun b => ?_
+     simp only [Data.xZ, Matrix.mul_apply, Data.lowBlock, Matrix.of_apply]
+-    have hsum : ∀ {f : Fin r → X.Coord → ℂ}, (∀ j, Differentiable ℂ (f j)) →
+-        Differentiable ℂ (fun Z => ∑ j, f j Z) := by
+-      intro f hf
+-      first
+-        | exact Differentiable.fun_sum fun j _ => hf j
+-        | simpa [Finset.sum_fn] using Differentiable.sum (u := Finset.univ) (fun j _ => hf j)
+-        | fun_prop
+-    refine hsum fun k => ?_
+-    refine Differentiable.const_mul ?_ _
+-    refine (differentiable_const _).add ?_
++    apply Differentiable.fun_sum
++    intro k _
+     by_cases h : X.p0 ≤ (k : ℕ) ∧ (b : ℕ) < X.p0
+-    · simp only [dif_pos h]
+-      first
+-        | fun_prop
+-        | exact (differentiable_pi.mp ((differentiable_pi.mp
+-            ((differentiable_pi.mp differentiable_id) τ)) _)) _
+-    · simp only [dif_neg h]
+-      exact differentiable_const _
++    · simp only [dif_pos h]; fun_prop
++    · simp only [dif_neg h]; fun_prop
+   refine hG.comp hd.differentiableOn ?_
+   intro Z hZ
+   exact OrthonormalChartBounds.xZ_mem_dom (X := X) hx ho (lt_of_lt_of_le hZ (by linarith))
