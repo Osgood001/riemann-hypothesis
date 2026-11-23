@@ -20,7 +20,7 @@ def inventory_digest(files):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('core', choices=['14', '23', '24', '25'])
+    parser.add_argument('core', choices=[str(n) for n in range(14, 26)])
     parser.add_argument('shard', type=Path)
     parser.add_argument('output', type=Path, help='new directory for the reconstructed Lean sources')
     args = parser.parse_args()
@@ -53,7 +53,8 @@ def main():
             path.write_bytes(contents[key])
         env = {key:value for key,value in os.environ.items() if not key.startswith('GIT_')}
         env['GIT_CEILING_DIRECTORIES'] = str(base.parent)
-        subprocess.run(['git', '-c', 'core.autocrlf=false', 'apply', '--whitespace=nowarn', str(here / 'changes.patch')], cwd=base, env=env, check=True)
+        if record['modified_files']:
+            subprocess.run(['git', '-c', 'core.autocrlf=false', 'apply', '--whitespace=nowarn', str(here / 'changes.patch')], cwd=base, env=env, check=True)
         for key, checks in record['modified_files'].items():
             data = (base / key).read_bytes()
             if digest(data) != checks['after']:
