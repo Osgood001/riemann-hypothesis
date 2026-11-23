@@ -17,7 +17,7 @@ Levent Alpöge authored the original Core 40 proof. Codex extracted the five sou
 | 26 | 323 | 540,118 | 522,409 | 17,709 |
 | 29 | 122 | 831,319 | 341,451 | 489,868 |
 | 33 | 100 | 826,075 | 233,186 | 592,889 |
-| 37 | 226 | 1,852,115 | 837,308 | 1,014,807 |
+| 37 | 226 | 1,852,115 | 827,301 | 1,024,814 |
 | 40 | 6 | 1,031,987 | 2,677 | 1,029,310 |
 
 The independent Comparator and the Lean 4.33.1 default kernel accepted each exact target with `propext`, `Quot.sound` and `Classical.choice`. Each directory records the local replay, complete source-tree digest, Mathlib revision and the checksums of its original sources. The local check derived the protected boundary from the organizer’s published frozen roots. The table reports locally measured token counts.
