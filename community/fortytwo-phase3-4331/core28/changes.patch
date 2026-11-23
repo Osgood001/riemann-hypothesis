@@ -1,0 +1,26 @@
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean
+@@ -1,6 +1,5 @@
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MinimumGrowthBounds
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMeanContinuity
+-import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
+ 
+ namespace ReciprocityTheory.ChartRestriction.G.FD
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ModerateCoefficientPositivityHolds.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ModerateCoefficientPositivityHolds.lean
+@@ -1,3 +1,5 @@
++import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourIndep
++import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourBasic
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivity
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SliceBounds
+ 
+@@ -197,7 +199,7 @@
+               simp only [C']
+               field_simp
+       exact le_of_mul_le_mul_right hfinal hnx
+-    have hsign := ReciprocityTheory.L2DbarEstimates.Y.four_sign_holds (Fintype.card X.Ψ) (Om X ξ x ω) (hfun X P ξ x ω) 0 κ C' E'
++    have hsign := ReciprocityTheory.L2DbarEstimates.Y.four_sign (Fintype.card X.Ψ) (ReciprocityTheory.L2DbarEstimates.Y.four_indep _) (ReciprocityTheory.L2DbarEstimates.Y.four_bound _) (Om X ξ x ω) (hfun X P ξ x ω) 0 κ C' E'
+       (Om_open_conn X ω hx).1 (Om_open_conn X ω hx).2 (hfun_diff X ω P la hP hx hξ)
+       (hfun_periodic X ω P la hP hx hξ hω) hray hgrow k hne
+     rw [hsum ν k hk κ] at hsign
