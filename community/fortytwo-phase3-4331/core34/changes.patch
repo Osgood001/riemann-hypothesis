@@ -1,0 +1,37 @@
+--- a/GroundTheory/HeightsAndTheta/Heights/SemipositiveHeights/NumericalSegre.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/SemipositiveHeights/NumericalSegre.lean
+@@ -1,19 +1,4 @@
+ import Mathlib
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyBundles
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagBundleDim
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwistedDualGensSpan
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSpanBundleDim
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPointIdealMultiProj
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSpanBundleTrdegGe
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSpanBundleTrdegLe
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagBundleSectionForms
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagBundleSectionDiv
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PMultAtOfSaturated
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PProjIdealFormValue
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTruncSpecialize
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagBundleChartSection
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagLineSection
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagLineDegree
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConeLocalFlat
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConeLocalLength
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConePolyLocalization
+@@ -89,14 +74,4 @@
+     DivCycleMinimal.proof hcone
+   exact DivPushForwardLocal.proof DivCycleMinimal.proof hcone hdzr hrank hlen
+ 
+-theorem FlagBundleDim.full : FlagBundleDim.Statement :=
+-  FlagBundleDim.proof TwistedDualGensSpan.proof
+-    (SpanBundleDim.proof PointIdealMultiProj.proof SpanBundleTrdegGe.proof SpanBundleTrdegLe.proof)
+-
+-theorem NumericalSegre.full : NumericalSegre.Statement :=
+-  NumericalSegre.of_open FlagBundleDim.full FlagBundleSectionForms.proof
+-    (FlagBundleSectionDiv.proof FlagBundleDim.full MultAtOfSaturated.proof ProjIdealFormValue.proof
+-      TruncSpecialize.proof FlagBundleChartSection.proof)
+-    FlagLineSection.proof FlagLineDegree.proof DivPushForwardLocalZero
+-
+ end GroundTheory.Heights₂.Heights.NumbersDVR
