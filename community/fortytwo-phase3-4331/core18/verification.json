@@ -1,0 +1,37 @@
+{
+  "core": 18,
+  "candidate": "core18-prune01",
+  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core18.tar.zst",
+  "shard_sha256": "86989fa21f2ee0c7ee1dec4ae3670c08f3761e8f78f681345cc28e70a732ae0f",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 33702,
+  "local_normalized_tokens": 74343508,
+  "published_baseline_tokens": 75331745,
+  "proof_tree_sha256": "c98d68d4f16790212aba4e2cf94d8df7752e7611e93fcf13325ef11fada7aedc",
+  "modified_files": {
+    "Development/AutomorphicArithmetic/Foundations/BaseChangeIdentities/DefiniteNHolds.lean": {
+      "before": "a8dbda049d3f53757e79628e6d3ec1b2ff3cc239057f596d2f87ca9f9f1c3905",
+      "after": "f9bfc26b34c5ef6af393a84be776afd0102285d6e372403b16171a74b1238f95"
+    }
+  },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "public_method_context": "Keith Adler rh-trim pruning analysis supplied as unverified method context; no proof source copied.",
+    "new_contribution": "DeepSeek removes the unused NarrowSwap import from DefiniteNHolds while preserving its proof body."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-23T10:08:20.693779+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null
+}
