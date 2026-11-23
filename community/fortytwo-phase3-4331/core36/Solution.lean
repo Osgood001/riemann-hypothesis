@@ -37,10 +37,9 @@ theorem pureFamilyDecomposition :
     apply hP.2.1
     rw [map_zero]
     funext j
-    by_cases hj : ty j (H.rt : E) = H.rt0
-    · have : ty j (H.rt : E) ≠ -H.rt0 := by rw [hj]; exact hne
-      exact h2 j (by simpa [sgnRt] using this)
-    · exact h1 j (by simpa [sgnRt] using hj)
+    by_cases e : ty j (H.rt : E) = H.rt0
+    · exact h2 j (e ▸ hne)
+    · exact h1 j e
   rw [Sum.range_eq x, Submodule.span_union] at hn
   change ∀ y, n • y ∈ A ⊔ B at hn
   refine ⟨?_, ?_, ?_⟩

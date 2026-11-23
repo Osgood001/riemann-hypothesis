@@ -1,20 +1,20 @@
 {
   "core": 36,
-  "candidate": "core36-fastmodulara0290815165d",
+  "candidate": "core36-fastsigns7e5411ffa876",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 719,
+  "local_normalized_tokens": 682,
   "published_baseline_tokens": 1023975,
-  "proof_tree_sha256": "26db03d2498e9559619242e81db8613fb6eded07ec3ca6721e833043451c1ea3",
+  "proof_tree_sha256": "08b0edf2e7d691707d6653a16d9367de147ec050bc9c831d3c8718f646a33ea6",
   "modified_files": {},
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
     "native_proof_sha256": "e62fd12769efda67cbd59cfe5f6001f58fd4ea9d834eaca87e36c659c329b726",
-    "adapted_proof_sha256": "a0290815165d06b9b88e8683e3eaf72aea8290882ec160097ddae974abf8ceb9",
+    "adapted_proof_sha256": "7e5411ffa876027e121efa30e5e2fd0878c48bbcbe2b0886a0951f1ab11c7f65",
     "adapted_solution_line_changes": [
       {
         "original": [
@@ -48,21 +48,21 @@
       },
       {
         "original": [
-          60,
+          56,
           74
         ],
         "adapted": [
-          44,
-          57
+          40,
+          56
         ]
       }
     ],
-    "new_contribution": "Fortytwo proved the pure-lattice splitting with the injectivity of the period map. Codex rewrote the span of the sum, separated the two roots using the discriminant identity, and applied the modular law for submodules to deduce both pure-span conclusions from disjointness. Original formalization by Levent Alpöge."
+    "new_contribution": "The native Fortytwo proof used injectivity of the period map to split the pure lattices. Codex separated the two CM roots using the discriminant and used the dichotomy of their signs in each coordinate, then applied the modular lattice identity to the two projections. Original mathematics and formalization by Levent Alpöge."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T22:13:02.675314+00:00",
+    "completed_utc": "2026-11-23T23:02:36.104062+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
