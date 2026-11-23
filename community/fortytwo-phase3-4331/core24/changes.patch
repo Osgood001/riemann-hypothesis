@@ -1,0 +1,49 @@
+--- a/Development/WeilBound/CoreStatements/TemperedRepresentationTheory/ArakelovCycleHeights/CycleHeightFormulas/CycleHeightsDirect.lean
++++ b/Development/WeilBound/CoreStatements/TemperedRepresentationTheory/ArakelovCycleHeights/CycleHeightFormulas/CycleHeightsDirect.lean
+@@ -1,6 +1,5 @@
+ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ArakelovCycleHeights.HeightsOfFormMix
+ import Development.AutomorphicSpectrum.Proofs.MetricProofs.ArithIntersectionSystemOfPoincareLelongStatement
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithIntersectionCalculusOfFormMixedProjectionStatement
+ import Development.AutomorphicSpectrum.Proofs.MetricProofs.RationalityOfResolutionStatementStatement
+ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ArakelovCycleHeights.CycleHeightFormulas.CombLineSingle
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothHermCombLine
+@@ -135,14 +134,13 @@
+ 
+ namespace GlobalTheory.ArithmeticHeightTower.ArakelovDirectHeights
+ 
+-theorem arCalc_direct (hP : GlobalTheory.CompanionTheory.Ar.Pub.PoincareLelong) (hR : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement) : GlobalTheory.Published.ArCalc :=
++theorem cycleHeights_direct (hP : GlobalTheory.CompanionTheory.Ar.Pub.PoincareLelong)
++    (hR : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement) : GlobalTheory.Published.CycleHeights := by
+   have H := GlobalTheory.T.arith_intersection_system_of_poincare_lelong hP hR
+-  have P := GlobalTheory.ArithmeticHeightTower.Read1.bridge3 (GlobalTheory.ArithmeticHeightTower.FormZc.formZ_direct H hR) (GlobalTheory.CompanionTheory.MixZ.mixZ_direct H hR)
++  obtain ⟨hF, hM, hProj⟩ := GlobalTheory.ArithmeticHeightTower.Read1.bridge3
++    (GlobalTheory.ArithmeticHeightTower.FormZc.formZ_direct H hR)
++    (GlobalTheory.CompanionTheory.MixZ.mixZ_direct H hR)
+     (GlobalTheory.CompanionTheory.MPDict.projQ_direct H hR)
+-  GlobalTheory.T.arithIntersectionCalculus_of_form_mixed_projection P.1 P.2.1 P.2.2
+-
+-theorem cycleHeights_direct (hP : GlobalTheory.CompanionTheory.Ar.Pub.PoincareLelong)
+-    (hR : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement) : GlobalTheory.Published.CycleHeights :=
+-  GlobalTheory.Published.cycleHeights_of_arCalc (arCalc_direct hP hR)
++  exact ⟨GlobalTheory.T.arithHeightsAndForms_of_intersection_and_inductive hF hM, hM, hProj⟩
+ 
+ end GlobalTheory.ArithmeticHeightTower.ArakelovDirectHeights
+--- a/Development/WeilBound/CoreStatements/TemperedRepresentationTheory/ArakelovCycleHeights/CycleHeightFormulas/TopSelfTower.lean
++++ b/Development/WeilBound/CoreStatements/TemperedRepresentationTheory/ArakelovCycleHeights/CycleHeightFormulas/TopSelfTower.lean
+@@ -3,16 +3,6 @@
+ import Development.AbelianVarietyTheory.Definitions.Divisors.HypothesesX
+ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.RegularAlteration
+ import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+-import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsX
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InterNumRedCloPull
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegFlLamAPowVdmCl
+-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagDeterminantIso
+-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagRootDivisorRelation
+-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LbIsoDetAffDetOm
+-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBaseOfFlagCpt
+-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagSpaceComponentBaseDimEqCmTypeCardMulPq
+-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodChernWeilOfGoodTopChernForm
+-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToroidalFlagProportionalityOfGoodChernWeil
+ 
+ set_option autoImplicit false
+ 

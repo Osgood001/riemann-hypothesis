@@ -1,0 +1,34 @@
+{
+  "core": 24,
+  "candidate": "core24-prune03",
+  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core24.tar.zst",
+  "shard_sha256": "1ecbfdbb037781041b1d5959fa1104ffd2d015f6f1ab119c86e01a2fa5cb1ad6",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 14175,
+  "local_normalized_tokens": 28964690,
+  "published_baseline_tokens": 30828159,
+  "proof_tree_sha256": "96dc5d66d1f6bc0ecee8ce3ee86a50c157bcde64023dc5136ee2ce3b659f7de4",
+  "modified_files": {
+    "Development/WeilBound/CoreStatements/TemperedRepresentationTheory/ArakelovCycleHeights/CycleHeightFormulas/CycleHeightsDirect.lean": {
+      "before": "10fd7d280e842a721cd2d76a92d23ad6b3edead0a5bad11a5d6f2b5c04df9942",
+      "after": "32e6ec5d0567f6689343d44985822854b2e3dc840feb097b6d0c8f3bc9a3a3da"
+    },
+    "Development/WeilBound/CoreStatements/TemperedRepresentationTheory/ArakelovCycleHeights/CycleHeightFormulas/TopSelfTower.lean": {
+      "before": "86455794c33aaf612eea23b4b98f8d7950e3a07fb1252e8109adf2c1be3c7ebd",
+      "after": "4e9c145b0603e39e4102c0daa66f4b8255667bcbee5e84b5ce2a416593f652cc"
+    }
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-23T10:34:09.535940+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null
+}

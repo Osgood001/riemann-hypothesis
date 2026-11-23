@@ -1,0 +1,38 @@
+{
+  "core": 23,
+  "candidate": "core23-prune03",
+  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core23.tar.zst",
+  "shard_sha256": "b6864c35ffba3a2846c2f4bf63d4bb02af215054bbda77ac8feb43ce4ca8ed98",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 11827,
+  "local_normalized_tokens": 25444425,
+  "published_baseline_tokens": 47617266,
+  "proof_tree_sha256": "99d8db4c1a738601104b630cceac8e6d7e04d384e3e81ce726df18fe8aa5fb74",
+  "modified_files": {
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/ArithHilbertSamuelNefOfAmpleStatement.lean": {
+      "before": "4e9de8d82588f03f9305384cbbbb43c53af781af59540c75fe22665d1ca1b7ed",
+      "after": "5856dddee5250fa4d065419280918d1f1c1a072c5bd3890b723f7655f1c1122e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/InducedModelDominantCurveRestriction.lean": {
+      "before": "de29edd9b6a578d685de58fb55ef331934f7e01e89442fdc49e66a9df9fa0c39",
+      "after": "3f4f801a6b8a8fced123774d1a4705f4e5b275b1096ed5e54e7f3e81fd3625f8"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/IsometricShiftOfIsometric.lean": {
+      "before": "a5e07a5b051b5a7d4a5d58d59dff96bad9fb2c262d4ce410ac6ca3c56d11c5cc",
+      "after": "e493c4d18db66066aa1b57ba79fefac0749b97366382fe5ad255b212033ab577"
+    }
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-23T11:08:19.020583+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null
+}

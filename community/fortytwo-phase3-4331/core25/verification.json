@@ -1,0 +1,34 @@
+{
+  "core": 25,
+  "candidate": "core25-prune02",
+  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core25.tar.zst",
+  "shard_sha256": "36e4df3009573233d22610ac42d189d8fd6e6aa2a98901fdd31f655aa752aa9b",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 10649,
+  "local_normalized_tokens": 24600777,
+  "published_baseline_tokens": 29435752,
+  "proof_tree_sha256": "0a4aa7bf93a3ecb372730babc5bf736aec5c98ce10c59e5ea3e1a01059ef513b",
+  "modified_files": {
+    "Development/WeilBound/CoreStatements/AutomorphicKernels/SiegelWeilFormula/AwayActions/SigmaSigma.lean": {
+      "before": "8adc13c48784f79517b064301a4581d21ac0f049c9cb39065802ea18a2d3960d",
+      "after": "77b6265767a263ce41a73c2524d935d1963e70cb4c7bc32d89668b8f261716b0"
+    },
+    "Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/SiegelWeilLagrangianTermsAbsTsumLeHeightPoly.lean": {
+      "before": "5086ef78b3abdde3407ae1d610bf999673ab9a141e1e15bdc2e32ecefb5741bc",
+      "after": "009d02a72e555a26021cf4f93be5728a1ec0b9144f8e09dc5d8e43c31c641ac8"
+    }
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-23T09:42:26.030114+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null
+}

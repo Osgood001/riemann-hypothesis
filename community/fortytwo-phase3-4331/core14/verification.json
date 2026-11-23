@@ -1,0 +1,58 @@
+{
+  "core": 14,
+  "candidate": "core14-fallback07",
+  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core14.tar.zst",
+  "shard_sha256": "18f7159a68c2046bba8578cacd75720e9c7436668412ca55f66a7d209ef93428",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 1121,
+  "local_normalized_tokens": 2150099,
+  "published_baseline_tokens": 3467872,
+  "proof_tree_sha256": "66ae8ba499de9bbdc91369fcbcbafdbeeb0f9a0dbce5f5e956498644a005f8d4",
+  "modified_files": {
+    "Formalism/SharpRestriction/GlobalSchurBounds/LogXLowerFamilyOfTheorems.lean": {
+      "before": "bf2ecd34e87411e67f767c23b8c3ec6a62fcd34738138a63c326d58f12e5f431",
+      "after": "014fbadf8710440ce014337ddd26ea55f309a69a92aa742973128df8a953a606"
+    },
+    "Formalism/LocalToGlobal/SiegelLatticeTheory/WeightedGaugeFactors/FactsDS.lean": {
+      "before": "1bcf03b507f3d2a313d14835fbd6b9e804852f2c378e9418a7969ccbe4cc052c",
+      "after": "a850c09244d4df099065cf06fcb24e7a56a36092bb81c07c24d30a83a2775a25"
+    },
+    "Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/TopShape.lean": {
+      "before": "9647d4cbe444f79de90c7a5371801e83c58a040499bf03fd61faf37be9e6eaa3",
+      "after": "3ca71ad0cde1a36d2a57620d626bb13593ed8ccb2ed7db4e3b5de18616f619c5"
+    },
+    "Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/ShapeOf.lean": {
+      "before": "c37a51fd244c4812302bf5d816a248e119ec9ed84089869752267ae741a61705",
+      "after": "769fe2fbb932ec370ae8f21267be3e32c2705d8ef4485e98eb97174ed61ba189"
+    },
+    "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkGl.lean": {
+      "before": "f968ce06056ca8326be9b449b4717cab0f7d9e81354503b3427e928480816443",
+      "after": "b8b804a7de69d19c697fcecb55abcde75c516c84dcb57a0c4683f2723c54bc10"
+    },
+    "Formalism/LocalToGlobal/SiegelLatticeTheory/FlagStabilizerTensors/RootLatticeThresholds/LoopRowSF.lean": {
+      "before": "e72c8e524dbfabdf3d33ba5edd471f67e1248b79f8682cbafec8bffabe80e9b2",
+      "after": "8bdbd6735162fbeb9018966fc20732290c37fa6ddc4336de1dd9dd22a314f45f"
+    },
+    "Formalism/SharpRestriction/Divisibility/SlopeExcess/UniformSizeBoundOfOpenFamily.lean": {
+      "before": "50a5772ad26bb88c9873d019df01b739d84777d73e6c44df0c6c4e8bc931993d",
+      "after": "e2364a97165f8a36cdb802823116bb8cacc42dc88619c126785713aeb6482690"
+    },
+    "Formalism/SharpRestriction/GlobalSchurBounds/TheoremThreeFamilyOfGappedMultiplicity.lean": {
+      "before": "b2b445876204c3eaf4b3ae4e67aeebda920ca4939f066d7bbac5840ef931fada",
+      "after": "4383acb74985f68a4e806a5260324f2e4910b5eb3e4e957b7b7de7369834ccbe"
+    }
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-23T10:55:17.516171+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null
+}
