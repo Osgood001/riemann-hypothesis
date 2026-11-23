@@ -636,7 +636,7 @@
  
  noncomputable section
  
-@@ -20,10 +32,7 @@
+@@ -20,27 +32,22 @@
  theorem aT_eq (N r : ℕ) (t : ℝ) : aT E N r t = An.aR E N r t := by
    have e : An.aR E N r t = diagUnits N (fun i : Fin N =>
        infId E (expU fun _ : InfinitePlace E => (((if (i : ℕ) < r then t else 0 : ℝ)) : ℂ))) := by
@@ -648,3 +648,26 @@
    rw [e]
    refine Units.ext (Matrix.ext fun i j => ?_)
    rw [coe_diagUnits, Matrix.diagonal_apply]
+   change (1 : Matrix (Fin N) (Fin N) (Ad E)) i j - sInf E ((1 : Matrix (Fin N) (Fin N) (Cinf E)) i j) +
+     sInf E ((aInf E N r t : Matrix (Fin N) (Fin N) (Cinf E)) i j) = _
+-  by_cases hij : i = j
+-  · subst hij
+-    rw [if_pos rfl, Matrix.one_apply_eq, Matrix.one_apply_eq]
++  rw [show (aInf E N r t : Matrix (Fin N) (Fin N) (Cinf E)) = Matrix.diagonal (fun (k : Fin N) (_ : InfinitePlace E) =>
++      Complex.exp (if (k : ℕ) < r then (t : ℂ) else 0)) from rfl]
++  by_cases h : i = j
++  · subst j
++    simp only [if_pos rfl, Matrix.one_apply_eq, Matrix.diagonal_apply_eq]
+     change _ = 1 - sInf E 1 + sInf E (fun _ => Complex.exp _)
+     congr 2
+     funext w
+-    rw [show (aInf E N r t : Matrix (Fin N) (Fin N) (Cinf E)) = Matrix.diagonal (fun (k : Fin N) (_ : InfinitePlace E) =>
+-      Complex.exp (if (k : ℕ) < r then (t : ℂ) else 0)) from rfl, Matrix.diagonal_apply_eq]
+     split_ifs <;> simp
+-  · rw [if_neg hij, Matrix.one_apply_ne hij, Matrix.one_apply_ne hij]
+-    rw [show (aInf E N r t : Matrix (Fin N) (Fin N) (Cinf E)) = Matrix.diagonal (fun (k : Fin N) (_ : InfinitePlace E) =>
+-      Complex.exp (if (k : ℕ) < r then (t : ℂ) else 0)) from rfl, Matrix.diagonal_apply_ne _ hij, map_zero, sub_zero, add_zero]
++  · simp [h, Matrix.one_apply, Matrix.diagonal_apply]
+ 
+ theorem lat_eq (N : ℕ) : latticeGL E N = An.lat E N := by
+   unfold latticeGL An.lat

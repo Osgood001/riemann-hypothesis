@@ -1,14 +1,14 @@
 {
   "core": 40,
-  "candidate": "core40-fastdiag42f66c6dd6e1",
+  "candidate": "core40-fastdiag6245b69c5523",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 6,
-  "local_normalized_tokens": 2639,
+  "local_normalized_tokens": 2553,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "9f4083caacd9e86c1f492afa31afb0e7685ba14d2adad19ab5b715b4b623e435",
+  "proof_tree_sha256": "e5c1762d605d1e67005c3340c39085a9c9f4f4ed2f11d5c4e401f1a370d5ee84",
   "modified_files": {
     "Development/AbelianVarietyTheory/Definitions/AutomorphicMembership/T2SpaceAdelicGeneralLinearGroupNumberField.lean": {
       "before": "4da9f6c04893f65c5e1a5c60e8ae0b88d2348049a6bdd8ef61ea5e464ed3b24b",
@@ -28,7 +28,7 @@
     },
     "Development/WeilBound/RepresentationTheoryGL/ResidualSpectrum/ExponentialNegativity/NormalisedExistence/ExistsNormed.lean": {
       "before": "4a3cc553822786714992fcd3bea4513907acdb443f6f6960ea225db8b5fb6485",
-      "after": "42f66c6dd6e17e74165c7d5b5360b851d72d20920bc1104a44a5bc919bfd75b5"
+      "after": "6245b69c55234c12c71ffa1aadb8ba3e99b7573546aabc4618763451b805e8c7"
     }
   },
   "attribution": {
@@ -42,7 +42,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T20:21:42.270924+00:00",
+    "completed_utc": "2026-11-23T20:26:06.172404+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
