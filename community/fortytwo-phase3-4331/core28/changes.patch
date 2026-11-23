@@ -1949,7 +1949,14 @@
      (x y : Fin r → E) : cc (herm G x y) = herm G y x := by
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermitianTraceFormVanishing.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermitianTraceFormVanishing.lean
-@@ -96,25 +96,6 @@
+@@ -1,5 +1,5 @@
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
+-import Lemmata.GeneralBFactAltForm.Imports
++import Mathlib.RingTheory.Localization.Finiteness
+ 
+ namespace ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing
+ 
+@@ -96,30 +96,12 @@
    have := eq_zero_of_herm G hG _ hall
    exact sub_eq_zero.mp this
  
@@ -1975,6 +1982,13 @@
  
  theorem exists_smul_mem {R F X : Type*} [CommRing R] [IsDomain R] [Field F] [Algebra R F]
      [IsFractionRing R F] [AddCommGroup X] [Module F X] [Module R X] [IsScalarTower R F X]
+     (S : Submodule R X) {x : X}
+     (hx : x ∈ Submodule.span F (S : Set X)) : ∃ d : R, d ≠ 0 ∧ d • x ∈ S := by
+-  exact Bl.general_b_fact_alt_form.goal1 S hx
++  obtain ⟨d, hd⟩ := multiple_mem_span_of_mem_localization_span (nonZeroDivisors R) F (S : Set X) x hx
++  exact ⟨d, nonZeroDivisors.ne_zero d.2, by simpa only [Submodule.span_eq, Submonoid.smul_def] using hd⟩
+ 
+ end ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicOutsideLine.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicOutsideLine.lean
 @@ -139,16 +139,6 @@
@@ -2532,18 +2546,47 @@
      hermC τ G (Data.emb τ x) (Data.emb τ y) = τ (herm G x y) := by
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientDomain.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientDomain.lean
-@@ -15,7 +15,7 @@
+@@ -1,5 +1,4 @@
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientMatrices
+-import Lemmata.GeneralBFactBisForm.Imports
+ 
+ namespace ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain
+ 
+@@ -15,7 +14,22 @@
  lemma norm_fderiv_le {U : Set F} (hU : IsOpen U) {G : F → ℂ} (hG : DifferentiableOn ℂ G U)
      {y : F} {R C : ℝ} (hR : 0 < R) (hball : closedBall y R ⊆ U)
      (hC : ∀ z ∈ closedBall y R, ‖G z‖ ≤ C) : ‖fderiv ℂ G y‖ ≤ C / R := by
 -  first | exact Bl.general_b_fact_bis_form.goal1 .. | (apply Bl.general_b_fact_bis_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_bis_form.goal1 <;> assumption)
-+  apply _root_.Bl.general_b_fact_bis_form.goal1 <;> assumption
++  have hy := Metric.mem_closedBall_self hR.le (x := y)
++  refine ContinuousLinearMap.opNorm_le_of_unit_norm (div_nonneg ((norm_nonneg _).trans (hC _ hy)) hR.le) ?_
++  intro v hv
++  let l (t : ℂ) := y + t • v
++  have hl (t : ℂ) : HasDerivAt l v t := by simpa [l] using ((hasDerivAt_id t).smul_const v).const_add y
++  have hm (t : ℂ) (ht : t ∈ closedBall 0 R) : l t ∈ closedBall y R := by
++    simpa [l, Metric.mem_closedBall, dist_eq_norm, norm_smul, hv] using ht
++  have hd : DifferentiableOn ℂ (G ∘ l) (closedBall 0 R) := fun t ht =>
++    ((hG.differentiableAt (hU.mem_nhds (hball (hm t ht)))).comp t (hl t).differentiableAt).differentiableWithinAt
++  have hg : HasDerivAt (G ∘ l) (fderiv ℂ G y v) 0 :=
++    (hG.differentiableAt (hU.mem_nhds (hball hy))).hasFDerivAt.comp_hasDerivAt_of_eq 0 (hl 0) (by simp [l])
++  rw [← hg.deriv]
++  apply Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hR
++  · apply DifferentiableOn.diffContOnCl
++    rwa [closure_ball (0 : ℂ) hR.ne']
++  · exact fun t ht => hC _ (hm t (Metric.sphere_subset_closedBall ht))
  
  end Cauchy
  
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalFlagTranslateHolds.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalFlagTranslateHolds.lean
-@@ -36,10 +36,7 @@
+@@ -1,6 +1,5 @@
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMajorantFlags
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ProdCastLESucc
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajPos
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMatMulVec
+ 
+ namespace ReciprocityTheory.ChartRestriction.G.FD
+ 
+@@ -36,10 +35,7 @@
  private theorem gram_eq_lemma {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
      (M : Matrix (Fin r) (Fin r) ℂ) :
      gram τ G M = Mᵀ * G.map τ * M.map (starRingEnd ℂ) := by
@@ -2555,6 +2598,48 @@
  
  lemma dmin_rmul (x : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
      dmin X.Gm (rmul x b) τ i =
+@@ -158,40 +154,7 @@
+     rw [e, hx, mul_zero]
+ 
+ lemma ppos_sameFlag {x x' : Frame X.Ψ r} (hx : x ∈ X.dom) (hx' : x' ∈ X.dom) (h : X.SameFlag x x')
+-    (τ : X.Ψ) (u : Fin r → ℂ) : X.ppos x τ u = X.ppos x' τ u := by
+-  have hspan := h τ
+-  have hmem : ∀ y : Frame X.Ψ r, X.ppos y τ u ∈
+-      Submodule.span ℂ (Set.range fun a : Fin X.p0 => col (mat y τ) (Fin.castLE X.p0_le a)) := by
+-    intro y
+-    rw [X.ppos_eq]
+-    exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
+-  have horth : ∀ y ∈ X.dom, ∀ c ∈
+-      Submodule.span ℂ (Set.range fun a : Fin X.p0 => col (mat y τ) (Fin.castLE X.p0_le a)),
+-      hermC τ.1 X.Gm (X.ppos y τ u - u) c = 0 := by
+-    intro y hy c hc
+-    refine hermC_eq_zero_of_mem_span' τ.1 X.Gm _ _ (fun s hs => ?_) hc
+-    obtain ⟨d, rfl⟩ := hs
+-    rw [hermC_sub_left_of_natDim]
+-    exact sub_eq_zero.2 (X.hermC_ppos_colP hy τ u d)
+-  set v := X.ppos x τ u - X.ppos x' τ u with hv
+-  have hvmem : v ∈
+-      Submodule.span ℂ (Set.range fun a : Fin X.p0 => col (mat x τ) (Fin.castLE X.p0_le a)) := by
+-    refine Submodule.sub_mem _ (hmem x) ?_
+-    rw [hspan]
+-    exact hmem x'
+-  have hvperp : ∀ c ∈
+-      Submodule.span ℂ (Set.range fun a : Fin X.p0 => col (mat x τ) (Fin.castLE X.p0_le a)),
+-      hermC τ.1 X.Gm v c = 0 := by
+-    intro c hc
+-    have e : v = (X.ppos x τ u - u) - (X.ppos x' τ u - u) := by
+-      rw [hv]
+-      abel
+-    rw [e, hermC_sub_left_of_natDim, horth x hx c hc, horth x' hx' c (hspan ▸ hc), sub_zero]
+-  by_contra hne
+-  have hne' : v ≠ 0 := sub_ne_zero.2 hne
+-  have hlt := X.neg_of_perp hx τ hne' (fun b => hvperp _ (Submodule.subset_span ⟨b, rfl⟩))
+-  rw [hvperp v hvmem] at hlt
+-  simp at hlt
++    (τ : X.Ψ) (u : Fin r → ℂ) : X.ppos x τ u = X.ppos x' τ u := (FlowMajorantFlags.ppos_flag X hx hx' h τ u).symm
+ 
+ lemma Hf_sameFlag {x x' : Frame X.Ψ r} (hx : x ∈ X.dom) (hx' : x' ∈ X.dom) (h : X.SameFlag x x') :
+     X.Hf x = X.Hf x' := by
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajPos.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajPos.lean
 @@ -38,9 +38,7 @@
@@ -2930,21 +3015,44 @@
 +  fd_fj_near_sup_by_character flowDomainCriterion_holds fourierJacobi_holomorphic fourierJacobi_realFlow orthonormalFlagTranslate_holds
  
  end PI.FdFjNearSup.W
---- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSup.lean
-+++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSup.lean
-@@ -1,4 +1,4 @@
- import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.NearSupremumBounds.Inputs
- 
--theorem fd_fj_near_sup {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] : ReciprocityTheory.ChartRestriction.G.FD.HolomorphicPeriodicityExtension (E := E) → ReciprocityTheory.ChartRestriction.G.FD.FlowNormRatio (E := E) → ReciprocityTheory.ChartRestriction.G.FD.ModerateCoefficientPositivity (E := E) → ReciprocityTheory.ChartRestriction.G.FD.NearSupremumTransference (E := E) :=
--  PI.FdFjNearSup.W.fd_fj_near_sup_full
-+theorem fd_fj_near_sup_character {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] : ReciprocityTheory.ChartRestriction.G.FD.HolomorphicPeriodicityExtension (E := E) → ReciprocityTheory.ChartRestriction.G.FD.FlowNormRatio (E := E) → ReciprocityTheory.ChartRestriction.G.FD.NearSupremumTransference (E := E) :=
-+  PI.FdFjNearSup.W.fd_fj_near_sup_character_full
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainOfTransference.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainOfTransference.lean
-@@ -12,13 +12,12 @@
- import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicCoefficientLemmas
- import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NoShortVectorLowerBoundHolds
- import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.M3bNormHolds
+@@ -1,30 +1,43 @@
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.PointAssembly.FdPointAssembly
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.NearSupremumBounds.FdFjNearSup
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.FdUnipMove
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.NearSupremumBounds.Inputs
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.PointAssembly.DivLeExpOfAbsLogSubLe
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.PointAssembly.FourierJacobiDifferentiable
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.PointAssembly.Frames
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.AprojEqZeroOfUz
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.BotMulVecExt
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.HermLinApply
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.HermSmulLeft
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.KatoNormRelationTamePrime
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.SDual
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.TopOf
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HolomorphicPeriodicityExtension
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicCoefficientLemmas
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.M3bNormHolds
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajXZ
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantBoundOrthogonalPart
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NoShortVectorLowerBoundHolds
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalChartNormControlHolds
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalFlagTranslateHolds
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalShortVectorBoundOf
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SchwarzLemmaBallHolds
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ShortVectorBound
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HolomorphicPeriodicityExtension
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnitaryComplementMoveOfIsotropic
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantBoundOrthogonalPart
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalFlagTranslateHolds
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalChartNormControlHolds
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SchwarzLemmaBallHolds
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalShortVectorBoundOf
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicCoefficientLemmas
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NoShortVectorLowerBoundHolds
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.M3bNormHolds
 -import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivityHolds
  
  namespace ReciprocityTheory.ChartRestriction.G.FD
@@ -2952,10 +3060,24 @@
  variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
  
 -theorem nearSupremumTransference_holds : NearSupremumTransference (E := E) := fd_fj_near_sup holomorphic_periodicity_extension m3bNorm_holds moderateCoefficientPositivity_holds
-+theorem nearSupremumTransference_holds : NearSupremumTransference (E := E) := fd_fj_near_sup_character holomorphic_periodicity_extension m3bNorm_holds
++theorem nearSupremumTransference_holds : NearSupremumTransference (E := E) := PI.FdFjNearSup.W.fd_fj_near_sup_character_full holomorphic_periodicity_extension m3bNorm_holds
++
++open UnipMove PIW.FdPA
  
  theorem unitaryUnipotentMove : UnitaryUnipotentMove (E := E) :=
-   fd_unip_move shortVectorBound unitaryComplementMove unipotent_majorant_bound isotropicCoefficientSplitting_holds noShortVectorLowerBound_holds
+-  fd_unip_move shortVectorBound unitaryComplementMove unipotent_majorant_bound isotropicCoefficientSplitting_holds noShortVectorLowerBound_holds
++  top_of sEmb radius_pos_le_tenth kato_norm_relation_tame_prime final_numerical_inequalities epsilonZero_pos
++    (sCmp_of (fun _ X _ hx ho _ hρ0 hρ _ hZ τ v => OrthonormalChartBounds.maj_xZ X hx ho hρ0 hρ hZ τ v)) sMajFlag sFlagMap sGraph sSplit (sDelta_of sEmb sExt sDual
++      isotropicCoefficientSplitting_holds noShortVectorLowerBound_holds) shortVectorBound unitaryComplementMove
+ 
+ theorem fundamentalDomain_of_transference (hD5 : CoveringRadiusStatement) : FundamentalDomainPointBound (E := E) :=
+-  fd_point_assembly shortVectorBound orthonormalFlagTranslate_holds orthonormalChartNormControl_holds nearSupremumTransference_holds schwarzLemmaBall_holds (orthonormalShortVectorBound_of shortVectorBound hD5)
+-    isotropicCoefficientSplitting_holds noShortVectorLowerBound_holds unitaryUnipotentMove
++  fundamentalDomain_of_parts fourierJacobi_differentiable fourierJacobi_boundaryEq fourierJacobi_bounded orthonormal_domain unitary_domain borel_flag_translate
++    chartNorm_smul chartNorm_nonneg normFactor_pos_alt chart_zero_eq_alt orthonormalFlagTranslate_holds orthonormalChartNormControl_holds nearSupremumTransference_holds schwarzLemmaBall_holds (orthonormalShortVectorBound_of shortVectorBound hD5)
++    unitaryUnipotentMove
+ 
+ end ReciprocityTheory.ChartRestriction.G.FD
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean
 @@ -1,3 +1,5 @@
@@ -3095,3 +3217,150 @@
  end MinimumGrowthBounds
  
  end ReciprocityTheory.ChartRestriction.G.FD
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantBoundOrthogonalPart.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantBoundOrthogonalPart.lean
+@@ -67,8 +67,16 @@
+   simpa [u] using hmain
+ 
+ set_option maxHeartbeats 1000000 in
+-theorem unipotent_majorant_bound_data : ReducedFrameDomainCovering (E := E) := by
+-  intro r X ξ hξ x hx δ κ hκ0 hκ1 hδ
++theorem unipotent_majorant_for_move (X : Data E r) (ξ : Fin r → E) (hξ : X.IsIso ξ)
++    (x : Frame X.Ψ r) (hx : x ∈ X.dom) (δ : X.Ψ → (Fin r → ℂ) →ₗ[ℂ] ℂ)
++    (κ : ℝ) (hκ0 : 0 ≤ κ) (hκ1 : κ ≤ 1)
++    (hδ : ∀ u ∈ X.Uz x ξ, ∀ τ, X.maj x τ (δ τ (u τ) • emb τ.1 ξ) ≤ κ ^ 2 * X.maj x τ (u τ)) :
++    ∃ n, X.IsUnitaryC n ∧ (∀ τ, (n τ).mulVec (emb τ.1 ξ) = emb τ.1 ξ) ∧
++      (∀ u ∈ X.Iperp ξ, X.aproj (X.lmulC n x) ξ u = X.aproj x ξ u -
++        X.lineV ξ (fun τ => δ τ (X.ucomp x ξ u τ))) ∧
++      (∀ u ∈ X.Uz x ξ, X.ucomp (X.lmulC n x) ξ (X.Jz x u) =
++        X.Jz (X.lmulC n x) (X.ucomp (X.lmulC n x) ξ u)) ∧
++      ∀ (τ : X.Ψ) (v : Fin r → ℂ), X.maj x τ ((n τ - 1).mulVec v) ≤ (3 * κ) ^ 2 * X.maj x τ v := by
+   have hCsub : ∀ (τ : X.Ψ) (u v w : Fin r → ℂ) (c : ℂ),
+       hermC τ.1 X.Gm (u - c • v) w = hermC τ.1 X.Gm u w - c * hermC τ.1 X.Gm v w := by
+     intro τ u v w c
+@@ -165,48 +173,13 @@
+     rw [X.hyperbolic_projection_apply, X.hyperbolic_coeff_a_apply, X.hyperbolic_coeff_b_apply, hv, mul_zero, zero_smul, sub_zero, hHfJ τ v,
+       div_eq_inv_mul]
+     rfl
+-  have hdom : X.lmulC N x ∈ X.dom := by
+-    show ∀ τ : X.Ψ, (mat (X.lmulC N x) τ).det ≠ 0 ∧
+-      ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm (X.lmulC N x) τ i).re
+-    intro τ
+-    have hm : mat (X.lmulC N x) τ = N τ * mat x τ := rfl
+-    have hcol : ∀ c, col (N τ * mat x τ) c = (N τ).mulVec (col (mat x τ) c) := by
+-      intro c
+-      funext k
+-      simp [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]
+-    have hgram : gram τ.1 X.Gm (N τ * mat x τ) = gram τ.1 X.Gm (mat x τ) := by
+-      ext a b
+-      simp only [gram, Matrix.of_apply, hcol, hU]
+-    refine ⟨?_, fun i => ?_⟩
+-    · rw [hm, Matrix.det_mul]
+-      refine mul_ne_zero ?_ (hx τ).1
+-      intro hdet
+-      obtain ⟨v, hv0, hv⟩ := Matrix.exists_mulVec_eq_zero_iff.2 hdet
+-      apply hv0
+-      have horth : ∀ w, hermC τ.1 X.Gm v w = 0 := fun w => by
+-        rw [← hU τ v w, hv, hC_zero_left]
+-      have hvm : Matrix.vecMul v (X.Gm.map τ.1) = 0 := by
+-        funext b
+-        have h1 := horth (Pi.single b 1)
+-        simpa [hermC, Pi.single_apply, Matrix.vecMul, dotProduct] using h1
+-      exact Matrix.eq_zero_of_vecMul_eq_zero (map_det_ne τ.1 X.Gm X.Gm_det) hvm
+-    · simp only [dmin, hm, hgram]
+-      exact (hx τ).2 i
+-  refine ⟨N, hU, hNe, ?_, hdom, ?_, ?_, ?_, ?_⟩
+-  · intro u hu
+-    funext τ
+-    simp only [Data.applyV, Data.lineV, Pi.add_apply]
+-    exact X.unipotent_on_hyperbolic_complement (x := x) (τ := τ) (e := emb τ.1 ξ) (δ := δ τ) hx (hee τ) (hqne τ) (hu.1 τ) (huz u hu τ)
++  refine ⟨N, hU, hNe, ?_, ?_, ?_⟩
+   · intro u hu
+     funext τ
+     simp only [Data.aproj, Data.lineV, Pi.sub_apply, Data.ucomp]
+     rw [hHfperp τ (u τ) (hu τ), hHfee τ, hπperp τ (u τ) (hu τ), ← sub_smul]
+     congr 1
+     field_simp [hqne τ]
+-  · intro τ
+-    have h1 : (X.maj (X.lmulC N x) τ (emb τ.1 ξ) : ℂ) = X.maj x τ (emb τ.1 ξ) := by
+-      rw [← X.Hf_self hdom τ, ← X.Hf_self hx τ, hHfee τ]
+-    exact_mod_cast h1
+   · intro u hu
+     funext τ
+     have hw1 : hermC τ.1 X.Gm (u τ) (emb τ.1 ξ) = 0 := hu.1 τ
+@@ -259,6 +232,4 @@
+ 
+ end Data
+ 
+-theorem unipotent_majorant_bound : ReducedFrameDomainCovering (E := E) := Data.unipotent_majorant_bound_data
+-
+ end ReciprocityTheory.ChartRestriction.G.FD
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/TopOf.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/TopOf.lean
+@@ -1,3 +1,4 @@
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantBoundOrthogonalPart
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.KatoClassHeckeEulerFactorRelation
+ 
+ namespace UnipMove
+@@ -12,7 +13,7 @@
+ theorem top_of (hemb : SEmb E) (hN1 : RadiusPosLeTenth) (hN2 : KatoClassHeckeEulerFactorRelation) (hN3 : UnipotentMoveNumericalInequalities) (hN4 : EpsilonZeroPos E)
+     (hcmp : SCmp E) (hmf : SMajFlag E) (hflag : SFlagMap E) (hgraph : SGraph E)
+     (hsplit : SSplit E) (hdelta : SDelta E)
+-    (hD4 : ShortVectorBound (E := E)) (hD2i : UnitaryComplementMove (E := E)) (hD2ii : ReducedFrameDomainCovering (E := E)) :
++    (hD4 : ShortVectorBound (E := E)) (hD2i : UnitaryComplementMove (E := E)) :
+     UnitaryUnipotentMove (E := E) := by
+   intro r X la P ξ ν c1 w z0 hH x0 hx0 hx0o hfl0 lam h1 Z1 hu1 hfix1 hpres1 hsp1 hfl1 hZ1 n' hn'
+   have hD4' := hD4 r X la P ξ ν c1 w z0 hH
+@@ -87,8 +88,8 @@
+       _ ≤ ρ / 1000 / t := div_le_div_of_nonneg_right hmsn ht0.le
+       _ = ρ / (1000 * t) := by ring
+   obtain ⟨hκ1, hη1, hfin⟩ := hN3 ρ κ hρ0 hρ1 hκ0 hκρ
+-  obtain ⟨n, hnu, hnξ, -, -, hnap, -, hnJ, hnb⟩ :=
+-    hD2ii r X.toData ξ hiso (X.lmulC h1 z0) hz1dom δ κ hκ0 hκ1 hδb
++  obtain ⟨n, hnu, hnξ, hnap, hnJ, hnb⟩ :=
++    X.toData.unipotent_majorant_for_move ξ hiso (X.lmulC h1 z0) hz1dom δ κ hκ0 hκ1 hδb
+ 
+   have hnb0 : ∀ (τ : X.Ψ) (v : Fin r → ℂ),
+       X.maj x0 τ (Matrix.mulVec (n τ - 1) v) ≤ (3 * κ / t) ^ 2 * X.maj x0 τ v := by
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LatticeSpanMembership.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LatticeSpanMembership.lean
+@@ -55,31 +55,14 @@
+ 
+ theorem exists_nat_smul_mem (v : Fin r → E) : ∃ N : ℕ, 0 < N ∧ (N : E) • v ∈ X.Λ := by
+   have hv : v ∈ Submodule.span E (X.Λ : Set (Fin r → E)) := X.Λ_span ▸ Submodule.mem_top
+-  induction hv using Submodule.span_induction with
+-  | mem v hv => exact ⟨1, one_pos, by simpa using hv⟩
+-  | zero => exact ⟨1, one_pos, by simp⟩
+-  | add v w _ _ ihv ihw =>
+-    obtain ⟨N1, h1, hv1⟩ := ihv
+-    obtain ⟨N2, h2, hw2⟩ := ihw
+-    refine ⟨N1 * N2, Nat.mul_pos h1 h2, ?_⟩
+-    have e : ((N1 * N2 : ℕ) : E) • (v + w) = N2 • ((N1 : E) • v) + N1 • ((N2 : E) • w) := by
+-      rw [← Nat.cast_smul_eq_nsmul E N2, ← Nat.cast_smul_eq_nsmul E N1, smul_smul, smul_smul,
+-        smul_add, Nat.cast_mul, mul_comm (N2 : E)]
+-    rw [e]
+-    exact X.Λ.add_mem (X.Λ.toAddSubmonoid.nsmul_mem hv1 N2) (X.Λ.toAddSubmonoid.nsmul_mem hw2 N1)
+-  | smul c v _ ihv =>
+-    obtain ⟨N, hN, hv⟩ := ihv
+-    obtain ⟨M, hM, hc⟩ := exists_nat_mul_int c
+-    refine ⟨M * N, Nat.mul_pos hM hN, ?_⟩
+-    obtain ⟨γ, hγ⟩ : ∃ γ : 𝓞 E, (γ : E) = (M : E) * c := ⟨⟨_, hc⟩, rfl⟩
+-    have h := X.Λ.smul_mem γ hv
+-    rw [← algebraMap_smul E γ ((N : E) • v)] at h
+-    convert h using 1
+-    show ((M * N : ℕ) : E) • (c • v) = (γ : E) • ((N : E) • v)
+-    rw [hγ, smul_smul, smul_smul]
+-    congr 1
+-    push_cast
+-    ring
++  obtain ⟨d, hd, hmem⟩ := HermitianTraceFormVanishing.exists_smul_mem (F := E) X.Λ hv
++  obtain ⟨N, hN, hInt⟩ := exists_nat_mul_int (d : E)⁻¹
++  have hdE : (d : E) ≠ 0 := fun h => hd (Subtype.ext h)
++  let b : 𝓞 E := ⟨_, hInt⟩
++  have h := X.Λ.smul_mem b hmem
++  refine ⟨N, hN, ?_⟩
++  change ((N : E) * (d : E)⁻¹) • ((d : E) • v) ∈ X.Λ at h
++  simpa only [smul_smul, mul_assoc, inv_mul_cancel₀ hdE, mul_one] using h
+ 
+ theorem mem_Λp_iff {ξ μ : Fin r → E} : μ ∈ X.Λp ξ ↔ μ ∈ X.Λ ∧ herm X.Gm μ ξ = 0 := by
+   unfold Data.Λp
