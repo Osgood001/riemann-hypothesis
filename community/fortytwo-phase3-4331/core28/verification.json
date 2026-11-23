@@ -1,14 +1,14 @@
 {
   "core": 28,
-  "candidate": "core28-fastsupporte089b0d0a9",
+  "candidate": "core28-fastgeomc67730ef39",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 170,
-  "local_normalized_tokens": 380343,
+  "local_normalized_tokens": 376529,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "b1d1432c45a2e40b295a42c8dc7bf264cc9490e48a8f748a364a5543499c375f",
+  "proof_tree_sha256": "043a5c0299fc76ec7711a04b4095f1b54786deb61eccaa02808fa186ac09692e",
   "modified_files": {
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
       "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
@@ -57,12 +57,20 @@
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantConjugateTransfer.lean": {
       "before": "23482ab53655ad8df12a789d3ec34df46eddd2c2dd4d379f72806b2aef87de25",
       "after": "63bccc233ed11442121f1dc33febdcb2b2cbe049c8dc2133b76c5bd0d173486a"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowFixesComplementOfIsotropic.lean": {
+      "before": "7578b0f14bd839db7001a949eb3df8751f42a36ee6a0c05ae95316dfc11b6ecf",
+      "after": "ebdbe5cd6445c8a0dae815ca8f8c8361305aa1337f102aca8a9c4f2ea70d6a53"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsIntegralCc.lean": {
+      "before": "4cd337eb6b66d51867d0e63df3790e9f2550f72cd64f4bd2212b0247f8b27b4c",
+      "after": "25152811db9bb9b885d55d80284abb6d1fe31d3a49b5ce0fb3a80064df6fef2e"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Levent Alpöge authored the Fourier contour-independence and coefficient bounds and the original RH proof. Fortytwo Engine: Deepseek Flash V4.1 1017 removed unrelated imports in FractionalSliceDomains; its native source is retained byte for byte. Codex restored the two exact Fourier support modules at their consumer and directly applied Alpöge’s bound and contour-independence lemmas there. Codex restricted LatAll to its single needed export Closed.approx and its two original dependencies. Its proof term is preserved from Alpöge’s source. Codex extracted Alpöge’s original six Fourier declarations into the support module, imported their Mathlib dependencies directly and removed two unused namespace openings. Codex kept the original prefixes defining the torus projection and lift, the normalized section bounds and positivity lemmas, and the real-flow majorant transfer, removing later results unused by this pillar. Codex removed unused imports of trace-form independence and telescoping weighted sums, imported the Fourier coefficient declaration directly, and retained the original majorant transfer, nonnegativity and zero lemmas.",
+    "new_contribution": "Levent Alpöge authored the Fourier contour-independence and coefficient bounds and the original RH proof. Fortytwo Engine: Deepseek Flash V4.1 1017 removed unrelated imports in FractionalSliceDomains; its native source is retained byte for byte. Codex restored the two exact Fourier support modules at their consumer and directly applied Alpöge’s bound and contour-independence lemmas there. Codex restricted LatAll to its single needed export Closed.approx and its two original dependencies. Its proof term is preserved from Alpöge’s source. Codex extracted Alpöge’s original six Fourier declarations into the support module, imported their Mathlib dependencies directly and removed two unused namespace openings. Codex kept the original prefixes defining the torus projection and lift, the normalized section bounds and positivity lemmas, and the real-flow majorant transfer, removing later results unused by this pillar. Codex removed unused imports of trace-form independence and telescoping weighted sums, imported the Fourier coefficient declaration directly, and retained the original majorant transfer, nonnegativity and zero lemmas. Codex narrowed the complex-conjugation and isotropic-flow modules to the original lemmas needed for integral conjugation, the rank-one flow action, column transport and linearity.",
     "shared_module_attribution": {
       "inherited_native_module": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains",
       "supervisor_edit": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivityHolds",
@@ -83,16 +91,17 @@
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.M3bNormHolds",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantConjugateTransfer",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthogonalComplementLines"
+      ],
+      "geometry_supervisor_edits": [
+        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowFixesComplementOfIsotropic",
+        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsIntegralCc"
       ]
-    },
-    "unreachable_parent_edits": [
-      "ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSum"
-    ]
+    }
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T20:31:33.909304+00:00",
+    "completed_utc": "2026-11-23T21:04:13.622445+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
