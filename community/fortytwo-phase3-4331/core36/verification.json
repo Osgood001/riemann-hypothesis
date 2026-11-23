@@ -1,20 +1,20 @@
 {
   "core": 36,
-  "candidate": "core36-fastcmroots8ec14abff2f6",
+  "candidate": "core36-fastmodulara0290815165d",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 815,
+  "local_normalized_tokens": 719,
   "published_baseline_tokens": 1023975,
-  "proof_tree_sha256": "47913654f1b2017ca1584f7e40d8327be9ad9409e1ab1c11c39fe0debcf67a07",
+  "proof_tree_sha256": "26db03d2498e9559619242e81db8613fb6eded07ec3ca6721e833043451c1ea3",
   "modified_files": {},
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
     "native_proof_sha256": "e62fd12769efda67cbd59cfe5f6001f58fd4ea9d834eaca87e36c659c329b726",
-    "adapted_proof_sha256": "8ec14abff2f6ff24c4428f57e62714bf46d3143695f58243016fa2e171954126",
+    "adapted_proof_sha256": "a0290815165d06b9b88e8683e3eaf72aea8290882ec160097ddae974abf8ceb9",
     "adapted_solution_line_changes": [
       {
         "original": [
@@ -39,60 +39,30 @@
       {
         "original": [
           26,
-          33
-        ],
-        "adapted": [
-          28,
-          31
-        ]
-      },
-      {
-        "original": [
-          36,
-          44
-        ],
-        "adapted": [
-          34,
-          34
-        ]
-      },
-      {
-        "original": [
-          47,
           51
         ],
         "adapted": [
-          37,
-          41
+          28,
+          35
         ]
       },
       {
         "original": [
-          65,
-          67
-        ],
-        "adapted": [
-          55,
-          56
-        ]
-      },
-      {
-        "original": [
-          71,
-          73
-        ],
-        "adapted": [
           60,
-          61
+          74
+        ],
+        "adapted": [
+          44,
+          57
         ]
       }
     ],
-    "new_contribution": "Fortytwo’s direct CM pure-lattice splitting proof is retained. Codex rewrote the direct-sum span using Sum.range_eq, shortened both subtraction arguments, and used the discriminant-square identity minus one half of the root times the eigenvalue equality to prove the discriminant would vanish. Original formalization by Levent Alpöge."
+    "new_contribution": "Fortytwo proved the pure-lattice splitting with the injectivity of the period map. Codex rewrote the span of the sum, separated the two roots using the discriminant identity, and applied the modular law for submodules to deduce both pure-span conclusions from disjointness. Original formalization by Levent Alpöge."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T21:54:37.863521+00:00",
+    "completed_utc": "2026-11-23T22:13:02.675314+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",

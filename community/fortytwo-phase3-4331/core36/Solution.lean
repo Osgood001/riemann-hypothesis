@@ -27,18 +27,12 @@ theorem pureFamilyDecomposition :
     intro h
     apply (Nat.cast_ne_zero.mpr H.d_prime.ne_zero : (H.d : ℂ) ≠ 0)
     linear_combination H.sqrt_neg_disc_sq - (H.rt0 / 2) * h
-  have hsplit : ∀ y : D.La, ∃ a ∈ A,
-      ∃ b ∈ B, n • y = a + b := by
-    intro y
-    have h := hn y
-    rw [Sum.range_eq x, Submodule.span_union, Submodule.mem_sup] at h
-    obtain ⟨a, ha, b, hb, hab⟩ := h
-    exact ⟨a, ha, b, hb, hab.symm⟩
   have hlatL : A ≤ L :=
     Submodule.span_le.2 (Set.range_subset_iff.mpr hx.1)
   have hlatR : B ≤ R :=
     Submodule.span_le.2 (Set.range_subset_iff.mpr hx.2)
-  have hboth : ∀ z, z ∈ L → z ∈ R → z = 0 := by
+  have hLR : Disjoint L R := by
+    apply Submodule.disjoint_def.mpr
     intro z h1 h2
     apply hP.2.1
     rw [map_zero]
@@ -47,18 +41,19 @@ theorem pureFamilyDecomposition :
     · have : ty j (H.rt : E) ≠ -H.rt0 := by rw [hj]; exact hne
       exact h2 j (by simpa [sgnRt] using this)
     · exact h1 j (by simpa [sgnRt] using hj)
-  refine ⟨fun y => ?_, fun y hy => ?_, fun y hy => ?_⟩
-  · obtain ⟨a, ha, b, hb, e⟩ := hsplit y
-    exact ⟨a, hlatL ha, b, hlatR hb, e⟩
-  · obtain ⟨a, ha, b, hb, e⟩ := hsplit y
-    have hb0 : b = 0 := hboth b (by
-      simpa [e] using L.sub_mem
-        (Submodule.smul_of_tower_mem _ n hy) (hlatL ha)) (hlatR hb)
-    rw [e, hb0, add_zero]; exact ha
-  · obtain ⟨a, ha, b, hb, e⟩ := hsplit y
-    have ha0 : a = 0 := hboth a (hlatL ha) (by
-      simpa [e] using R.sub_mem
-        (Submodule.smul_of_tower_mem _ n hy) (hlatR hb))
-    rw [e, ha0, zero_add]; exact hb
+  rw [Sum.range_eq x, Submodule.span_union] at hn
+  change ∀ y, n • y ∈ A ⊔ B at hn
+  refine ⟨?_, ?_, ?_⟩
+  · intro y
+    obtain ⟨a, ha, b, hb, e⟩ := Submodule.mem_sup.mp (hn y)
+    exact ⟨a, hlatL ha, b, hlatR hb, e.symm⟩
+  · intro y hy
+    change n • y ∈ A
+    rw [← sup_bot_eq A, ← (hLR.symm.mono_left hlatR).eq_bot, ← sup_inf_assoc_of_le B hlatL]
+    exact ⟨hn y, L.smul_of_tower_mem n hy⟩
+  · intro y hy
+    change n • y ∈ B
+    rw [← sup_bot_eq B, ← (hLR.mono_left hlatL).eq_bot, ← sup_inf_assoc_of_le A hlatR, sup_comm B A]
+    exact ⟨hn y, R.smul_of_tower_mem n hy⟩
 
 end AlpogeRHCore36
