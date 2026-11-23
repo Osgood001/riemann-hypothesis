@@ -9,21 +9,394 @@
  
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ModerateCoefficientPositivityHolds.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ModerateCoefficientPositivityHolds.lean
-@@ -1,3 +1,5 @@
+@@ -1,3 +1,6 @@
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.NearSupremumBounds.FdFjNearSupOf
 +import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourIndep
 +import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourBasic
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivity
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SliceBounds
  
-@@ -197,7 +199,7 @@
-               simp only [C']
-               field_simp
-       exact le_of_mul_le_mul_right hfinal hnx
+@@ -8,8 +11,8 @@
+ 
+ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
+ 
+-theorem moderateCoefficientPositivity_holds : ModerateCoefficientPositivity (E := E) := by
+-  intro r X la P C A hP hmod
++theorem boundedFourierIndexNonnegative_holds : PI.FdFjNearSup.W.BoundedFourierIndexNonnegative (E := E) := by
++  intro r X la P C hP hC
+   classical
+   obtain ⟨ω, hω⟩ := FlowMeanContinuity.exists_basis X la
+   have hωp : ∀ j, ω j ∈ X.periods la := by
+@@ -35,278 +38,99 @@
+     intro v τ
+     conv_rhs => rw [← ω.sum_repr v]
+     simp [Finset.sum_apply, mul_comm]
+-  refine ⟨?_, ?_⟩
+-  ·
+-    intro ξ hξ ν x hx hne τ0
+-    by_cases hf : ∀ j, ∃ k : ℤ, 2 * ∑ τ, ν τ * ω j τ = k
+-    swap
+-    · exact absurd (hfreq ν ξ x hf) hne
+-    choose k hk using hf
+-    rw [FlowMeanContinuity.fj_eq_fourCoeff X la P hP hξ hx ω hω ν k hk] at hne
+-    change ReciprocityTheory.L2DbarEstimates.Y.fourCoeff (hfun X P ξ x ω) 0 k ≠ 0 at hne
+-    set e0 : X.Ψ → ℝ := (Pi.single τ0 (1 : ℝ) : X.Ψ → ℝ) with he0_def
+-    set κ : Fin (Fintype.card X.Ψ) → ℝ := fun j => ω.repr e0 j with hκ_def
+-    have hκ : ∀ t : ℝ, ∀ τ, ∑ j, (t * κ j) * ω j τ = t * e0 τ := by
+-      intro t τ
+-      rw [← hrepr e0 τ, Finset.mul_sum]
+-      refine Finset.sum_congr rfl fun j _ => ?_
+-      simp only [hκ_def]
+-      ring
+-    set m : X.Ψ → ℝ := fun τ => X.maj x τ (Data.emb τ.1 ξ)
+-    have hm : ∀ τ, 0 < m τ := fun τ => X.maj_pos hx τ (emb_ne_zero τ.1 hξ.2.2)
+-    have hc := c_pos X
+-    set B := Bω X ω
+-    have hB := Bω_nonneg X ω
+-    set D0 := 1 + X.c τ0 * m τ0
+-    have hD0 : 1 ≤ D0 := by have := hc τ0; have := hm τ0; simp only [D0]; nlinarith
+-    set K0 := ∑ τ, (1 + X.c τ * B * m τ) ^ 2
+-    have hK0t : ∀ τ, (1 + X.c τ * B * m τ) ^ 2 ≤ K0 := fun τ =>
+-      Finset.single_le_sum (f := fun τ => (1 + X.c τ * B * m τ) ^ 2) (fun τ _ => sq_nonneg _)
+-        (Finset.mem_univ τ)
+-    have hK1 : 1 ≤ K0 := by
+-      refine le_trans ?_ (hK0t τ0)
+-      have := hc τ0; have := hm τ0
+-      nlinarith [mul_nonneg (mul_nonneg (hc τ0).le hB) (hm τ0).le]
+-    set w := X.spread la τ0
+-    have hq : ∀ t : ℝ, ∀ τ, 1 + X.c τ * (∑ j, (t * κ j) * ω j τ) * m τ =
+-        if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1 := by
+-      intro t τ
+-      rw [hκ]
+-      by_cases h : τ = τ0
+-      · subst h; simp [he0_def]; ring
+-      · simp [he0_def, h]
+-    have hray : ∀ t : ℝ, 0 ≤ t → (0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ ∈ Om X ξ x ω := by
+-      intro t ht
+-      show (fun τ => ∑ j, ((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) j * ω j τ) ∈ AdmissibleHermitianColumns.admissibleImaginary X ξ x
+-      rw [mem_admissibleImaginary_iff X hx hξ]
++  intro ξ hξ ν x hx hne τ0
++  by_cases hf : ∀ j, ∃ k : ℤ, 2 * ∑ τ, ν τ * ω j τ = k
++  swap
++  · exact absurd (hfreq ν ξ x hf) hne
++  choose k hk using hf
++  rw [FlowMeanContinuity.fj_eq_fourCoeff X la P hP hξ hx ω hω ν k hk] at hne
++  change ReciprocityTheory.L2DbarEstimates.Y.fourCoeff (hfun X P ξ x ω) 0 k ≠ 0 at hne
++  set e0 : X.Ψ → ℝ := (Pi.single τ0 (1 : ℝ) : X.Ψ → ℝ) with he0_def
++  set κ : Fin (Fintype.card X.Ψ) → ℝ := fun j => ω.repr e0 j with hκ_def
++  have hκ : ∀ t : ℝ, ∀ τ, ∑ j, (t * κ j) * ω j τ = t * e0 τ := by
++    intro t τ
++    rw [← hrepr e0 τ, Finset.mul_sum]
++    refine Finset.sum_congr rfl fun j _ => ?_
++    simp only [hκ_def]
++    ring
++  set m : X.Ψ → ℝ := fun τ => X.maj x τ (Data.emb τ.1 ξ)
++  have hm : ∀ τ, 0 < m τ := fun τ => X.maj_pos hx τ (emb_ne_zero τ.1 hξ.2.2)
++  have hc := c_pos X
++  set D0 := 1 + X.c τ0 * m τ0
++  have hD0 : 1 ≤ D0 := by have := hc τ0; have := hm τ0; simp only [D0]; nlinarith
++  set w := X.spread la τ0
++  have hq : ∀ t : ℝ, ∀ τ, 1 + X.c τ * (∑ j, (t * κ j) * ω j τ) * m τ =
++      if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1 := by
++    intro t τ
++    rw [hκ]
++    by_cases h : τ = τ0
++    · subst h; simp [he0_def]; ring
++    · simp [he0_def, h]
++  have hray : ∀ t : ℝ, 0 ≤ t → (0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ ∈ Om X ξ x ω := by
++    intro t ht
++    show (fun τ => ∑ j, ((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) j * ω j τ) ∈ AdmissibleHermitianColumns.admissibleImaginary X ξ x
++    rw [mem_admissibleImaginary_iff X hx hξ]
++    intro τ
++    have := hq t τ
++    simp only [Pi.add_apply, Pi.zero_apply, zero_add, Pi.smul_apply, smul_eq_mul]
++    rw [this]
++    split_ifs
++    · have := hc τ0; have := hm τ0; positivity
++    · norm_num
++  set E' := |w| / 2
++  set C' := max C 0 * D0 ^ (|w| / 2) / X.nfac la x
++  have hgrow : ∀ t : ℝ, 0 ≤ t → ∀ y : Fin (Fintype.card X.Ψ) → ℝ,
++      ‖hfun X P ξ x ω (fun k => (y k : ℂ) + (((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) k : ℂ) * I)‖ ≤
++        C' * (1 + t) ^ E' := by
++    intro t ht y
++    have hb := hray t ht
++    have hbt : ((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) = fun j => t * κ j := by
++      funext j; simp
++    have hQ : ∀ τ, 1 ≤ (if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1) ∧
++        (if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1) ≤ D0 * (1 + t) := by
+       intro τ
+-      have := hq t τ
+-      simp only [Pi.add_apply, Pi.zero_apply, zero_add, Pi.smul_apply, smul_eq_mul]
+-      rw [this]
+       split_ifs
+-      · have := hc τ0; have := hm τ0; positivity
+-      · norm_num
+-    set E' := |A| / 2 + |w| / 2
+-    set C' := max C 0 * (D0 * K0) ^ (|A| / 2) * D0 ^ (|w| / 2) * X.la1 x ^ (-A) / X.nfac la x
+-    have hgrow : ∀ t : ℝ, 0 ≤ t → ∀ y : Fin (Fintype.card X.Ψ) → ℝ,
+-        ‖hfun X P ξ x ω (fun k => (y k : ℂ) + (((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) k : ℂ) * I)‖ ≤
+-          C' * (1 + t) ^ E' := by
+-      intro t ht y
+-      have hb := hray t ht
+-      set Z := D0 * K0 * (1 + t)
+-      have hZ : 1 ≤ Z := by
+-        have : 1 ≤ 1 + t := by linarith
+-        calc (1 : ℝ) = 1 * 1 * 1 := by ring
+-          _ ≤ D0 * K0 * (1 + t) := by gcongr
+-      have hZ0 : 0 < Z := by linarith
+-      have hbt : ((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) = fun j => t * κ j := by
+-        funext j; simp
+-      have hQ : ∀ τ, 1 ≤ (if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1) ∧
+-          (if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1) ≤ D0 * (1 + t) := by
+-        intro τ
+-        split_ifs
+-        · have := hc τ0; have := hm τ0
+-          constructor
+-          · nlinarith [mul_nonneg (mul_nonneg (hc τ0).le (hm τ0).le) ht]
+-          · simp only [D0]; nlinarith [mul_nonneg (mul_nonneg (hc τ0).le (hm τ0).le) ht]
+-        · constructor
+-          · exact le_refl _
+-          · nlinarith
+-      have hKρ : ∀ τ (ρ : ℝ), |ρ| ≤ B → (1 + X.c τ * |ρ| * m τ) ^ 2 ≤ K0 := by
+-        intro τ ρ hρ
+-        refine le_trans ?_ (hK0t τ)
+-        have h1 : X.c τ * |ρ| * m τ ≤ X.c τ * B * m τ := by
+-          have := hc τ; have := hm τ
+-          exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hρ (hc τ).le) (hm τ).le
+-        have h0 : 0 ≤ X.c τ * |ρ| * m τ := by have := hc τ; have := hm τ; positivity
+-        nlinarith
+-      have hsb := slice_bound X hx hξ la P hP C A hmod ω hω hb (k1 := Z⁻¹) (k2 := Z)
+-        (R := (D0 * (1 + t)) ^ (|w| / 2)) (inv_pos.mpr hZ0) ((inv_le_one_of_one_le₀ hZ).trans hZ)
+-        (by
+-          intro τ ρ hρ
+-          have hq' : 1 + X.c τ * (∑ j, ((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) j * ω j τ) *
+-              X.maj x τ (Data.emb τ.1 ξ) = if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1 := by
+-            rw [hbt]; exact hq t τ
+-          rw [hq']
+-          obtain ⟨hQ1, hQ2⟩ := hQ τ
+-          set Q := (if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1)
+-          have hmin : min Q Q⁻¹ = Q⁻¹ := min_eq_right (inv_le_one_of_one_le₀ hQ1 |>.trans hQ1)
+-          rw [hmin]
+-          have hK := hKρ τ ρ hρ
+-          have hpos : 0 < (1 + X.c τ * |ρ| * m τ) ^ 2 := by
+-            have := hc τ; have := hm τ; positivity
+-          rw [le_div_iff₀ hpos]
+-          calc Z⁻¹ * (1 + X.c τ * |ρ| * m τ) ^ 2 ≤ Z⁻¹ * K0 :=
+-                mul_le_mul_of_nonneg_left hK (inv_nonneg.mpr hZ0.le)
+-            _ = (D0 * (1 + t))⁻¹ := by
+-                simp only [Z]; field_simp
+-            _ ≤ Q⁻¹ := inv_anti₀ (by linarith) hQ2)
+-        (by
+-          intro τ ρ hρ
+-          have hq' : 1 + X.c τ * (∑ j, ((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) j * ω j τ) *
+-              X.maj x τ (Data.emb τ.1 ξ) = if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1 := by
+-            rw [hbt]; exact hq t τ
+-          rw [hq']
+-          obtain ⟨hQ1, hQ2⟩ := hQ τ
+-          set Q := (if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1)
+-          have hmax : max Q Q⁻¹ = Q := max_eq_left (inv_le_one_of_one_le₀ hQ1 |>.trans hQ1)
+-          rw [hmax]
+-          have hK := hKρ τ ρ hρ
+-          calc Q * (1 + X.c τ * |ρ| * m τ) ^ 2 ≤ (D0 * (1 + t)) * K0 :=
+-                mul_le_mul hQ2 hK (sq_nonneg _) (mul_nonneg (by linarith) (by linarith))
+-            _ = Z := by simp only [Z]; ring)
+-        (by
+-          have hq' : ∀ τ, 1 + X.c τ * (∑ j, ((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) j * ω j τ) *
+-              X.maj x τ (Data.emb τ.1 ξ) = if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1 := by
+-            intro τ; rw [hbt]; exact hq t τ
+-          simp only [hq']
+-          rw [Finset.prod_eq_single τ0 (fun τ _ hτ => by simp [hτ]) (fun h => absurd (Finset.mem_univ _) h)]
+-          simp only [if_true]
+-          obtain ⟨hQ1, hQ2⟩ := hQ τ0
+-          simp only [if_true] at hQ1 hQ2
+-          rw [max_eq_left (inv_le_one_of_one_le₀ hQ1 |>.trans hQ1)]
+-          calc (1 + X.c τ0 * m τ0 * t) ^ (X.spread la τ0 / 2) ≤ (1 + X.c τ0 * m τ0 * t) ^ (|w| / 2) :=
+-                Real.rpow_le_rpow_of_exponent_le hQ1 (by simp only [w]; linarith [le_abs_self (X.spread la τ0)])
+-            _ ≤ (D0 * (1 + t)) ^ (|w| / 2) :=
+-                Real.rpow_le_rpow (by linarith) hQ2 (by positivity)) y
+-      have hnx := nfac_pos X la hx
+-      have hla0 : 0 ≤ X.la1 x ^ (-A) := Real.rpow_nonneg (Real.sqrt_nonneg _) _
+-      have hmaxZ : max (Z⁻¹ ^ (-A / 2)) (Z ^ (-A / 2)) ≤ Z ^ (|A| / 2) := by
+-        refine max_le ?_ ?_
+-        · rw [Real.inv_rpow hZ0.le, ← Real.rpow_neg hZ0.le]
+-          exact Real.rpow_le_rpow_of_exponent_le hZ (by linarith [le_abs_self A])
+-        · exact Real.rpow_le_rpow_of_exponent_le hZ (by linarith [neg_abs_le A])
+-      have hZsplit : Z ^ (|A| / 2) = (D0 * K0) ^ (|A| / 2) * (1 + t) ^ (|A| / 2) :=
+-        Real.mul_rpow (by nlinarith) (by linarith)
+-      have hRsplit : (D0 * (1 + t)) ^ (|w| / 2) = D0 ^ (|w| / 2) * (1 + t) ^ (|w| / 2) :=
+-        Real.mul_rpow (by linarith) (by linarith)
+-      have hE : (1 + t) ^ E' = (1 + t) ^ (|A| / 2) * (1 + t) ^ (|w| / 2) :=
+-        Real.rpow_add (by linarith) _ _
+-      have hCp : 0 ≤ max C 0 := le_max_right _ _
+-      have hRn : 0 ≤ (D0 * (1 + t)) ^ (|w| / 2) :=
+-        Real.rpow_nonneg (mul_nonneg (by linarith) (by linarith)) _
+-      have hfinal : ‖hfun X P ξ x ω (fun k => (y k : ℂ) + (((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) k : ℂ) * I)‖ *
+-          X.nfac la x ≤ C' * (1 + t) ^ E' * X.nfac la x := by
+-        refine hsb.trans ?_
+-        rw [hE]
+-        calc max C 0 * max (Z⁻¹ ^ (-A / 2)) (Z ^ (-A / 2)) * (D0 * (1 + t)) ^ (|w| / 2) *
+-              X.la1 x ^ (-A) ≤ max C 0 * Z ^ (|A| / 2) * (D0 * (1 + t)) ^ (|w| / 2) * X.la1 x ^ (-A) := by
+-              gcongr
+-          _ = C' * ((1 + t) ^ (|A| / 2) * (1 + t) ^ (|w| / 2)) * X.nfac la x := by
+-              rw [hZsplit, hRsplit]
+-              simp only [C']
+-              field_simp
+-      exact le_of_mul_le_mul_right hfinal hnx
 -    have hsign := ReciprocityTheory.L2DbarEstimates.Y.four_sign_holds (Fintype.card X.Ψ) (Om X ξ x ω) (hfun X P ξ x ω) 0 κ C' E'
-+    have hsign := ReciprocityTheory.L2DbarEstimates.Y.four_sign (Fintype.card X.Ψ) (ReciprocityTheory.L2DbarEstimates.Y.four_indep _) (ReciprocityTheory.L2DbarEstimates.Y.four_bound _) (Om X ξ x ω) (hfun X P ξ x ω) 0 κ C' E'
-       (Om_open_conn X ω hx).1 (Om_open_conn X ω hx).2 (hfun_diff X ω P la hP hx hξ)
-       (hfun_periodic X ω P la hP hx hξ hω) hray hgrow k hne
-     rw [hsum ν k hk κ] at hsign
+-      (Om_open_conn X ω hx).1 (Om_open_conn X ω hx).2 (hfun_diff X ω P la hP hx hξ)
+-      (hfun_periodic X ω P la hP hx hξ hω) hray hgrow k hne
+-    rw [hsum ν k hk κ] at hsign
+-    have h2 : ∑ τ, ν τ * ∑ j, κ j * ω j τ = ν τ0 := by
+-      have := fun τ => hκ 1 τ
+-      simp only [one_mul] at this
+-      simp only [this, he0_def, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ,
+-        if_true]
+-    rw [h2] at hsign
+-    linarith
+-  ·
+-    intro η hη0 hη1
+-    set B := Bω X ω
+-    have hB := Bω_nonneg X ω
+-    set K := (1 + B) ^ 2
+-    have hK : 0 < K := by positivity
+-    set Rη := ∏ τ, max η η⁻¹ ^ (X.spread la τ / 2)
+-    set Cη := max C 0 * max ((η / K) ^ (-A / 2)) ((K / η) ^ (-A / 2)) * Rη
+-    have hCη : 0 ≤ Cη := by
+-      have h1 : 0 ≤ max ((η / K) ^ (-A / 2)) ((K / η) ^ (-A / 2)) :=
+-        le_max_of_le_left (Real.rpow_nonneg (by positivity) _)
+-      have h2 : 0 ≤ Rη := Finset.prod_nonneg fun τ _ =>
+-        Real.rpow_nonneg (le_max_of_le_left hη0.le) _
+-      have h3 : 0 ≤ max C 0 := le_max_right _ _
+-      positivity
+-    refine ⟨Cη, ?_⟩
+-    intro ξ hξ ν x hx hcm
+-    have hla0 : 0 ≤ X.la1 x ^ (-A) := Real.rpow_nonneg (Real.sqrt_nonneg _) _
+-    by_cases hf : ∀ j, ∃ k : ℤ, 2 * ∑ τ, ν τ * ω j τ = k
+-    swap
+-    · rw [hfreq ν ξ x hf, norm_zero, zero_mul]
+-      exact mul_nonneg (mul_nonneg hCη hla0) (Real.exp_pos _).le
+-    choose k hk using hf
+-    rw [FlowMeanContinuity.fj_eq_fourCoeff X la P hP hξ hx ω hω ν k hk]
+-    change ‖ReciprocityTheory.L2DbarEstimates.Y.fourCoeff (hfun X P ξ x ω) 0 k‖ * _ ≤ _
+-    set m : X.Ψ → ℝ := fun τ => X.maj x τ (Data.emb τ.1 ξ)
+-    have hm : ∀ τ, 0 < m τ := fun τ => X.maj_pos hx τ (emb_ne_zero τ.1 hξ.2.2)
+-    have hc := c_pos X
+-    set bv : X.Ψ → ℝ := fun τ => -(1 - η) * X.tt ξ x τ
+-    set b' : Fin (Fintype.card X.Ψ) → ℝ := fun j => ω.repr bv j
+-    have hb'ω : ∀ τ, ∑ j, b' j * ω j τ = bv τ := hrepr bv
+-    have hqη : ∀ τ, 1 + X.c τ * (∑ j, b' j * ω j τ) * X.maj x τ (Data.emb τ.1 ξ) = η := by
+-      intro τ
+-      rw [hb'ω]
+-      simp only [bv, Data.tt]
+-      have hc' := (hc τ).ne'
+-      have hm' : X.maj x τ (Data.emb τ.1 ξ) ≠ 0 := (hm τ).ne'
+-      field_simp
+-      ring
+-    have hb'Ω : b' ∈ Om X ξ x ω := by
+-      show (fun τ => ∑ j, b' j * ω j τ) ∈ AdmissibleHermitianColumns.admissibleImaginary X ξ x
+-      rw [mem_admissibleImaginary_iff X hx hξ]
+-      intro τ
+-      rw [hqη]
+-      exact hη0
+-    have hind := ReciprocityTheory.L2DbarEstimates.Y.four_indep (Fintype.card X.Ψ) (Om X ξ x ω) (hfun X P ξ x ω) (Om_open_conn X ω hx).1
+-      (Om_open_conn X ω hx).2 (hfun_diff X ω P la hP hx hξ) (hfun_periodic X ω P la hP hx hξ hω)
+-      0 (zero_mem_Om X ω hx hξ) b' hb'Ω k
+-    rw [hind]
++      · have := hc τ0; have := hm τ0
++        constructor
++        · nlinarith [mul_nonneg (mul_nonneg (hc τ0).le (hm τ0).le) ht]
++        · simp only [D0]; nlinarith [mul_nonneg (mul_nonneg (hc τ0).le (hm τ0).le) ht]
++      · constructor
++        · exact le_refl _
++        · nlinarith
++    have hsb := bounded_slice X hx hξ la P C hC ω hb
++      (R := (D0 * (1 + t)) ^ (|w| / 2))
++      (by
++        have hq' : ∀ τ, 1 + X.c τ * (∑ j, ((0 : Fin (Fintype.card X.Ψ) → ℝ) + t • κ) j * ω j τ) *
++            X.maj x τ (Data.emb τ.1 ξ) = if τ = τ0 then 1 + X.c τ0 * m τ0 * t else 1 := by
++          intro τ; rw [hbt]; exact hq t τ
++        simp only [hq']
++        rw [Finset.prod_eq_single τ0 (fun τ _ hτ => by simp [hτ]) (fun h => absurd (Finset.mem_univ _) h)]
++        simp only [if_true]
++        obtain ⟨hQ1, hQ2⟩ := hQ τ0
++        simp only [if_true] at hQ1 hQ2
++        rw [max_eq_left (inv_le_one_of_one_le₀ hQ1 |>.trans hQ1)]
++        calc (1 + X.c τ0 * m τ0 * t) ^ (X.spread la τ0 / 2) ≤ (1 + X.c τ0 * m τ0 * t) ^ (|w| / 2) :=
++              Real.rpow_le_rpow_of_exponent_le hQ1 (by simp only [w]; linarith [le_abs_self (X.spread la τ0)])
++          _ ≤ (D0 * (1 + t)) ^ (|w| / 2) :=
++              Real.rpow_le_rpow (by linarith) hQ2 (by positivity)) y
+     have hnx := nfac_pos X la hx
+-    have hmin : min η η⁻¹ = η := min_eq_left (hη1.le.trans (one_le_inv₀ hη0 |>.mpr hη1.le))
+-    have hmax : max η η⁻¹ = η⁻¹ := max_eq_right (hη1.le.trans (one_le_inv₀ hη0 |>.mpr hη1.le))
+-    have hKρ : ∀ τ (ρ : ℝ), |ρ| ≤ B → (1 + X.c τ * |ρ| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2 ≤ K := by
+-      intro τ ρ hρ
+-      have h1 : X.c τ * |ρ| * X.maj x τ (Data.emb τ.1 ξ) ≤ B := by
+-        calc X.c τ * |ρ| * X.maj x τ (Data.emb τ.1 ξ) =
+-            |ρ| * (X.c τ * X.maj x τ (Data.emb τ.1 ξ)) := by ring
+-          _ ≤ B * 1 := mul_le_mul hρ (hcm τ) (mul_nonneg (hc τ).le (hm τ).le) hB
+-          _ = B := mul_one B
+-      have h0 : 0 ≤ X.c τ * |ρ| * X.maj x τ (Data.emb τ.1 ξ) := by
+-        have := hc τ; have := hm τ; simp only [m] at this; positivity
+-      simp only [K]
+-      nlinarith
+-    have hslice : ∀ y : Fin (Fintype.card X.Ψ) → ℝ, ‖hfun X P ξ x ω (fun k => (y k : ℂ) + (b' k : ℂ) * I)‖ ≤
+-        Cη * X.la1 x ^ (-A) / X.nfac la x := by
+-      intro y
+-      have hsb := slice_bound X hx hξ la P hP C A hmod ω hω hb'Ω (k1 := η / K) (k2 := K / η) (R := Rη)
+-        (by positivity) (by
+-          rw [div_le_div_iff₀ hK hη0]
+-          have hK1 : 1 ≤ K := by simp only [K]; nlinarith [hB]
+-          nlinarith [mul_pos hη0 hη0, mul_pos hK hK, hη1])
+-        (by
+-          intro τ ρ hρ
+-          rw [hqη, hmin]
+-          have hpos : 0 < (1 + X.c τ * |ρ| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2 := by
+-            have := hc τ; have := hm τ; simp only [m] at this; positivity
+-          exact div_le_div_of_nonneg_left hη0.le hpos (hKρ τ ρ hρ))
+-        (by
+-          intro τ ρ hρ
+-          rw [hqη, hmax, div_eq_inv_mul]
+-          exact mul_le_mul_of_nonneg_left (hKρ τ ρ hρ) (inv_nonneg.mpr hη0.le))
+-        (by simp only [hqη]; exact le_refl _) y
+-      rw [le_div_iff₀ hnx]
+-      exact hsb
+-    have hbd := ReciprocityTheory.L2DbarEstimates.Y.four_bound (Fintype.card X.Ψ) (hfun X P ξ x ω) b' k _ hslice
+-    rw [hsum ν k hk b'] at hbd
+-    have hexp : -2 * Real.pi * (2 * ∑ τ, ν τ * ∑ j, b' j * ω j τ) =
+-        -(-4 * Real.pi * (1 - η) * ∑ τ, ν τ * X.tt ξ x τ) := by
+-      simp only [hb'ω, bv, Finset.mul_sum]
+-      rw [← Finset.sum_neg_distrib]
+-      refine Finset.sum_congr rfl fun τ _ => ?_
+-      ring
+-    rw [hexp, Real.exp_neg] at hbd
+-    set T := Real.exp (-4 * Real.pi * (1 - η) * ∑ τ, ν τ * X.tt ξ x τ)
+-    have hT : 0 < T := Real.exp_pos _
+-    rw [mul_inv_le_iff₀ hT] at hbd
+-    calc ‖ReciprocityTheory.L2DbarEstimates.Y.fourCoeff (hfun X P ξ x ω) b' k‖ * X.nfac la x ≤
+-        (Cη * X.la1 x ^ (-A) / X.nfac la x * T) * X.nfac la x :=
+-          mul_le_mul_of_nonneg_right hbd hnx.le
+-      _ = Cη * X.la1 x ^ (-A) * T := by field_simp
++    have hRsplit : (D0 * (1 + t)) ^ (|w| / 2) = D0 ^ (|w| / 2) * (1 + t) ^ (|w| / 2) :=
++      Real.mul_rpow (by linarith) (by linarith)
++    refine le_of_mul_le_mul_right ?_ hnx
++    refine hsb.trans (le_of_eq ?_)
++    rw [hRsplit]
++    dsimp only [C', E']
++    field_simp [hnx.ne']
++  have hsign := ReciprocityTheory.L2DbarEstimates.Y.four_sign (Fintype.card X.Ψ) (ReciprocityTheory.L2DbarEstimates.Y.four_indep _) (ReciprocityTheory.L2DbarEstimates.Y.four_bound _) (Om X ξ x ω) (hfun X P ξ x ω) 0 κ C' E'
++    (Om_open_conn X ω hx).1 (Om_open_conn X ω hx).2 (hfun_diff X ω P la hP hx hξ)
++    (hfun_periodic X ω P la hP hx hξ hω) hray hgrow k hne
++  rw [hsum ν k hk κ] at hsign
++  have h2 : ∑ τ, ν τ * ∑ j, κ j * ω j τ = ν τ0 := by
++    have := fun τ => hκ 1 τ
++    simp only [one_mul] at this
++    simp only [this, he0_def, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ,
++      if_true]
++  rw [h2] at hsign
++  linarith
+ 
+ end ReciprocityTheory.ChartRestriction.G.FD
 --- a/ReciprocityTheory/SemistableReduction/LatAll.lean
 +++ b/ReciprocityTheory/SemistableReduction/LatAll.lean
 @@ -1,47 +1,11 @@
@@ -680,146 +1053,6 @@
  end
  
  end ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra
---- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMinimumLowerBoundHolds.lean
-+++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMinimumLowerBoundHolds.lean
-@@ -32,137 +32,4 @@
-     refine ⟨fun c => if c = a then 1 else 0, ?_⟩
-     simp [ite_smul, hcol]
- 
--theorem flowMinimumLowerBound_holds : FlowMinimumLowerBound (E := E) := by
--  unfold FlowMinimumLowerBound
--  intro r X B hB
--  refine ⟨1 + B, by linarith, ?_⟩
--  intro ξ hξ x hx hcm s hs hdom μ hμ0 hμ
--  obtain ⟨hξΛ, hξ0, hξne⟩ := hξ
--  have hc : ∀ τ : X.Ψ, 0 ≤ X.c τ := fun τ => by
--    show 0 ≤ 2 * ‖τ.1 X.ξ0‖
--    positivity
--  have hiso : ∀ τ : X.Ψ, hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0 := fun τ => by
--    rw [ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, hξ0, map_zero]
--  have hne : ∀ τ : X.Ψ, Data.emb τ.1 ξ ≠ 0 := fun τ => ReciprocityTheory.ChartRestriction.G.FD.emb_ne_zero τ.1 hξne
--
--  have hy : X.flow ξ (fun τ => ((s τ).re : ℂ)) x ∈ X.dom := by
--    have hm3a := flowDomainCriterion_holds (E := E)
--    unfold FlowDomainCriterion at hm3a
--    have key := (hm3a r X (fun τ => Data.emb τ.1 ξ) (by intro τ; exact ⟨hiso τ, hne τ⟩) x hx
--      (fun τ => ((s τ).re : ℂ))).1
--    exact key.2 (fun τ => by simp)
--  have hsplit := flow_split (hiso := hiso) (s := s) (x := x)
--  have hzdom : X.flow ξ (fun τ => I * ((s τ).im : ℂ)) (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) ∈ X.dom := by
--    rw [← hsplit]; exact hdom
--  have hreal : ∀ (τ : X.Ψ) (u : Fin r → ℂ), X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ u =
--      X.maj x τ (Matrix.mulVec (X.flowMat ξ τ (-((s τ).re : ℂ))) u) :=
--    fun τ u => majorant_realFlow_transfer X ξ (fun τ => (s τ).re) hx hy τ (hiso τ) u
--  have hmy : ∀ τ : X.Ψ, X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ) =
--      X.maj x τ (Data.emb τ.1 ξ) := fun τ => by
--    rw [hreal τ, Data.flow_fix (s := -((s τ).re : ℂ)) (hv := hiso τ)]
--  rcases eq_or_lt_of_le hμ0 with hμz | hμpos
--  · rw [← hμz, Real.sqrt_zero, mul_zero]
--    exact Real.sqrt_nonneg _
--
--  have hmain : ∀ (τ : X.Ψ) (w : Fin r → ℂ),
--      μ * X.maj x τ w ≤ (1 + B) ^ 2 * X.maj (X.flow ξ s x) τ w := by
--    intro τ w
--    have hinv : Matrix.mulVec (X.flowMat ξ τ (-((s τ).re : ℂ)))
--        (Matrix.mulVec (X.flowMat ξ τ ((s τ).re : ℂ)) w) = w := by
--      have h := flowMat_inv (hiso := hiso τ) (a := -((s τ).re : ℂ)) (w := w)
--      rwa [neg_neg] at h
--    have e1 : X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ
--        (Matrix.mulVec (X.flowMat ξ τ ((s τ).re : ℂ)) w) = X.maj x τ w := by
--      rw [hreal τ, hinv]
--    have hfl : X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ
--        (Matrix.mulVec (X.flowMat ξ τ ((s τ).re : ℂ)) w) ≤
--        (1 + X.c τ * |(s τ).re| * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ)) ^ 2 *
--          X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w :=
--      maj_flow_le X ξ τ hy (s τ).re w
--    rw [e1, hmy τ] at hfl
--    have hnn : 0 ≤ X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ) :=
--      mul_nonneg (mul_nonneg (hc τ) (abs_nonneg _)) (MajorantConjugateTransfer.maj_nonneg (hx := hx) (τ := τ) (v := _))
--    have hle : X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ) ≤ B := by
--      have h3 : X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ) =
--          |(s τ).re| * (X.c τ * X.maj x τ (Data.emb τ.1 ξ)) := by ring
--      rw [h3]
--      calc |(s τ).re| * (X.c τ * X.maj x τ (Data.emb τ.1 ξ)) ≤ |(s τ).re| * 1 :=
--            mul_le_mul_of_nonneg_left (hcm τ) (abs_nonneg _)
--        _ ≤ B := by linarith [hs τ]
--    have hsqle : (1 + X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2 ≤ (1 + B) ^ 2 := by
--      nlinarith
--    have hRnn : 0 ≤ X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w :=
--      MajorantConjugateTransfer.maj_nonneg (hx := hy) (τ := τ) (v := w)
--    have hxR : X.maj x τ w ≤ (1 + B) ^ 2 * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w :=
--      hfl.trans (mul_le_mul_of_nonneg_right hsqle hRnn)
--
--    have hq_eq : 1 + (s τ).im / X.tt ξ x τ =
--        1 + X.c τ * (s τ).im * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ) := by
--      rw [hmy τ, show X.tt ξ x τ = 1 / (X.c τ * X.maj x τ (Data.emb τ.1 ξ)) from rfl,
--        div_div_eq_mul_div, div_one]
--      ring
--    have hμq := hμ τ
--    rw [hq_eq] at hμq
--    have hq : 0 < 1 + X.c τ * (s τ).im *
--        X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ) :=
--      lt_of_lt_of_le hμpos (hμq.trans (min_le_left _ _))
--    have himag : min (1 + X.c τ * (s τ).im *
--          X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ))
--        (1 + X.c τ * (s τ).im *
--          X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ))⁻¹ *
--        X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w ≤
--        X.maj (X.flow ξ (fun τ => I * ((s τ).im : ℂ)) (X.flow ξ (fun τ => ((s τ).re : ℂ)) x)) τ w :=
--      maj_imag_flow (hz := hy) (ξ := ξ) (b := fun τ => (s τ).im) (hy := hzdom) (τ := τ)
--        (hee := hiso τ) (he0 := hne τ) (hq := hq) (w := w)
--    rw [hsplit]
--    calc μ * X.maj x τ w ≤ μ * ((1 + B) ^ 2 * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w) :=
--          mul_le_mul_of_nonneg_left hxR hμ0
--      _ = (1 + B) ^ 2 * (μ * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w) := by ring
--      _ ≤ (1 + B) ^ 2 * (min (1 + X.c τ * (s τ).im *
--            X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ))
--          (1 + X.c τ * (s τ).im *
--            X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ))⁻¹ *
--          X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w) :=
--          mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hμq hRnn) (by positivity)
--      _ ≤ _ := mul_le_mul_of_nonneg_left himag (by positivity)
--
--  have hB1 : (0 : ℝ) < (1 + B) ^ 2 := by positivity
--  have hK : 0 ≤ μ * ((1 + B) ^ 2)⁻¹ := mul_nonneg hμ0 (by positivity)
--  have hpt : ∀ (τ : X.Ψ) (w : Fin r → ℂ),
--      μ * ((1 + B) ^ 2)⁻¹ * X.maj x τ w ≤ X.maj (X.flow ξ s x) τ w := by
--    intro τ w
--    calc μ * ((1 + B) ^ 2)⁻¹ * X.maj x τ w = ((1 + B) ^ 2)⁻¹ * (μ * X.maj x τ w) := by ring
--      _ ≤ ((1 + B) ^ 2)⁻¹ * ((1 + B) ^ 2 * X.maj (X.flow ξ s x) τ w) :=
--          mul_le_mul_of_nonneg_left (hmain τ w) (by positivity)
--      _ = X.maj (X.flow ξ s x) τ w := inv_mul_cancel_left₀ hB1.ne' _
--  have hsumnn : ∀ t ∈ {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v)}, 0 ≤ t := by
--    rintro t ⟨u, -, -, rfl⟩
--    exact Finset.sum_nonneg (fun τ _ => mul_nonneg (hc τ) (MajorantConjugateTransfer.maj_nonneg (hx := hx) (τ := τ) (v := _)))
--  have hL : 0 ≤ X.firstMinimumSq x := Real.sInf_nonneg hsumnn
--  have hKL : μ * ((1 + B) ^ 2)⁻¹ * X.firstMinimumSq x ≤ X.firstMinimumSq (X.flow ξ s x) := by
--    apply le_csInf
--    · exact ⟨_, ξ, hξΛ, hξne, rfl⟩
--    · rintro b ⟨v, hv, hv0, rfl⟩
--      have h1 : X.firstMinimumSq x ≤ ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v) :=
--        csInf_le ⟨0, hsumnn⟩ ⟨v, hv, hv0, rfl⟩
--      calc μ * ((1 + B) ^ 2)⁻¹ * X.firstMinimumSq x
--          ≤ μ * ((1 + B) ^ 2)⁻¹ * ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v) :=
--            mul_le_mul_of_nonneg_left h1 hK
--        _ = ∑ τ, X.c τ * (μ * ((1 + B) ^ 2)⁻¹ * X.maj x τ (Data.emb τ.1 v)) := by
--            rw [Finset.mul_sum]
--            exact Finset.sum_congr rfl (fun τ _ => by ring)
--        _ ≤ ∑ τ, X.c τ * X.maj (X.flow ξ s x) τ (Data.emb τ.1 v) :=
--            Finset.sum_le_sum (fun τ _ => mul_le_mul_of_nonneg_left (hpt τ _) (hc τ))
--  have hlhs : 0 ≤ (1 + B)⁻¹ * X.la1 x * Real.sqrt μ :=
--    mul_nonneg (mul_nonneg (inv_nonneg.2 (by linarith)) (Real.sqrt_nonneg _)) (Real.sqrt_nonneg _)
--  have hsq : ((1 + B)⁻¹ * X.la1 x * Real.sqrt μ) ^ 2 = μ * ((1 + B) ^ 2)⁻¹ * X.firstMinimumSq x := by
--    rw [mul_pow, mul_pow, Real.sq_sqrt hμ0, show X.la1 x = Real.sqrt (X.firstMinimumSq x) from rfl,
--      Real.sq_sqrt hL, inv_pow]
--    ring
--  calc (1 + B)⁻¹ * X.la1 x * Real.sqrt μ
--      = Real.sqrt (((1 + B)⁻¹ * X.la1 x * Real.sqrt μ) ^ 2) := (Real.sqrt_sq hlhs).symm
--    _ = Real.sqrt (μ * ((1 + B) ^ 2)⁻¹ * X.firstMinimumSq x) := by rw [hsq]
--    _ ≤ Real.sqrt (X.firstMinimumSq (X.flow ξ s x)) := Real.sqrt_le_sqrt hKL
--    _ = X.la1 (X.flow ξ s x) := rfl
--
- end ReciprocityTheory.ChartRestriction.G.FD
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/SquareIntegrability/ContinuousRl.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/SquareIntegrability/ContinuousRl.lean
 @@ -16,9 +16,7 @@
@@ -2484,18 +2717,126 @@
      [Fintype ι] (c : ι → ℂ) (u : ι → Fin r → ℂ) (w : Fin r → ℂ) :
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TwoSidedBoostBounds.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TwoSidedBoostBounds.lean
-@@ -35,10 +35,7 @@
-     _ ≤ max (σ ^ 2) (σ ^ 2)⁻¹ * X.maj z τ w := mul_le_mul_of_nonneg_left hl hM
+@@ -1,8 +1,8 @@
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMinimumLowerBoundHolds
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivity
  
+ namespace ReciprocityTheory.ChartRestriction.G.FD
+ 
+-open NumberField Complex MajorantConjugateTransfer FlowMatrixMajorants RankOneBoostIsometries BoostLowerBounds ImaginaryMajorants
++open NumberField Complex
+ open scoped ComplexConjugate
+ 
+ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
+@@ -11,108 +11,12 @@
+ 
+ variable {r : ℕ} (X : Data E r)
+ 
+-theorem boost_upper (τ : X.Ψ) {z : Frame X.Ψ r} (hz : z ∈ X.dom) {e : Fin r → ℂ}
+-    (hee : hermC τ.1 X.Gm e e = 0) (he0 : e ≠ 0) {σ : ℝ} (hσ : 0 < σ) (w : Fin r → ℂ) :
+-    X.maj z τ (Matrix.mulVec (boost X τ e (X.jp z τ e) (X.maj z τ e) σ⁻¹) w) ≤
+-      max (σ ^ 2) (σ ^ 2)⁻¹ * X.maj z τ w := by
+-  have hσ' : 0 < σ⁻¹ := inv_pos.2 hσ
+-  have ha : 0 < σ ^ 2 := by positivity
+-  have hl := BoostLowerBounds.boost_lower (X := X) (τ := τ) (z := z) hz hee he0 hσ'
+-    (Matrix.mulVec (boost X τ e (X.jp z τ e) (X.maj z τ e) σ⁻¹) w)
+-  simp only [inv_inv] at hl
+-  obtain ⟨hm, hff, hef, hfe⟩ := BoostLowerBounds.plane_facts (X := X) (τ := τ) (z := z) hz hee he0
+-  rw [RankOneBoostIsometries.boost_comp X τ hm hee hff hef hfe hσ] at hl
+-  simp only [inv_pow, inv_inv] at hl
+-  have hmm : max (σ ^ 2) (σ ^ 2)⁻¹ * min (σ ^ 2)⁻¹ (σ ^ 2) = 1 := by
+-    rcases le_total (σ ^ 2) (σ ^ 2)⁻¹ with h | h
+-    · rw [max_eq_right h, min_eq_right h, inv_mul_cancel₀ ha.ne']
+-    · rw [max_eq_left h, min_eq_left h, mul_inv_cancel₀ ha.ne']
+-  have hM : 0 ≤ max (σ ^ 2) (σ ^ 2)⁻¹ := le_max_of_le_left ha.le
+-  calc X.maj z τ (Matrix.mulVec (boost X τ e (X.jp z τ e) (X.maj z τ e) σ⁻¹) w)
+-      = max (σ ^ 2) (σ ^ 2)⁻¹ * (min (σ ^ 2)⁻¹ (σ ^ 2) *
+-          X.maj z τ (Matrix.mulVec (boost X τ e (X.jp z τ e) (X.maj z τ e) σ⁻¹) w)) := by
+-        rw [← mul_assoc, hmm, one_mul]
+-    _ ≤ max (σ ^ 2) (σ ^ 2)⁻¹ * X.maj z τ w := mul_le_mul_of_nonneg_left hl hM
+-
  theorem c_pos (τ : X.Ψ) : 0 < X.c τ := by
--  unfold Data.c
--  have h : τ.1 X.ξ0 ≠ 0 := (map_ne_zero _).2 X.ξ0_ne
--  have := norm_pos_iff.2 h
--  linarith
-+  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantFamilyNorms.c_pos <;> assumption
+   unfold Data.c
+   have h : τ.1 X.ξ0 ≠ 0 := (map_ne_zero _).2 X.ξ0_ne
+   have := norm_pos_iff.2 h
+   linarith
  
- theorem maj_two_sided {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : X.IsIso ξ)
-     (s : X.Ψ → ℂ) (hy : X.flow ξ s x ∈ X.dom) (τ : X.Ψ) (w : Fin r → ℂ) :
+-theorem maj_two_sided {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : X.IsIso ξ)
+-    (s : X.Ψ → ℂ) (hy : X.flow ξ s x ∈ X.dom) (τ : X.Ψ) (w : Fin r → ℂ) :
+-    0 < 1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ) ∧
+-    min (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))
+-        (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))⁻¹ /
+-        (1 + X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2 * X.maj x τ w ≤
+-      X.maj (X.flow ξ s x) τ w ∧
+-    X.maj (X.flow ξ s x) τ w ≤ max (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))
+-        (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))⁻¹ *
+-        (1 + X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2 * X.maj x τ w := by
+-  obtain ⟨_, hξξ, hξ0⟩ := hξ
+-  have hiso : ∀ τ : X.Ψ, hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0 := fun τ => by
+-    rw [hermC_emb, hξξ, map_zero]
+-  have he0 : ∀ τ : X.Ψ, Data.emb τ.1 ξ ≠ 0 := fun τ h => hξ0 (funext fun a => by
+-    have := congrFun h a
+-    simpa [Data.emb] using this)
+-  have hIsoV : X.IsIsoV (fun τ => Data.emb τ.1 ξ) := fun τ => ⟨hiso τ, he0 τ⟩
+-  have hm0 : 0 ≤ X.maj x τ (Data.emb τ.1 ξ) := MajorantConjugateTransfer.maj_nonneg X hx τ _
+-  have hc0 : 0 ≤ X.c τ := (c_pos X τ).le
+-  have hyd : X.flow ξ (fun τ => ((s τ).re : ℂ)) x ∈ X.dom :=
+-    ((flowDomainCriterion_holds r X (fun τ => Data.emb τ.1 ξ) hIsoV x hx (fun τ => ((s τ).re : ℂ))).1).2
+-      (fun τ => by simp)
+-  have hsplit := flow_split (X := X) (ξ := ξ) hiso s x
+-  have hyd2 : X.flow ξ (fun τ => I * ((s τ).im : ℂ)) (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) ∈ X.dom :=
+-    hsplit ▸ hy
+-  have hmy : X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ) =
+-      X.maj x τ (Data.emb τ.1 ξ) := by
+-    rw [majorant_realFlow_transfer X ξ (fun τ => (s τ).re) hx hyd τ (hiso τ) (Data.emb τ.1 ξ),
+-      Data.flow_fix (X := X) (τ := τ) (ξ := ξ) _ _ (hiso τ)]
+-  have hq : 0 < 1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ) := by
+-    have h := ((flowDomainCriterion_holds r X (fun τ => Data.emb τ.1 ξ) hIsoV x hx s).1).1 hy τ
+-    simp only [Data.ttV, div_div_eq_mul_div, div_one] at h
+-    have e1 : (s τ).im * (X.c τ * X.maj x τ (Data.emb τ.1 ξ)) =
+-        X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ) := by ring
+-    linarith
+-  have hq' : 0 < 1 + X.c τ * (s τ).im *
+-      X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ) := by
+-    rw [hmy]; exact hq
+-  have hlow := ImaginaryMajorants.maj_imag_flow (X := X) hyd ξ (fun τ => (s τ).im) hyd2 τ (hiso τ) (he0 τ) hq' w
+-  have heq := ImaginaryMajorants.maj_imag_eq (X := X) hyd ξ (fun τ => (s τ).im) hyd2 τ (hiso τ) (he0 τ) hq' w
+-  have hsq : 0 < Real.sqrt (1 + X.c τ * (s τ).im *
+-      X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ)) := Real.sqrt_pos.2 hq'
+-  have hup := boost_upper X τ hyd (hiso τ) (he0 τ) hsq w
+-  rw [Real.sq_sqrt hq'.le] at hup
+-  simp only [hmy] at hlow heq hup
+-  have hyw := majorant_realFlow_transfer X ξ (fun τ => (s τ).re) hx hyd τ (hiso τ) w
+-  have hup1 := FlowMatrixMajorants.maj_flow_le (X := X) (τ := τ) (ξ := ξ) hx (-(s τ).re) w
+-  simp only [Complex.ofReal_neg, abs_neg] at hup1
+-  have hlo1 := FlowMatrixMajorants.maj_flow_le (X := X) (τ := τ) (ξ := ξ) hx ((s τ).re)
+-    (Matrix.mulVec (X.flowMat ξ τ (-((s τ).re : ℂ))) w)
+-  rw [FlowMatrixMajorants.flowMat_inv (X := X) (τ := τ) (ξ := ξ) (hiso τ)] at hlo1
+-  rw [← hyw] at hup1 hlo1
+-  have hP : 0 < (1 + X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2 := by positivity
+-  have hmin0 : 0 ≤ min (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))
+-      (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))⁻¹ := le_min hq.le (inv_nonneg.2 hq.le)
+-  have hmax0 : 0 ≤ max (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))
+-      (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))⁻¹ := le_max_of_le_left hq.le
+-  have hdiv : X.maj x τ w / (1 + X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2 ≤
+-      X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w := by
+-    rw [div_le_iff₀ hP, mul_comm]
+-    exact hlo1
+-  rw [hsplit]
+-  refine ⟨hq, ?_, ?_⟩
+-  · calc _ = min (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))
+-          (1 + X.c τ * (s τ).im * X.maj x τ (Data.emb τ.1 ξ))⁻¹ *
+-          (X.maj x τ w / (1 + X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2) := by ring
+-      _ ≤ _ := mul_le_mul_of_nonneg_left hdiv hmin0
+-      _ ≤ _ := hlow
+-  · rw [heq]
+-    calc _ ≤ _ := hup
+-      _ ≤ _ := mul_le_mul_of_nonneg_left hup1 hmax0
+-      _ = _ := by ring
+-
+ end TwoSidedBoostBounds
+ 
+ end ReciprocityTheory.ChartRestriction.G.FD
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientIndexLowerBound.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientIndexLowerBound.lean
 @@ -7,33 +7,20 @@
@@ -2605,3 +2946,293 @@
    refine hG.comp hd.differentiableOn ?_
    intro Z hZ
    exact OrthonormalChartBounds.xZ_mem_dom (X := X) hx ho (lt_of_lt_of_le hZ (by linarith))
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSupOf.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSupOf.lean
+@@ -150,9 +150,14 @@
+   · rw [le_div_iff₀ h1ρ]
+     linarith
+ 
+-theorem fd_fj_near_sup_of (h1 : FlowDomainCriterion (E := E)) (h2 : FjHolo (E := E))
++def BoundedFourierIndexNonnegative : Prop :=
++  ∀ (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (C : ℝ), X.IsSec la P →
++    (∀ x ∈ X.dom, X.pnorm la P x ≤ C) → ∀ ξ, X.IsIso ξ → ∀ (ν : X.Ψ → ℝ),
++    ∀ x ∈ X.dom, X.fj la ξ ν P x ≠ 0 → ∀ τ, 0 ≤ ν τ
++
++theorem fd_fj_near_sup_of_bounded_indices (h1 : FlowDomainCriterion (E := E)) (h2 : FjHolo (E := E))
+     (h3 : FjRealFlow (E := E)) (h4 : OrthonormalFlagTranslate (E := E)) :
+-    HolomorphicPeriodicityExtension (E := E) → FlowNormRatio (E := E) → ModerateCoefficientPositivity (E := E) →
++    HolomorphicPeriodicityExtension (E := E) → FlowNormRatio (E := E) → BoundedFourierIndexNonnegative (E := E) →
+       NearSupremumTransference (E := E) := by
+   intro h5 h6 h7 r X la P ξ ν c1 w z0 hD x' hx' htt
+   obtain ⟨-, hSS, hiso, hc1, hνc, ⟨x0, hx0, hfj0⟩, hw, hspw, -, -, -⟩ := hD
+@@ -166,8 +171,7 @@
+   have hfjb : ∀ x ∈ X.dom, X.pnorm la (X.fj la ξ ν P) x ≤ max C 0 :=
+     fj_pnorm_le X.toData la P ξ ν (max C 0) (le_max_right _ _) hflow
+       (fun x hx => (hC x hx).trans (le_max_left _ _))
+-  have hν : ∀ τ, 0 ≤ ν τ := (h7 r X.toData la P C 0 hsec (fun x hx => by
+-    rw [neg_zero, Real.rpow_zero, mul_one]; exact hC x hx)).1 ξ hiso ν x0 hx0 hfj0
++  have hν : ∀ τ, 0 ≤ ν τ := h7 r X.toData la P C hsec hC ξ hiso ν x0 hx0 hfj0
+   have hN0 : ∀ y, 0 ≤ X.hatN la (X.fj la ξ ν P) y := fun y =>
+     Real.sSup_nonneg fun t ⟨x'', hx'', _, ht⟩ => ht ▸ pnorm_nonneg X.toData la _ hx''
+   have hNC : ∀ y, X.hatN la (X.fj la ξ ν P) y ≤ max C 0 := fun y =>
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/Inputs.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/Inputs.lean
+@@ -20,9 +20,9 @@
+ 
+   exact X.fj_flow_real la ξ hξ ν P hP'.1.1 hP'.1.2 x hx s
+ 
+-theorem fd_fj_near_sup_full :
+-    HolomorphicPeriodicityExtension (E := E) → FlowNormRatio (E := E) → ModerateCoefficientPositivity (E := E) →
++theorem fd_fj_near_sup_bounded_full :
++    HolomorphicPeriodicityExtension (E := E) → FlowNormRatio (E := E) → BoundedFourierIndexNonnegative (E := E) →
+       NearSupremumTransference (E := E) :=
+-  fd_fj_near_sup_of flowDomainCriterion_holds fourierJacobi_holomorphic fourierJacobi_realFlow orthonormalFlagTranslate_holds
++  fd_fj_near_sup_of_bounded_indices flowDomainCriterion_holds fourierJacobi_holomorphic fourierJacobi_realFlow orthonormalFlagTranslate_holds
+ 
+ end PI.FdFjNearSup.W
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSup.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSup.lean
+@@ -1,4 +1,4 @@
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.NearSupremumBounds.Inputs
+ 
+-theorem fd_fj_near_sup {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] : ReciprocityTheory.ChartRestriction.G.FD.HolomorphicPeriodicityExtension (E := E) → ReciprocityTheory.ChartRestriction.G.FD.FlowNormRatio (E := E) → ReciprocityTheory.ChartRestriction.G.FD.ModerateCoefficientPositivity (E := E) → ReciprocityTheory.ChartRestriction.G.FD.NearSupremumTransference (E := E) :=
+-  PI.FdFjNearSup.W.fd_fj_near_sup_full
++theorem fd_fj_near_sup_bounded {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] : ReciprocityTheory.ChartRestriction.G.FD.HolomorphicPeriodicityExtension (E := E) → ReciprocityTheory.ChartRestriction.G.FD.FlowNormRatio (E := E) → PI.FdFjNearSup.W.BoundedFourierIndexNonnegative (E := E) → ReciprocityTheory.ChartRestriction.G.FD.NearSupremumTransference (E := E) :=
++  PI.FdFjNearSup.W.fd_fj_near_sup_bounded_full
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SliceBounds.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SliceBounds.lean
+@@ -12,45 +12,18 @@
+ 
+ variable {r : ℕ} (X : Data E r)
+ 
+-theorem slice_bound {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : X.IsIso ξ)
+-    (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) (C A : ℝ)
+-    (hmod : ∀ z ∈ X.dom, X.pnorm la P z ≤ C * X.la1 z ^ (-A)) {n : ℕ}
+-    (ω : Module.Basis (Fin n) ℝ (X.Ψ → ℝ)) (hω : Submodule.span ℤ (Set.range ω) = RealEmbeddingCharacters.perL X la)
+-    {b : Fin n → ℝ} (hb : b ∈ Om X ξ x ω) {k1 k2 R : ℝ} (hk1 : 0 < k1) (hk12 : k1 ≤ k2)
+-    (hq1 : ∀ τ (ρ : ℝ), |ρ| ≤ Bω X ω →
+-      k1 ≤ min (1 + X.c τ * (∑ j, b j * ω j τ) * X.maj x τ (Data.emb τ.1 ξ))
+-        (1 + X.c τ * (∑ j, b j * ω j τ) * X.maj x τ (Data.emb τ.1 ξ))⁻¹ /
+-        (1 + X.c τ * |ρ| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2)
+-    (hq2 : ∀ τ (ρ : ℝ), |ρ| ≤ Bω X ω →
+-      max (1 + X.c τ * (∑ j, b j * ω j τ) * X.maj x τ (Data.emb τ.1 ξ))
+-        (1 + X.c τ * (∑ j, b j * ω j τ) * X.maj x τ (Data.emb τ.1 ξ))⁻¹ *
+-        (1 + X.c τ * |ρ| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2 ≤ k2)
++theorem bounded_slice {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : X.IsIso ξ)
++    (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (C : ℝ) (hC : ∀ z ∈ X.dom, X.pnorm la P z ≤ C)
++    {n : ℕ} (ω : Module.Basis (Fin n) ℝ (X.Ψ → ℝ)) {b : Fin n → ℝ} (hb : b ∈ Om X ξ x ω) {R : ℝ}
+     (hR : ∏ τ, max (1 + X.c τ * (∑ j, b j * ω j τ) * X.maj x τ (Data.emb τ.1 ξ))
+         (1 + X.c τ * (∑ j, b j * ω j τ) * X.maj x τ (Data.emb τ.1 ξ))⁻¹ ^ (X.spread la τ / 2) ≤ R)
+-    (y : Fin n → ℝ) :
+-    ‖hfun X P ξ x ω (fun k => (y k : ℂ) + (b k : ℂ) * I)‖ * X.nfac la x ≤
+-      max C 0 * max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * R * X.la1 x ^ (-A) := by
++    (y : Fin n → ℝ) : ‖hfun X P ξ x ω (fun k => (y k : ℂ) + (b k : ℂ) * I)‖ * X.nfac la x ≤ max C 0 * R := by
+   classical
+-  rw [slice_fract (X := X) (ω := ω) P la hP hx hξ hω hb y]
+-  set u : Fin n → ℝ := fun k => Int.fract (y k) with hu
+-  set s : X.Ψ → ℂ := fun τ => ∑ j, (((u j : ℝ) : ℂ) + (b j : ℂ) * I) * (ω j τ : ℂ) with hs
+-  have hre : ∀ τ, (s τ).re = ∑ j, u j * ω j τ := by
+-    intro τ
+-    simp [hs, Complex.re_sum]
+-  have him : ∀ τ, (s τ).im = ∑ j, b j * ω j τ := by
+-    intro τ
+-    simp [hs, Complex.im_sum]
+-  have hhf : hfun X P ξ x ω (fun k => ((u k : ℝ) : ℂ) + (b k : ℂ) * I) = P (X.flow ξ s x) := by
+-    simp only [hfun, hs]
+-  have hsim : (fun τ => (s τ).im) = fun τ => ∑ j, b j * ω j τ := funext him
++  let s : X.Ψ → ℂ := fun τ => ∑ j, ((y j : ℂ) + (b j : ℂ) * I) * (ω j τ : ℂ)
++  have him : ∀ τ, (s τ).im = ∑ j, b j * ω j τ := by intro τ; simp [s, Complex.im_sum]
+   have hdom : X.flow ξ s x ∈ X.dom := by
+-    rw [AdmissibleHermitianColumns.flow_mem_dom_iff (X := X) hξ.2.1 x hx, hsim]
++    rw [AdmissibleHermitianColumns.flow_mem_dom_iff (X := X) hξ.2.1 x hx, funext him]
+     exact hb
+-  have hbd : ∀ τ, |(s τ).re| ≤ Bω X ω := by
+-    intro τ
+-    rw [hre]
+-    exact re_bound (X := X) (ω := ω) u (fun j => ⟨Int.fract_nonneg _, (Int.fract_lt_one _).le⟩) τ
+-  rw [hhf]
+   have hisoV : X.IsIsoV (fun τ => Data.emb τ.1 ξ) := by
+     intro τ
+     constructor
+@@ -69,16 +42,8 @@
+   have hN := (m3bNorm_holds (E := E) r X (fun τ => Data.emb τ.1 ξ) hisoV la x hx s
+     (by rw [hflowV]; exact hdom)).2
+   rw [hflowV] at hN
+-  refine MinimumGrowthBounds.growth (X := X) la P C A hmod hx hdom hk1 hk12 ?_ ?_ ?_
+-  · intro τ w
+-    have h := (TwoSidedBoostBounds.maj_two_sided (X := X) hx hξ s hdom τ w).2.1
+-    rw [him τ] at h
+-    exact le_trans (mul_le_mul_of_nonneg_right (hq1 τ _ (hbd τ)) (MajorantConjugateTransfer.maj_nonneg (X := X) hx τ w)) h
+-  · intro τ w
+-    have h := (TwoSidedBoostBounds.maj_two_sided (X := X) hx hξ s hdom τ w).2.2
+-    rw [him τ] at h
+-    exact le_trans h (mul_le_mul_of_nonneg_right (hq2 τ _ (hbd τ)) (MajorantConjugateTransfer.maj_nonneg (X := X) hx τ w))
+-  · refine le_trans hN (le_of_eq_of_le ?_ hR)
++  have hratio : X.nfac la x / X.nfac la (X.flow ξ s x) ≤ R := by
++    refine le_trans hN (le_of_eq_of_le ?_ hR)
+     refine Finset.prod_congr rfl (fun τ _ => ?_)
+     have hA : 1 + (s τ).im / X.ttV (fun τ => Data.emb τ.1 ξ) x τ =
+         1 + X.c τ * (∑ j, b j * ω j τ) * X.maj x τ (Data.emb τ.1 ξ) := by
+@@ -86,6 +51,12 @@
+       ring
+     beta_reduce
+     rw [hA]
++  change ‖P (X.flow ξ s x)‖ * X.nfac la x ≤ _
++  have hp := nfac_pos X la hdom
++  calc ‖P (X.flow ξ s x)‖ * X.nfac la x = X.pnorm la P (X.flow ξ s x) * (X.nfac la x / X.nfac la (X.flow ξ s x)) := by
++        change _ = (‖P (X.flow ξ s x)‖ * X.nfac la (X.flow ξ s x)) * (X.nfac la x / X.nfac la (X.flow ξ s x))
++        field_simp [hp.ne']
++    _ ≤ max C 0 * R := mul_le_mul ((hC _ hdom).trans (le_max_left _ _)) hratio (div_nonneg (nfac_pos X la hx).le hp.le) (le_max_right _ _)
+ 
+ end SliceBounds
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainOfTransference.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainOfTransference.lean
+@@ -18,7 +18,7 @@
+ 
+ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
+ 
+-theorem nearSupremumTransference_holds : NearSupremumTransference (E := E) := fd_fj_near_sup holomorphic_periodicity_extension m3bNorm_holds moderateCoefficientPositivity_holds
++theorem nearSupremumTransference_holds : NearSupremumTransference (E := E) := fd_fj_near_sup_bounded holomorphic_periodicity_extension m3bNorm_holds boundedFourierIndexNonnegative_holds
+ 
+ theorem unitaryUnipotentMove : UnitaryUnipotentMove (E := E) :=
+   fd_unip_move shortVectorBound unitaryComplementMove unipotent_majorant_bound isotropicCoefficientSplitting_holds noShortVectorLowerBound_holds
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean
+@@ -1,3 +1,5 @@
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantConjugateTransfer
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowDomainCriterionHolds
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TwoSidedBoostBounds
+ 
+ namespace ReciprocityTheory.ChartRestriction.G.FD
+@@ -11,97 +13,6 @@
+ 
+ variable {r : ℕ} (X : Data E r)
+ 
+-theorem minimumSq_nonneg {x : Frame X.Ψ r} (hx : x ∈ X.dom) : 0 ≤ X.firstMinimumSq x := by
+-  apply Real.sInf_nonneg
+-  rintro t ⟨v, _, _, rfl⟩
+-  exact Finset.sum_nonneg fun τ _ =>
+-    mul_nonneg (TwoSidedBoostBounds.c_pos (X := X) τ).le (MajorantConjugateTransfer.maj_nonneg (X := X) hx τ _)
+-
+-theorem minimumSq_two_sided_bounds {x y : Frame X.Ψ r} (hx : x ∈ X.dom) (hy : y ∈ X.dom) {k1 k2 : ℝ}
+-    (hk1 : 0 ≤ k1) (hk2 : 0 < k2) (hlow : ∀ τ w, k1 * X.maj x τ w ≤ X.maj y τ w)
+-    (hup : ∀ τ w, X.maj y τ w ≤ k2 * X.maj x τ w) :
+-    k1 * X.firstMinimumSq x ≤ X.firstMinimumSq y ∧ X.firstMinimumSq y ≤ k2 * X.firstMinimumSq x := by
+-  have hc : ∀ τ, 0 ≤ X.c τ := fun τ => (TwoSidedBoostBounds.c_pos (X := X) τ).le
+-  have e : ∀ g' : (Fin r → E) → ℝ, (¬ ∃ v ∈ X.Λ, v ≠ 0) → {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g' v} = ∅ := by
+-    intro g' hne
+-    ext t
+-    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+-    rintro ⟨v, hv, hv', _⟩
+-    exact hne ⟨v, hv, hv'⟩
+-  have key1 : ∀ (g h : (Fin r → E) → ℝ) (a : ℝ), 0 ≤ a → (∀ v, 0 ≤ g v) → (∀ v, a * g v ≤ h v) →
+-      a * sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v} ≤ sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = h v} := by
+-    intro g h a ha hg hgh
+-    by_cases hne : ∃ v ∈ X.Λ, v ≠ 0
+-    · obtain ⟨v0, hv0, hv0'⟩ := hne
+-      refine le_csInf ⟨_, v0, hv0, hv0', rfl⟩ ?_
+-      rintro t ⟨v, hv, hv', rfl⟩
+-      have hb : BddBelow {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v} := ⟨0, by
+-        rintro s ⟨w, _, _, rfl⟩
+-        exact hg w⟩
+-      exact (mul_le_mul_of_nonneg_left (csInf_le hb ⟨v, hv, hv', rfl⟩) ha).trans (hgh v)
+-    · rw [e g hne, e h hne, Real.sInf_empty, mul_zero]
+-  have key2 : ∀ (g h : (Fin r → E) → ℝ) (a : ℝ), 0 < a → (∀ v, 0 ≤ g v) → (∀ v, g v ≤ a * h v) →
+-      sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v} ≤ a * sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = h v} := by
+-    intro g h a ha hg hgh
+-    by_cases hne : ∃ v ∈ X.Λ, v ≠ 0
+-    · obtain ⟨v0, hv0, hv0'⟩ := hne
+-      rw [← div_le_iff₀' ha]
+-      refine le_csInf ⟨_, v0, hv0, hv0', rfl⟩ ?_
+-      rintro t ⟨v, hv, hv', rfl⟩
+-      rw [div_le_iff₀' ha]
+-      have hb : BddBelow {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v} := ⟨0, by
+-        rintro s ⟨w, _, _, rfl⟩
+-        exact hg w⟩
+-      exact (csInf_le hb ⟨v, hv, hv', rfl⟩).trans (hgh v)
+-    · rw [e g hne, e h hne, Real.sInf_empty, mul_zero]
+-  unfold ReciprocityTheory.ChartRestriction.G.FD.Data.firstMinimumSq
+-  refine ⟨key1 _ _ k1 hk1 ?_ ?_, key2 _ _ k2 hk2 ?_ ?_⟩
+-  · intro v
+-    exact Finset.sum_nonneg fun τ _ => mul_nonneg (hc τ) (MajorantConjugateTransfer.maj_nonneg (X := X) hx τ _)
+-  · intro v
+-    rw [Finset.mul_sum]
+-    exact Finset.sum_le_sum fun τ _ =>
+-      (mul_left_comm _ _ _).trans_le (mul_le_mul_of_nonneg_left (hlow τ _) (hc τ))
+-  · intro v
+-    exact Finset.sum_nonneg fun τ _ => mul_nonneg (hc τ) (MajorantConjugateTransfer.maj_nonneg (X := X) hy τ _)
+-  · intro v
+-    rw [Finset.mul_sum]
+-    exact Finset.sum_le_sum fun τ _ =>
+-      (mul_le_mul_of_nonneg_left (hup τ _) (hc τ)).trans_eq (mul_left_comm _ _ _)
+-
+-theorem sqrt_rpow_le (A : ℝ) {k1 k2 L Ly : ℝ} (hk1 : 0 < k1) (hk12 : k1 ≤ k2) (hL : 0 ≤ L)
+-    (h1 : k1 * L ≤ Ly) (h2 : Ly ≤ k2 * L) :
+-    Real.sqrt Ly ^ (-A) ≤ max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * Real.sqrt L ^ (-A) := by
+-  rcases hL.eq_or_lt with hL0 | hLpos
+-  · subst hL0
+-    have hLy : Ly = 0 := le_antisymm (by linarith) (by linarith)
+-    subst hLy
+-    simp only [Real.sqrt_zero]
+-    by_cases hA : A = 0
+-    · subst hA
+-      simp
+-    · rw [Real.zero_rpow (neg_ne_zero.mpr hA), mul_zero]
+-  · have hs : ∀ z : ℝ, 0 ≤ z → Real.sqrt z ^ (-A) = z ^ (-A / 2) := by
+-      intro z hz
+-      rw [Real.sqrt_eq_rpow, ← Real.rpow_mul hz]
+-      congr 1
+-      ring
+-    have hLy : 0 < Ly := lt_of_lt_of_le (mul_pos hk1 hLpos) h1
+-    rw [hs Ly hLy.le, hs L hL]
+-    have hLy_eq : Ly = Ly / L * L := (div_mul_cancel₀ Ly hLpos.ne').symm
+-    have hs1 : k1 ≤ Ly / L := by
+-      rw [le_div_iff₀ hLpos]
+-      exact h1
+-    have hs2 : Ly / L ≤ k2 := by
+-      rw [div_le_iff₀ hLpos]
+-      exact h2
+-    have hspos : 0 < Ly / L := lt_of_lt_of_le hk1 hs1
+-    rw [hLy_eq, Real.mul_rpow hspos.le hL]
+-    apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hL _)
+-    rcases le_total 0 (-A / 2) with hp | hp
+-    · exact (Real.rpow_le_rpow hspos.le hs2 hp).trans (le_max_right _ _)
+-    · exact (Real.rpow_le_rpow_of_nonpos hk1 hs1 hp).trans (le_max_left _ _)
+-
+ theorem nfac_pos (la : Wt X.Ψ r) {y : Frame X.Ψ r} (hy : y ∈ X.dom) : 0 < X.nfac la y := by
+   have hd : ∀ τ i, dmin X.Gm y τ i ≠ 0 := by
+     intro τ i h0
+@@ -112,32 +23,6 @@
+   exact Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ =>
+     Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _
+ 
+-theorem growth (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (C A : ℝ)
+-    (hmod : ∀ z ∈ X.dom, X.pnorm la P z ≤ C * X.la1 z ^ (-A)) {x y : Frame X.Ψ r}
+-    (hx : x ∈ X.dom) (hy : y ∈ X.dom) {k1 k2 : ℝ} (hk1 : 0 < k1) (hk12 : k1 ≤ k2)
+-    (hlow : ∀ τ w, k1 * X.maj x τ w ≤ X.maj y τ w) (hup : ∀ τ w, X.maj y τ w ≤ k2 * X.maj x τ w)
+-    {R : ℝ} (hR : X.nfac la x / X.nfac la y ≤ R) :
+-    ‖P y‖ * X.nfac la x ≤ max C 0 * max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * R * X.la1 x ^ (-A) := by
+-  have hny := nfac_pos X la hy
+-  have hnx := nfac_pos X la hx
+-  obtain ⟨b1, b2⟩ := minimumSq_two_sided_bounds X hx hy hk1.le (lt_of_lt_of_le hk1 hk12) hlow hup
+-  have hla : X.la1 y ^ (-A) ≤ max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * X.la1 x ^ (-A) :=
+-    sqrt_rpow_le A hk1 hk12 (minimumSq_nonneg X hx) b1 b2
+-  have hq0 : 0 ≤ X.nfac la x / X.nfac la y := div_nonneg hnx.le hny.le
+-  have hR0 : 0 ≤ R := le_trans hq0 hR
+-  have hC0 : 0 ≤ max C 0 := le_max_right _ _
+-  have hly : 0 ≤ X.la1 y ^ (-A) := Real.rpow_nonneg (Real.sqrt_nonneg _) _
+-  have hPy : ‖P y‖ * X.nfac la y ≤ max C 0 * X.la1 y ^ (-A) :=
+-    calc ‖P y‖ * X.nfac la y = X.pnorm la P y := rfl
+-      _ ≤ C * X.la1 y ^ (-A) := hmod y hy
+-      _ ≤ max C 0 * X.la1 y ^ (-A) := mul_le_mul_of_nonneg_right (le_max_left _ _) hly
+-  have hny' := hny.ne'
+-  calc ‖P y‖ * X.nfac la x = (‖P y‖ * X.nfac la y) * (X.nfac la x / X.nfac la y) := by
+-        field_simp
+-    _ ≤ (max C 0 * X.la1 y ^ (-A)) * R := mul_le_mul hPy hR hq0 (mul_nonneg hC0 hly)
+-    _ ≤ (max C 0 * (max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * X.la1 x ^ (-A))) * R := by gcongr
+-    _ = max C 0 * max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * R * X.la1 x ^ (-A) := by ring
+-
+ end MinimumGrowthBounds
+ 
+ end ReciprocityTheory.ChartRestriction.G.FD
