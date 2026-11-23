@@ -350,17 +350,6 @@
  open scoped ContDiff ENNReal Pointwise Matrix
  
  noncomputable section
---- a/ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourSum.lean
-+++ b/ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourSum.lean
-@@ -2,7 +2,7 @@
- 
- namespace ReciprocityTheory.L2DbarEstimates.Y
- 
--open MeasureTheory Filter Topology WeightedAtlas
-+open MeasureTheory Filter Topology
- open scoped ContDiff ENNReal Pointwise Matrix
- 
- noncomputable section
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BoundedSectionAlgebra.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BoundedSectionAlgebra.lean
 @@ -34,307 +34,6 @@
@@ -1051,3 +1040,109 @@
 -  rw [this]; exact hz _ _
 -
  end ReciprocityTheory.ChartRestriction.G.I2.DimB
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMeanContinuity.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMeanContinuity.lean
+@@ -1,5 +1,5 @@
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.RealEmbeddingCharacters
+-import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSum
++import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.GROWCountStatement
+ 
+ namespace ReciprocityTheory.ChartRestriction.G.FD.FlowMeanContinuity
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthogonalComplementLines.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthogonalComplementLines.lean
+@@ -1,10 +1,9 @@
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnitaryComplementMoveOfIsotropic
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermitianTraceFormVanishing
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TraceFormIndependence
+ 
+ namespace ReciprocityTheory.ChartRestriction.G.FD.OrthogonalComplementLines
+ 
+-open NumberField Complex ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.FD.TraceFormIndependence
++open NumberField Complex ReciprocityTheory.ChartRestriction.G.FD 
+ open scoped ComplexConjugate
+ 
+ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/M3bNormHolds.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/M3bNormHolds.lean
+@@ -1,11 +1,10 @@
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivity
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantFamilyNorms
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TelescopingWeightedSums
+ 
+ namespace ReciprocityTheory.ChartRestriction.G.FD
+ 
+ open Complex ReciprocityTheory.ChartRestriction.G.FD.GramDeterminantReal ReciprocityTheory.ChartRestriction.G.FD.PositiveMinorUnits ReciprocityTheory.ChartRestriction.G.FD.MajorantFamilyNorms
+-  ReciprocityTheory.ChartRestriction.G.FD.TelescopingWeightedSums
++
+ 
+ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
+ 
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantConjugateTransfer.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantConjugateTransfer.lean
+@@ -69,65 +69,6 @@
+   · rw [hv, maj_zero X x τ]
+   · exact (X.maj_pos hx τ hv).le
+ 
+-theorem Hf_sub_left (x : Frame X.Ψ r) (τ : X.Ψ) (u u' w : Fin r → ℂ) :
+-    X.Hf x τ (u - u') w = X.Hf x τ u w - X.Hf x τ u' w := by
+-  rw [X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, X.ppos_sub, hermC_sub_left,
+-    hermC_sub_left]
+-  ring
+-
+-theorem Hf_smul_left (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u w : Fin r → ℂ) :
+-    X.Hf x τ (k • u) w = k * X.Hf x τ u w := by
+-  rw [X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, X.ppos_smul_eq, hermC_smul_left, hermC_smul_left]
+-  ring
+-
+-theorem Hf_sub_right (x : Frame X.Ψ r) (τ : X.Ψ) (u w w' : Fin r → ℂ) :
+-    X.Hf x τ u (w - w') = X.Hf x τ u w - X.Hf x τ u w' := by
+-  rw [X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, hermC_sub_right, hermC_sub_right]
+-  ring
+-
+-theorem Hf_smul_right (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u w : Fin r → ℂ) :
+-    X.Hf x τ u (k • w) = conj k * X.Hf x τ u w := by
+-  rw [X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, hermC_smul_right, hermC_smul_right]
+-  ring
+-
+-theorem Hf_conj {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u w : Fin r → ℂ) :
+-    conj (X.Hf x τ u w) = X.Hf x τ w u := by
+-  rw [X.Hf_eq_two_ppos, X.Hf_eq_two_ppos, map_sub, map_mul, map_ofNat, hermC_conj _ X.Gm_herm,
+-    hermC_conj _ X.Gm_herm, X.ppos_selfadj hx τ w u]
+-
+-theorem cs {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
+-    ‖X.Hf x τ u v‖ ^ 2 ≤ X.maj x τ u * X.maj x τ v := by
+-  by_cases hv : v = 0
+-  · have h0 : X.Hf x τ u 0 = 0 := by
+-      have := Hf_sub_right X x τ u 0 0
+-      simpa using this
+-    rw [hv, h0, maj_zero X x τ]
+-    simp
+-  have hm : 0 < X.maj x τ v := X.maj_pos hx τ hv
+-  have hmu := maj_nonneg X hx τ u
+-
+-  set H := X.Hf x τ u v with hH
+-  have hw := X.Hf_self hx τ ((X.maj x τ v : ℂ) • u - H • v)
+-  have hn := maj_nonneg X hx τ ((X.maj x τ v : ℂ) • u - H • v)
+-  simp only [Hf_sub_left, Hf_sub_right, Hf_smul_left, Hf_smul_right] at hw
+-  rw [X.Hf_self hx τ u, X.Hf_self hx τ v, ← Hf_conj X hx τ u v, ← hH, Complex.conj_ofReal] at hw
+-  have hHH : H * conj H = (Complex.normSq H : ℂ) := Complex.mul_conj H
+-  have e : ((X.maj x τ ((X.maj x τ v : ℂ) • u - H • v) : ℝ) : ℂ) =
+-      ((X.maj x τ v * (X.maj x τ v * X.maj x τ u - Complex.normSq H) : ℝ) : ℂ) := by
+-    rw [← hw]
+-    push_cast
+-    linear_combination (-(X.maj x τ v : ℂ)) * hHH
+-  have e' := Complex.ofReal_injective e
+-  rw [e'] at hn
+-  have hle : Complex.normSq H ≤ X.maj x τ v * X.maj x τ u := by
+-    by_contra hc
+-    push_neg at hc
+-    have : X.maj x τ v * (X.maj x τ v * X.maj x τ u - Complex.normSq H) < 0 :=
+-      mul_neg_of_pos_of_neg hm (by linarith)
+-    linarith
+-  rw [Complex.sq_norm]
+-  linarith [mul_comm (X.maj x τ u) (X.maj x τ v)]
+-
+ end MajorantConjugateTransfer
+ 
+ end ReciprocityTheory.ChartRestriction.G.FD
