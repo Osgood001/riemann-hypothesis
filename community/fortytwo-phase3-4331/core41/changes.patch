@@ -1,0 +1,12 @@
+--- a/Formalism/SharpRestriction/CuspSpanNormBounds/DiscreteSeriesWeylDimension.lean
++++ b/Formalism/SharpRestriction/CuspSpanNormBounds/DiscreteSeriesWeylDimension.lean
+@@ -1,7 +1,8 @@
+ import Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily
+ import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.NumericSettingWithGapSatisfiable
+ import Formalism.SharpRestriction.CuspSpanNormBounds.AutLzFiniteOfLoop
+-import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLx
++import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
++import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyPacketOfEquivalentStatement
+ import Mathlib
+ import Formalism.FormalDegreeBessel.FinalDS
+ 
