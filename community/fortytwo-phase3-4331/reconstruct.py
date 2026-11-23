@@ -20,29 +20,46 @@ def inventory_digest(files):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('core', choices=[str(n) for n in range(14, 26)])
+    parser.add_argument('core', choices=[str(n) for n in (*range(14, 38), 40, 41)])
     parser.add_argument('shard', type=Path)
     parser.add_argument('output', type=Path, help='new directory for the reconstructed Lean sources')
     args = parser.parse_args()
     here = Path(__file__).resolve().parent / ('core' + args.core)
     record = json.loads((here / 'verification.json').read_text())
-    with args.shard.open('rb') as source:
-        if hashlib.file_digest(source, 'sha256').hexdigest() != record['shard_sha256']:
-            raise SystemExit('Source archive differs from the organizer release.')
     if args.output.exists():
         raise SystemExit('Choose a new output directory.')
-    contents = {}
-    with tarfile.open(args.shard, 'r|zst') as archive:
-        for member in archive:
-            name = PurePosixPath(member.name)
-            if name.is_absolute() or '..' in name.parts:
-                raise ValueError('Unexpected archive path')
-            if name.parts[:1] != ('src',) or name.suffix != '.lean':
-                continue
-            key = name.relative_to('src').as_posix()
-            if not member.isfile() or key in contents:
-                raise ValueError('Unexpected source entry: ' + key)
-            contents[key] = archive.extractfile(member).read()
+    if 'pinned_source_files' in record:
+        if not args.shard.is_dir():
+            raise SystemExit('Pass the src directory from the recorded Git revision.')
+        contents = {}
+        root = args.shard.resolve()
+        for key, expected in record['pinned_source_files'].items():
+            rel = PurePosixPath(key)
+            if rel.is_absolute() or '..' in rel.parts or rel.suffix != '.lean':
+                raise ValueError('Invalid indexed source path')
+            path = root / rel
+            if path.resolve() != path:
+                raise ValueError('Unexpected source link: ' + key)
+            raw = path.read_bytes()
+            if digest(raw) != expected:
+                raise ValueError('Source differs from the pinned revision: ' + key)
+            contents[key] = raw
+    else:
+        with args.shard.open('rb') as source:
+            if hashlib.file_digest(source, 'sha256').hexdigest() != record['shard_sha256']:
+                raise SystemExit('Source archive differs from the organizer release.')
+        contents = {}
+        with tarfile.open(args.shard, 'r|zst') as archive:
+            for member in archive:
+                name = PurePosixPath(member.name)
+                if name.is_absolute() or '..' in name.parts:
+                    raise ValueError('Unexpected archive path')
+                if name.parts[:1] != ('src',) or name.suffix != '.lean':
+                    continue
+                key = name.relative_to('src').as_posix()
+                if not member.isfile() or key in contents:
+                    raise ValueError('Unexpected source entry: ' + key)
+                contents[key] = archive.extractfile(member).read()
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp)
         for key, checks in record['modified_files'].items():

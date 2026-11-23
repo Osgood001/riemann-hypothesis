@@ -11,8 +11,9 @@ These source changes reduce the size of Levent Alpöge’s Phase 3 proofs. Forty
 | 23 | 10,958 | 47,617,266 | 23,408,674 | 24,208,592 |
 | 24 | 14,175 | 30,828,159 | 28,964,690 | 1,863,469 |
 | 25 | 10,649 | 29,435,752 | 24,600,777 | 4,834,975 |
+| 26 | 323 | 540,118 | 522,409 | 17,709 |
 
-The independent Comparator and the Lean 4.33.1 default kernel accepted each exact target with `propext`, `Quot.sound` and `Classical.choice`. Each directory records the local replay, complete source-tree digest, Mathlib revision and organizer shard checksum. The local check derived the protected boundary from the organizer’s published frozen roots. The table reports locally measured token counts.
+The independent Comparator and the Lean 4.33.1 default kernel accepted each exact target with `propext`, `Quot.sound` and `Classical.choice`. Each directory records the local replay, complete source-tree digest, Mathlib revision and the checksums of its original sources. The local check derived the protected boundary from the organizer’s published frozen roots. The table reports locally measured token counts.
 
 ## Reproduce the proof sources
 
@@ -23,5 +24,6 @@ python3.14 reconstruct.py 24 /path/to/core24.tar.zst /tmp/fortytwo-core24/proof
 ```
 
 The script checks the archive, applies the Lean edits, follows imports within the editable shard and verifies the resulting source tree. Use the reconstructed `proof/` directory in the core’s pinned Lean challenge environment.
+Fast cores record their upstream Git revision and per-file SHA-256 values in `verification.json`. Pass the upstream checkout’s `src` directory as the second argument, for example `python3.14 reconstruct.py 26 /path/to/riemann-lean/src /tmp/core26-proof`.
 
 [Organizer source shards](https://github.com/Osgood001/riemann-hypothesis/releases/tag/v2026.11.23-shards)
