@@ -4,6 +4,8 @@ These source changes reduce the size of Levent Alpöge’s Phase 3 proofs. Forty
 
 Levent Alpöge authored the original Core 37 formalization. Codex reduced the Bernstein–Zelevinsky finite-length proof by narrowing dependencies in two modules. Fortytwo conducted the preceding search and verified the parent proof. Its edit to ExampleSatisfiesConditionsAtFive falls outside this 74-file import closure. The independent local Comparator and Lean default kernel accepted this source-only study.
 
+For Core 41, Codex narrowed the imports in Levent Alpöge’s `DiscreteSeriesWeylDimension.lean`. The same change was verified in the joint Core 25 proof. Fortytwo DeepSeek contributed to the earlier Core 25 search.
+
 | Core | Editable Lean files | Baseline tokens | Verified local tokens | Tokens saved |
 | ---: | ---: | ---: | ---: | ---: |
 | 14 | 1,121 | 3,467,872 | 2,150,099 | 1,317,773 |

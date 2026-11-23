@@ -17,8 +17,11 @@
   },
   "attribution": {
     "original_author": "Levent Alpöge",
-    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo native Lean proof simplification in Formalism.SharpRestriction.CuspSpanNormBounds.DiscreteSeriesWeylDimension, from core25-autof759ea96a6, adapted to the published Core 41 target. Original proof by Levent Alpöge."
+    "proof_edits": "Codex",
+    "prior_search": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "verified_parent": "core25-autof759ea96a6",
+    "new_contribution": "Codex narrowed the imports of DiscreteSeriesWeylDimension while working on Core 25. The verified joint Core 25 proof supplied the exact edited file for Core 41.",
+    "public_source_note": "For Core 41, Codex narrowed the imports in Levent Alpöge’s `DiscreteSeriesWeylDimension.lean`. The same change was verified in the joint Core 25 proof. Fortytwo DeepSeek contributed to the earlier Core 25 search."
   },
   "local_replay": {
     "comparator_exit": 0,
