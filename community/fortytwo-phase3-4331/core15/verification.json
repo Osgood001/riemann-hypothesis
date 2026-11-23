@@ -1,0 +1,37 @@
+{
+  "core": 15,
+  "candidate": "core15-prune02",
+  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core15.tar.zst",
+  "shard_sha256": "1e62b9a4b2b3c29c0b9784d0d2ca25911c0dfd060c7a595585993d0f16c4783a",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 28473,
+  "local_normalized_tokens": 47870200,
+  "published_baseline_tokens": 60808488,
+  "proof_tree_sha256": "354104e21213c55425cb092cdcf0442de4ef4c3f4cf371511effb0a4f1ff0460",
+  "modified_files": {
+    "Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/TopCovolSlim2Use.lean": {
+      "before": "545f4dbcc8b67e0d001951fcad7abaa8250d335a64a6950adf5ce69fee5f30a0",
+      "after": "de7fff6a90f5c7abd09ead269820bec295ec0f653a7e7a2a17925d934e5b228f"
+    }
+  },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "public_method_context": "Keith Adler rh-trim wrapper/dependency pruning analysis supplied as unverified method context; no proof source copied.",
+    "new_contribution": "DeepSeek replaced a broad TopCovolSlim2Use import with exact hypothesis roots and eleven specific proof dependencies, preserving the original proof body. Additional DeepSeek replacement of the toroidalChartsForFan_of bridge by its exact underlying proof removes the BridgesMore dependency. Draft elaboration passed, full downstream and Comparator replay pending."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-23T15:20:35.969188+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null
+}

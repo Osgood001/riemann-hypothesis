@@ -5,6 +5,7 @@ These source changes reduce the size of Levent Alpöge’s Phase 3 proofs. Forty
 | Core | Editable Lean files | Baseline tokens | Verified local tokens | Tokens saved |
 | ---: | ---: | ---: | ---: | ---: |
 | 14 | 1,121 | 3,467,872 | 2,150,099 | 1,317,773 |
+| 15 | 28,473 | 60,808,488 | 47,870,200 | 12,938,288 |
 | 17 | 30,501 | 48,886,000 | 48,885,898 | 102 |
 | 18 | 33,702 | 75,331,745 | 74,343,508 | 988,237 |
 | 23 | 11,827 | 47,617,266 | 25,444,425 | 22,172,841 |
