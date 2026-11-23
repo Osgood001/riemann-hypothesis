@@ -1,0 +1,33 @@
+{
+  "core": 36,
+  "candidate": "core36-fastdirecte62fd12769ef",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 1,
+  "local_normalized_tokens": 1032,
+  "published_baseline_tokens": 1023975,
+  "proof_tree_sha256": "40c106e3931ef518a827631830e62bdce575185031c801d76f49a0a35fdcc8c1",
+  "modified_files": {},
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "new_contribution": "The native DeepSeek agent wrote a direct proof of the published theorem. Codex verified its exact source against the native session and submitted it to full independent Comparator replay. It splits the integral span across the two index summands. Injectivity of the period map and the two distinct CM eigenvalues give zero intersection of the pure lattices. Original formalization by Levent Alpöge."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-23T21:21:51.767959+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null,
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
+  "source_kind": "pinned_git_checkout",
+  "target_sha256": "5e743caf7fae5cc15e00a94762f2f8f05ee809c7d8be7a14843a5a60bb5d749c",
+  "pinned_source_files": {}
+}
