@@ -1,24 +1,98 @@
 {
   "core": 36,
-  "candidate": "core36-fastdirecte62fd12769ef",
+  "candidate": "core36-fastcmroots8ec14abff2f6",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 1032,
+  "local_normalized_tokens": 815,
   "published_baseline_tokens": 1023975,
-  "proof_tree_sha256": "40c106e3931ef518a827631830e62bdce575185031c801d76f49a0a35fdcc8c1",
+  "proof_tree_sha256": "47913654f1b2017ca1584f7e40d8327be9ad9409e1ab1c11c39fe0debcf67a07",
   "modified_files": {},
   "attribution": {
     "original_author": "Levent Alpöge",
-    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "The native DeepSeek agent wrote a direct proof of the published theorem. Codex verified its exact source against the native session and submitted it to full independent Comparator replay. It splits the integral span across the two index summands. Injectivity of the period map and the two distinct CM eigenvalues give zero intersection of the pure lattices. Original formalization by Levent Alpöge."
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
+    "native_proof_sha256": "e62fd12769efda67cbd59cfe5f6001f58fd4ea9d834eaca87e36c659c329b726",
+    "adapted_proof_sha256": "8ec14abff2f6ff24c4428f57e62714bf46d3143695f58243016fa2e171954126",
+    "adapted_solution_line_changes": [
+      {
+        "original": [
+          3,
+          6
+        ],
+        "adapted": [
+          3,
+          4
+        ]
+      },
+      {
+        "original": [
+          24,
+          23
+        ],
+        "adapted": [
+          22,
+          25
+        ]
+      },
+      {
+        "original": [
+          26,
+          33
+        ],
+        "adapted": [
+          28,
+          31
+        ]
+      },
+      {
+        "original": [
+          36,
+          44
+        ],
+        "adapted": [
+          34,
+          34
+        ]
+      },
+      {
+        "original": [
+          47,
+          51
+        ],
+        "adapted": [
+          37,
+          41
+        ]
+      },
+      {
+        "original": [
+          65,
+          67
+        ],
+        "adapted": [
+          55,
+          56
+        ]
+      },
+      {
+        "original": [
+          71,
+          73
+        ],
+        "adapted": [
+          60,
+          61
+        ]
+      }
+    ],
+    "new_contribution": "Fortytwo’s direct CM pure-lattice splitting proof is retained. Codex rewrote the direct-sum span using Sum.range_eq, shortened both subtraction arguments, and used the discriminant-square identity minus one half of the root times the eigenvalue equality to prove the discriminant would vanish. Original formalization by Levent Alpöge."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T21:21:51.767959+00:00",
+    "completed_utc": "2026-11-23T21:54:37.863521+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",

@@ -1,9 +1,7 @@
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 
-open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
-open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
-open scoped ComplexOrder
+open NumberField GlobalTheory GlobalTheory.CompanionTheory.Ar.Fl
+open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 namespace AlpogeRHCore36
 
@@ -21,34 +19,26 @@ theorem pureFamilyDecomposition :
       ∀ y ∈ PureType.lat hP (sgnRt H false),
         n • y ∈ Submodule.span (𝓞 E) (Set.range (x ∘ Sum.inr)) := by
   intro E _ _ _ H D g ty P hP p q x n hx hn
+  let A := Submodule.span (𝓞 E) (Set.range (x ∘ Sum.inl))
+  let B := Submodule.span (𝓞 E) (Set.range (x ∘ Sum.inr))
+  let L := PureType.lat hP (sgnRt H true)
+  let R := PureType.lat hP (sgnRt H false)
   have hne : H.rt0 ≠ -H.rt0 := by
     intro h
-    have h0 : H.rt0 = 0 := by linear_combination h / 2
-    have hs := H.sqrt_neg_disc_sq
-    rw [h0] at hs
-    have hd : (H.d : ℂ) ≠ 0 := by exact_mod_cast H.d_prime.ne_zero
-    apply hd
-    linear_combination hs
-  have hsplit : ∀ y : D.La, ∃ a ∈ Submodule.span (𝓞 E) (Set.range (x ∘ Sum.inl)),
-      ∃ b ∈ Submodule.span (𝓞 E) (Set.range (x ∘ Sum.inr)), n • y = a + b := by
+    apply (Nat.cast_ne_zero.mpr H.d_prime.ne_zero : (H.d : ℂ) ≠ 0)
+    linear_combination H.sqrt_neg_disc_sq - (H.rt0 / 2) * h
+  have hsplit : ∀ y : D.La, ∃ a ∈ A,
+      ∃ b ∈ B, n • y = a + b := by
     intro y
     have h := hn y
-    have e : Set.range x = Set.range (x ∘ Sum.inl) ∪ Set.range (x ∘ Sum.inr) := by
-      ext z; constructor
-      · rintro ⟨(i | j), rfl⟩
-        · exact Or.inl ⟨i, rfl⟩
-        · exact Or.inr ⟨j, rfl⟩
-      · rintro (⟨i, rfl⟩ | ⟨j, rfl⟩)
-        · exact ⟨_, rfl⟩
-        · exact ⟨_, rfl⟩
-    rw [e, Submodule.span_union, Submodule.mem_sup] at h
+    rw [Sum.range_eq x, Submodule.span_union, Submodule.mem_sup] at h
     obtain ⟨a, ha, b, hb, hab⟩ := h
     exact ⟨a, ha, b, hb, hab.symm⟩
-  have hlatL : Submodule.span (𝓞 E) (Set.range (x ∘ Sum.inl)) ≤ PureType.lat hP (sgnRt H true) :=
-    Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hx.1 i)
-  have hlatR : Submodule.span (𝓞 E) (Set.range (x ∘ Sum.inr)) ≤ PureType.lat hP (sgnRt H false) :=
-    Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact hx.2 j)
-  have hboth : ∀ z, z ∈ PureType.lat hP (sgnRt H true) → z ∈ PureType.lat hP (sgnRt H false) → z = 0 := by
+  have hlatL : A ≤ L :=
+    Submodule.span_le.2 (Set.range_subset_iff.mpr hx.1)
+  have hlatR : B ≤ R :=
+    Submodule.span_le.2 (Set.range_subset_iff.mpr hx.2)
+  have hboth : ∀ z, z ∈ L → z ∈ R → z = 0 := by
     intro z h1 h2
     apply hP.2.1
     rw [map_zero]
@@ -62,15 +52,13 @@ theorem pureFamilyDecomposition :
     exact ⟨a, hlatL ha, b, hlatR hb, e⟩
   · obtain ⟨a, ha, b, hb, e⟩ := hsplit y
     have hb0 : b = 0 := hboth b (by
-      have : b = n • y - a := by rw [e]; abel
-      rw [this]
-      exact Submodule.sub_mem _ (Submodule.smul_of_tower_mem _ _ hy) (hlatL ha)) (hlatR hb)
+      simpa [e] using L.sub_mem
+        (Submodule.smul_of_tower_mem _ n hy) (hlatL ha)) (hlatR hb)
     rw [e, hb0, add_zero]; exact ha
   · obtain ⟨a, ha, b, hb, e⟩ := hsplit y
     have ha0 : a = 0 := hboth a (hlatL ha) (by
-      have : a = n • y - b := by rw [e]; abel
-      rw [this]
-      exact Submodule.sub_mem _ (Submodule.smul_of_tower_mem _ _ hy) (hlatR hb))
+      simpa [e] using R.sub_mem
+        (Submodule.smul_of_tower_mem _ n hy) (hlatR hb))
     rw [e, ha0, zero_add]; exact hb
 
 end AlpogeRHCore36
