@@ -1,14 +1,14 @@
 {
   "core": 28,
-  "candidate": "core28-fourier20a5c313e4",
+  "candidate": "core28-fastlata012cf49ed",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 217,
-  "local_normalized_tokens": 474458,
+  "submitted_files": 176,
+  "local_normalized_tokens": 410274,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "73a3533dabc00ccac3e8abf48edac9a97c25dbe1abd30536ed7a1d155d70fc64",
+  "proof_tree_sha256": "6ec50d422cc47c84849db349f810768c7220037c9cecc4051aaf479db8937df0",
   "modified_files": {
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
       "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
@@ -17,22 +17,27 @@
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ModerateCoefficientPositivityHolds.lean": {
       "before": "49693fe6c44679e7c9453811d43617c7b80bf0c11d83b9d0383f8f081d951d1e",
       "after": "20a5c313e44c162039f1958fee785a88e76ab7646051519f30c2f7cd679536fb"
+    },
+    "ReciprocityTheory/SemistableReduction/LatAll.lean": {
+      "before": "b3ad7388149b404a8691abafebaa8502a2b507961d8e8dad58f1dd744b82651e",
+      "after": "a012cf49ed8172939915e4f69d88b8495f85bb666192f99a12e110b7c9eb8e4a"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Levent Alpöge authored the Fourier contour-independence and coefficient bounds and the original RH proof. Fortytwo Engine: Deepseek Flash V4.1 1017 removed unrelated imports in FractionalSliceDomains; its native source is retained byte for byte. Codex restored the two exact Fourier support modules at their consumer and directly applied Alpöge’s bound and contour-independence lemmas there.",
+    "new_contribution": "Levent Alpöge authored the Fourier contour-independence and coefficient bounds and the original RH proof. Fortytwo Engine: Deepseek Flash V4.1 1017 removed unrelated imports in FractionalSliceDomains; its native source is retained byte for byte. Codex restored the two exact Fourier support modules at their consumer and directly applied Alpöge’s bound and contour-independence lemmas there. Codex restricted LatAll to its single needed export Closed.approx and its two original dependencies. Its proof term is preserved from Alpöge’s source.",
     "shared_module_attribution": {
       "inherited_native_module": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains",
       "supervisor_edit": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ModerateCoefficientPositivityHolds",
-      "original_author": "Levent Alpöge"
+      "original_author": "Levent Alpöge",
+      "additional_supervisor_edit": "ReciprocityTheory.SemistableReduction.LatAll"
     }
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T19:43:37.260599+00:00",
+    "completed_utc": "2026-11-23T19:55:35.108915+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -45,40 +50,14 @@
   "target_sha256": "cf38951a23eeeb858e4f9017942214c3902bbb1b07e69e3cdf1843e098e07c2b",
   "pinned_source_files": {
     "Lemmata/GeneralBFactAltForm/Imports.lean": "47c77ae16aa87bc69819d2e94829cefc083f256f612d2b96665962a2ad8172d0",
-    "Lemmata/GeneralBFactBisAlt/Imports.lean": "3e047e0b2c750d9c1ed2d428d1a387fc8a160f25075033ebcfc9d00948d32a1f",
     "Lemmata/GeneralBFactBisForm/Imports.lean": "d45c1c059028d7285705820791c6bb8f88ed4012d9cafa32c579171537d48e9c",
-    "Lemmata/IterateZero/IterZero.lean": "efbc07bef77a6f887d2322827beb0fc89b28203faef9b743f77f88507a266135",
-    "Lemmata/MiscLemmasF/Imports.lean": "cfb5cff2e4ff76012456ed907f312c6e2537c1207681a8821c6d593452866931",
     "ReciprocityTheory/L2DbarEstimates/IsLocalHomeomorph.lean": "35d5a4fa00858ed779759fff427f0032c21f638c76317b154dafa0c163cba910",
     "ReciprocityTheory/L2DbarEstimates/JacobianInterpolationStatement.lean": "9597ccebed4b233c125e1fa9a9186f3cc3e37f6ed098cd278f3d8ab7ec36c1f6",
-    "ReciprocityTheory/L2DbarEstimates/NormFibrations/MvBlowup.lean": "bb84b2d33f55776b4e8358ebb40ccdafb3ec671d8cf733e071483ad17b0abe81",
     "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FamilyLeCoords.lean": "545ddf6832ae36affa609110c9ef339e68470d902cf022e4003c3d64f81dcdba",
     "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourBasic.lean": "bb260b0ac03628b060c7c300f795079d1f58084f7c7aa18a43ead954e9033482",
     "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourIndep.lean": "5df0c67ff5649219f422e50203cae8aeca71bfed429a1869fe836d041cd0bc52",
     "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/FourSum.lean": "4e0a9c91b27312a4508de06866f240a3d8b1693cdbdfcab615409b2918230da9",
     "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/GROWCountStatement.lean": "238d4b56550ce08b2f847ff21f3ce23486b5eeb734b71bd89d13ce58f0167c21",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/Circle.lean": "ddcb4a10e9b3b723836eb860ebbd20bd3274ab6d20cc727453179639e90ba1df",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/ExtCut.lean": "6b1b7c00f4daca7dedab62826d9f93016a875b60eeb183276f97b190074ae0a5",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/ExtCutA.lean": "c6720c55aff5372879bcaf90ca695e17f49151785527c7414a04745484458f4d",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/ExtCutB.lean": "ffcb3ff69857bd92652d65ac04413536f270d31e8e86fc5b938416cdb9b98201",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/ExtNull.lean": "d706399360035e64cb3961f7d42bb96ba13f566c8f5253169daf78f8984db463",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/ExtWeak.lean": "959557e6c7ced1770ddec93129fe5f36bcb3a65c2bd4580e6717cc98eaeb4d61",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/ExtWeakA.lean": "22b6537ed88ed8567a7e1765cf3d56834c5383071c207cf081c9ad87fc022cdd",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/HoloContDiffStatement.lean": "31de507de7dd476dd765ce1ab9fb70c556ebcc20e2e8307b14ffb59f9145d396",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/HoloWeak.lean": "371f5384f4da5a7c7eec2d37f36c860770560e5cfff498831472c37b8cf69150",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/HoloWeakStatement.lean": "de9cb5e1609d89b3f13943df47824947d6973235ef8f27b14836cb2ae9b93cb3",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/Imports.lean": "62388557f6d3ee5330351b5f569ab061a65a4be3093867956e9f618beb8f4543",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/ImportsAlt.lean": "32052ec2f3405efdc9f63d951410fff26edc229b496f59646e02303a5969d614",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/IntegralBumpProfOnePos.lean": "72b6f5369a860bfb69dfc9234868e498cf2283ce08635884b16d6a666166949f",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/IntegralMollProfBall.lean": "89a630b3f06cf18a4f0605e9e55dfccb02d804c151c548b61eb68820ff94a9a8",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/MeasurableEmbeddingRotAbout.lean": "f45fa765655774feb4792dfc793e7ace56ded735ad303fe737307024d4ea6e94",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/MollLeClosedBall.lean": "c585a6d80121f9c690fee0187d6bb4be28ae189505e6983926413c405dd5a413",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/MollifyEqConvolution.lean": "47845807ef1aa55d11c3bc92c4d21cb458da1444802b4212ec02b4720958530f",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/MvDivIntegrand.lean": "498e2007a5988040400fdc0e418649cf0ac4c6339b89274ba31a87208f1bffc5",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/RegBall.lean": "53b492355b81cc405781953c90e8befa9ae266ad95af051b0b6dcc73ec2602dc",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/RegConv.lean": "0bc97634c9dfd5ae1974943e2066fb10342daaa8740a647df95ca456875d4b31",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/RegGlue.lean": "ff03d86bac5a2e07357806183b341826a877c23fd8e87ddfaf4b392f1921afb6",
-    "ReciprocityTheory/L2DbarEstimates/WeakHolomorphy/RegIndep.lean": "2cc4729f0f589ea5e9536cb7ea722b93cfd0eb3354b0d3f9b0bb30c059aaf896",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": "bfb00cb2fd8be62544a7d71ea17a0c3602f0bd4ba4343b9ba85b3cac28d1fabd",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BabaiCovering.lean": "c302192823d9a4eb0e1546aa7c4ac12825652847aca93aef728ca6a2ec326be9",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BfSubRight.lean": "91712167d4788bb5643a4aa58ee821313d585c5978851d3e51a49828611635c1",
@@ -244,21 +223,6 @@
     "ReciprocityTheory/SemistableReduction/ApproxGraphA.lean": "833100586a19fa8098ec6945fc7a4364710e629eb54cabbe2bd7ae933b317b51",
     "ReciprocityTheory/SemistableReduction/ApproxGraphB.lean": "1d4fddf70ec60634b11a72b4e4e3b1ae2d166c6335f941359c75588245e5eff3",
     "ReciprocityTheory/SemistableReduction/ApproxGraphC.lean": "3a8602ff7e879a3ec3888e189ea9b4aa1f39261ec7b3d5171189c77de42585fe",
-    "ReciprocityTheory/SemistableReduction/BWPoly.lean": "5f603dc3bac366e4f8301ea7b7c9203d0da87c65e2bc080eabb5541511a1cbfb",
-    "ReciprocityTheory/SemistableReduction/BWPolyA.lean": "380ded55dd501bcf5bd0231769d123d7aabb11286059d8149ce11c422ac7aba9",
-    "ReciprocityTheory/SemistableReduction/BWPolyB.lean": "d0aa198a2a5c31de0ed07e3ef813c765ca7c5201c927a898dce0e2ce81f0fa7b",
-    "ReciprocityTheory/SemistableReduction/BWPolyC.lean": "9745711038d05b8fb076cc945e0f57e4746565ece0d323927f613ada4512327a",
-    "ReciprocityTheory/SemistableReduction/BalancedSchwarz.lean": "685dd8f5533e19b482fed6ea1a7ba641e643d72e831bfeacd5fa2c141311a1c4",
-    "ReciprocityTheory/SemistableReduction/DegAddHolds.lean": "ec87b0286120bb7616cc0bf2b643010d2ad62115059674deee7a07352f8b056e",
-    "ReciprocityTheory/SemistableReduction/EmbMatMulVecInjective.lean": "f56bf3fa60421e5e7434745d1327df5107912527c1b76671a3a0134ee2800665",
-    "ReciprocityTheory/SemistableReduction/ExistsIntSmulMemSpan.lean": "246b8f798bf859bf20e195c55c2868284bae7ed0c0be3672630871d22e6e06f4",
-    "ReciprocityTheory/SemistableReduction/LatAll.lean": "b3ad7388149b404a8691abafebaa8502a2b507961d8e8dad58f1dd744b82651e",
-    "ReciprocityTheory/SemistableReduction/LatSemiSt.lean": "5ee6a959e45b95e3049ef4ac9b85d634d6f98aa461abec8da0adfbad49d6e4a6",
-    "ReciprocityTheory/SemistableReduction/LemmaH.lean": "cb7ac77c31fb74b78f48cc676153fb147a2cef4e02c606e2a413829f12919191",
-    "ReciprocityTheory/SemistableReduction/OnePolyGrowth.lean": "b9d2c596c8205349f090f36a1d2f9a0af8611b33c49cf9a4823ffd0f6210e4de",
-    "ReciprocityTheory/SemistableReduction/TorsionNonvanish.lean": "86a23c46e804fbd7cd3743bb3a8d8ebf2eb7ab4f29c06234dc61d38ad8da97ca",
-    "ReciprocityTheory/SemistableReduction/Unipotent.lean": "610c6cb4810752023bdef88dfc031a259145cd27c5179bd5314ea1974b0b1b8f",
-    "ReciprocityTheory/SemistableReduction/UnipotentA.lean": "0b405c1c63cac58292493d5c5aa5ef61b82653f0068c5c1b25148a12f45fbf7b",
-    "ReciprocityTheory/SemistableReduction/UnipotentB.lean": "77a50f654c1cb188e927fccd36f00d4b2e3c39a89bceab41871d90f11bbd99a1"
+    "ReciprocityTheory/SemistableReduction/LatAll.lean": "b3ad7388149b404a8691abafebaa8502a2b507961d8e8dad58f1dd744b82651e"
   }
 }
