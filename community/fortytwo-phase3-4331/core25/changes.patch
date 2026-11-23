@@ -1,13 +1,384 @@
---- a/Development/WeilBound/CoreStatements/AutomorphicKernels/SiegelWeilFormula/AwayActions/SigmaSigma.lean
-+++ b/Development/WeilBound/CoreStatements/AutomorphicKernels/SiegelWeilFormula/AwayActions/SigmaSigma.lean
-@@ -2,7 +2,6 @@
+--- a/Development/AbelianVarietyTheory/Proofs/DecoratedLatticeProofs/AdelicUnitaryEveryPointHasCuspScale.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DecoratedLatticeProofs/AdelicUnitaryEveryPointHasCuspScale.lean
+@@ -1,22 +1,8 @@
  import Mathlib
- import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitLocF
- import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemClosureHeckeSplitCongruenceOfFinPartOne
--import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumTwistByHeckeCharactersTrivialBase
- import Development.WeilBound.ThetaLifts.LatticeBasics.ConstIdele
+-import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsRealCoord
+-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.UnimodInst
+-import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.UnifModGrowthOfIsUnifModerate
+-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryGroupTwoModelsRationalRealUnipotentDictioStatement
+-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointNearCuspScaleStatement
+-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsModGrowthExpLeNormInfPow
+-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.MeasBrg
+-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.LevelADef
+-
+-open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta MeasureTheory NumberField Matrix GlobalTheory.CuspGeo
+-open scoped TensorProduct Topology
+-attribute [local instance] Formalism.BasicNotions.Host.cmStar
  
  noncomputable section
+ 
+ namespace GlobalTheory.CuspGeo
+-
+-open Formalism.IndefR.Eqv
+ 
+ theorem norm_mul_mul_apply_le {n : ℕ} (P A Q : Matrix (Fin n) (Fin n) ℂ) (c : ℝ) (hA : ∀ k l, ‖A k l‖ ≤ c)
+     (i j : Fin n) : ‖(P * A * Q) i j‖ ≤ (∑ k, ∑ l, ‖P i k‖ * ‖Q l j‖) * c := by
+@@ -34,148 +20,4 @@
+         refine Finset.sum_congr rfl fun l _ => ?_
+         ring
+ 
+-theorem norm_uMat_inv_apply {n : ℕ} {ε : Fin n → Bool} (y : Formalism.REAL.UJ ε) (i j : Fin n) :
+-    ‖uMat y⁻¹ i j‖ = ‖uMat y j i‖ := by
+-  have hy : (uMat y)ᴴ * Formalism.REAL.Jm ε * uMat y = Formalism.REAL.Jm ε := y.2
+-  have h1 : uMat y⁻¹ = Formalism.REAL.Jm ε * (uMat y)ᴴ * Formalism.REAL.Jm ε := by
+-    show (((y : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _
+-    refine Units.inv_eq_of_mul_eq_one_left ?_
+-    calc Formalism.REAL.Jm ε * (uMat y)ᴴ * Formalism.REAL.Jm ε * uMat y
+-        = Formalism.REAL.Jm ε * ((uMat y)ᴴ * Formalism.REAL.Jm ε * uMat y) := by simp only [Matrix.mul_assoc]
+-      _ = 1 := by rw [hy, Formalism.REAL.Jm_mul_self]
+-  rw [h1]
+-  by_cases hi : ε i <;> by_cases hj : ε j <;>
+-    simp [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, hi, hj]
+-
+-variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
+-
+-def frameBound (fr : UI.Frames D V) (τ : D.what₂.Tau) (i j : Fin V.rank) : ℝ :=
+-  ∑ k, ∑ l, ‖fr.P (Formalism.L2.Host.tauPl D τ) i k‖ * ‖(fr.P (Formalism.L2.Host.tauPl D τ))⁻¹ l j‖
+-
+-theorem frameBound_nonneg (fr : UI.Frames D V) (τ : D.what₂.Tau) (i j : Fin V.rank) : 0 ≤ frameBound fr τ i j :=
+-  Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)
+-
+-def brgFin (fr : UI.Frames D V) : (UI.instV fr).Gf →* GA D V :=
+-  (UI.brg fr : (UI.instV fr).GA →* GA D V).comp (MonoidHom.inr _ _)
+-
+-theorem brgFin_apply (fr : UI.Frames D V) (k : (UI.instV fr).Gf) : brgFin fr k = UI.brg fr (1, k) := rfl
+-
+-theorem continuous_brgFin (fr : UI.Frames D V) : Continuous (brgFin fr) :=
+-  (UI.brg fr).continuous.comp (continuous_const.prodMk continuous_id)
+-
+-theorem brg_entry_bounds (fr : UI.Frames D V)
+-    (h2 : ∀ (x : (UI.instV fr).GA) (τ : D.what₂.Tau) (A : Matrix (Fin V.rank) (Fin V.rank) ℂ),
+-      A = uMat (x.1 (Formalism.L2.Host.tauPl D τ)) → infMat D.sp.cm.sig V.gram (θ τ) (UI.brg fr x) =
+-        fr.P (Formalism.L2.Host.tauPl D τ) * A * (fr.P (Formalism.L2.Host.tauPl D τ))⁻¹) :
+-    ∃ S : ℝ, 0 ≤ S ∧ ∀ (y : (UI.instV fr).Ginf) (c : ℝ),
+-      ((∀ v i j, ‖uMat (y v) i j‖ ≤ c) → normInf θ V (UI.brg fr (y, 1)) ≤ S * c) ∧
+-      ((∀ v i j, ‖(uMat (y v) - 1) i j‖ ≤ c) →
+-        ∀ τ i j, ‖(infMat D.sp.cm.sig V.gram (θ τ) (UI.brg fr (y, 1)) - 1) i j‖ ≤ S * c) := by
+-  have hle : ∀ τ i j, frameBound fr τ i j ≤ ∑ τ, ∑ i, ∑ j, 2 * frameBound fr τ i j := fun τ i j => by
+-    have h0 := frameBound_nonneg fr
+-    calc frameBound fr τ i j ≤ 2 * frameBound fr τ i j := by linarith [h0 τ i j]
+-      _ ≤ ∑ j', 2 * frameBound fr τ i j' :=
+-          Finset.single_le_sum (f := fun j' => 2 * frameBound fr τ i j') (fun j' _ => by linarith [h0 τ i j'])
+-            (Finset.mem_univ j)
+-      _ ≤ ∑ i', ∑ j', 2 * frameBound fr τ i' j' :=
+-          Finset.single_le_sum (f := fun i' => ∑ j', 2 * frameBound fr τ i' j')
+-            (fun i' _ => Finset.sum_nonneg fun j' _ => by linarith [h0 τ i' j']) (Finset.mem_univ i)
+-      _ ≤ _ :=
+-          Finset.single_le_sum (f := fun τ' => ∑ i', ∑ j', 2 * frameBound fr τ' i' j')
+-            (fun τ' _ => Finset.sum_nonneg fun i' _ => Finset.sum_nonneg fun j' _ => by linarith [h0 τ' i' j'])
+-            (Finset.mem_univ τ)
+-  refine ⟨∑ τ, ∑ i, ∑ j, 2 * frameBound fr τ i j,
+-    Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ =>
+-      mul_nonneg zero_le_two (frameBound_nonneg fr τ i j), fun y c => ⟨fun hc => ?_, fun hc τ i j => ?_⟩⟩
+-  · unfold normInf
+-    simp only [Finset.sum_mul]
+-    refine Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_
+-    have e1 := norm_mul_mul_apply_le (fr.P (Formalism.L2.Host.tauPl D τ))
+-      (uMat (y (Formalism.L2.Host.tauPl D τ)) : Matrix (Fin V.rank) (Fin V.rank) ℂ) (fr.P (Formalism.L2.Host.tauPl D τ))⁻¹ c (fun k l => hc (Formalism.L2.Host.tauPl D τ) k l) i j
+-    have e2 := norm_mul_mul_apply_le (fr.P (Formalism.L2.Host.tauPl D τ))
+-      (uMat ((y (Formalism.L2.Host.tauPl D τ))⁻¹) : Matrix (Fin V.rank) (Fin V.rank) ℂ)
+-      (fr.P (Formalism.L2.Host.tauPl D τ))⁻¹ c
+-      (fun k l => (norm_uMat_inv_apply _ k l).trans_le (hc _ l k)) i j
+-    rw [← map_inv, h2 _ τ (uMat (y (Formalism.L2.Host.tauPl D τ)) : Matrix (Fin V.rank) (Fin V.rank) ℂ) rfl,
+-      h2 _ τ (uMat ((y (Formalism.L2.Host.tauPl D τ))⁻¹) : Matrix (Fin V.rank) (Fin V.rank) ℂ) rfl]
+-    unfold frameBound
+-    linarith
+-  · have hc0 : 0 ≤ c := (norm_nonneg _).trans (hc (Formalism.L2.Host.tauPl D τ) i j)
+-    have hdet : IsUnit (fr.P (Formalism.L2.Host.tauPl D τ)).det :=
+-      (Matrix.isUnit_iff_isUnit_det _).1 (fr.unit (Formalism.L2.Host.tauPl D τ))
+-    rw [h2 _ τ (uMat (y (Formalism.L2.Host.tauPl D τ)) : Matrix (Fin V.rank) (Fin V.rank) ℂ) rfl]
+-    have e : fr.P (Formalism.L2.Host.tauPl D τ) * (uMat (y (Formalism.L2.Host.tauPl D τ)) : Matrix (Fin V.rank) (Fin V.rank) ℂ) *
+-        (fr.P (Formalism.L2.Host.tauPl D τ))⁻¹ - 1 = fr.P (Formalism.L2.Host.tauPl D τ) *
+-        ((uMat (y (Formalism.L2.Host.tauPl D τ)) : Matrix (Fin V.rank) (Fin V.rank) ℂ) - 1) *
+-        (fr.P (Formalism.L2.Host.tauPl D τ))⁻¹ := by
+-      rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_nonsing_inv _ hdet]
+-    rw [e]
+-    exact (norm_mul_mul_apply_le _ _ _ c (hc _) i j).trans (mul_le_mul_of_nonneg_right (hle τ i j) hc0)
+-
+-theorem near (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ) (V : HSp D) :
+-    Near θ V := by
+-  intro U hU
+-  obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.unitaryGroup_twoModels_rationalReal_unipotent_dictionary D θ hθ V (UI.framesV D V)
+-  obtain ⟨S, hS0, hS⟩ := brg_entry_bounds (θ := θ) (UI.framesV D V) h2
+-  obtain ⟨d, hd⟩ := GlobalTheory.Grow.height_le_normInf_pow (θ := θ) V hθ
+-  have hKp : IsOpen ((U.comap (brgFin (UI.framesV D V)) : Subgroup _) : Set (UI.instV (UI.framesV D V)).Gf) :=
+-    hU.preimage (continuous_brgFin _)
+-  obtain ⟨b, C, δ₀, K, hδ₀, hK, hx⟩ := GlobalTheory.T.adelicPoint_nearCusp_scale (UI.instV (UI.framesV D V)) _ hKp
+-  obtain ⟨Ck, hCk⟩ := GlobalTheory.Grow.exists_height_le_of_isCompact V (hK.image (continuous_brgFin (UI.framesV D V)))
+-  refine ⟨b * d, max (Ck * (S * C) ^ d) (S * C), δ₀, hδ₀, fun g => ?_⟩
+-  set fr := UI.framesV D V with hfr
+-  set x := (UI.brg fr).symm g with hxdef
+-  have hgx : UI.brg fr x = g := (UI.brg fr).apply_symm_apply g
+-  obtain ⟨δ, hδ, hδ1, ⟨γ, hγ, hγK, hγb⟩, halt⟩ := hx x
+-  refine ⟨δ, hδ, hδ1, ?_, ?_⟩
+-  · have hsplit : γ * x = ((γ * x).1, 1) * (1, (γ * x).2) := Prod.ext (by simp) (by simp)
+-    have e : UI.brg fr γ * g = UI.brg fr ((γ * x).1, 1) * brgFin fr (γ * x).2 := by
+-      calc UI.brg fr γ * g = UI.brg fr (γ * x) := by rw [map_mul, hgx]
+-        _ = UI.brg fr (((γ * x).1, 1) * (1, (γ * x).2)) := congrArg _ hsplit
+-        _ = _ := map_mul _ _ _
+-    have hkb := hCk _ ⟨_, hγK, rfl⟩
+-    have hq : GlobalTheory.Grow.quotHeight V g ≤ GlobalTheory.Grow.height V (UI.brg fr ((γ * x).1, 1)) * Ck := by
+-      have := GlobalTheory.Grow.quotHeight_le V g ((h1 γ).2 hγ)
+-      rw [e] at this
+-      exact this.trans ((GlobalTheory.Grow.height_mul_le V _ _).trans
+-        (mul_le_mul_of_nonneg_left hkb (GlobalTheory.Grow.height_pos V _).le))
+-    have hy : ∀ v i j, ‖uMat ((γ * x).1 v) i j‖ ≤ C / δ ^ b := fun v i j =>
+-      (le_div_iff₀ (pow_pos hδ b)).2 (hγb v i j)
+-    have hN := (hS (γ * x).1 (C / δ ^ b)).1 hy
+-    have hN0 : 0 ≤ normInf θ V (UI.brg fr ((γ * x).1, 1)) := by unfold normInf; positivity
+-    have hNb : normInf θ V (UI.brg fr ((γ * x).1, 1)) * δ ^ b ≤ S * C := by
+-      calc _ ≤ S * (C / δ ^ b) * δ ^ b := mul_le_mul_of_nonneg_right hN (pow_pos hδ b).le
+-        _ = S * C := by rw [mul_assoc, div_mul_cancel₀ _ (pow_pos hδ b).ne']
+-    have hH := hd _ ((brg_mem_GinfC fr ((γ * x).1, 1)).2 rfl)
+-    have hHb : GlobalTheory.Grow.height V (UI.brg fr ((γ * x).1, 1)) * δ ^ (b * d) ≤ (S * C) ^ d := by
+-      rw [pow_mul]
+-      calc _ ≤ normInf θ V (UI.brg fr ((γ * x).1, 1)) ^ d * (δ ^ b) ^ d :=
+-            mul_le_mul_of_nonneg_right hH (by positivity)
+-        _ = (normInf θ V (UI.brg fr ((γ * x).1, 1)) * δ ^ b) ^ d := (mul_pow _ _ _).symm
+-        _ ≤ (S * C) ^ d := pow_le_pow_left₀ (by positivity) hNb d
+-    have hCk0 : 0 ≤ Ck := zero_le_one.trans ((GlobalTheory.Grow.one_le_height V _).trans hkb)
+-    calc GlobalTheory.Grow.quotHeight V g * δ ^ (b * d)
+-        ≤ GlobalTheory.Grow.height V (UI.brg fr ((γ * x).1, 1)) * Ck * δ ^ (b * d) :=
+-          mul_le_mul_of_nonneg_right hq (by positivity)
+-      _ = Ck * (GlobalTheory.Grow.height V (UI.brg fr ((γ * x).1, 1)) * δ ^ (b * d)) := by ring
+-      _ ≤ Ck * (S * C) ^ d := mul_le_mul_of_nonneg_left hHb hCk0
+-      _ ≤ _ := le_max_left _ _
+-  · rcases halt with h | ⟨W, hW, hWm⟩
+-    · exact Or.inl h
+-    · obtain ⟨r, C₀, hC₀, hNI⟩ := h3 W hW
+-      refine Or.inr ⟨r, C₀, hC₀, fun m hm => ?_⟩
+-      have hm' : (UI.brg fr).symm m ∈ (UI.instV fr).NA W :=
+-        hNI _ (by rwa [(UI.brg fr).apply_symm_apply])
+-      obtain ⟨γ', hγ', u, k, hk, he, hu⟩ := hWm _ hm'
+-      refine ⟨UI.brg fr γ', (h1 γ').2 hγ', UI.brg fr (u, 1), brgFin fr k,
+-        ⟨(brg_mem_GinfC fr (u, 1)).2 rfl, fun τ i j => ?_⟩, hk, (brg_mem_GfC fr (1, k)).2 rfl, ?_⟩
+-      · calc _ ≤ S * (C * δ) := (hS u (C * δ)).2 hu τ i j
+-          _ ≤ max (Ck * (S * C) ^ d) (S * C) * δ := by
+-            rw [← mul_assoc]; exact mul_le_mul_of_nonneg_right (le_max_right _ _) hδ.le
+-      · calc m * g = UI.brg fr ((UI.brg fr).symm m * x) := by rw [map_mul, (UI.brg fr).apply_symm_apply, hgx]
+-          _ = UI.brg fr (γ' * x * ((u, 1) * (1, k))) := by
+-            rw [he]; exact congrArg (fun z => UI.brg fr (γ' * x * z)) (Prod.ext (by simp) (by simp))
+-          _ = UI.brg fr γ' * g * UI.brg fr (u, 1) * brgFin fr k := by
+-            rw [map_mul, map_mul, map_mul, hgx, ← mul_assoc]; rfl
+-
+ end GlobalTheory.CuspGeo
+--- a/Development/AbelianVarietyTheory/Proofs/DivisorProofs/AdelicIntertwine.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DivisorProofs/AdelicIntertwine.lean
+@@ -5,8 +5,6 @@
+ import Development.AbelianVarietyTheory.Definitions.Divisors.IsCompactIsOpenUnitsAt
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndicatorIntMMemSB
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsJacMapZero
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalUnitaryMatrixSurjective
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceCharacterComponentSmoothUnitaryConduct
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalMomentMatrixTransform
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalCharacterNormOneUnit
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomSuppSplit
+--- a/Development/AbelianVarietyTheory/Proofs/DivisorProofs/AutomorphicConstantTermParabolic.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DivisorProofs/AutomorphicConstantTermParabolic.lean
+@@ -5,7 +5,7 @@
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentiableAtFoldrLineDer
+ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RderMemAutFormsCuspForms
+ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModerateGrowthOfHasCompactSupport
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousIteratedRealLineDerivUnitaryAdelicStatement
++import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousIteratedRealLineDerivUnitaryAdelic
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConstantTermSmoothParabolicStatement
+ 
+ noncomputable section
+@@ -14,6 +14,9 @@
+ open GlobalTheory.AutomorphicL2Unitary (LeftInv)
+ open GlobalTheory.Cusp (Cocompact constTermOn)
+ open scoped TensorProduct
++
++private theorem continuous_iteratedRealLineDeriv_unitaryAdelic_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ φ : GAd σ J → ℂ, (∃ U : Subgroup (GAd σ J), IsOpen (U : Set (GAd σ J)) ∧ ∀ k ∈ U, k ∈ finPts σ J → ∀ g, φ (g * k) = φ g) → Continuous φ → IsSm σ J φ → ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → Continuous (l.foldr lineDer φ) := by
++  first | exact @GlobalTheory.DerCont.continuous_foldr_lineDer | exact GlobalTheory.DerCont.continuous_foldr_lineDer | (intros; apply GlobalTheory.DerCont.continuous_foldr_lineDer <;> assumption)
+ 
+ namespace GlobalTheory.UAut.ConstAut
+ 
+@@ -51,7 +54,7 @@
+   have hφΓ : LeftInv (ratPts σ J ⊓ parFlag σ J C d) φ := fun γ hγ => hφ.left γ (hH hγ)
+   obtain ⟨hco, e⟩ := hc.eq_constTermOn_par h hJ hC hφΓ
+   have hcont : ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → Continuous (l.foldr lineDer φ) :=
+-    GlobalTheory.T.continuous_iteratedRealLineDeriv_unitaryAdelic F E σ h n J hJ φ hφ.level hφ.cont hφ.smooth
++    continuous_iteratedRealLineDeriv_unitaryAdelic_local F E σ h n J hJ φ hφ.level hφ.cont hφ.smooth
+   have hleft : ∀ l : List (ℝ → GAd σ J), LeftInv (ratPts σ J ⊓ parFlag σ J C d) (l.foldr lineDer φ) :=
+     leftInv_foldr hφΓ
+   have hder : ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) →
+--- a/Development/AbelianVarietyTheory/Proofs/DivisorProofs/HeckeCharacterUnramifiedExponent.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DivisorProofs/HeckeCharacterUnramifiedExponent.lean
+@@ -1,99 +1,13 @@
+ import Mathlib
+-import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaOn
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareBottomHalfRankDiffLeHalfRank
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterOfIdeleClass
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PartialHeckeLFunctionSquareEqPrimitive
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompletedHeckeLBoundedInVerticalStrips
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsNormDifferentEqProd
+-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharIsUnitaryOfUnitaryInfinityType
++import Development.AbelianVarietyTheory.Definitions.Divisors.IsFinSetSplitPlacesCoprimeConductor
++import Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyNormFinLeOne
+ 
+ noncomputable section
+ 
+ namespace GlobalTheory.BotLValue
+ 
+-section General
++open NumberField IsDedekindDomain
+ 
+-open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds
+-
+-variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
+-
+-theorem gamma_ne_zero {s : ℂ} {n : ℤ} (h : 0 < 2 * s.re + ((|n| : ℤ) : ℝ)) :
+-    Complex.Gamma (s + ((|n| : ℤ) : ℂ) / 2) ≠ 0 :=
+-  Complex.Gamma_ne_zero_of_re_pos (by
+-    have e : (s + ((|n| : ℤ) : ℂ) / 2).re = s.re + ((|n| : ℤ) : ℝ) / 2 := by
+-      rw [Complex.add_re, ← Complex.ofReal_intCast, ← Complex.ofReal_ofNat, ← Complex.ofReal_div, Complex.ofReal_re]
+-    rw [e]
+-    linarith)
+-
+-theorem exists_isHeckeL_of_completed {χ : HChar E} {n : I → ℤ} {Λ : ℂ → ℂ} (h : IsCompletedL χ n Λ) :
+-    ∃ L, IsHeckeL χ L := by
+-  have hpi : (2 * (Real.pi : ℂ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)
+-  have hA : ∀ (z : ℂ) i, (2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2))) ≠ 0 := fun z i =>
+-    mul_ne_zero two_ne_zero (by rw [Ne, Complex.cpow_eq_zero_iff]; tauto)
+-  refine ⟨fun z => Λ z * ∏ i, ((2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2)))⁻¹ *
+-    (Complex.Gamma (z + ((|n i| : ℤ) : ℂ) / 2))⁻¹), ?_, fun z hz => ?_⟩
+-  · refine h.1.mul (Differentiable.fun_finsetProd fun i _ => ?_)
+-    refine Differentiable.mul (fun z => ?_) ?_
+-    · refine DifferentiableAt.inv ?_ (hA z i)
+-      exact (((differentiableAt_id.add_const _).neg).const_cpow (Or.inl hpi)).const_mul 2
+-    · exact Complex.differentiable_one_div_Gamma.comp (differentiable_id.add_const _)
+-  · obtain ⟨L, h1, h2⟩ := h.2 z hz
+-    have key : archFactor n z * ∏ i, ((2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2)))⁻¹ *
+-        (Complex.Gamma (z + ((|n i| : ℤ) : ℂ) / 2))⁻¹) = 1 := by
+-      unfold archFactor
+-      rw [← Finset.prod_mul_distrib]
+-      refine Finset.prod_eq_one fun i _ => ?_
+-      have h0 : (0 : ℝ) ≤ ((|n i| : ℤ) : ℝ) := by exact_mod_cast abs_nonneg (n i)
+-      rw [mul_mul_mul_comm, mul_inv_cancel₀ (hA z i), mul_inv_cancel₀ (gamma_ne_zero (by linarith)), one_mul]
+-    show HasProd _ (Λ z * _)
+-    rwa [h2, mul_comm (archFactor n z), mul_assoc, key, mul_one]
+-
+-theorem exists_heckeL_ne_zero (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) [IsTotallyComplex E]
+-    {φ : I → E →+* ℂ} (hφ : IsCMType φ) {χ : HChar E} {n : I → ℤ} (hu : IsUnitary χ)
+-    (hi : Formalism.L2.Host.HChar.HasInf χ φ n) (hn : ∃ i, n i ≠ 0) :
+-    ∃ L, IsHeckeL χ L ∧ ∀ s : ℤ, (∀ i, 0 < 2 * s + |n i|) → L s ≠ 0 := by
+-  have hB := GlobalTheory.HeckeStrip.completedLBoundedInStrips
+-  have hn' : ∃ i, -n i ≠ 0 := hn.imp fun i h => neg_ne_zero.2 h
+-  have hi' := GlobalTheory.Published.HeckeFEModel.hasInf_inv hi
+-  have hu' := GlobalTheory.Published.HeckeFEModel.isUnitary_inv hu
+-  obtain ⟨Λ, hΛ, -⟩ := hB E I φ hφ χ n hu hi hn
+-  obtain ⟨Λ', hΛ', -⟩ := hB E I φ hφ χ⁻¹ (fun i => -n i) hu' hi' hn'
+-  obtain ⟨L, hL⟩ := exists_isHeckeL_of_completed hΛ
+-  obtain ⟨L', hL'⟩ := exists_isHeckeL_of_completed hΛ'
+-  refine ⟨L, hL, fun s hs => ?_⟩
+-  rcases le_or_gt 1 s with h1 | h1
+-  · have e : ((s.toNat : ℕ) : ℂ) = (s : ℂ) := by
+-      rw [← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]
+-    rw [← e]
+-    exact hL.ne_zero_nat hu (by omega)
+-  have g1 : ∀ i, Complex.Gamma ((1 - (s : ℂ)) + ((|-n i| : ℤ) : ℂ) / 2) ≠ 0 := fun i => gamma_ne_zero (by
+-    have h0 : (0 : ℝ) ≤ ((|-n i| : ℤ) : ℝ) := by exact_mod_cast abs_nonneg (-n i)
+-    have h2 : (s : ℝ) < 1 := by exact_mod_cast h1
+-    rw [Complex.sub_re, Complex.one_re, Complex.intCast_re]
+-    linarith)
+-  have hL1 : L' (1 - (s : ℂ)) ≠ 0 := by
+-    have e : (((1 - s).toNat : ℕ) : ℂ) = 1 - (s : ℂ) := by
+-      rw [← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]; push_cast; ring
+-    rw [← e]
+-    exact hL'.ne_zero_nat hu' (by omega)
+-  have hΛ'1 : Λ' (1 - (s : ℂ)) ≠ 0 := by
+-    rw [GlobalTheory.LValNe.completed_eq hΛ' hL' g1]
+-    exact mul_ne_zero (GlobalTheory.LValNe.archFactor_ne_zero g1) hL1
+-  have hΛs : Λ s ≠ 0 := fun h0 => hΛ'1 ((GlobalTheory.Published.HeckeFEModel.zero_iff hFE hφ hu hi hn hΛ hΛ' s).1 h0)
+-  have g0 : ∀ i, Complex.Gamma ((s : ℂ) + ((|n i| : ℤ) : ℂ) / 2) ≠ 0 := fun i => gamma_ne_zero (by
+-    rw [Complex.intCast_re]
+-    exact_mod_cast hs i)
+-  rw [GlobalTheory.LValNe.completed_eq hΛ hL g0] at hΛs
+-  exact right_ne_zero_of_mul hΛs
+-
+-end General
+-
+-open scoped TensorProduct NNReal Matrix
+-open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
+-open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.Doubling GlobalTheory.ThK.Bot
+-open Formalism.L2.Host (aboveF)
+-
+-open NumberField IsDedekindDomain in
+ private theorem eq_or_eq_of_comp_eq_of_finrank_two {F E : Type} [Field F] [NumberField F] [Field E]
+     [NumberField E] [Algebra F E] (h2 : Module.finrank F E = 2) (ψ : F →+* ℂ)
+     (ρ α β : E →+* ℂ) (hρ : ρ.comp (algebraMap F E) = ψ) (hα : α.comp (algebraMap F E) = ψ)
+@@ -117,8 +31,6 @@
+     rw [Finset.card_insert_of_notMem (by simp [hfa, hfb]), Finset.card_pair hab]
+   have := Finset.card_le_univ ({mk ρ hρ, mk α hα, mk β hβ} : Finset (E →ₐ[F] ℂ))
+   omega
+-
+-open NumberField IsDedekindDomain in
+ 
+ theorem _root_.GlobalTheory.BotLValue.isCMType_embOver {F E : Type} [Field F] [NumberField F] [Field E]
+     [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+@@ -156,31 +68,4 @@
+     · rw [e]; exact hconj w _ (hτ w)
+   rw [hvdef, hw', InfinitePlace.mk_embedding]
+ 
+-theorem charL_holValueAt_ne_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ → ∀ (χ : Chr F E), IsHecke F E χ → ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ 0 →
+-    ∀ (k : InfinitePlace F → ℤ) (d : ℕ), HasExp B.emb χ k → (∀ w, (d : ℤ) < |k w|) → ∀ T : Finset (Pl F), UnrOff χ (T : Set (Pl F)) →
+-    (∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∈ T → ¬ UnrAt χ w) → ∀ z : ℤ, -(d : ℤ) ≤ 2 * z →
+-      ∃ c : ℂ, c ≠ 0 ∧ GlobalTheory.Cont.HolValueAt (charL χ (T : Set (Pl F))) (z : ℂ) c := by
+-  intro hK F E _ _ _ _ _ σ B hB χ hχ _ k d hk hd T _ hram z hz
+-  have := hB.cm.2.1
+-  obtain ⟨H, hloc, hinf⟩ := GlobalTheory.HeckeBridge.exists_hchar F E σ hB.cm χ hχ
+-  have hi := hinf _ _ hk
+-  have hu := GlobalTheory.HeckeUnitaryInf.isUnitary_of_hasInf E H _ _ hi
+-  obtain ⟨w₀⟩ : Nonempty (InfinitePlace F) := inferInstance
+-  obtain ⟨L, hL, hne⟩ := exists_heckeL_ne_zero hK.heckeTateFunctionalEquation.abs (isCMType_embOver hB.cm B.emb) hu hi
+-    ⟨w₀, fun h => by have := hd w₀; rw [h, abs_zero] at this; omega⟩
+-  have hun : ∀ w, UnrAt χ w ↔ H.UnrAt w := fun w => forall₂_congr fun x _ => by rw [hloc]
+-  have hfam : charFam χ = heckeFam H := funext fun w => by
+-    by_cases h : H.UnrAt w
+-    · rw [heckeFam_of_unrAt h, charFam_of_unrAt ((hun w).2 h)]
+-      exact congrArg _ (hloc _ _).symm
+-    · rw [heckeFam_of_not_unrAt h]
+-      exact if_neg (mt (hun w).1 h)
+-  refine ⟨L z, hne z fun w => by have := hd w; omega, ?_⟩
+-  refine (GlobalTheory.Cont.holValueAt_self (σ := (z : ℂ).re - 1) (fun s _ => hL.1.analyticAt s) (by linarith)).congr
+-    ⟨1, fun s hs => ?_⟩
+-  rw [charL, hfam]
+-  exact (GlobalTheory.SqStep.heckeL_eq_of_ram (S := above E (T : Set (Pl F))) (fun w hw => mt (hun w).2 (hram w hw)) hL hs).symm
+-
+ end GlobalTheory.BotLValue
+-
+-end
+--- a/Development/AbelianVarietyTheory/Proofs/DivisorProofs/IsCompactAnnihilatorOpenSubgroupFiniteAdeles.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DivisorProofs/IsCompactAnnihilatorOpenSubgroupFiniteAdeles.lean
+@@ -1,7 +1,6 @@
+ import Mathlib
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTransportF
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsContOnOfLocal
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumCMPreservesSchwartzHeisenberStatement
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAdelicCharacterNontrivialAtPlaces
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfStandardTraceAdelicAddChar
+ import GroundTheory.GlobalFields.TateThesis.AdelicCharDual
+--- a/Development/AbelianVarietyTheory/Proofs/DivisorProofs/PsiUnramifiedAwayDifferent.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DivisorProofs/PsiUnramifiedAwayDifferent.lean
+@@ -14,7 +14,6 @@
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalAddCharUnramifiedOfSplitsCompletelyAbovePla
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfStandardTraceAdelicAddChar
+-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousSingleAt
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoAtEqZero
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAddCharSymplecticLocalLatticeEqOne
+ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitPrimeAdditiveCharacterUnramified
 --- a/Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/SiegelWeilLagrangianTermsAbsTsumLeHeightPoly.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/SiegelWeilLagrangianTermsAbsTsumLeHeightPoly.lean
 @@ -13,12 +13,12 @@
@@ -24,3 +395,244 @@
  
  noncomputable section
  
+--- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/NonrepresentedSignatureObstruction.lean
++++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/NonrepresentedSignatureObstruction.lean
+@@ -4,8 +4,6 @@
+ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CongrOfSignatureOfAdelicNorm
+ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSignatureFromBlocks
+ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsAuxiliaryHyperbolicVectors
+-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SignCompatibleNumberingOfWittTowerLower
+-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemMultTOfEquivariant
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenseRangeRealEmbeddings
+ import Development.AbelianVarietyTheory.PublishedTheorems.AdelicLattices₂.AlgebraMapNormOfBasisOneSqrt
+ import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.InfFam
+@@ -18,6 +16,36 @@
+ attribute [local instance] Formalism.BasicNotions.Host.cmStar
+ 
+ noncomputable section
++namespace GlobalTheory.DefLiftMult
++
++private theorem exists_tauE_local (D : D7) (σ : D.host.E →+* ℂ) :
++    ∃ τ, σ = tauE D τ ∨ σ = (starRingEnd ℂ).comp (tauE D τ) := by
++  obtain ⟨g, rfl⟩ := (factEmb D.R D.host).1.2 σ
++  have key : ∀ (t : D.R.GG) (ht : t ∈ D.R.Psi),
++      tauE D (D.eTau.symm ⟨t, ht⟩) = D.host.emb t := fun t ht => by
++    unfold tauE
++    rw [Equiv.apply_symm_apply]
++  by_cases h : g ∈ D.R.Psi
++  · exact ⟨D.eTau.symm ⟨_, h⟩, Or.inl (key g h).symm⟩
++  · have h' : g * D.R.cc ∈ D.R.Psi := by
++      by_contra h2
++      exact h ((Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem _).2 h2)
++    refine ⟨D.eTau.symm ⟨_, h'⟩, Or.inr ?_⟩
++    rw [key, Formalism.L2.Geo.emb_mul_cc_comp]
++    refine RingHom.ext fun x => ?_
++    have := D.host.conjE_apply (D.host.emb g) x
++    exact ((starRingEnd_self_apply _).symm.trans (congrArg (starRingEnd ℂ) this.symm))
++
++end GlobalTheory.DefLiftMult
++
++private theorem hasSignature_hyperbolic_local (i : ℕ) :
++    Formalism.UG.HasSignature (Matrix.fromBlocks 0 1 1 0 : Matrix (Fin i ⊕ Fin i) (Fin i ⊕ Fin i) ℂ) i i := by
++  refine GlobalTheory.FrameComplement.hasSignature_of_frame (p := i) (q := i) (by simp)
++    (Matrix.fromBlocks (1 : Matrix (Fin i) (Fin i) ℂ) 1 ((1 / 2 : ℂ) • 1) (-((1 / 2 : ℂ) • 1))) ?_
++  rw [Formalism.UG.P.Jpq_eq_diagonal, ← Matrix.fromBlocks_diagonal]
++  simp only [Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]
++  congr 1 <;> ext a b <;> simp [Matrix.one_apply, Matrix.diagonal_apply] <;> split_ifs <;> norm_num
++
+ namespace GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Hasse
+ open Matrix NumberField
+ 
+@@ -432,7 +460,7 @@
+       have d := hasSignature_diagonal (P := P σ) (N := q σ - q₁ σ - k) (fun i => σ (a i))
+         (by simp only [P]; omega) (ha σ)
+       have := GlobalTheory.FrameComplement.hasSignature_fromBlocks (h1 σ)
+-        (GlobalTheory.FrameComplement.hasSignature_fromBlocks (GlobalTheory.WittSign.hasSignature_hyperbolic k) d)
++        (GlobalTheory.FrameComplement.hasSignature_fromBlocks (hasSignature_hyperbolic_local k) d)
+       rw [blockM_map B a (L σ) σ (hL σ)]
+       rwa [show p₁ σ + (k + P σ) = p σ by simp only [P]; omega,
+         show q₁ σ + (k + (q σ - q₁ σ - k)) = q σ by omega] at this
+@@ -535,7 +563,7 @@
+     exact ⟨p₁, q₁, p, q, hB, hG, h1, h2⟩
+   obtain ⟨x, hx1, hx2⟩ := exists_frame_of_sig D.sp.cm (k := r - t) V.gram B hGh hBh hGd hdet (by omega)
+     (fun τ => by
+-      obtain ⟨ρ, rfl | rfl⟩ := GlobalTheory.DefLiftMult.exists_tauE D τ
++      obtain ⟨ρ, rfl | rfl⟩ := GlobalTheory.DefLiftMult.exists_tauE_local D τ
+       · exact hplace ρ
+       · obtain ⟨p₁, q₁, p, q, h1, h2, h3, h4⟩ := hplace ρ
+         refine ⟨p₁, q₁, p, q, ?_, ?_, h3, h4⟩
+--- a/Development/WeilBound/CoreStatements/AutomorphicKernels/EisensteinSeriesG2/CompactStandardSubgroup/KCptPf.lean
++++ b/Development/WeilBound/CoreStatements/AutomorphicKernels/EisensteinSeriesG2/CompactStandardSubgroup/KCptPf.lean
+@@ -1,4 +1,3 @@
+-import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.CompactStandardSubgroup.Imports
+ import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.G2HaarMeasure.ContinuousInFrame
+ import Development.WeilBound.ThetaLifts.LatticeBasics.IsCompactOfUnits
+ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHeightLeTwoMulQuotHeight
+--- a/Development/WeilBound/CoreStatements/AutomorphicKernels/SiegelWeilFormula/AwayActions/SigmaSigma.lean
++++ b/Development/WeilBound/CoreStatements/AutomorphicKernels/SiegelWeilFormula/AwayActions/SigmaSigma.lean
+@@ -2,8 +2,6 @@
+ import Mathlib
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitLocF
+ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemClosureHeckeSplitCongruenceOfFinPartOne
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilDatumTwistByHeckeCharactersTrivialBase
+-import Development.WeilBound.ThetaLifts.LatticeBasics.ConstIdele
+ 
+ noncomputable section
+ 
+--- a/Development/WeilBound/CoreStatements/AutomorphicKernels/SiegelWeilFormula/UnitaryChartEquiv/CEquivApply.lean
++++ b/Development/WeilBound/CoreStatements/AutomorphicKernels/SiegelWeilFormula/UnitaryChartEquiv/CEquivApply.lean
+@@ -1,6 +1,6 @@
+ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaBijections.SymplecticFormCoordinates
+ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoublingPairLatticeTheta
++import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzMemL2
+ 
+ noncomputable section
+ 
+--- a/Formalism/LocalToGlobal/NumberFieldFamilies/ThetaCN.lean
++++ b/Formalism/LocalToGlobal/NumberFieldFamilies/ThetaCN.lean
+@@ -1,5 +1,5 @@
+ import Formalism.LocalToGlobal.NumberFieldFamilies.ThetaCG
+-import Formalism.LocalToGlobal.NumberFieldFamilies.ThetaCR
++import Formalism.SharpRestriction.Divisibility.LocalNonemptiness.THProvA
+ 
+ noncomputable section
+ 
+--- a/Formalism/LogFactorialBounds/LogFactorialProofs/PrimeSum.lean
++++ b/Formalism/LogFactorialBounds/LogFactorialProofs/PrimeSum.lean
+@@ -1,4 +1,3 @@
+-import Formalism.LogFactorialBounds.LocalFactorSplitDv
+ import Mathlib
+ 
+ noncomputable section
+--- a/Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ValuationLocalVolumes/VolUTr.lean
++++ b/Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ValuationLocalVolumes/VolUTr.lean
+@@ -1,5 +1,4 @@
+ import Mathlib
+-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalJacobianType.ContinuousTrESymm
+ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.DiffProd
+ 
+ noncomputable section
+--- a/Formalism/SharpRestriction/CuspSpanNormBounds/DiscreteSeriesWeylDimension.lean
++++ b/Formalism/SharpRestriction/CuspSpanNormBounds/DiscreteSeriesWeylDimension.lean
+@@ -1,7 +1,8 @@
+ import Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily
+ import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.NumericSettingWithGapSatisfiable
+ import Formalism.SharpRestriction.CuspSpanNormBounds.AutLzFiniteOfLoop
+-import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLx
++import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
++import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyPacketOfEquivalentStatement
+ import Mathlib
+ import Formalism.FormalDegreeBessel.FinalDS
+ 
+--- a/Formalism/SharpRestriction/Divisibility/LiftErrorLocal.lean
++++ b/Formalism/SharpRestriction/Divisibility/LiftErrorLocal.lean
+@@ -9,7 +9,6 @@
+ import Formalism.SharpRestriction.Divisibility.ModuliIntegralCharts
+ import Formalism.SharpRestriction.LevelLetterCocycles.IntegralHeckeForms
+ import Formalism.SharpRestriction.LevelLetterCocycles.TwGood
+-import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
+ import Formalism.SharpRestriction.LevelLetterCocycles.LocsCoverTw
+ 
+ noncomputable section
+--- a/GroundTheory/AutomorphicForms/GL2/FiniteIdeleDecomp.lean
++++ b/GroundTheory/AutomorphicForms/GL2/FiniteIdeleDecomp.lean
+@@ -2,7 +2,6 @@
+ import GroundTheory.GlobalFields.LocalFieldAtPlace
+ import GroundTheory.GlobalFields.TateThesis.IdeleMeasure
+ import GroundTheory.LocalFields.LocalFourier
+-import GroundTheory.LocalFields.LocalFourierMult
+ import GroundTheory.LocalFields.LocalFourierHaar
+ 
+ open NumberField IsDedekindDomain MeasureTheory Filter Topology GroundTheory.Global GroundTheory.LocalField
+--- a/GroundTheory/GlobalFields/TateThesis/RootNumberLocalPlace.lean
++++ b/GroundTheory/GlobalFields/TateThesis/RootNumberLocalPlace.lean
+@@ -1,15 +1,16 @@
+ import Mathlib
++import GroundTheory.GlobalFields.TateThesis.NonvanishingPrimes
++import GroundTheory.GlobalFields.TateThesis.DegreeOnePrimes
+ import GroundTheory.GlobalFields.TateThesis.EulerFactorsFourierFinite
+ import GroundTheory.GlobalFields.TateThesis.AdelicCharLocal
+ import GroundTheory.GlobalFields.KummerTheory.LocalIndexAtPlace
+-import GroundTheory.GlobalFields.Artin.ConductorOneDim
+ import GroundTheory.AutomorphicForms.GL2.FiniteAdeleDecomp
+ import GroundTheory.LocalFields.LocalZeta
+ 
+ namespace GroundTheory.Global
+ 
+ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum MeasureTheory WithZero
+-  GroundTheory.LocalField IdeleGroup
++  GroundTheory.LocalField IdeleGroup ValuativeRel IsLocalRing
+ open GroundTheory.Automorphic.GodementSection (localChar coe_localChar continuous_localChar)
+ open scoped NumberField.AdeleRing ENNReal NNReal
+ 
+@@ -36,6 +37,41 @@
+     (h2.symm.trans h1)
+   rw [← exp_log ((Valued.v).ne_zero_iff.2 hx)]
+   exact congrArg exp h
++
++private theorem isEquiv_valuation_valued_local (v : HeightOneSpectrum (𝓞 K)) :
++    (ValuativeRel.valuation (v.adicCompletion K)).IsEquiv
++      (Valued.v : Valuation (v.adicCompletion K) ℤᵐ⁰) :=
++  ValuativeRel.isEquiv _ _
++
++private theorem valued_irreducible_valuationInteger_local {v : HeightOneSpectrum (𝓞 K)}
++    {ϖ : 𝒪[v.adicCompletion K]} (hϖ : Irreducible ϖ) :
++    Valued.v (ϖ : v.adicCompletion K) = exp (-1 : ℤ) := by
++  rw [valued_eq_exp_neg_ord (by exact_mod_cast hϖ.ne_zero), ord_uniformizer hϖ]
++
++private theorem unitFiltrationUnits_zero_eq_unitsLevel_zero_local (v : HeightOneSpectrum (𝓞 K)) :
++    unitFiltrationUnits (v.adicCompletion K) 0 = unitsLevel v 0 := by
++  ext x
++  rw [mem_unitFiltrationUnits_zero_iff, mem_unitsLevel]
++  constructor
++  · intro h
++    have hv : Valued.v (x : v.adicCompletion K) = 1 :=
++      (isEquiv_valuation_valued_local v).eq_one_iff_eq_one.1 h
++    exact ⟨hv, by
++      rw [Nat.cast_zero, neg_zero, exp_zero]
++      exact Valuation.map_sub_le _ hv.le (by simp)⟩
++  · rintro ⟨h, -⟩
++    exact (isEquiv_valuation_valued_local v).eq_one_iff_eq_one.2 h
++
++private theorem unitFiltrationUnits_eq_unitsLevel_local (v : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
++    unitFiltrationUnits (v.adicCompletion K) n = unitsLevel v n := by
++  rcases Nat.eq_zero_or_pos n with rfl | hn
++  · exact unitFiltrationUnits_zero_eq_unitsLevel_zero_local v
++  ext x
++  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[v.adicCompletion K]
++  rw [mem_unitFiltrationUnits_iff hn hϖ, mem_unitsLevel_of_one_le hn, ← map_pow,
++    (isEquiv_valuation_valued_local v).le_iff_le, map_pow,
++    valued_irreducible_valuationInteger_local hϖ, ← WithZero.exp_nsmul]
++  simp
+ 
+ theorem mem_valBall_iff_valued {n : ℤ} {x : v.adicCompletion K} :
+     x ∈ valBall (v.adicCompletion K) n ↔ Valued.v x ≤ exp (-n) := by
+@@ -124,7 +160,7 @@
+     rfl
+   have hcont : Continuous ((χ.toIdele.comp ofFinite).comp (finiteUnitsSingle v)) :=
+     (χ.continuous_toIdele.comp continuous_ofFinite).comp (continuous_finiteUnitsSingle v)
+-  rw [unitFiltrationUnits_eq_unitsLevel, ker_localChar, ← hloc,
++  rw [unitFiltrationUnits_eq_unitsLevel_local, ker_localChar, ← hloc,
+     unitsLevel_le_ker_iff v Circle.noSmallSubgroups _ hcont]
+   change conductorExponentAt (χ.toIdele.comp ofFinite) v ≤ n ↔ _
+   rw [← χ.multiplicity_conductor]
+--- a/GroundTheory/HeightsAndTheta/Heights/CovolumeCount.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/CovolumeCount.lean
+@@ -1,5 +1,5 @@
+ import Mathlib
+-import GroundTheory.HeightsAndTheta.Heights.Covolume
++import GroundTheory.HeightsAndTheta.Heights.HermitianLattice
+ 
+ namespace GroundTheory.Heights₂.Heights
+ 
+--- a/GroundTheory/HeightsAndTheta/Theta/AdelicFourierCoord.lean
++++ b/GroundTheory/HeightsAndTheta/Theta/AdelicFourierCoord.lean
+@@ -1,6 +1,6 @@
++import GroundTheory.AutomorphicForms.GL2.GJMatrixCoord
+ import Mathlib
+ import CompanionTheory.AutomorphicTheory.UnitriangularMeasure.AdeleCoordinateMeasure.GJGlobalModulus
+-import GroundTheory.AutomorphicForms.GL2.GJGlobalDefs
+ set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Theta

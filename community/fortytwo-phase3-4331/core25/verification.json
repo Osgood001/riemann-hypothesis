@@ -1,34 +1,120 @@
 {
   "core": 25,
-  "candidate": "core25-prune02",
-  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core25.tar.zst",
-  "shard_sha256": "36e4df3009573233d22610ac42d189d8fd6e6aa2a98901fdd31f655aa752aa9b",
+  "candidate": "core25-autof759ea96a6",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 10649,
-  "local_normalized_tokens": 24600777,
+  "submitted_files": 9328,
+  "local_normalized_tokens": 21207137,
   "published_baseline_tokens": 29435752,
-  "proof_tree_sha256": "0a4aa7bf93a3ecb372730babc5bf736aec5c98ce10c59e5ea3e1a01059ef513b",
+  "proof_tree_sha256": "a09af30e0e03abbdecae96029bf132f526829ef805370cce05ac02553a61e9ef",
   "modified_files": {
-    "Development/WeilBound/CoreStatements/AutomorphicKernels/SiegelWeilFormula/AwayActions/SigmaSigma.lean": {
-      "before": "8adc13c48784f79517b064301a4581d21ac0f049c9cb39065802ea18a2d3960d",
-      "after": "77b6265767a263ce41a73c2524d935d1963e70cb4c7bc32d89668b8f261716b0"
+    "Development/AbelianVarietyTheory/Proofs/DecoratedLatticeProofs/AdelicUnitaryEveryPointHasCuspScale.lean": {
+      "before": "c46d0e275f5488951940cfd623b30ab8c256cc26d339c16ba6836d742783ceff",
+      "after": "22508d3f3a37be7fff8c746e5aa88a0707cb1933b7fc5b33beaa5110bf526675"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/AdelicIntertwine.lean": {
+      "before": "adbe158b42586b4b38ad61f9928a8f942d173963d1e9dc55a4753e6375c9ecd2",
+      "after": "9bd483a814832db8aea5e4c53f3d233696f472a3c0ad6a79c04ff5701021320f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/AutomorphicConstantTermParabolic.lean": {
+      "before": "baa4c5b7f60986d5dc2cad61a4bc890d01e1efea6b37e339cd874af73e4447d0",
+      "after": "5c6931e5bf27ad17d6a2945d820e569e3d1152605a2e7eca088ba85f4474c586"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/HeckeCharacterUnramifiedExponent.lean": {
+      "before": "1c5102c2cdfc57358f33e68a564ff6064f8501a669bb04c671c8dbda9f181e08",
+      "after": "290ce9d629af4a3889e4bd10e324c25ef262783c762941ceee13ed258fffcdeb"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/IsCompactAnnihilatorOpenSubgroupFiniteAdeles.lean": {
+      "before": "c54ae7ff0989740e401ace2ce538dd2c62064ae0458505228bfc7d582f325fd3",
+      "after": "00167e316e73f7ce947a8dbaa5d54dee4820d9f02c0ea5568402815c455c7b43"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/PsiUnramifiedAwayDifferent.lean": {
+      "before": "f5b11c257281c979347f1409ebdd87ed6b0b1394d797fbfd44fbd627645f4515",
+      "after": "ec6665664ae33f7bf0658a69856748e3b1576dd20d72e7ea5ac8ed64bd9251e8"
     },
     "Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/SiegelWeilLagrangianTermsAbsTsumLeHeightPoly.lean": {
       "before": "5086ef78b3abdde3407ae1d610bf999673ab9a141e1e15bdc2e32ecefb5741bc",
       "after": "009d02a72e555a26021cf4f93be5728a1ec0b9144f8e09dc5d8e43c31c641ac8"
+    },
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/NonrepresentedSignatureObstruction.lean": {
+      "before": "25e0a199d2cc69e734e18c48a17cfe9005311f841e0d2120b9e9bfbc1fe6ce6c",
+      "after": "a983e79f47ba6979bd3fb9bd5703517b08a47596620f5f7ef0fbfeaee01cc9d6"
+    },
+    "Development/WeilBound/CoreStatements/AutomorphicKernels/EisensteinSeriesG2/CompactStandardSubgroup/KCptPf.lean": {
+      "before": "3d966481e75ab9542dbc291535c0ac6b5adbda774ecfd58c0c32a47585df54d3",
+      "after": "8a9bb35f5ccc40a525ccc4a3c862f8eafada071fb3abad452281c4fb25e61cf7"
+    },
+    "Development/WeilBound/CoreStatements/AutomorphicKernels/SiegelWeilFormula/AwayActions/SigmaSigma.lean": {
+      "before": "8adc13c48784f79517b064301a4581d21ac0f049c9cb39065802ea18a2d3960d",
+      "after": "3154bd80d0c85b1f829dbed9b2a7caa4bc33596d9416d857c08a6a7777d63cd4"
+    },
+    "Development/WeilBound/CoreStatements/AutomorphicKernels/SiegelWeilFormula/UnitaryChartEquiv/CEquivApply.lean": {
+      "before": "986bbe4a0759aae8389e531ae5a005ba4ade5cc4742acf1fc4dc2a2e649fc0cb",
+      "after": "6156bf92ec648a52d86cda32c52c07911f0f83bfd9b7eec13ff51090730c8ed5"
+    },
+    "Formalism/LocalToGlobal/NumberFieldFamilies/ThetaCN.lean": {
+      "before": "7e5474db5c70b47af0bb252d8cd22bbe76c566da8e0a6d08cd759e9f7926d18b",
+      "after": "d073d59b02d3bbba8727f2d7baae0bab7866c333ae02318a04db3d2a5a3040f6"
+    },
+    "Formalism/LogFactorialBounds/LogFactorialProofs/PrimeSum.lean": {
+      "before": "deab1693d1cb050ddade1cc386557c2f6a7ee98e460f123a63a5aea429ed8945",
+      "after": "4ce76abbcc0ce051121d569bc5973ca31c1ea6bde5dae9fd9c1b16eb0d65d8ae"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ValuationLocalVolumes/VolUTr.lean": {
+      "before": "9f92c55489318de05e214da44ba6a0d5c6205225508512f62c89ee81073dc0e5",
+      "after": "5cd6d24d4479c02073aa9efbc73678342d6ae3b045f583906349f36cca61cb31"
+    },
+    "Formalism/SharpRestriction/CuspSpanNormBounds/DiscreteSeriesWeylDimension.lean": {
+      "before": "634e994b3eaa31084b1e8f85a3512d84ebd50f554e6db2c72838b438858d257b",
+      "after": "12a5b1f2def0eca079de1513427b516b0bdc34c860a185928d88e0217cf97eb6"
+    },
+    "Formalism/SharpRestriction/Divisibility/LiftErrorLocal.lean": {
+      "before": "9320a897d2b8b4f093fc695f193102deffe8a7014275a7af1ce692e96dba8dc8",
+      "after": "a963081c29620632210d019b63bd269edd972634529bc5c42a2b9e652828ce6a"
+    },
+    "GroundTheory/AutomorphicForms/GL2/FiniteIdeleDecomp.lean": {
+      "before": "b6b8b0b03acbc5894bd6f63ec32b56e18b1a99045846674b08a3b4d0ecc3a1fc",
+      "after": "6311087d54984a56bfb3d2ddbce29747b76fbb5791270ce2e9d7667bba3dccd6"
+    },
+    "GroundTheory/GlobalFields/TateThesis/RootNumberLocalPlace.lean": {
+      "before": "3f1d4dd3030ba4c372790ce3f563c24e3eb7796339d49b5aca148dcdb72a03f3",
+      "after": "1385afb6561f66e90e1cf49f650089e3f233b4ad8ef73b4b90e3091c0f9acbf7"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/CovolumeCount.lean": {
+      "before": "f0af0b1462f032bdba5f9a6c25401b2ba5c227645ffe2a1406f7b4497bf2292a",
+      "after": "3d2ef82cf18cdee042d18a9bb1e2b24a5f9039756493b470ea7071fb0059b001"
+    },
+    "GroundTheory/HeightsAndTheta/Theta/AdelicFourierCoord.lean": {
+      "before": "7d962213160dbb3f7db99c08da5dd7067e8fd7fd624b5aa852e1293d16dfd8a6",
+      "after": "84e35e1da9bee035cafeb41595d2fa135a005de1453799740b0ab3a55cc0eeb5"
+    }
+  },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "public_method_context": "Keith Adler rh-trim wrapper/dependency pruning analysis supplied as unverified method context; no proof source copied.",
+    "new_contribution": "The supervisor isolated the finite extension embedding argument and the entrywise matrix norm inequality from two independent aggregation modules using the hosted native target and the published proof sources. Target-reachable source blocks and the parent wrapper are preserved. Starting with core25-cmnorm2b336e4cd6, the supervisor incorporated the archived source for Formalism.SharpRestriction.Divisibility.LiftErrorLocal independently verified in core40-fast427710ac73. Independent target replay is required for this combination.",
+    "shared_module_attribution": {
+      "Formalism.SharpRestriction.Divisibility.LiftErrorLocal": {
+        "donor": "core40-fast427710ac73",
+        "sha256": "a963081c29620632210d019b63bd269edd972634529bc5c42a2b9e652828ce6a",
+        "new_contribution": "Fortytwo native Lean proof simplification in Formalism.SharpRestriction.Divisibility.LiftErrorLocal, from phase3-core22-compile-r02-resume1023-cont002, adapted to the published Core 40 target. Original proof by Levent Alpöge."
+      }
     }
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T09:42:26.030114+00:00",
+    "completed_utc": "2026-11-23T20:35:21.242123+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
     ]
   },
-  "hosted_score": null
+  "hosted_score": null,
+  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core25.tar.zst",
+  "shard_sha256": "36e4df3009573233d22610ac42d189d8fd6e6aa2a98901fdd31f655aa752aa9b"
 }
