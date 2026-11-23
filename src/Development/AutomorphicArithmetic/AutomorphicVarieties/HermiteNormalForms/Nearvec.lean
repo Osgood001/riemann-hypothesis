@@ -10,19 +10,19 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNorm
 open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
-theorem UpperTheory.V.KT.nearvec :
+theorem UpperTheory.V.KT.nearvec_card_le_I0_box :
     ∀ (L : Type) [Field L] [NumberField L] [_root_.NumberField.IsTotallyComplex L] (N : ℕ) (A : Matrix (Fin N) (Fin N) (𝓞 L)), A.det ≠ 0 →
-    (nearVec A).Finite ∧ (nearVec A).ncard ≤ (2 * RR L N + 1) ^ dd L N := by
+    (nearVec A).Finite ∧ (nearVec A).ncard ≤ (2 * I0 L N + 1) ^ dd L N := by
   intro L _ _ _ N A hA
   obtain ⟨hpos, B, hAB, _⟩ := scinv L N A hA
-  obtain ⟨hSf, hSc⟩ := cntconj L (RR L N)
+  obtain ⟨hSf, hSc⟩ := cntconj L (I0 L N)
   let T : Finset (Fin N → 𝓞 L) := Fintype.piFinset fun _ => hSf.toFinset
   have hmaps : ∀ y ∈ nearVec A, (fun v : Fin N → 𝓞 L => B *ᵥ v) y ∈ (T : Set (Fin N → 𝓞 L)) := by
     intro y hy
     rw [Finset.mem_coe, Fintype.mem_piFinset]
     intro a
     rw [Set.Finite.mem_toFinset]
-    exact fun w => nearcoord L N A B hA hAB y hy w a
+    exact fun w => nearcoord_le_I0 L N A B hA hAB y hy w a
   have hc : ((nrmDet A : ℕ) : 𝓞 L) ≠ 0 := Nat.cast_ne_zero.mpr hpos.ne'
   have hinj : Function.Injective (fun v : Fin N → 𝓞 L => B *ᵥ v) := by
     intro y y' h
@@ -35,8 +35,16 @@ theorem UpperTheory.V.KT.nearvec :
     _ = hSf.toFinset.card ^ N := by
         rw [Set.ncard_coe_finset, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ,
           Fintype.card_fin]
-    _ ≤ ((2 * RR L N + 1) ^ Module.finrank ℚ L) ^ N := by
+    _ ≤ ((2 * I0 L N + 1) ^ Module.finrank ℚ L) ^ N := by
         apply Nat.pow_le_pow_left
         rw [← Set.ncard_eq_toFinset_card _ hSf]
         exact hSc
-    _ = (2 * RR L N + 1) ^ dd L N := by rw [← pow_mul]
+    _ = (2 * I0 L N + 1) ^ dd L N := by rw [← pow_mul]
+
+theorem UpperTheory.V.KT.nearvec :
+    ∀ (L : Type) [Field L] [NumberField L] [_root_.NumberField.IsTotallyComplex L] (N : ℕ) (A : Matrix (Fin N) (Fin N) (𝓞 L)), A.det ≠ 0 →
+    (nearVec A).Finite ∧ (nearVec A).ncard ≤ (2 * RR L N + 1) ^ dd L N := by
+  intro L _ _ _ N A hA
+  obtain ⟨hfin, hcard⟩ := nearvec_card_le_I0_box L N A hA
+  refine ⟨hfin, hcard.trans ?_⟩
+  exact Nat.pow_le_pow_left (Nat.succ_le_succ (Nat.mul_le_mul_left 2 (I0_le_RR L N))) _

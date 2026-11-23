@@ -36,13 +36,13 @@ private theorem prod_sq {L : Type} [Field L] [NumberField L] [_root_.NumberField
   push_cast
   rfl
 
-theorem UpperTheory.V.KT.nrmle :
+theorem UpperTheory.V.KT.nrmle_scaled :
     ∀ (L : Type) [Field L] [NumberField L] [_root_.NumberField.IsTotallyComplex L] (N : ℕ) (h : HS L N) (A : Matrix (Fin N) (Fin N) (𝓞 L)),
-    h ∈ Ry L N → ColsMin A h → A.det ≠ 0 →
+    h ∈ Ry L N → ColsMin A h →
     nrmDet A ≤ I0 L N ∧ ∀ w, (mat (pull A h) w).PosSemidef ∧ (∀ a, (mat (pull A h) w a a).re ≤ 1) ∧
-      1 ≤ (I0 L N : ℝ) * ‖(mat (pull A h) w).det‖ := by
+      (nrmDet A : ℝ) ≤ (I0 L N : ℝ) * ‖(mat (pull A h) w).det‖ := by
   classical
-  intro L _ _ _ N h A hR hC hA
+  intro L _ _ _ N h A hR hC
   have hpos : ∀ w, (mat h w).PosSemidef := fun w => (rypos L N hR w).posSemidef
   have hpsd : ∀ w, (mat (pull A h) w).PosSemidef := fun w =>
     (hpos w).conjTranspose_mul_mul_same _
@@ -63,12 +63,6 @@ theorem UpperTheory.V.KT.nrmle :
     simp only [det_pull]
     rw [Finset.prod_mul_distrib, prod_sq]
     rfl
-  have hn1 : (1 : ℝ) ≤ nrmDet A := by
-    have : nrmDet A ≠ 0 := by
-      unfold nrmDet
-      rw [Int.natAbs_ne_zero]
-      exact Algebra.norm_ne_zero_iff.2 hA
-    exact_mod_cast Nat.one_le_iff_ne_zero.2 this
   have hI : (0 : ℝ) ≤ I0 L N := Nat.cast_nonneg _
   set P := ∏ w, (mat h w).det.re with hP
   have hle : ∀ w, (nrmDet A : ℝ) * P ≤ (mat (pull A h) w).det.re := fun w => by
@@ -78,13 +72,23 @@ theorem UpperTheory.V.KT.nrmle :
   have hle1 : (nrmDet A : ℝ) * P ≤ 1 := by
     rw [← hprod]
     exact Finset.prod_le_one₀ (fun v _ => (hH v).1) (fun v _ => (hH v).2.1)
+  have hscale : (nrmDet A : ℝ) ≤ I0 L N * (nrmDet A * P) := by
+    rw [mul_left_comm]
+    exact le_mul_of_one_le_right (Nat.cast_nonneg _) hlow
   refine ⟨?_, fun w => ⟨hpsd w, hdiag w, ?_⟩⟩
-  · have : (nrmDet A : ℝ) ≤ I0 L N := by
-      calc (nrmDet A : ℝ) ≤ nrmDet A * (I0 L N * P) := le_mul_of_one_le_right (by linarith) hlow
-        _ = I0 L N * (nrmDet A * P) := by ring
-        _ ≤ I0 L N := mul_le_of_le_one_right hI hle1
-    exact_mod_cast this
+  · exact_mod_cast hscale.trans (mul_le_of_le_one_right hI hle1)
   · rw [(hH w).2.2]
-    calc (1 : ℝ) ≤ nrmDet A * (I0 L N * P) := one_le_mul_of_one_le_of_one_le hn1 hlow
-      _ = I0 L N * (nrmDet A * P) := by ring
-      _ ≤ _ := mul_le_mul_of_nonneg_left (hle w) hI
+    exact hscale.trans (mul_le_mul_of_nonneg_left (hle w) hI)
+
+theorem UpperTheory.V.KT.nrmle :
+    ∀ (L : Type) [Field L] [NumberField L] [_root_.NumberField.IsTotallyComplex L] (N : ℕ) (h : HS L N) (A : Matrix (Fin N) (Fin N) (𝓞 L)),
+    h ∈ Ry L N → ColsMin A h → A.det ≠ 0 →
+    nrmDet A ≤ I0 L N ∧ ∀ w, (mat (pull A h) w).PosSemidef ∧ (∀ a, (mat (pull A h) w a a).re ≤ 1) ∧
+      1 ≤ (I0 L N : ℝ) * ‖(mat (pull A h) w).det‖ := by
+  intro L _ _ _ N h A hR hC hA
+  obtain ⟨hI, hpl⟩ := nrmle_scaled L N h A hR hC
+  have hn1 : (1 : ℝ) ≤ nrmDet A := by
+    exact_mod_cast (Int.natAbs_pos.mpr (Algebra.norm_ne_zero_iff.mpr hA) : 1 ≤ nrmDet A)
+  refine ⟨hI, fun w => ?_⟩
+  obtain ⟨hpsd, hdiag, hdet⟩ := hpl w
+  exact ⟨hpsd, hdiag, hn1.trans hdet⟩

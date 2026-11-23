@@ -11,12 +11,12 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNorm
 open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
-theorem UpperTheory.V.KT.nearcoord :
+theorem UpperTheory.V.KT.nearcoord_le_I0 :
     ∀ (L : Type) [Field L] [NumberField L] [_root_.NumberField.IsTotallyComplex L] (N : ℕ) (A B : Matrix (Fin N) (Fin N) (𝓞 L)), A.det ≠ 0 →
-    A * B = ((nrmDet A : ℕ) : 𝓞 L) • (1 : Matrix (Fin N) (Fin N) (𝓞 L)) → ∀ y ∈ nearVec A, ∀ w a, ‖embO w ((B *ᵥ y) a)‖ ≤ RR L N := by
+    A * B = ((nrmDet A : ℕ) : 𝓞 L) • (1 : Matrix (Fin N) (Fin N) (𝓞 L)) → ∀ y ∈ nearVec A, ∀ w a, ‖embO w ((B *ᵥ y) a)‖ ≤ (I0 L N : ℝ) := by
   intro L _ _ _ N A B hA hAB y hy w a
   obtain ⟨h, hRy, hcol, hq⟩ := hy
-  obtain ⟨hI, hpl⟩ := nrmle L N h A hRy hcol hA
+  obtain ⟨_, hpl⟩ := nrmle_scaled L N h A hRy hcol
   obtain ⟨hpsd, hdiag, hdet⟩ := hpl w
   have hdpos : 0 < nrmDet A := (scinv L N A hA).1
   have hAx : A *ᵥ (B *ᵥ y) = fun i => ((nrmDet A : ℕ) : 𝓞 L) * y i := by
@@ -46,23 +46,23 @@ theorem UpperTheory.V.KT.nearcoord :
   have hcq : (star c ⬝ᵥ G *ᵥ c).re ≤ 1 := by
     rw [hc, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct]
     simp only [Complex.star_def, Complex.conj_ofReal, smul_eq_mul, ← mul_assoc, ← Complex.ofReal_mul, Complex.re_ofReal_mul]
-    have : d⁻¹ * d⁻¹ * (star xw ⬝ᵥ G *ᵥ xw).re ≤ d⁻¹ * d⁻¹ * d ^ 2 := by
-      apply mul_le_mul_of_nonneg_left hterm; positivity
-    calc _ ≤ d⁻¹ * d⁻¹ * d ^ 2 := this
+    calc _ ≤ d⁻¹ * d⁻¹ * d ^ 2 := mul_le_mul_of_nonneg_left hterm (by positivity)
       _ = 1 := by field_simp
-  have hcr := cramer N G c hpsd hdiag hcq a
+  have hcr := cramer_le_one G c hpsd hdiag hcq a
   have hca : ‖xw a‖ = d * ‖c a‖ := by
     rw [hc, Pi.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_of_pos hd0, ← mul_assoc, mul_inv_cancel₀ hd0.ne', one_mul]
-  have hdI : d ≤ (I0 L N : ℝ) := by rw [hd]; exact_mod_cast hI
-  have hn : 0 ≤ ‖c a‖ := norm_nonneg _
-  have hdn : 0 ≤ ‖G.det‖ := norm_nonneg _
-  have hcb : ‖c a‖ ≤ (I0 L N : ℝ) * (N : ℝ) ^ N := by
-    calc ‖c a‖ ≤ ‖c a‖ * ((I0 L N : ℝ) * ‖G.det‖) := le_mul_of_one_le_right hn hdet
-      _ = (I0 L N : ℝ) * (‖G.det‖ * ‖c a‖) := by ring
-      _ ≤ (I0 L N : ℝ) * (N : ℝ) ^ N := mul_le_mul_of_nonneg_left hcr (by positivity)
-  show ‖xw a‖ ≤ (RR L N : ℝ)
+  change ‖xw a‖ ≤ (I0 L N : ℝ)
   rw [hca]
-  unfold RR
-  push_cast
-  calc d * ‖c a‖ ≤ (I0 L N : ℝ) * ((I0 L N : ℝ) * (N : ℝ) ^ N) := mul_le_mul hdI hcb hn (by positivity)
-    _ = (N : ℝ) ^ N * (I0 L N : ℝ) ^ 2 := by ring
+  calc d * ‖c a‖ ≤ ((I0 L N : ℝ) * ‖G.det‖) * ‖c a‖ := mul_le_mul_of_nonneg_right hdet (norm_nonneg _)
+    _ = (I0 L N : ℝ) * (‖G.det‖ * ‖c a‖) := mul_assoc _ _ _
+    _ ≤ I0 L N := by simpa only [mul_one] using mul_le_mul_of_nonneg_left hcr (Nat.cast_nonneg (I0 L N))
+
+theorem UpperTheory.V.KT.I0_le_RR (L : Type) [Field L] [NumberField L] (N : ℕ) :
+    I0 L N ≤ RR L N :=
+  (Nat.le_self_pow two_ne_zero _).trans (Nat.le_mul_of_pos_left _ Nat.pow_self_pos)
+
+theorem UpperTheory.V.KT.nearcoord :
+    ∀ (L : Type) [Field L] [NumberField L] [_root_.NumberField.IsTotallyComplex L] (N : ℕ) (A B : Matrix (Fin N) (Fin N) (𝓞 L)), A.det ≠ 0 →
+    A * B = ((nrmDet A : ℕ) : 𝓞 L) • (1 : Matrix (Fin N) (Fin N) (𝓞 L)) → ∀ y ∈ nearVec A, ∀ w a, ‖embO w ((B *ᵥ y) a)‖ ≤ RR L N := by
+  intro L _ _ _ N A B hA hAB y hy w a
+  exact (nearcoord_le_I0 L N A B hA hAB y hy w a).trans (by exact_mod_cast I0_le_RR L N)
