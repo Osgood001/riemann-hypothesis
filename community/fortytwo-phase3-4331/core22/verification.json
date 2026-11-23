@@ -1,0 +1,45 @@
+{
+  "core": 22,
+  "candidate": "core22-prune02",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 20228,
+  "local_normalized_tokens": 38806732,
+  "published_baseline_tokens": 38808445,
+  "proof_tree_sha256": "ac8b3d0b57db1b6b0d3f127d292ad2463d7f5ce2c337ce669292015ec606e30d",
+  "modified_files": {
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/ToroidalCompactificationHolds.lean": {
+      "before": "533b420524f8a29b87b90fa4d3140ecf1a90ffd76144aca887f4138caee17542",
+      "after": "474ee3585ba258ef1700f7a9ff2ab15425d921923412af5de2f9519862e3a804"
+    },
+    "Development/AbelianVarietyTheory/PublishedTheorems/Divisors₂/ToroidalCompactificationBis.lean": {
+      "before": "ff79a80cf0d8be2a7e4735ebfce04c31c515a2c1d3dd4a586ee5badf3e133fc6",
+      "after": "8929a049a4dad28251980e31f0e6bafdbfd3f24d285faa164a6df4770a63927f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/DerCompat.lean": {
+      "before": "fec19374cfb6901fd9b243527a4e9933504778d03cfbcbad9a4fcbd23bcff3e2",
+      "after": "82e51dc05173f7e87e3178251471fe4c7f7611690f3914f3da5f5c6815628a90"
+    }
+  },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "public_method_context": "Keith Adler rh-trim wrapper/dependency pruning supplied as unverified method context, no proof source copied.",
+    "new_contribution": "DeepSeek replaces two Statement wrapper references by the underlying proofs in ToroidalCompactificationHolds, eliminating duplicate wrapper dependencies. Target compilation passed; independent replay pending.; replace two statement-wrapper dependencies with their underlying proofs in Bis and DerCompat"
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-23T18:24:35.111183+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null,
+  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core22.tar.zst",
+  "shard_sha256": "0650e353f378b501b4bfa9311e59ebe3997427213be5f77c845894afe57e04ad"
+}
