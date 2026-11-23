@@ -1,14 +1,14 @@
 {
   "core": 28,
-  "candidate": "core28-fastforms03bade0f73",
+  "candidate": "core28-fastweighted8c63704e8c",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 154,
-  "local_normalized_tokens": 314260,
+  "submitted_files": 153,
+  "local_normalized_tokens": 306480,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "34cb05023cf211264c6085f148a1569222b11e6d3977032f426ba2ea3d6c7c20",
+  "proof_tree_sha256": "cf2d65531517c023accc00acc84a4790e6d28fa9b2a9493bd321f497c8d0b7c4",
   "modified_files": {
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
       "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
@@ -46,10 +46,6 @@
       "before": "23482ab53655ad8df12a789d3ec34df46eddd2c2dd4d379f72806b2aef87de25",
       "after": "69676dd696952d6a4abda75c4aa9f7d52fd19eac19a7bde3aa5102fdebae408b"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowFixesComplementOfIsotropic.lean": {
-      "before": "7578b0f14bd839db7001a949eb3df8751f42a36ee6a0c05ae95316dfc11b6ecf",
-      "after": "e83b2cae6bae3b0d8a4b2709dc33f6121f01f96031d745d461767be13916145f"
-    },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsIntegralCc.lean": {
       "before": "4cd337eb6b66d51867d0e63df3790e9f2550f72cd64f4bd2212b0247f8b27b4c",
       "after": "66aa70bff64fbb6821f2588683aff1d75f6be850962f6222c61d4ad4e4f5e8e3"
@@ -64,7 +60,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientLattice.lean": {
       "before": "2da69db479213006703f8431316754cfe2eea08e4c59a1748f089e084d469ed0",
-      "after": "0ce430c113491f909102b28a5a853a3467090c6b43b3e93ba75bed7368584ed2"
+      "after": "20c8d8c52d7d1bbb2d1554e3c5188c4f8d754c88b3d04992eb4e7b5330fe5b65"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientMatrices.lean": {
       "before": "260906e38ac5f41121f925021a5feb06f94d7aa903bfa0c7c08bc5b5323b479c",
@@ -128,7 +124,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealEmbeddingCharacters.lean": {
       "before": "906c8be7fe3a649b12c01ec6c2ee7227b4dfd2c007bb58fefe693a02fffa4687",
-      "after": "9af27b289254efcdf4892add0516318afc0ea022bb91337debb0996d0df1bfd5"
+      "after": "5c31d6dd7ccd691b81e9cd052bebec9ab40f3aafadb795ab59fc70d6975039d5"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TraceIntegralBasis.lean": {
       "before": "4c4b15b6fa321f61357567fb6169d93d51d388f236876aa87989e07d65e3a617",
@@ -156,7 +152,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CuspCoefficientFlow.lean": {
       "before": "c60a3b46e44a0d6a46518da56a708017bb37b22c557983c80907107a0264136a",
-      "after": "6891273eed6e1ef7e1fb51b97f9b5987a9b05e929161a2deb753f7ed4602839f"
+      "after": "ad2c5892423997a3cd7f9c2f07c06283adda95fb1c0fd67a4a99b5d09e222d41"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BlockIdentityExpansion.lean": {
       "before": "c7b0fe94c95d1ea4bcc3f8026a9a53992fb341c54b9847ce4bce1fcfe0e90bdf",
@@ -204,7 +200,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajPos.lean": {
       "before": "5577ab5c9eba28c4222ff9338e3932f7541797e70cd128b1a951f613cc0e54ce",
-      "after": "93a6d8a699dd248f8707477c2058a3e8716f6d6da1614a7693dae51369130e73"
+      "after": "f70b0bd438ed5dfd9c5b4d79a850da7b17832926b1a747bcd95be0c81a82b834"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TwoSidedBoostBounds.lean": {
       "before": "d5159413c1571a1072d5bd681ebf84af7a84d35369c1570b54764b6a0bf4ac85",
@@ -256,7 +252,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCubeIntegral.lean": {
       "before": "e8f01a88300c58e56c9e183d325c723232b8667468a503ea696b92e75f2129b6",
-      "after": "0b96338bd5518be64cc73505aa86f085b043d7dc49db0a5ee8e049a3984b9d17"
+      "after": "b73950b07584af9dcf794019d0eea98a213dabc132a3498a31e97e42311f0828"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientHeightBoundOfLiftSupportPositivity.lean": {
       "before": "fc8b7410ec124e173f230c96d4879ff6c18442dc75a4cece49b45aa9581739d1",
@@ -304,13 +300,17 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowCoefficientBounds.lean": {
       "before": "c9c6f58353d1bc482f8412e9e26c1cd46c31e7b54515195702cd6d1aab9a0174",
-      "after": "ef0bbe1e5d079dfd2ab0fee83b721c153b4f8be16f6c8008520c7b4b3779af64"
+      "after": "5b77c704b7fa908ee65924c058193a03d2bddc8f88c75a12138566d43f1cc593"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnitaryComplementMoveOfIsotropic.lean": {
+      "before": "644c03a7fad51a935b736a92d87bf7eecfac3c88c037e5f562a938312447856e",
+      "after": "78c3f978b4c6945e1e986cdd72d7478b44aa75a7230a986de1b8358926b7fab6"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Original mathematical formalization by Levent Alpöge. Fortytwo supplied the retained FractionalSliceDomains source. Codex replaced repeated expansions of the Hermitian form against sums and scalar multiples by Alpöge’s existing left-linear and right-conjugate-linear identities. Where Lean confirmed they had the same use sites, callers now apply those identities directly. This candidate also retains the previously verified coordinate, torus, and common-ray arguments. Codex also assembled the unipotent vector-group action from the existing zmat multiplication and determinant, unitarity, preservation of domain and normalization, and complex-flow formulas. The matrix orthogonality estimate uses the existing Hermitian bilinear expansion and operator-norm bound. The Fourier coefficient bound follows from the existing real-flow domain and normalization identities and the Fourier–Jacobi integral bound.",
+    "new_contribution": "Original formalization by Levent Alpöge; Fortytwo contributed the retained FractionalSliceDomains source. Codex unified the original Fourier cube and vector-group coefficient bounds by weighting the integrand before taking its norm. The absolute value of its character is one, and the normalized cube has volume one. This treats the zero-weight case in the same integral inequality. The cusp coefficient derivative estimate applies the already proved FourierCoefficientDomain Cauchy inequality to a half-radius ball by the triangle inequality. FourierCoefficientLattice now proves that real parts of fixed integral field elements span the whole real embedding space from the verified period-span theorem. Each zero-weight period is an explicit real scalar multiple of such a generator. A CM embedding is characterized up to conjugation by its infinite place, and equality on the fixed elements gives equal norms by applying it to x times its conjugate. For the integral character, multiplying by a single nonzero integer clears denominators. The two Euclidean lattices are discrete by finite neighborhoods; Hermitian coordinate bounds use the inverse of the slot map. Positivity of the Hermitian majorant now follows from negative definiteness on the orthogonal complement and the positive Gram matrix on the projected space. The defining involution is self-adjoint, so its diagonal value is real. Unitary transport of the projection now follows directly from the transformed columns, the unchanged Gram matrix, and complex matrix linearity. It retains the verified Hermitian forms, coordinate reductions, and torus translation arguments of the predecessor.",
     "shared_module_attribution": {
       "original_author": "Levent Alpöge",
       "inherited_native_module": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains",
@@ -326,7 +326,6 @@
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.EmbeddingHermitianPairs",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowCoefficientBounds",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowCoefficientDecayHolds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowFixesComplementOfIsotropic",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowIsotropicPairs",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMatMulVec",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMeanContinuity",
@@ -384,17 +383,21 @@
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnipotentOnHyperbolicComplement",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnipotentVectorEqSmulComponent",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnipotentVectorGroup",
+        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnitaryComplementMoveOfIsotropic",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.ContinuousRl",
         "ReciprocityTheory.SemistableReduction.ApproxBasisA",
         "ReciprocityTheory.SemistableReduction.ApproxGraphA",
         "ReciprocityTheory.SemistableReduction.LatAll"
       ]
-    }
+    },
+    "unreachable_parent_edits": [
+      "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowFixesComplementOfIsotropic"
+    ]
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T23:18:38.546736+00:00",
+    "completed_utc": "2026-11-23T23:51:43.105909+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -436,7 +439,6 @@
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowCoefficientDecay.lean": "9bc56d332c64a12a52418afb5df14cc1d09aecd8e1ca0ee385f347fce0296f2f",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowCoefficientDecayHolds.lean": "a00ac253f0102d47d2ee46f2fd31d7b3f0479d327482204ba5fb2eb88894141e",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowDomainCriterionHolds.lean": "fb5e6f526976d962a99f0b193446859c76026966301be1643975c18c7bfc945d",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowFixesComplementOfIsotropic.lean": "7578b0f14bd839db7001a949eb3df8751f42a36ee6a0c05ae95316dfc11b6ecf",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowIsotropicPairs.lean": "1783600f147574b5b825b7bbbe6e4f8f73154b39e3d0fd29fbf68b55207543cc",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMajorantFlags.lean": "1157a8624b71df8c8a39b25336be9c2456e97569d8c87a4b30cddc6497aa39d5",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMatMulVec.lean": "e1f4b74846939b0735b413a0c317fd0b4d7c38de72cbf791045ba216666b84cd",
