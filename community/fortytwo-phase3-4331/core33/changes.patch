@@ -1,9 +1,9 @@
 --- a/Formalism/SharpRestriction/GlobalSchurBounds/ThickPlacesCorollaryOfAnyTranslate.lean
 +++ b/Formalism/SharpRestriction/GlobalSchurBounds/ThickPlacesCorollaryOfAnyTranslate.lean
 @@ -1,12 +1,8 @@
++import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 +import Formalism.GL3MeanSquares.HookFormulaTorsion.GlobalBoundRefinements
 +import Formalism.HermitianLattices.FinalMass
-+import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 +import Formalism.LogVandermondeBounds.LogVandermondeProofs.PrimePowerSubgroupTrivial
  import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
 -import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
@@ -17,7 +17,18 @@
  
  noncomputable section
  
-@@ -25,114 +21,15 @@
+@@ -15,124 +11,24 @@
+ open NumberField Formalism.BasicNotions Finset
+ 
+ theorem finrank_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
+-  have hb := (factEmb D.R D.host).1
++  have hb := (D.host.hostEmb D.host.φ₀).comp D.host.gal.symm.bijective
+   have h1 : Nat.card (D.R.GG) = Nat.card (D.host.E →+* ℂ) := Nat.card_congr (Equiv.ofBijective _ hb)
+   have h2 : Nat.card (D.host.E →+* ℂ) = Module.finrank ℚ D.host.E := by
+     rw [Nat.card_eq_fintype_card]; exact NumberField.Embeddings.card D.host.E ℂ
+-  have h3 := (factCardPsi D.R D.host).1
+   have h4 : Nat.card (D.R.GG) = 4 * D.R.ord := D.R.natCard_GG
+   rw [← h2, ← h1, h4]
    show 4 * D.R.ord = 2 * (2 * D.R.ord)
    ring
  
@@ -137,7 +148,7 @@
  
  theorem hostDegree_of_finrank (D : D7) (hfin : Module.finrank ℚ D.host.E = 2 * D.R.f) : PrimeSumLogBound D := by
    let _ := D.host.cmStar
-@@ -150,640 +47,11 @@
+@@ -150,640 +46,11 @@
    rw [hfin, D.sp.rank0] at h
    exact h
  
@@ -778,7 +789,7 @@
  end P3
  
  end Formalism.MainNotions.StandardLattice
-@@ -791,321 +59,6 @@
+@@ -791,321 +58,6 @@
  namespace Formalism.MainNotions.StandardLattice
  
  open NumberField Formalism.BasicNotions Finset
@@ -1100,7 +1111,7 @@
  
  end Formalism.MainNotions.StandardLattice
  
-@@ -1131,146 +84,16 @@
+@@ -1131,146 +83,16 @@
      Formalism.HermitianLatticesTheory.IsOrthoLattice (stdForm K M) (stdLat K M) M := by
    rw [standard_form_eq_telescope_form, standard_lattice_eq_telescope_lattice]; exact Formalism.HermitianLatticesTheory.massTelescope_ortho K M
  
@@ -1247,7 +1258,7 @@
  end Formalism.MainNotions.StandardLattice
  
  namespace Formalism.MainNotions.StandardLattice
-@@ -1280,29 +103,9 @@
+@@ -1280,29 +102,9 @@
  theorem volumeMass_all_of_modelMassRatio (h : SiegelMassRatioModels) : MassVolumeBoundsAll := ⟨standardMassRatio_of_modelMassRatio h, h, cmField_unramified_massIdentity⟩
  
  theorem stmt2All_of_mod (D : D7) (h : SiegelMassRatioModels) : AbsoluteConstantSecondPart D := fun _ => volumeMass_all_of_modelMassRatio h
@@ -1277,7 +1288,7 @@
  
  end Formalism.MainNotions.StandardLattice
  
-@@ -1508,847 +311,7 @@
+@@ -1508,847 +310,7 @@
    rw [mass_ortho K hK M V h L ho, mass_ortho K hK (M - 1) V' h' L' ho']
    exact hA K hK M hM
  
