@@ -13,7 +13,7 @@ These source changes reduce the size of Levent Alpöge’s Phase 3 proofs. Forty
 | 25 | 10,649 | 29,435,752 | 24,600,777 | 4,834,975 |
 | 26 | 323 | 540,118 | 522,409 | 17,709 |
 | 29 | 320 | 831,319 | 824,223 | 7,096 |
-| 33 | 344 | 826,075 | 812,178 | 13,897 |
+| 33 | 303 | 826,075 | 698,756 | 127,319 |
 
 The independent Comparator and the Lean 4.33.1 default kernel accepted each exact target with `propext`, `Quot.sound` and `Classical.choice`. Each directory records the local replay, complete source-tree digest, Mathlib revision and the checksums of its original sources. The local check derived the protected boundary from the organizer’s published frozen roots. The table reports locally measured token counts.
 

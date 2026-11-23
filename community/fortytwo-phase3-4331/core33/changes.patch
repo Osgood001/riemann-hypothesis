@@ -1,6 +1,1290 @@
 --- a/Formalism/SharpRestriction/GlobalSchurBounds/ThickPlacesCorollaryOfAnyTranslate.lean
 +++ b/Formalism/SharpRestriction/GlobalSchurBounds/ThickPlacesCorollaryOfAnyTranslate.lean
-@@ -1515,840 +1515,3 @@
+@@ -1,12 +1,8 @@
++import Formalism.GL3MeanSquares.HookFormulaTorsion.GlobalBoundRefinements
++import Formalism.HermitianLattices.FinalMass
++import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
++import Formalism.LogVandermondeBounds.LogVandermondeProofs.PrimePowerSubgroupTrivial
+ import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
+-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+-import Formalism.LogVandermondeBounds.HookGammaAmgmMultinomialBounds
+-import Formalism.GL3MeanSquares.GenusMassVolumeResults
+-import Formalism.GL3MeanSquares.GlobalBoundRefinementResults
+-import Formalism.HermitianLattices.FinalMass
+-import Formalism.GL3MeanSquares.FinalB
+-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
+-import Formalism.LocalRingCardinality.SpanPowerMembership.Spaces
+ 
+ noncomputable section
+ 
+@@ -25,114 +21,15 @@
+   show 4 * D.R.ord = 2 * (2 * D.R.ord)
+   ring
+ 
+-theorem fDeg_host (D : D7) : Formalism.HermitianLatticesTheory.fDeg D.host.E = D.R.f := by
+-  let _ := D.host.cmStar
+-  have : IsTotallyComplex D.host.E := D.sp.cm.cmUnram.1
+-  have h1 := NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := D.host.E)
+-  have h2 := NumberField.InfinitePlace.card_add_two_mul_card_eq_rank D.host.E
+-  have h3 : NumberField.InfinitePlace.nrRealPlaces D.host.E = 0 := by
+-    rw [NumberField.nrRealPlaces_eq_zero_iff]; infer_instance
+-  have h4 := finrank_host D
+-  unfold Formalism.HermitianLatticesTheory.fDeg
+-  omega
+-
+-theorem vInv_host (D : D7) : Formalism.HermitianLatticesTheory.vInv D.host.E = D.host.v := by
+-  unfold Formalism.HermitianLatticesTheory.vInv Host.v Host.rdE
+-  rw [fDeg_host, finrank_host]
+-  push_cast
+-  rfl
+-
+-theorem zetaR_eq (M : ℕ) : zetaR M = Formalism.LogVandermondeBounds.StandardLattice.zetaR M := rfl
+-
+ theorem cmField_unramified_massIdentity : LogLValueZetaBound := by
+   intro K _ _ _ hK M hM
+   exact (Formalism.HermitianLattices.GlobalBoundRefinements.log_l_value_field_bound K hK M hM).2.2
+ 
+-theorem massIdentity_holds (D : D7) : gram_det_kernel_dual_lattice D := by
+-  let _ := D.host.cmStar
+-  intro M hM
+-  have h := cmField_unramified_massIdentity D.host.E D.sp.cm.cmUnram M hM
+-  rwa [fDeg_host] at h
+-
+-theorem lVal_pos (D : D7) (M : ℕ) (hM : 2 ≤ M) :
+-    letI := D.host.cmStar; 0 < Formalism.HermitianLatticesTheory.lValEta D.host.E M := by
+-  let _ := D.host.cmStar
+-  exact (Formalism.HermitianLattices.GlobalBoundRefinements.log_l_value_field_bound D.host.E D.sp.cm.cmUnram M hM).2.1
+-
+-end Formalism.MainNotions.StandardLattice
+-
+-namespace Formalism.MainNotions.StandardLattice
+-
+-open NumberField Formalism.BasicNotions Finset
+-
+-theorem levelPartB_holds (D : D7) : Conclusion4b D := by
+-  have h := Formalism.LogVandermondeBounds.StandardLattice.blockDimensionIdentities D.R.k D.R.m D.R.rS D.R.r D.R.two_le_m D.R.m_even rfl
+-    (by have := D.R.rS_two; have := D.R.r_eq; omega)
+-  obtain ⟨h1, h2, -, -, h5⟩ := h
+-  refine ⟨by have := D.R.rS_two; have := D.R.r_eq; omega, ?_, h5⟩
+-  have : dimN D.R.k D.R.m = ((range D.R.r ×ˢ range D.R.r).filter
+-      (fun p : ℕ × ℕ => p.1 < p.2 ∧ (fun i => if i < D.R.rS then i else if i < D.R.rS + D.R.k + 1 then D.R.rS else i - D.R.k) p.1 ≠
+-        (fun i => if i < D.R.rS then i else if i < D.R.rS + D.R.k + 1 then D.R.rS else i - D.R.k) p.2)).card := rfl
+-  rw [this]
+-  exact h2
+-
+-theorem levelPartE_holds (D : D7) : LevelIndexAtPlace D := by
+-  intro u v φ hφ
+-  have h := Formalism.LogVandermondeBounds.StandardLattice.cardStabilizerVector ((D.mem u).A.Fv v) D.R.k φ hφ
+-  rw [(D.mem u).A.card_Fv v] at h
+-  rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]
+-  convert h.symm using 2
+-
+-theorem card_GL_subtype_eq_card_matrix {F : Type} [Field F] {n : ℕ} (P : Matrix (Fin n) (Fin n) F → Prop)
+-    (hP : ∀ A, P A → A.det = 1) :
+-    Nat.card {A : GL (Fin n) F // P (A : Matrix (Fin n) (Fin n) F)} = Nat.card {A : Matrix (Fin n) (Fin n) F // P A} := by
+-  let e : {A : GL (Fin n) F // P (A : Matrix (Fin n) (Fin n) F)} ≃ {A : Matrix (Fin n) (Fin n) F // P A} :=
+-    { toFun := fun A => ⟨(A.1 : Matrix (Fin n) (Fin n) F), A.2⟩
+-      invFun := fun A => ⟨Matrix.nonsingInvUnit A.1 (by rw [hP A.1 A.2]; exact isUnit_one), A.2⟩
+-      left_inv := fun A => Subtype.ext (Units.ext rfl)
+-      right_inv := fun A => rfl }
+-  exact Nat.card_congr e
+-
+-theorem det_eq_one_of_unitriangular {F : Type} [Field F] {n : ℕ} (A : Matrix (Fin n) (Fin n) F) (h : IsUnitri A) : A.det = 1 := by
+-  rw [Matrix.det_of_upperTriangular (fun i j hij => h.1 i j hij)]
+-  simp [h.2]
+-
+-def RowLevCard : Prop :=
+-  ∀ g k m : ℕ, g.Prime → 2 ≤ m → Even m →
+-    Nat.card {A : GL (Fin (k + m - 1)) (ZMod g) // IsRowLev k (m / 2 - 1) (A : Matrix (Fin (k + m - 1)) (Fin (k + m - 1)) (ZMod g))} =
+-      g ^ (((k + m - 1) ^ 2 - (k + 1) ^ 2 - 2 * (m / 2 - 1)) / 2) * g ^ (k * (k - 1) / 2)
+-
+-theorem levelRowCard_of_card (hR : RowLevCard) (D : D7) : Conclusion4a D := by
+-  intro i hg
+-  have : Fact (D.host.g i).Prime := ⟨D.host.g_prime i⟩
+-  have hc : Fintype.card (ZMod (D.host.g i)) = D.host.g i := ZMod.card _
+-  obtain ⟨⟨θ, hθ1, hθ2, h1⟩, ⟨θ', hθ1', hθ2', h2⟩⟩ :=
+-    Formalism.HermitianLattices.GenusMassVolumes.local_index_formula (ZMod (D.host.g i)) D.R.k D.R.m D.R.two_le_m D.R.m_even (by rw [hc]; exact hg)
+-  rw [hc] at h1 h2
+-  have hgpos : (0 : ℝ) < (D.host.g i : ℝ) := by exact_mod_cast (D.host.g_prime i).pos
+-  have e1 : idxColLoc (D.host.g i) D.R.k = (D.host.g i : ℝ) ^ (D.R.k * (D.R.k + 1) / 2) * θ := by
+-    rw [← h1]
+-    unfold idxColLoc idxLoc
+-    rw [card_GL_subtype_eq_card_matrix _ det_eq_one_of_unitriangular]
+-    have := Formalism.LogVandermondeBounds.StandardLattice.cardUnitriangular (ZMod (D.host.g i)) D.R.k
+-    rw [hc] at this
+-    have h3 : Nat.card {A : Matrix (Fin D.R.k) (Fin D.R.k) (ZMod (D.host.g i)) // IsUnitri A} =
+-        D.host.g i ^ (D.R.k * (D.R.k - 1) / 2) := this
+-    rw [h3, Nat.card_eq_fintype_card]
+-    push_cast
+-    rfl
+-  have e2 : idxRowLoc (D.host.g i) D.R.k D.R.m =
+-      (D.host.g i : ℝ) ^ ((D.R.r ^ 2 + 3 * D.R.k + 1 + 2 * D.R.rS) / 2) * θ' := by
+-    have h2' : _ = (D.host.g i : ℝ) ^ ((D.R.r ^ 2 + 3 * D.R.k + 1 + 2 * D.R.rS) / 2) * θ' := h2
+-    rw [← h2']
+-    unfold idxRowLoc idxLoc
+-    rw [hR _ _ _ (D.host.g_prime i) D.R.two_le_m D.R.m_even, Nat.card_eq_fintype_card]
+-    push_cast
+-    rfl
+-  have p1 : (0 : ℝ) < (D.host.g i : ℝ) ^ (D.R.k * (D.R.k + 1) / 2) := pow_pos hgpos _
+-  have p2 : (0 : ℝ) < (D.host.g i : ℝ) ^ ((D.R.r ^ 2 + 3 * D.R.k + 1 + 2 * D.R.rS) / 2) := pow_pos hgpos _
+-  rw [e1, e2]
+-  refine ⟨by nlinarith, by nlinarith, by nlinarith, by nlinarith⟩
++end Formalism.MainNotions.StandardLattice
++
++namespace Formalism.MainNotions.StandardLattice
++
++open NumberField Formalism.BasicNotions Finset
+ 
+ theorem hostDegree_of_finrank (D : D7) (hfin : Module.finrank ℚ D.host.E = 2 * D.R.f) : PrimeSumLogBound D := by
+   let _ := D.host.cmStar
+@@ -150,640 +47,11 @@
+   rw [hfin, D.sp.rank0] at h
+   exact h
+ 
+-theorem levelDimension_of_admissible (D : D7) (Lv : LevelData D) (h17 : adm17 D Lv) (hp : Conclusion4p D Lv) : SmallOrderPrimeLogSumBound D Lv := by
+-  let _ := D.host.cmStar
+-  intro hg u c
+-  have h := h17 hg u (hp u) c
+-  have hnt : Nontrivial (IsDedekindDomain.FiniteAdeleRing (𝓞 D.host.F) D.host.F) :=
+-    (RestrictedProduct.evalRingHom (fun w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletion D.host.F) (Lv u).w1).domain_nontrivial
+-  have key : ∀ γ : (D.mem u).C.stab 0 c, (Lv u).stabI c γ = 1 := by
+-    intro γ
+-    have h1 := ((Lv u).stabI_range c ((Lv u).stabI c γ).1 ((Lv u).stabI c γ).2).1 ⟨γ, rfl⟩
+-    have h2 : Formalism.UG.bc (Formalism.UG.inclE (F := D.host.F) (IsDedekindDomain.FiniteAdeleRing (𝓞 D.host.F) D.host.F))
+-        ((Lv u).stabI c γ).1 ∈
+-        Formalism.UG.ratPts D.sp.cm.sig D.sp.gram0 (IsDedekindDomain.FiniteAdeleRing (𝓞 D.host.F) D.host.F) :=
+-      Subgroup.mem_map.2 ⟨_, ((Lv u).stabI c γ).2, rfl⟩
+-    have h3 := (Subgroup.mem_bot.1 (h ▸ Subgroup.mem_inf.2 ⟨h2, h1⟩))
+-    apply Subtype.ext
+-    exact Formalism.UG.P.UG_inclusion_injective _ _ _ _ hnt (h3.trans (map_one _).symm)
+-  exact ⟨fun a b => (Lv u).stabI_inj c ((key a).trans (key b).symm)⟩
+-
+-theorem card_matrices_with_free_support (F : Type) [Field F] [Fintype F] (n : ℕ) (S : Fin n × Fin n → Prop) [DecidablePred S] :
+-    Nat.card {A : Matrix (Fin n) (Fin n) F // ∀ i j, ¬ S (i, j) → A i j = if i = j then 1 else 0} =
+-      Fintype.card F ^ Nat.card {p : Fin n × Fin n // S p} := by
+-  let e : {A : Matrix (Fin n) (Fin n) F // ∀ i j, ¬ S (i, j) → A i j = if i = j then 1 else 0} ≃
+-      ({p : Fin n × Fin n // S p} → F) :=
+-    { toFun := fun A p => A.1 p.1.1 p.1.2
+-      invFun := fun f => ⟨Matrix.of fun i j => if h : S (i, j) then f ⟨(i, j), h⟩ else if i = j then 1 else 0,
+-        fun i j h => by simp [h]⟩
+-      left_inv := fun A => by
+-        ext i j
+-        by_cases h : S (i, j)
+-        · simp [h]
+-        · simp [h, A.2 i j h]
+-      right_inv := fun f => by
+-        funext p
+-        obtain ⟨⟨i, j⟩, hp⟩ := p
+-        simp [hp] }
+-  rw [Nat.card_congr e, Nat.card_fun, Nat.card_eq_fintype_card (α := F)]
+-
+-def IsFreePosition (k rS n : ℕ) (p : Fin n × Fin n) : Prop :=
+-  Formalism.HermitianLattices.CumulantEstimateDefs.CumulantEstimates.bb k rS p.1.val < Formalism.HermitianLattices.CumulantEstimateDefs.CumulantEstimates.bb k rS p.2.val ∨
+-    (rS ≤ p.1.val ∧ p.1.val < p.2.val ∧ p.2.val < rS + k)
+-
+-instance (k rS n : ℕ) : DecidablePred (IsFreePosition k rS n) := fun _ => by unfold IsFreePosition; infer_instance
+-
+-theorem isLevel_iff_free_support (k rS n : ℕ) {F : Type} [Zero F] [One F] (A : Matrix (Fin n) (Fin n) F) :
+-    IsRowLev k rS A ↔ ∀ i j, ¬ IsFreePosition k rS n (i, j) → A i j = if i = j then 1 else 0 := by
+-  constructor
+-  · rintro ⟨h1, h2, h3, h4⟩ i j hS
+-    by_cases hij : i = j
+-    · subst hij; simp [h2]
+-    · rw [if_neg hij]
+-      have hne : i.val ≠ j.val := fun h => hij (Fin.ext h)
+-      unfold IsFreePosition Formalism.HermitianLattices.CumulantEstimateDefs.CumulantEstimates.bb at hS
+-      simp only at hS
+-      by_cases c1 : blk rS k j.val < blk rS k i.val
+-      · exact h1 i j c1
+-      · by_cases c2 : j < i
+-        · refine h3 i j ?_ c2
+-          have c2' : j.val < i.val := c2
+-          unfold blk at c1 ⊢
+-          split_ifs at c1 ⊢ <;> omega
+-        · have c2' : ¬ j.val < i.val := c2
+-          refine h4 i j ?_ hij ?_
+-          · unfold blk at c1
+-            split_ifs at c1 hS <;> omega
+-          · unfold blk at c1 ⊢
+-            split_ifs at c1 hS ⊢ <;> omega
+-  · intro h
+-    refine ⟨fun i j c => ?_, fun i => ?_, fun i j c c2 => ?_, fun i j c hij c2 => ?_⟩
+-    · have hne : i ≠ j := by rintro rfl; exact lt_irrefl _ c
+-      rw [h i j ?_, if_neg hne]
+-      unfold IsFreePosition Formalism.HermitianLattices.CumulantEstimateDefs.CumulantEstimates.bb
+-      unfold blk at c
+-      simp only
+-      split_ifs at c ⊢ <;> omega
+-    · rw [h i i ?_, if_pos rfl]
+-      unfold IsFreePosition
+-      simp
+-    · have c2' : j.val < i.val := c2
+-      rw [h i j ?_, if_neg (ne_of_gt c2)]
+-      unfold IsFreePosition Formalism.HermitianLattices.CumulantEstimateDefs.CumulantEstimates.bb
+-      unfold blk at c
+-      simp only
+-      split_ifs at c ⊢ <;> omega
+-    · rw [h i j ?_, if_neg hij]
+-      unfold IsFreePosition Formalism.HermitianLattices.CumulantEstimateDefs.CumulantEstimates.bb
+-      unfold blk at c2
+-      simp only
+-      split_ifs at c2 ⊢ <;> omega
+-
+-theorem card_upper_pairs_in_interval (k rS n : ℕ) (hn : rS + k ≤ n) :
+-    Nat.card {p : Fin n × Fin n // rS ≤ p.1.val ∧ p.1.val < p.2.val ∧ p.2.val < rS + k} = k * (k - 1) / 2 := by
+-  rw [← Formalism.LogVandermondeBounds.StandardLattice.card_lt_pairs k]
+-  refine Nat.card_congr
+-    { toFun := fun p => ⟨(⟨p.1.1.val - rS, by have := p.2; omega⟩, ⟨p.1.2.val - rS, by have := p.2; omega⟩), by
+-        have := p.2; rw [Fin.lt_def]; simp only; omega⟩
+-      invFun := fun q => ⟨(⟨q.1.1.val + rS, by have := q.1.1.2; omega⟩, ⟨q.1.2.val + rS, by have := q.1.2.2; omega⟩), by
+-        have h := q.2; rw [Fin.lt_def] at h; have := q.1.2.2; simp only; omega⟩
+-      left_inv := fun p => by
+-        have := p.2
+-        apply Subtype.ext; apply Prod.ext <;> apply Fin.ext <;> simp only <;> omega
+-      right_inv := fun q => by
+-        apply Subtype.ext; apply Prod.ext <;> apply Fin.ext <;> simp only <;> omega }
+-
+-theorem card_free_positions (k rS : ℕ) :
+-    Nat.card {p : Fin (rS + (k + 1) + rS) × Fin (rS + (k + 1) + rS) // IsFreePosition k rS _ p} =
+-      rS * (2 * k + 1 + 2 * rS) + k * (k - 1) / 2 := by
+-  classical
+-  have hd : Disjoint (fun p : Fin (rS + (k + 1) + rS) × Fin (rS + (k + 1) + rS) =>
+-      Formalism.HermitianLattices.CumulantEstimateDefs.CumulantEstimates.bb k rS p.1.val < Formalism.HermitianLattices.CumulantEstimateDefs.CumulantEstimates.bb k rS p.2.val)
+-      (fun p => rS ≤ p.1.val ∧ p.1.val < p.2.val ∧ p.2.val < rS + k) := by
+-    rw [Pi.disjoint_iff]
+-    intro p
+-    rw [disjoint_iff_inf_le]
+-    rintro ⟨h1, h2⟩
+-    unfold Formalism.HermitianLattices.CumulantEstimateDefs.CumulantEstimates.bb at h1
+-    split_ifs at h1 <;> omega
+-  have h := Fintype.card_subtype_or_disjoint _ _ hd
+-  have e1 := Formalism.HermitianLattices.CumulantEstimateDefs.CumulantEstimates.countFree k rS _ rfl
+-  have e2 := card_upper_pairs_in_interval k rS (rS + (k + 1) + rS) (by omega)
+-  rw [Nat.card_eq_fintype_card] at e2 ⊢
+-  rw [← e1, ← e2, ← Fintype.card_subtype]
+-  convert h using 1
+-  exact Fintype.card_congr (Equiv.refl _)
+-
+-theorem rowLevCard_holds : RowLevCard := by
+-  intro g k m hg hm he
+-  have : Fact g.Prime := ⟨hg⟩
+-  obtain ⟨c, hc⟩ := he
+-  obtain ⟨rS, hrS⟩ : ∃ rS, m / 2 - 1 = rS := ⟨_, rfl⟩
+-  have hn : k + m - 1 = rS + (k + 1) + rS := by omega
+-  rw [hrS, hn]
+-  have hdet : ∀ A : Matrix (Fin (rS + (k + 1) + rS)) (Fin (rS + (k + 1) + rS)) (ZMod g), IsRowLev k rS A → A.det = 1 := by
+-    intro A hA
+-    apply det_eq_one_of_unitriangular
+-    refine ⟨fun i j hji => ?_, hA.2.1⟩
+-    have hji' : j.val < i.val := hji
+-    by_cases c1 : blk rS k j.val < blk rS k i.val
+-    · exact hA.1 i j c1
+-    · refine hA.2.2.1 i j ?_ hji
+-      unfold blk at c1 ⊢
+-      split_ifs at c1 ⊢ <;> omega
+-  rw [card_GL_subtype_eq_card_matrix _ hdet]
+-  have e : Nat.card {A : Matrix (Fin (rS + (k + 1) + rS)) (Fin (rS + (k + 1) + rS)) (ZMod g) // IsRowLev k rS A} =
+-      Nat.card {A : Matrix (Fin (rS + (k + 1) + rS)) (Fin (rS + (k + 1) + rS)) (ZMod g) //
+-        ∀ i j, ¬ IsFreePosition k rS _ (i, j) → A i j = if i = j then 1 else 0} :=
+-    Nat.card_congr (Equiv.subtypeEquivRight fun A => isLevel_iff_free_support k rS _ A)
+-  rw [e, card_matrices_with_free_support, card_free_positions, ZMod.card, pow_add]
+-  congr 2
+-  have : (rS + (k + 1) + rS) ^ 2 = (k + 1) ^ 2 + 2 * rS + 2 * (rS * (2 * k + 1 + 2 * rS)) := by ring
+-  rw [this]; omega
+-
+-theorem levelRowCard_holds (D : D7) : Conclusion4a D := by
+-  exact levelRowCard_of_card rowLevCard_holds D
+-
+-theorem strictAnti_of_succ_lt_alt {n : ℕ} (x : Fin n → ℝ) (h : ∀ i j : Fin n, j.val = i.val + 1 → x j < x i) :
+-    StrictAnti x := by
+-  cases n with
+-  | zero => intro a; exact a.elim0
+-  | succ m =>
+-    rw [Fin.strictAnti_iff_succ_lt]
+-    intro i
+-    exact h _ _ (by simp)
+-
+-theorem strictAnti_fin_append {a m : ℕ} (v : Fin a → ℝ) (w : Fin m → ℝ) (hv : StrictAnti v) (hw : StrictAnti w)
+-    (hvw : ∀ i j, w j < v i) : StrictAnti (Fin.append v w) := by
+-  intro i j hij
+-  induction i using Fin.addCases with
+-  | left i =>
+-    induction j using Fin.addCases with
+-    | left j =>
+-      rw [Fin.append_left, Fin.append_left]
+-      apply hv
+-      rw [Fin.lt_iff_val_lt_val] at hij ⊢
+-      simpa using hij
+-    | right j =>
+-      rw [Fin.append_left, Fin.append_right]
+-      exact hvw i j
+-  | right i =>
+-    induction j using Fin.addCases with
+-    | left j =>
+-      exfalso
+-      rw [Fin.lt_iff_val_lt_val] at hij
+-      simp only [Fin.coe_natAdd, Fin.coe_castAdd] at hij
+-      have := j.isLt
+-      omega
+-    | right j =>
+-      rw [Fin.append_right, Fin.append_right]
+-      apply hw
+-      rw [Fin.lt_iff_val_lt_val] at hij ⊢
+-      simp only [Fin.coe_natAdd] at hij
+-      omega
+-
+-theorem strictAnti_param_v (D : D7) (ρ : D.what₂.Tau) : StrictAnti (fun i => (((D.hc ρ).v i : ℚ) : ℝ)) := by
+-  apply strictAnti_of_succ_lt_alt
+-  intro i j hij
+-  have h1 := (D.hc ρ).v_gt_u i
+-  have h2 := (D.hc ρ).u_gt_v j
+-  have e : (⟨i.1 + 1, by omega⟩ : Fin D.R.k) = ⟨j.1, by omega⟩ := by ext; simp [hij]
+-  rw [e] at h1
+-  exact_mod_cast h2.trans h1
+-
+-theorem strictAnti_neg_param_b (D : D7) (ρ : D.what₂.Tau) : StrictAnti (fun j => -(((D.hc ρ).b j : ℚ) : ℝ)) := by
+-  apply strictAnti_of_succ_lt_alt
+-  intro i j hij
+-  have h1 := (D.hc ρ).gap_be i
+-  have h2 := (D.hc ρ).gap_eb i (by have := j.2; omega)
+-  have e : (⟨i.1 + 1, by have := j.2; omega⟩ : Fin D.R.m) = j := by ext; simp [hij]
+-  rw [e] at h2
+-  have ht : (0 : ℚ) ≤ D.R.t := by positivity
+-  have : (D.hc ρ).b i < (D.hc ρ).b j := by linarith
+-  have : (((D.hc ρ).b i : ℚ) : ℝ) < (((D.hc ρ).b j : ℚ) : ℝ) := by exact_mod_cast this
+-  linarith
+-
+-theorem line_param_strictAnti (D : D7) (ρ : D.what₂.Tau) : StrictAnti (rowLam D ρ) := by
+-  apply strictAnti_fin_append _ _ (strictAnti_param_v D ρ) (strictAnti_neg_param_b D ρ)
+-  intro i j
+-  have hk := D.R.k_ge
+-  have hm := D.R.two_le_m
+-  have h0 := (D.hc ρ).u_last_gt (by omega) (by omega)
+-  have h1 := (D.hc ρ).v_gt_u ⟨D.R.k - 2, by omega⟩
+-  have e : (⟨(⟨D.R.k - 2, by omega⟩ : Fin (D.R.k - 1)).1 + 1, by simp; omega⟩ : Fin D.R.k) = ⟨D.R.k - 1, by omega⟩ := by
+-    ext; simp; omega
+-  rw [e] at h1
+-  have h2 : (((D.hc ρ).v ⟨D.R.k - 2, by omega⟩ : ℚ) : ℝ) ≤ (((D.hc ρ).v i : ℚ) : ℝ) :=
+-    (strictAnti_param_v D ρ).antitone (by rw [Fin.le_def]; have := i.2; simp; omega)
+-  have h3 : -(((D.hc ρ).b j : ℚ) : ℝ) ≤ -(((D.hc ρ).b ⟨0, by omega⟩ : ℚ) : ℝ) :=
+-    (strictAnti_neg_param_b D ρ).antitone (by rw [Fin.le_def]; simp)
+-  have h4 : -(((D.hc ρ).b ⟨0, by omega⟩ : ℚ) : ℝ) < (((D.hc ρ).v ⟨D.R.k - 2, by omega⟩ : ℚ) : ℝ) := by
+-    exact_mod_cast h0.trans h1
+-  linarith
+-
+-theorem factorial_product_pos (N : ℕ) : 0 < facProd N := by
+-  unfold facProd
+-  exact Finset.prod_pos fun i _ => Nat.cast_pos.mpr (Nat.factorial_pos i)
+-
+-theorem dim_weyl_pos_of_strictAnti {N : ℕ} (x : Fin N → ℝ) (h : StrictAnti x) : 0 < dimV x := by
+-  unfold dimV vand
+-  apply div_pos
+-  · apply Finset.prod_pos
+-    intro a _
+-    apply Finset.prod_pos
+-    intro b hb
+-    rw [Finset.mem_filter] at hb
+-    exact sub_pos.mpr (h hb.2)
+-  · exact factorial_product_pos N
+-
+-theorem local_index_nonneg (F : Type) [CommRing F] (n : ℕ) (P : Matrix (Fin n) (Fin n) F → Prop) : 0 ≤ idxLoc F n P := by
+-  unfold idxLoc
+-  positivity
+-
+-theorem volume_eq_mass_at_rank (D : D7) (h2v : VolumeEqMass₂ D) : volY0 D = massI D D.R.r := by
+-  let _ := D.host.cmStar
+-  have h := h2v.2 (D.sp.Y 0) D.R.sigY0.1 D.R.sigY0.2 (D.sp.Y_sig 0) (fun τ => D.sp.baseSpace_signature_eq τ)
+-    (by have := D.R.k_ge; simp only [Ranks.sigY0]; omega)
+-  have e : D.R.sigY0.1 + D.R.sigY0.2 = D.R.r := by
+-    have := D.R.rS_two; have := D.R.r_eq; simp only [Ranks.sigY0]; omega
+-  rw [e] at h
+-  exact h
+-
+-theorem lastLine_of_massAndDegree (D : D7) (C3 : ℝ) (h2v : VolumeEqMass₂ D) (h3 : PointsLemma D C3) : DstarLowerFromGap D C3 := by
+-  intro hgap
+-  unfold DstarLow DstarD DstarP
+-  rw [volume_eq_mass_at_rank D h2v]
+-  have hm : 0 < massI D D.R.r := by rw [← volume_eq_mass_at_rank D h2v]; exact D.vol_pos _
+-  have hI : 0 ≤ idxSig D (D.host.g 0) (D.host.g 1) := by
+-    unfold idxSig idxRowLoc
+-    exact mul_nonneg (pow_nonneg (local_index_nonneg _ _ _) _) (pow_nonneg (local_index_nonneg _ _ _) _)
+-  have hr : Real.exp (-(D.R.r : ℝ)) ≤ 1 / 3 := by
+-    have h2 : (2 : ℝ) ≤ D.R.r := by
+-      have := D.R.k_ge; have := D.R.r_eq; have := D.R.two_le_m
+-      exact_mod_cast (by omega : 2 ≤ D.R.r)
+-    have h5 : (3 : ℝ) ≤ Real.exp (D.R.r : ℝ) := by
+-      have := Real.add_one_le_exp (D.R.r : ℝ); linarith
+-    rw [Real.exp_neg, one_div]
+-    exact inv_anti₀ (by norm_num) h5
+-  have hp : (2 / 3 : ℝ) ^ D.R.f * ∏ ρ, dimV (rowLam D ρ) ≤ ∏ ρ, D.dsig ρ := by
+-    rw [← D.what₂.card_Tau, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]
+-    refine Finset.prod_le_prod (fun ρ _ => mul_nonneg (by norm_num) (dim_weyl_pos_of_strictAnti _ (line_param_strictAnti D ρ)).le) fun ρ _ => ?_
+-    have := (h3 (1 / 3) hr (by norm_num) ρ (hgap ρ)).1
+-    linarith
+-  calc (2 / 3 : ℝ) ^ D.R.f * massI D D.R.r * idxSig D (D.host.g 0) (D.host.g 1) * ∏ ρ, dimV (rowLam D ρ)
+-      = massI D D.R.r * idxSig D (D.host.g 0) (D.host.g 1) * ((2 / 3 : ℝ) ^ D.R.f * ∏ ρ, dimV (rowLam D ρ)) := by ring
+-    _ ≤ _ := mul_le_mul_of_nonneg_left hp (mul_nonneg hm.le hI)
+-
+-theorem levelStatement_of_classes (D : D7) (Lv : LevelData D) (C3 : ℝ)
+-    (hfin : Module.finrank ℚ D.host.E = 2 * D.R.f)
+-    (hp : Conclusion4p D Lv) (hn : ClassNumberFormula₂ D Lv) (hg : OrthonormalLatticeRankK D) : ThetaChernBoundOfLastLine D Lv C3 := by
+-  intro h2 h3 h17
+-  have hd := levelDimension_of_admissible D Lv h17 hp
+-  exact ⟨levelRowCard_holds D, levelPartB_holds D, hostDegree_of_finrank D hfin, hp, hd, levelPartE_holds D, hn, level_rank_of_trivial_stabilisers D Lv hd hn, hg,
+-    lastLine_of_massAndDegree D C3 h2.2.1 h3⟩
+-
+-theorem line_param_apply (D : D7) (ρ : D.what₂.Tau) (a : Fin (D.R.k - 1 + D.R.m)) :
+-    rowLam D ρ a = Formalism.LogVandermondeBounds.StandardLattice.rowPar D.R.k (vN D ρ) (bN D ρ) a.val := by
+-  induction a using Fin.addCases with
+-  | left i =>
+-    have hi : (Fin.castAdd D.R.m i).val = i.val := rfl
+-    unfold rowLam Formalism.LogVandermondeBounds.StandardLattice.rowPar vN
+-    rw [Fin.append_left, hi, if_pos i.2, dif_pos i.2]
+-  | right j =>
+-    have hj : (Fin.natAdd (D.R.k - 1) j).val = D.R.k - 1 + j.val := rfl
+-    unfold rowLam Formalism.LogVandermondeBounds.StandardLattice.rowPar bN
+-    rw [Fin.append_right, hj, if_neg (by omega), Nat.add_sub_cancel_left, dif_pos j.2]
+-
+-theorem line_sign_apply (D : D7) (a : Fin (D.R.k - 1 + D.R.m)) :
+-    rowSgn D a = Formalism.LogVandermondeBounds.StandardLattice.plusSign D.R.k a.val := by
+-  unfold rowSgn Formalism.LogVandermondeBounds.StandardLattice.plusSign
+-  induction a using Fin.addCases with
+-  | left i =>
+-    rw [Fin.append_left]
+-    simp [i.isLt]
+-  | right j =>
+-    rw [Fin.append_right]
+-    simp
+-
+-theorem gap_bound_mono (D : D7) (C C' ep0 : ℝ) (h : C ≤ C') : gap3 D C ep0 ≤ gap3 D C' ep0 := by
+-  unfold gap3
+-  have hr : (1 : ℝ) ≤ D.R.r := by
+-    have := D.R.k_ge; have := D.R.r_eq; have := D.R.two_le_m
+-    exact_mod_cast (by omega : 1 ≤ D.R.r)
+-  have hl : 0 ≤ Real.log (D.R.r : ℝ) := Real.log_nonneg hr
+-  gcongr
+-
+-theorem exponent_pos_of_rank_le_pow (D : D7) (sc : Scale) (C0 : ℝ) (h5 : (D.R.k : ℝ) ≤ sc.x ^ C0) : 0 < C0 := by
+-  by_contra hn
+-  have h1 : sc.x ^ C0 ≤ 1 := Real.rpow_le_one_of_one_le_of_nonpos sc.one_lt_alt.le (not_lt.1 hn)
+-  have h2 : (5 : ℝ) ≤ D.R.k := by exact_mod_cast D.R.k_ge
+-  linarith
+-
+-theorem gap_bound_at_one_third (D : D7) (C : ℝ) (hC : 0 ≤ C) : gap3 D C (1 / 3) ≤ 9 * C * (D.R.r : ℝ) ^ 9 := by
+-  have hk := D.R.k_ge
+-  have hm := D.R.two_le_m
+-  have hm2 := D.R.rS_two
+-  have er : D.R.r = D.R.k + D.R.m - 1 := rfl
+-  have ep : pY D ≤ D.R.r := by unfold pY; simp only [Ranks.sigY0]; omega
+-  have eq : qY D ≤ D.R.r := by unfold qY; simp only [Ranks.sigY0]; omega
+-  have hr : (1 : ℝ) ≤ D.R.r := by exact_mod_cast (by omega : 1 ≤ D.R.r)
+-  have hl0 : 0 ≤ Real.log (D.R.r : ℝ) := Real.log_nonneg hr
+-  have hl : Real.log (D.R.r : ℝ) ≤ D.R.r := by
+-    have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < (D.R.r : ℝ) by linarith)
+-    linarith
+-  have hp : (pY D : ℝ) ≤ D.R.r := by exact_mod_cast ep
+-  have hq : (qY D : ℝ) ≤ D.R.r := by exact_mod_cast eq
+-  have hmin : ((min (pY D) (qY D) : ℕ) : ℝ) ≤ D.R.r := by exact_mod_cast le_trans (min_le_left _ _) ep
+-  unfold gap3
+-  have e1 : C * (min (pY D) (qY D) : ℕ) * ((pY D : ℝ) * (qY D : ℝ)) ^ 3 * (D.R.r : ℝ) *
+-      Real.log (D.R.r : ℝ) / (1 / 3) ^ 2 =
+-      9 * C * (((min (pY D) (qY D) : ℕ) : ℝ) * ((pY D : ℝ) * (qY D : ℝ)) ^ 3 * (D.R.r : ℝ) *
+-      Real.log (D.R.r : ℝ)) := by ring
+-  rw [e1]
+-  have e2 : ((min (pY D) (qY D) : ℕ) : ℝ) * ((pY D : ℝ) * (qY D : ℝ)) ^ 3 * (D.R.r : ℝ) *
+-      Real.log (D.R.r : ℝ) ≤ (D.R.r : ℝ) * ((D.R.r : ℝ) * (D.R.r : ℝ)) ^ 3 * (D.R.r : ℝ) * (D.R.r : ℝ) := by
+-    gcongr
+-  calc 9 * C * (((min (pY D) (qY D) : ℕ) : ℝ) * ((pY D : ℝ) * (qY D : ℝ)) ^ 3 * (D.R.r : ℝ) *
+-      Real.log (D.R.r : ℝ)) ≤ 9 * C * ((D.R.r : ℝ) * ((D.R.r : ℝ) * (D.R.r : ℝ)) ^ 3 * (D.R.r : ℝ) * (D.R.r : ℝ)) :=
+-        mul_le_mul_of_nonneg_left e2 (by positivity)
+-    _ = 9 * C * (D.R.r : ℝ) ^ 9 := by ring
+-
+-theorem parameter_gap_under_section_B (D : D7) (sc : Scale) (C0 Δ : ℝ) (w : ℕ → D.what₂.Tau → ℝ) (hB : DataB D sc C0 Δ w)
+-    (ρ : D.what₂.Tau) : GapAtLeast (rowSgn D) (rowLam D ρ) ((D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * sc.L / C0) := by
+-  obtain ⟨-, -, -, -, h5, -, h7, h8, -, -, -, -, -, -, h15, h16⟩ := hB
+-  have hk := D.R.k_ge
+-  have hC0 := exponent_pos_of_rank_le_pow D sc C0 h5
+-  have hx : 0 < sc.x := lt_trans one_pos sc.one_lt_alt
+-  have hL : 0 ≤ sc.L := by unfold Scale.L; exact (Real.rpow_pos_of_pos hx _).le
+-  have hb0 : 0 < bN D ρ 0 := by
+-    have h1 := (h15 ρ).1
+-    have h2 : 0 < (D.R.k : ℝ) * (4 * Δ) := by
+-      have : (0 : ℝ) < D.R.k := by exact_mod_cast (by omega : 0 < D.R.k)
+-      positivity
+-    have h3 : 0 < bN D ρ 0 / sc.x := lt_of_lt_of_le h2 h1
+-    by_contra hn
+-    exact absurd h3 (not_lt.2 (div_nonpos_of_nonpos_of_nonneg (not_lt.1 hn) hx.le))
+-  have key := Formalism.HermitianLattices.GenusMassVolumes.least_noncompact_gap D.R.k D.R.m (vN D ρ) (bN D ρ)
+-    ((D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * sc.L / C0)
+-    (by omega) (by positivity) (fun i hi => (h8 ρ i hi).1) hb0 (fun j hj => h16 ρ j hj)
+-  intro a b hab
+-  rw [line_sign_apply, line_sign_apply] at hab
+-  rw [line_param_apply, line_param_apply]
+-  rcases lt_trichotomy a.val b.val with h | h | h
+-  · exact (key a.val b.val h b.2 hab).trans (le_abs_self _)
+-  · exact absurd (by rw [h]) hab
+-  · rw [abs_sub_comm]
+-    exact (key b.val a.val h a.2 hab.symm).trans (le_abs_self _)
+-
+-theorem levelStatement_eventually (eps C3 C0 : ℝ) (heps : 0 < eps) :
+-    ∃ x0 : ℝ, ∀ (D : D7) (Lv : LevelData D) (sc : Scale), sc.eps = eps → x0 ≤ sc.x → PartFourSectionBStatement D Lv sc C3 C0 := by
+-  obtain ⟨x0, hx0⟩ := Filter.eventually_atTop.1
+-    ((tendsto_rpow_atTop heps).eventually_ge_atTop (9 * max C3 0 * C0))
+-  refine ⟨x0, fun D Lv sc he hx h4 Δ w hB => ?_⟩
+-  obtain ⟨-, -, -, -, h4d, -, -, -, -, h4h⟩ := h4
+-  have hk := D.R.k_ge
+-  have hB' := hB
+-  obtain ⟨-, -, -, -, h5, h6, -⟩ := hB'
+-  have hg : ∀ i : Fin 2, 2 * D.R.f * D.R.k < D.host.g i - 1 := by
+-    intro i
+-    have h1 := (h6 i).1
+-    have hb : (1 : ℝ) ≤ sc.b := by
+-      unfold Scale.b
+-      exact Real.one_le_exp (by unfold Scale.L; exact (Real.rpow_pos_of_pos (lt_trans one_pos sc.one_lt_alt) _).le)
+-    have hk0 : (0 : ℝ) ≤ D.R.k := by positivity
+-    have h2 : (D.R.k : ℝ) ^ 8 ≤ (D.host.g i : ℝ) :=
+-      le_trans (pow_le_pow_left₀ hk0 (by nlinarith) 8) h1
+-    have h3 : D.R.k ^ 8 ≤ D.host.g i := by exact_mod_cast h2
+-    have hf : D.R.f ≤ D.R.k := D.R.f_le_k
+-    have h4 : 2 * D.R.f * D.R.k + 1 < D.R.k ^ 8 := by
+-      have e1 : 2 * D.R.f * D.R.k ≤ 2 * (D.R.k * D.R.k) := by nlinarith
+-      have e2 : D.R.k ^ 8 = (D.R.k * D.R.k) * (D.R.k ^ 6) := by ring
+-      have e3 : 5 ^ 6 ≤ D.R.k ^ 6 := Nat.pow_le_pow_left hk 6
+-      have e4 : 25 ≤ D.R.k * D.R.k := by nlinarith
+-      rw [e2]
+-      nlinarith
+-    omega
+-  have hgap : ∀ ρ, GapAtLeast (rowSgn D) (rowLam D ρ) (gap3 D C3 (1 / 3)) := by
+-    intro ρ a b hab
+-    refine le_trans ?_ (parameter_gap_under_section_B D sc C0 Δ w hB ρ a b hab)
+-    refine le_trans (gap_bound_mono D C3 (max C3 0) _ (le_max_left _ _)) ?_
+-    refine le_trans (gap_bound_at_one_third D (max C3 0) (le_max_right _ _)) ?_
+-    have hC0 := exponent_pos_of_rank_le_pow D sc C0 h5
+-    have hL : 9 * max C3 0 * C0 ≤ sc.L := by unfold Scale.L; rw [he]; exact hx0 sc.x hx
+-    have hr : (1 : ℝ) ≤ D.R.r := by
+-      have := D.R.k_ge; have := D.R.r_eq; have := D.R.two_le_m
+-      exact_mod_cast (by omega : 1 ≤ D.R.r)
+-    have hf : (1 : ℝ) ≤ D.R.f := by
+-      have h2 : 2 ≤ D.R.f := le_trans D.R.two_le_m D.R.m_le_f
+-      exact_mod_cast le_trans one_le_two h2
+-    have hL0 : 0 ≤ sc.L := le_trans (by have := le_max_right C3 0; positivity) hL
+-    rw [le_div_iff₀ hC0]
+-    have e1 : (D.R.r : ℝ) ^ 9 ≤ (D.R.r : ℝ) ^ 19 := pow_le_pow_right₀ hr (by norm_num)
+-    have e2 : (1 : ℝ) ≤ (D.R.f : ℝ) ^ 5 := one_le_pow₀ hf
+-    calc 9 * max C3 0 * (D.R.r : ℝ) ^ 9 * C0 = (D.R.r : ℝ) ^ 9 * (9 * max C3 0 * C0) := by ring
+-      _ ≤ (D.R.r : ℝ) ^ 9 * sc.L := mul_le_mul_of_nonneg_left hL (by positivity)
+-      _ = (D.R.r : ℝ) ^ 9 * 1 * sc.L := by ring
+-      _ ≤ (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * sc.L :=
+-          mul_le_mul_of_nonneg_right (mul_le_mul e1 e2 zero_le_one (by positivity)) hL0
+-  exact ⟨hg, hgap, fun u => h4d ⟨0, hg 0⟩ u, h4h hgap⟩
+-
+-theorem familyLevelSectionB_holds {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C3 : ℝ) : FamilySectionBStatement Fm C3 := by
+-  intro h4 C0
+-  have heps : 0 < eps := by
+-    obtain ⟨i⟩ := Fm.Ix_zero
+-    rw [← Fm.L_eps 0 i]; exact (Fm.L 0 i).sc.eps_pos
+-  obtain ⟨x0, hx0⟩ := levelStatement_eventually eps C3 C0 heps
+-  refine ⟨x0, fun x hx hx1 i => ?_⟩
+-  exact hx0 (Fm.D x i) (Fm.ex x hx1 i).lev (Fm.L x i).sc (Fm.L_eps x i) (by rw [Fm.L_x x i hx1]; exact hx) (h4 x hx1 i)
+-
+-theorem familyLevel_of_classes {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C3 : ℝ)
+-    (hfin : ∀ x (i : Fm.Ix x), Module.finrank ℚ (Fm.D x i).host.E = 2 * (Fm.D x i).R.f)
+-    (hp : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev)
+-    (hn : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ClassNumberFormula₂ (Fm.D x i) (Fm.ex x hx i).lev)
+-    (hg : ∀ x (i : Fm.Ix x), OrthonormalLatticeRankK (Fm.D x i)) : LiftNormFamilyStatement Fm C3 :=
+-  fun h2 h3 h17 x hx i =>
+-    levelStatement_of_classes (Fm.D x i) (Fm.ex x hx i).lev C3 (hfin x i) (hp x hx i) (hn x hx i) (hg x i) (h2 x i) (h3 x i) (h17 x hx i)
+-
+ section P3
+ 
+ open Formalism.MainNotions.S MeasureTheory
+ open scoped InnerProductSpace
+ 
+-theorem formal_degree_of_eq {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
+-    (μ : Measure (Formalism.REAL.UJ ε)) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (d : ℝ) (h : IsFdeg μ σ d)
+-    (w : H) (hw : w ≠ 0) : fdegOf μ σ w = d := by
+-  obtain ⟨hd, hh⟩ := h
+-  obtain ⟨-, h2⟩ := hh w w w w
+-  have e1 : ∀ g, coefOn σ w w g * star (coefOn σ w w g) = ((‖coefOn (ε := ε) σ w w g‖ ^ 2 : ℝ) : ℂ) := by
+-    intro g
+-    rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
+-  simp only [e1] at h2
+-  rw [integral_complex_ofReal] at h2
+-  have e2 : (⟪w, w⟫_ℂ : ℂ) = ((‖w‖ ^ 2 : ℝ) : ℂ) := by
+-    rw [inner_self_eq_norm_sq_to_K]; push_cast; rfl
+-  rw [e2] at h2
+-  have h3 : (∫ g, ‖coefOn (ε := ε) σ w w g‖ ^ 2 ∂μ) = ‖w‖ ^ 2 * ‖w‖ ^ 2 / d := by
+-    exact_mod_cast h2
+-  have hn : 0 < ‖w‖ := norm_pos_iff.2 hw
+-  unfold fdegOf
+-  rw [h3]
+-  field_simp
+-
+-theorem dim_weyl_finCast {n n' : ℕ} (h : n = n') (x : Fin n' → ℝ) : dimV (fun i => x (Fin.cast h i)) = dimV x := by
+-  subst h
+-  rfl
+-theorem formal_degree_finCast {n n' : ℕ} (h : n = n') (s : Fin n' → Bool) (x : Fin n' → ℝ) :
+-    dTau (fun i => s (Fin.cast h i)) (fun i => x (Fin.cast h i)) = dTau s x := by
+-  subst h
+-  rfl
+-theorem abs_param_sup_finCast {n n' : ℕ} (h : n = n') (x : Fin n' → ℝ) : lamAbs (fun i => x (Fin.cast h i)) = lamAbs x := by
+-  subst h
+-  rfl
+-theorem count_plus_finCast {n n' : ℕ} (h : n = n') (s : Fin n' → Bool) : nPlus (fun i => s (Fin.cast h i)) = nPlus s := by
+-  subst h
+-  rfl
+-theorem count_minus_finCast {n n' : ℕ} (h : n = n') (s : Fin n' → Bool) : nMinus (fun i => s (Fin.cast h i)) = nMinus s := by
+-  subst h
+-  rfl
+-theorem strictAnti_comp_finCast {n n' : ℕ} (h : n = n') (x : Fin n' → ℝ) (hx : StrictAnti x) :
+-    StrictAnti (fun i => x (Fin.cast h i)) := by
+-  subst h
+-  exact hx
+-theorem gapAtLeast_finCast {n n' : ℕ} (h : n = n') (s : Fin n' → Bool) (x : Fin n' → ℝ) (g : ℝ) (hx : GapAtLeast s x g) :
+-    Formalism.QuantumDeterminants.GapAtLeast (fun i => s (Fin.cast h i)) (fun i => x (Fin.cast h i)) g := by
+-  subst h
+-  exact hx
+-
+-theorem rank_dimension_identity (R : Ranks) : 2 * R.rS + R.k + 1 = R.k - 1 + R.m := by
+-  show 2 * (R.m / 2 - 1) + R.k + 1 = R.k - 1 + R.m
+-  have h1 := R.two_le_m
+-  have h2 := R.m_add_three_le_k
+-  obtain ⟨j, hj⟩ := R.m_even
+-  omega
+-
+-theorem param_vector_eq_line_param (D : D7) (ρ : D.what₂.Tau) :
+-    lamSH D.R (D.hc ρ) = fun i => rowLam D ρ (Fin.cast (rank_dimension_identity D.R) i) := by
+-  funext i
+-  rw [line_param_apply]
+-  have hi : i.val < D.R.k - 1 + D.R.m := by have := i.2; have := rank_dimension_identity D.R; omega
+-  unfold lamSH lamS Formalism.LogVandermondeBounds.StandardLattice.rowPar vN bN
+-  simp only [Fin.val_cast]
+-  by_cases h : i.val < D.R.k - 1
+-  · rw [dif_pos h, if_pos h, dif_pos h]
+-  · have h' : i.val - (D.R.k - 1) < D.R.m := by omega
+-    rw [dif_neg h, if_neg h, dif_pos h', dif_pos h']
+-
+-theorem sign_vector_eq_line_sign (D : D7) : epsSH D.R = fun i => rowSgn D (Fin.cast (rank_dimension_identity D.R) i) := by
+-  funext i
+-  rw [line_sign_apply]
+-  unfold epsSH epsS Formalism.LogVandermondeBounds.StandardLattice.plusSign
+-  simp only [Fin.val_cast]
+-  by_cases h : i.val < D.R.k - 1
+-  · simp [h]
+-  · simp [h]
+-
+-theorem sum_indicator_even_range (c : ℕ) : ∑ j ∈ range (2 * c), (if j % 2 = 0 then 1 else 0) = c := by
+-  induction c with
+-  | zero => simp
+-  | succ c ih =>
+-    rw [show 2 * (c + 1) = 2 * c + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, ih]
+-    have h1 : (2 * c) % 2 = 0 := by omega
+-    have h2 : (2 * c + 1) % 2 = 1 := by omega
+-    simp [h1, h2]
+-
+-theorem count_plus_line_sign (D : D7) : nPlus (rowSgn D) = pY D := by
+-  unfold nPlus rowSgn
+-  rw [Finset.card_filter, Fin.sum_univ_add]
+-  simp only [Fin.append_left, Fin.append_right, if_true, decide_eq_true_eq]
+-  rw [Fin.sum_univ_eq_sum_range (fun j => if j % 2 = 0 then 1 else 0) D.R.m]
+-  obtain ⟨c, hc⟩ := D.R.m_even
+-  have hc' : D.R.m = 2 * c := by omega
+-  rw [hc', sum_indicator_even_range]
+-  have := D.R.rS_two; have := D.R.k_ge
+-  unfold pY
+-  simp only [Ranks.sigY0, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]
+-  omega
+-
+-private lemma card_split_lemma {α : Type*} (S : Finset α) (p : α → Prop) [DecidablePred p] :
+-    (S.filter p).card + (S.filter (fun a => ¬ p a)).card = S.card := by
+-  rw [Finset.card_filter, Finset.card_filter, ← Finset.sum_add_distrib, Finset.card_eq_sum_ones]
+-  refine Finset.sum_congr rfl (fun a _ => ?_)
+-  by_cases h : p a <;> simp [h]
+-
+-theorem count_plus_add_count_minus (N : ℕ) (s : Fin N → Bool) : nPlus s + nMinus s = N := by
+-  unfold nPlus nMinus
+-  have h := card_split_lemma (univ : Finset (Fin N)) (fun a => s a = true)
+-  have e : (univ.filter (fun a : Fin N => ¬ s a = true)) = univ.filter (fun a => s a = false) := by
+-    ext a
+-    simp
+-  rw [e, Finset.card_univ, Fintype.card_fin] at h
+-  exact h
+-
+-theorem count_minus_line_sign (D : D7) : nMinus (rowSgn D) = qY D := by
+-  have h1 := count_plus_add_count_minus _ (rowSgn D)
+-  rw [count_plus_line_sign] at h1
+-  have := D.R.rS_two; have := D.R.k_ge
+-  unfold pY at h1
+-  unfold qY
+-  simp only [Ranks.sigY0] at h1 ⊢
+-  omega
+-
+-theorem line_param_harish_chandra (D : D7) (ρ : D.what₂.Tau) : Formalism.QuantumDeterminants.IsHCParam (lamSH D.R (D.hc ρ)) := by
+-  rw [param_vector_eq_line_param]
+-  refine ⟨strictAnti_comp_finCast _ _ (line_param_strictAnti D ρ), fun a => ?_⟩
+-  obtain ⟨c, hc⟩ := D.R.m_even
+-  obtain ⟨c', hc'⟩ := D.R.k_even
+-  have hrS := D.R.rS_two
+-  have hN : (((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) - 1) / 2 = ((D.R.rS + c' : ℕ) : ℝ) := by
+-    rw [hc']; push_cast; ring
+-  rw [hN]
+-  have hz : ∃ z : ℤ, rowLam D ρ (Fin.cast (rank_dimension_identity D.R) a) = (z : ℝ) := by
+-    generalize Fin.cast (rank_dimension_identity D.R) a = b
+-    induction b using Fin.addCases with
+-    | left i =>
+-      obtain ⟨z, hz⟩ := (D.hc ρ).v_int i
+-      refine ⟨z, ?_⟩
+-      unfold rowLam
+-      rw [Fin.append_left, hz]; push_cast; rfl
+-    | right j =>
+-      obtain ⟨z, hz⟩ := (D.hc ρ).b_int j
+-      refine ⟨-z, ?_⟩
+-      unfold rowLam
+-      rw [Fin.append_right, hz]; push_cast; rfl
+-  obtain ⟨z, hz⟩ := hz
+-  exact ⟨z - ((D.R.rS + c' : ℕ) : ℤ), by show rowLam D ρ (Fin.cast (rank_dimension_identity D.R) a) - _ = _; rw [hz]; push_cast; ring⟩
+-
+-theorem formalDegreeBound_of_general (D : D7) (C3 : ℝ) : TowerRallisLemma D C3 := by
+-  intro hAll hT hEx ep0 he1 he2 ρ hgap
+-  obtain ⟨H, i1, i2, σ, hDS, hF⟩ := hEx ρ
+-  have hcs : CompleteSpace H := hDS.1
+-  have hnt : Nontrivial H := hDS.2.1
+-  obtain ⟨w, hw⟩ := exists_ne (0 : H)
+-  have hHC := line_param_harish_chandra D ρ
+-  have hdt := (hT _ (epsSH D.R) (lamSH D.R (D.hc ρ)) hHC H σ hDS).2
+-  have hp : ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ) = (pY D : ℝ) := by
+-    have : (Finset.univ.filter (fun a => epsSH D.R a = true)).card = nPlus (epsSH D.R) := rfl
+-    rw [this, sign_vector_eq_line_sign, count_plus_finCast, count_plus_line_sign]
+-  have hq : ((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ) = (qY D : ℝ) := by
+-    have : (Finset.univ.filter (fun a => epsSH D.R a = false)).card = nMinus (epsSH D.R) := rfl
+-    rw [this, sign_vector_eq_line_sign, count_minus_finCast, count_minus_line_sign]
+-  have hN : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ) := by rw [dimS_eq]
+-  have hg' : Formalism.QuantumDeterminants.GapAtLeast (epsSH D.R) (lamSH D.R (D.hc ρ)) (gap3 D C3 ep0) := by
+-    rw [sign_vector_eq_line_sign, param_vector_eq_line_param]; exact gapAtLeast_finCast _ _ _ _ hgap
+-  have key := hAll _ (epsSH D.R) (lamSH D.R (D.hc ρ)) ep0 (gap3 D C3 ep0) H σ w hHC hg'
+-    (by rw [hN]; exact he1) he2
+-    (by rw [hp, hq, hN]; unfold gap3; rw [Nat.cast_min]) hDS hw
+-  rw [formal_degree_of_eq _ σ _ hF w hw, hp, hq, hN, hdt] at key
+-  rw [← dimV_eq_fdegHC _ hHC.1] at key
+-  rw [sign_vector_eq_line_sign, param_vector_eq_line_param, dim_weyl_finCast, formal_degree_finCast, abs_param_sup_finCast] at key
+-  refine ⟨key.1, ?_⟩
+-  have e : ((pY D : ℝ) * (qY D : ℝ)) = ((pY D * qY D : ℕ) : ℝ) := by push_cast; rfl
+-  rw [e, Real.rpow_natCast] at key
+-  exact key.2
+-
+-theorem familyFormalDegree_holds {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C3 : ℝ) : FlatLineDegreeFamilyStatement Fm C3 :=
+-  fun h1 h2 h3 x i => formalDegreeBound_of_general (Fm.D x i) C3 (h1 x i) (h2 x i).2.2 (h3 x i)
+-
+ end P3
+ 
+ end Formalism.MainNotions.StandardLattice
+@@ -791,321 +59,6 @@
+ namespace Formalism.MainNotions.StandardLattice
+ 
+ open NumberField Formalism.BasicNotions Finset
+-
+-theorem log_vandermonde_eq_sum {N : ℕ} (x : Fin N → ℝ) (h : StrictAnti x) : Real.log (vand x) = Formalism.LogVandermondeBounds.StandardLattice.vandLog x := by
+-  unfold vand Formalism.LogVandermondeBounds.StandardLattice.vandLog
+-  rw [Real.log_prod]
+-  · refine Finset.sum_congr rfl (fun a _ => ?_)
+-    rw [Real.log_prod]
+-    intro b hb
+-    rw [Finset.mem_filter] at hb
+-    exact (sub_pos.mpr (h hb.2)).ne'
+-  · intro a _
+-    apply Finset.prod_ne_zero_iff.mpr
+-    intro b hb
+-    rw [Finset.mem_filter] at hb
+-    exact (sub_pos.mpr (h hb.2)).ne'
+-
+-theorem log_vandermonde_variation_generic (k : ℕ) (hk : 2 ≤ k) (Δ : ℝ) (u u' : Fin k → ℝ) (h0 : 0 < Δ)
+-    (hg : ∀ a b, a < b → 1 ≤ u a - u b) (hg' : ∀ a b, a < b → 1 ≤ u' a - u' b) (hd : ∀ i, |u i - u' i| ≤ Δ)
+-    (hfirst : ∀ i : Fin k, i.val = 0 → u i = u' i) (hlast : ∀ i : Fin k, i.val = k - 1 → u i = u' i)
+-    (h3 : ∀ i j : Fin k, 1 ≤ i.val → j.val = i.val + 1 → j.val ≤ k - 2 → 3 * Δ ≤ u i - u j ∧ 3 * Δ ≤ u' i - u' j)
+-    (hl : Real.log (1 + Δ) ≤ k) :
+-    |Real.log (vand u) - Real.log (vand u')| ≤ 8 * k * (1 + Real.log k) := by
+-  obtain ⟨n, rfl⟩ : ∃ n, k = n + 2 := ⟨k - 2, by omega⟩
+-  have a1 : StrictAnti u := fun a b hab => by have := hg a b hab; linarith
+-  have a2 : StrictAnti u' := fun a b hab => by have := hg' a b hab; linarith
+-  rw [log_vandermonde_eq_sum u a1, log_vandermonde_eq_sum u' a2]
+-  have := Formalism.LogVandermondeBounds.StandardLattice.variation_in_context n Δ u u'
+-    ⟨h0, hg, hg', hd, hfirst 0 rfl, hlast _ (by simp), fun i j hi hj hjn => h3 i j hi hj (by omega)⟩
+-    (by push_cast at hl; exact hl)
+-  push_cast
+-  exact this
+-
+-theorem column_param_apply (D : D7) (u : D.what₂.Word) (ρ : D.what₂.Tau) (i : Fin D.R.k) : uColR D u ρ i = uN D u ρ i.val := by
+-  unfold uColR uN; rw [dif_pos i.2]
+-
+-theorem column_param_strictAnti (D : D7) (u : D.what₂.Word) (ρ : D.what₂.Tau) : StrictAnti (uColR D u ρ) := by
+-  apply strictAnti_of_succ_lt_alt
+-  intro i j hij
+-  have hi : i.val < D.R.k - 1 := by have := j.2; omega
+-  have h1 := (D.hcW u ρ).u_gt_v ⟨i.val, hi⟩
+-  have h2 := (D.hcW u ρ).v_gt_u ⟨i.val, hi⟩
+-  have e : (⟨(⟨i.val, hi⟩ : Fin (D.R.k - 1)).1 + 1, by simp; omega⟩ : Fin D.R.k) = j := by ext; simp [hij]
+-  rw [e] at h2
+-  unfold uColR
+-  exact_mod_cast h2.trans h1
+-
+-theorem one_le_column_param_sub (D : D7) (u : D.what₂.Word) (ρ : D.what₂.Tau) (a b : Fin D.R.k) (hab : a < b) :
+-    1 ≤ uColR D u ρ a - uColR D u ρ b := by
+-  have h := column_param_strictAnti D u ρ hab
+-  obtain ⟨z, hz⟩ := (D.hcW u ρ).u_half a
+-  obtain ⟨z', hz'⟩ := (D.hcW u ρ).u_half b
+-  unfold uColR at h ⊢
+-  rw [hz, hz'] at h ⊢
+-  push_cast at h ⊢
+-  have h1 : (z' : ℝ) < z := by linarith
+-  have h2 : z' < z := by exact_mod_cast h1
+-  have h3 : (z' : ℝ) + 1 ≤ z := by exact_mod_cast h2
+-  linarith
+-
+-theorem log_one_add_delta_le_rank (D : D7) (sc : Scale) (C0 Δ : ℝ) (w : ℕ → D.what₂.Tau → ℝ) (hB : DataB D sc C0 Δ w)
+-    (ρ : D.what₂.Tau) : Real.log (1 + Δ) ≤ D.R.k := by
+-  obtain ⟨-, -, -, h4, -, -, h7, -, -, -, -, -, h13, h14, h15, -⟩ := hB
+-  have hk := D.R.k_ge
+-  have hm := D.R.two_le_m
+-  have hx := sc.one_lt_alt
+-  have hL : 0 < sc.L := by unfold Scale.L; exact Real.rpow_pos_of_pos (by linarith) _
+-  have chain : ∀ j, j < D.R.m → bN D ρ 0 ≤ bN D ρ j := by
+-    intro j
+-    induction j with
+-    | zero => intro _; exact le_refl _
+-    | succ j ih =>
+-      intro hj
+-      have := ih (by omega)
+-      have := (h13 ρ j (by omega)).2.1
+-      have := h14 ρ j hj
+-      linarith
+-  have hb : bN D ρ 0 ≤ 2 * sc.b := by
+-    have := chain (D.R.m - 1) (by omega)
+-    have := (h13 ρ (D.R.m - 1) (by omega)).2.1
+-    have := (h15 ρ).2
+-    linarith
+-  have hkR : (5 : ℝ) ≤ D.R.k := by exact_mod_cast hk
+-  have hbpos : 0 < sc.b := Real.exp_pos _
+-  have h1 : (D.R.k : ℝ) * (4 * Δ) ≤ 2 * sc.b := by
+-    refine le_trans (h15 ρ).1 (le_trans ?_ hb)
+-    have hb0 : 0 ≤ bN D ρ 0 := by
+-      by_contra hn
+-      have : bN D ρ 0 / sc.x < 0 := div_neg_of_neg_of_pos (not_le.1 hn) (by linarith)
+-      have h2 := (h15 ρ).1
+-      have : 0 ≤ (D.R.k : ℝ) * (4 * Δ) := by positivity
+-      linarith
+-    exact div_le_self hb0 hx.le
+-  have h2 : Δ ≤ sc.b := by nlinarith
+-  have hb1 : 1 ≤ sc.b := Real.one_le_exp hL.le
+-  have h3 : Real.log (1 + Δ) ≤ Real.log (2 * sc.b) := Real.log_le_log (by linarith) (by linarith)
+-  have h5 : Real.log (2 * sc.b) = Real.log 2 + sc.L := by
+-    rw [Real.log_mul (by norm_num) hbpos.ne']; unfold Scale.b; rw [Real.log_exp]
+-  have h6 : Real.log 2 ≤ 1 := by have := Real.log_two_lt_d9; linarith
+-  have hmR : (2 : ℝ) ≤ D.R.m := by exact_mod_cast hm
+-  have hm2 : (4 : ℝ) ≤ (D.R.m : ℝ) ^ 2 := by nlinarith
+-  have h8 : 4 * sc.L ≤ (D.R.m : ℝ) ^ 2 * sc.L := mul_le_mul_of_nonneg_right hm2 hL.le
+-  linarith
+-
+-theorem log_vandermonde_variation_le (D : D7) (sc : Scale) (C0 Δ : ℝ) (w : ℕ → D.what₂.Tau → ℝ) (hB : DataB D sc C0 Δ w)
+-    (u u' : D.what₂.Word) (ρ : D.what₂.Tau) :
+-    |Real.log (vand (uColR D u ρ)) - Real.log (vand (uColR D u' ρ))| ≤ 16 * D.R.k * Real.log D.R.k := by
+-  have hl := log_one_add_delta_le_rank D sc C0 Δ w hB ρ
+-  obtain ⟨-, -, -, -, -, -, h7, -, h9, h10, -⟩ := hB
+-  have hk := D.R.k_ge
+-  have cl : ∀ (u : D.what₂.Word) (i : Fin D.R.k), 1 ≤ i.val → i.val ≤ D.R.k - 2 →
+-      uColR D u ρ i = vN D ρ (i.val - 1) - 1 / 2 ∨ uColR D u ρ i = vN D ρ (i.val - 1) - 1 / 2 - Δ := by
+-    intro u i h1 h2; rw [column_param_apply]; exact h10 u ρ i.val h1 h2
+-  have hfirst : ∀ i : Fin D.R.k, i.val = 0 → uColR D u ρ i = uColR D u' ρ i := by
+-    intro i hi
+-    have e : i = ⟨0, by omega⟩ := Fin.ext hi
+-    unfold uColR
+-    rw [e, D.hcW_first u ρ (by omega), D.hcW_first u' ρ (by omega)]
+-  have hlast : ∀ i : Fin D.R.k, i.val = D.R.k - 1 → uColR D u ρ i = uColR D u' ρ i := by
+-    intro i hi
+-    have e : i = ⟨D.R.k - 1, by omega⟩ := Fin.ext hi
+-    unfold uColR
+-    rw [e, D.hcW_last u ρ (by omega), D.hcW_last u' ρ (by omega)]
+-  have h := log_vandermonde_variation_generic D.R.k (by omega) Δ (uColR D u ρ) (uColR D u' ρ) (by linarith)
+-    (one_le_column_param_sub D u ρ) (one_le_column_param_sub D u' ρ)
+-    (by
+-      intro i
+-      by_cases h1 : i.val = 0
+-      · rw [hfirst i h1]; simp; linarith
+-      · by_cases h2 : i.val = D.R.k - 1
+-        · rw [hlast i h2]; simp; linarith
+-        · rcases cl u i (by omega) (by omega) with e1 | e1 <;> rcases cl u' i (by omega) (by omega) with e2 | e2 <;>
+-            rw [e1, e2, abs_le] <;> constructor <;> linarith)
+-    hfirst hlast
+-    (by
+-      intro i j hi hj hjk
+-      have hv := h9 ρ (i.val - 1) (by omega)
+-      have ej : j.val - 1 = i.val - 1 + 1 := by omega
+-      constructor
+-      · rcases cl u i hi (by omega) with e1 | e1 <;> rcases cl u j (by omega) hjk with e2 | e2 <;>
+-          rw [e1, e2, ej] <;> linarith
+-      · rcases cl u' i hi (by omega) with e1 | e1 <;> rcases cl u' j (by omega) hjk with e2 | e2 <;>
+-          rw [e1, e2, ej] <;> linarith)
+-    hl
+-  refine le_trans h ?_
+-  have hkR : (5 : ℝ) ≤ D.R.k := by exact_mod_cast hk
+-  have hlog : 1 ≤ Real.log D.R.k := by
+-    rw [Real.le_log_iff_exp_le (by linarith)]
+-    have := Real.exp_one_lt_d9
+-    linarith
+-  nlinarith
+-
+-theorem weylLawVariation_holds (D : D7) (sc : Scale) (C0 C : ℝ) (hC : 16 ≤ C) : VandermondeVariationBound D sc C0 C := by
+-  intro Δ w hB
+-  have hk := D.R.k_ge
+-  have hkR : (5 : ℝ) ≤ D.R.k := by exact_mod_cast hk
+-  have hlog : 0 ≤ Real.log D.R.k := Real.log_nonneg (by linarith)
+-  have hf : (0 : ℝ) < D.R.f := by
+-    have : 0 < D.R.f := by unfold Ranks.f Ranks.n; positivity
+-    exact_mod_cast this
+-  refine ⟨fun u u' ρ => le_trans (log_vandermonde_variation_le D sc C0 Δ w hB u u' ρ) (by gcongr), fun u u' => ?_⟩
+-  refine le_trans ?_ (mul_le_mul_of_nonneg_right hC hlog)
+-  have hP : ∀ u : D.what₂.Word, 0 < ∏ ρ, dimV (uColR D u ρ) :=
+-    fun u => Finset.prod_pos fun ρ _ => dim_weyl_pos_of_strictAnti _ (column_param_strictAnti D u ρ)
+-  have hlogP : ∀ u : D.what₂.Word, Real.log (∏ ρ, dimV (uColR D u ρ)) =
+-      ∑ ρ, (Real.log (vand (uColR D u ρ)) - Real.log (facProd D.R.k)) := by
+-    intro u
+-    rw [Real.log_prod (fun ρ _ => (dim_weyl_pos_of_strictAnti _ (column_param_strictAnti D u ρ)).ne')]
+-    refine Finset.sum_congr rfl fun ρ _ => ?_
+-    unfold dimV
+-    rw [Real.log_div ?_ (factorial_product_pos _).ne']
+-    exact (Finset.prod_pos fun a _ => Finset.prod_pos fun b hb =>
+-      sub_pos.2 (column_param_strictAnti D u ρ (Finset.mem_filter.1 hb).2)).ne'
+-  have hX : ∀ u : D.what₂.Word, logXuD D u = (1 / ((D.R.f : ℝ) * D.R.k)) *
+-      Real.log (DstarD D / (massI D D.R.k * idxPi D (D.host.g 0) (D.host.g 1)) / ∏ ρ, dimV (uColR D u ρ)) := by
+-    intro u
+-    unfold logXuD logXu duStarU duStarP
+-    rw [div_mul_eq_div_div (DstarD D)]
+-  rw [hX, hX, ← mul_sub]
+-  by_cases ha : DstarD D / (massI D D.R.k * idxPi D (D.host.g 0) (D.host.g 1)) = 0
+-  · rw [ha]; simp; positivity
+-  · rw [Real.log_div ha (hP u).ne', Real.log_div ha (hP u').ne', hlogP, hlogP]
+-    have e : ∀ A : ℝ, A - ∑ ρ, (Real.log (vand (uColR D u ρ)) - Real.log (facProd D.R.k)) -
+-        (A - ∑ ρ, (Real.log (vand (uColR D u' ρ)) - Real.log (facProd D.R.k))) =
+-        ∑ ρ, (Real.log (vand (uColR D u' ρ)) - Real.log (vand (uColR D u ρ))) := by
+-      intro A
+-      simp only [Finset.sum_sub_distrib]
+-      ring
+-    rw [e, abs_mul, abs_of_pos (by positivity)]
+-    have hs : |∑ ρ, (Real.log (vand (uColR D u' ρ)) - Real.log (vand (uColR D u ρ)))| ≤
+-        (D.R.f : ℝ) * (16 * D.R.k * Real.log D.R.k) := by
+-      refine le_trans (Finset.abs_sum_le_sum_abs _ _) ?_
+-      refine le_trans (Finset.sum_le_card_nsmul _ _ _ fun ρ _ => log_vandermonde_variation_le D sc C0 Δ w hB u' u ρ) ?_
+-      rw [Finset.card_univ, D.what₂.card_Tau, nsmul_eq_mul]
+-    calc 1 / ((D.R.f : ℝ) * D.R.k) * |∑ ρ, (Real.log (vand (uColR D u' ρ)) - Real.log (vand (uColR D u ρ)))|
+-        ≤ 1 / ((D.R.f : ℝ) * D.R.k) * ((D.R.f : ℝ) * (16 * D.R.k * Real.log D.R.k)) :=
+-          mul_le_mul_of_nonneg_left hs (by positivity)
+-      _ = 16 * Real.log D.R.k := by field_simp
+-
+-theorem three_le_level_of_section_B (D : D7) (sc : Scale) (C0 Δ : ℝ) (w : ℕ → D.what₂.Tau → ℝ) (hB : DataB D sc C0 Δ w) (i : Fin 2) :
+-    3 ≤ D.host.g i := by
+-  obtain ⟨-, -, -, -, -, h6, -⟩ := hB
+-  have hk := D.R.k_ge
+-  have h1 := (h6 i).1
+-  have hb : (1 : ℝ) ≤ sc.b := by
+-    unfold Scale.b
+-    exact Real.one_le_exp (by unfold Scale.L; exact (Real.rpow_pos_of_pos (lt_trans one_pos sc.one_lt_alt) _).le)
+-  have hk0 : (0 : ℝ) ≤ D.R.k := by positivity
+-  have h2 : (D.R.k : ℝ) ^ 8 ≤ (D.host.g i : ℝ) := le_trans (pow_le_pow_left₀ hk0 (by nlinarith) 8) h1
+-  have h3 : D.R.k ^ 8 ≤ D.host.g i := by exact_mod_cast h2
+-  have e3 : 5 ^ 8 ≤ D.R.k ^ 8 := Nat.pow_le_pow_left hk 8
+-  omega
+-
+-theorem local_indices_pos (D : D7) (hg : ∀ i, 3 ≤ D.host.g i) :
+-    0 < idxPi D (D.host.g 0) (D.host.g 1) ∧ 0 < idxSig D (D.host.g 0) (D.host.g 1) := by
+-  have h := fun i => levelRowCard_holds D i (hg i)
+-  have hp : ∀ i, (0 : ℝ) < (D.host.g i : ℝ) := fun i => by exact_mod_cast (D.host.g_prime i).pos
+-  have c : ∀ i, 0 < idxColLoc (D.host.g i) D.R.k :=
+-    fun i => lt_of_lt_of_le (div_pos (pow_pos (hp i) _) two_pos) (h i).1
+-  have r : ∀ i, 0 < idxRowLoc (D.host.g i) D.R.k D.R.m :=
+-    fun i => lt_of_lt_of_le (div_pos (pow_pos (hp i) _) two_pos) (h i).2.2.1
+-  exact ⟨mul_pos (pow_pos (c 0) _) (pow_pos (c 1) _), mul_pos (pow_pos (r 0) _) (pow_pos (r 1) _)⟩
+-
+-theorem dual_degree_pos (D : D7) (hg : ∀ i, 3 ≤ D.host.g i) : 0 < DstarD D := by
+-  unfold DstarD DstarP volY0
+-  exact mul_pos (mul_pos (D.vol_pos _) (local_indices_pos D hg).2) (Finset.prod_pos fun ρ _ => D.dsig_pos ρ)
+-
+-theorem dual_degree_word_pos (D : D7) (hg : ∀ i, 3 ≤ D.host.g i) (hmk : 0 < massI D D.R.k) (u : D.what₂.Word) :
+-    0 < duStarU D u := by
+-  unfold duStarU duStarP
+-  exact mul_pos (mul_pos hmk (local_indices_pos D hg).1)
+-    (Finset.prod_pos fun ρ _ => dim_weyl_pos_of_strictAnti _ (column_param_strictAnti D u ρ))
+-
+-theorem one_le_scale_length (sc : Scale) : 1 ≤ sc.L := by
+-  show 1 ≤ sc.x ^ sc.eps
+-  exact Real.one_le_rpow sc.one_lt_alt.le sc.eps_pos.le
+-
+-theorem lower_bound_antitone_const (D : D7) (sc : Scale) (C C' : ℝ) (w : ℕ → D.what₂.Tau → ℝ) (h : C ≤ C') :
+-    lowB D sc C' w ≤ lowB D sc C w := by
+-  unfold lowB
+-  have hL := one_le_scale_length sc
+-  have : 0 ≤ sc.L + (D.R.m : ℝ) ^ 2 * sc.L / D.R.k := by positivity
+-  have := mul_le_mul_of_nonneg_right h this
+-  linarith
+-
+-theorem weylLaw_mono_const (D : D7) (sc : Scale) (C0 C C' : ℝ) (h : C ≤ C') (h5 : Conclusion5 D sc C0 C) : Conclusion5 D sc C0 C' := by
+-  intro Δ w hB u
+-  obtain ⟨h1, h2⟩ := h5 Δ w hB u
+-  have hL := one_le_scale_length sc
+-  refine ⟨le_trans (lower_bound_antitone_const D sc C C' w h) h1, le_trans h2 ?_⟩
+-  have : (0 : ℝ) ≤ (D.R.m : ℝ) * sc.L := by positivity
+-  have := mul_le_mul_of_nonneg_right h this
+-  linarith
+-
+-theorem thick_places_corollary_of_any_translate (D : D7) (sc : Scale) (C0 C5 C : ℝ) (h5 : Conclusion5 D sc C0 C5) (hC : C5 + 1 ≤ C) (hC1 : 1 ≤ C)
+-    (hmk : 0 < massI D D.R.k) : TorusPairsWithVariant D sc C0 C := by
+-  intro Δ w hB Γ hΓ u hT1 hT2
+-  have hg := three_le_level_of_section_B D sc C0 Δ w hB
+-  have hD := dual_degree_pos D hg
+-  have hd := dual_degree_word_pos D hg hmk u
+-  have hk := D.R.k_ge
+-  have hf : 1 ≤ D.R.f := by
+-    have : 0 < D.R.f := by unfold Ranks.f Ranks.n; positivity
+-    omega
+-  have hfk : 2 * D.R.f ≤ 2 ^ D.R.k := by
+-    have h1 : D.R.f ≤ D.R.k := D.R.f_le_k
+-    have h2 : D.R.k - 1 < 2 ^ (D.R.k - 1) := Nat.lt_two_pow_self
+-    have h3 : 2 ^ D.R.k = 2 * 2 ^ (D.R.k - 1) := by
+-      rw [← pow_succ']; congr 1; omega
+-    omega
+-  have hfR : (0 : ℝ) < D.R.f := by exact_mod_cast hf
+-  have hkR : (0 : ℝ) < D.R.k := by exact_mod_cast (by omega : 0 < D.R.k)
+-  have hX : Real.exp (logXuD D u) ^ (D.R.f * D.R.k) = DstarD D / duStarU D u := by
+-    rw [← Real.exp_nat_mul]
+-    unfold logXuD logXu
+-    push_cast
+-    rw [show (D.R.f : ℝ) * D.R.k * (1 / ((D.R.f : ℝ) * D.R.k) * Real.log (DstarD D / duStarU D u)) =
+-      Real.log (DstarD D / duStarU D u) by field_simp]
+-    exact Real.exp_log (div_pos hD hd)
+-  obtain ⟨l1, l2⟩ := h5 Δ w hB u
+-  have hT : (2 : ℝ) ≤ ((D.mem u).A.T : ℝ) := by exact_mod_cast (D.mem u).A.T_prime.two_le
+-  obtain ⟨c1, c2, c3, c4⟩ := Formalism.HermitianLattices.GenusMassVolumes.mass_corollary D.R.f D.R.k ((D.mem u).A.T : ℝ) (Real.exp (logXuD D u)) Γ
+-    (DstarD D) (duStarU D u) _ (lowB D sc C5 w) (C5 * D.R.m * sc.L) hf (by omega) hfk hT (Real.exp_pos _) hΓ hD hd hX
+-    hT1 hT2 rfl (by rw [Real.log_exp]; exact l1) (by rw [Real.log_exp]; exact l2)
+-  have hL := one_le_scale_length sc
+-  have hm : (2 : ℝ) ≤ D.R.m := by exact_mod_cast D.R.two_le_m
+-  have hlog2 : Real.log 2 ≤ 1 := by have := Real.log_two_lt_d9; linarith
+-  have hΓ0 : 0 < Γ := by linarith
+-  have eΓ : Γ ^ (-(2 : ℝ)) = (Γ⁻¹) ^ 2 := by
+-    rw [Real.rpow_neg hΓ0.le, Real.rpow_two, inv_pow]
+-  refine ⟨?_, ?_, ?_⟩
+-  · rw [eΓ]
+-    have hY : 0 < DstarD D * (Γ⁻¹) ^ 2 := by positivity
+-    have b1 : 1 / 2 ≤ duStarU D u * (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f / (DstarD D * (Γ⁻¹) ^ 2) := by
+-      rw [le_div_iff₀ hY]; linarith
+-    have b2 : duStarU D u * (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f / (DstarD D * (Γ⁻¹) ^ 2) ≤ Real.exp 1 := by
+-      rw [div_le_iff₀ hY]; exact c2
+-    rw [abs_le]
+-    constructor
+-    · have := Real.log_le_log (by norm_num) b1
+-      rw [one_div, Real.log_inv] at this
+-      linarith
+-    · have := Real.log_le_log (by linarith) b2
+-      rw [Real.log_exp] at this
+-      linarith
+-  · have : (1 : ℝ) ≤ (D.R.m : ℝ) * sc.L := by nlinarith
+-    have h2 : (C5 + 1) * ((D.R.m : ℝ) * sc.L) ≤ C * ((D.R.m : ℝ) * sc.L) :=
+-      mul_le_mul_of_nonneg_right hC (by linarith)
+-    nlinarith
+-  · have := lower_bound_antitone_const D sc C5 C w (by linarith)
+-    linarith
+-
+-theorem weylLawBounds_all (D : D7) (sc : Scale) (C0 C5 : ℝ) (h5 : Conclusion5 D sc C0 C5) (hmk : 0 < massI D D.R.k) :
+-    Conclusion5₂ D sc C0 (max (C5 + 1) 16) :=
+-  ⟨weylLaw_mono_const D sc C0 C5 _ (le_trans (by linarith) (le_max_left _ _)) h5,
+-    thick_places_corollary_of_any_translate D sc C0 C5 _ h5 (le_max_left _ _) (le_trans (by norm_num) (le_max_right _ _)) hmk,
+-    weylLawVariation_holds D sc C0 _ (le_max_right _ _)⟩
+ 
+ end Formalism.MainNotions.StandardLattice
+ 
+@@ -1131,146 +84,16 @@
+     Formalism.HermitianLatticesTheory.IsOrthoLattice (stdForm K M) (stdLat K M) M := by
+   rw [standard_form_eq_telescope_form, standard_lattice_eq_telescope_lattice]; exact Formalism.HermitianLatticesTheory.massTelescope_ortho K M
+ 
+-theorem massI_pos (D : D7) (M : ℕ) : 0 < massI D M := by
+-  let _ := D.host.cmStar
+-  unfold massI
+-  rw [standard_form_eq_telescope_form, standard_lattice_eq_telescope_lattice]
+-  exact Formalism.HermitianLatticesTheory.massTelescope_std_pos D.host.E D.sp.cm.cmUnram M
+-
+ theorem standardMassRatio_of_modelMassRatio (h : SiegelMassRatioModels) : SiegelMassRatioCM := by
+   intro K _ _ _ hK M hM
+   exact h K hK M hM _ _ _ _ _ _ (stdForm_symm K M) (stdForm_symm K (M - 1)) (stdLat_ortho K M) (stdLat_ortho K (M - 1))
+ 
+-theorem massRatio_of_modelMassRatio (D : D7) (h : SiegelMassRatioModels) : MassRatio₂ D := mass_ratio_of_general D (standardMassRatio_of_modelMassRatio h)
+-
+-def DefiniteVolumeEqMass (D : D7) : Prop :=
+-  letI := D.host.cmStar
+-  ∀ W : HSpace D.host.E, W.SigOK → (∀ τ, W.sig τ = (W.rank, 0)) → D.vol W = massI D W.rank
+-
+-theorem massRatio_of_definiteVolume (D : D7) (h2 : Conclusion2 D) (hv : DefiniteVolumeEqMass D) : MassRatio₂ D := by
+-  let _ := D.host.cmStar
+-  intro M hM
+-  let W : HSpace D.host.E := Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral M
+-  have hW : W.SigOK := Formalism.BasicNotions.Examples₂.posSpace_sigOK _ M
+-  obtain ⟨x, -, W', ι, -, -, hW', hs', hr⟩ := h2 W M 0 hW (fun _ => rfl) hM true (by simp; omega)
+-  have hrk : W'.rank = M - 1 := by
+-    have := Formalism.BasicNotions.sig_sum W' hW' D.host.φ₀
+-    rw [hs' D.host.φ₀] at this
+-    simpa using this.symm
+-  have e1 : D.vol W = massI D M := hv W hW (fun _ => rfl)
+-  have e2 : D.vol W' = massI D (M - 1) := by
+-    rw [← hrk]
+-    exact hv W' hW' (fun τ => by rw [hs' τ, hrk]; rfl)
+-  rw [← e1, ← e2]
+-  exact hr
+-
+-theorem volume_eq_mass_of_definite (D : D7) (h2 : Conclusion2 D) (hv : DefiniteVolumeEqMass D) : VolumeEqMass₂ D := by
+-  let _ := D.host.cmStar
+-  have h2b := massRatio_of_definiteVolume D h2 hv
+-  refine ⟨hv, ?_⟩
+-  intro W P Q
+-  induction Q generalizing W with
+-  | zero =>
+-    intro hW hs _
+-    have hrk : W.rank = P := by
+-      have := Formalism.BasicNotions.sig_sum W hW D.host.φ₀
+-      rw [hs D.host.φ₀] at this
+-      simpa using this.symm
+-    rw [Nat.add_zero, ← hrk]
+-    exact hv W hW (fun τ => by rw [hs τ, hrk])
+-  | succ Q ih =>
+-    intro hW hs hP
+-    have hrk : W.rank = P + (Q + 1) := by
+-      have := Formalism.BasicNotions.sig_sum W hW D.host.φ₀
+-      rw [hs D.host.φ₀] at this
+-      simpa using this.symm
+-    obtain ⟨x, -, W', ι, -, -, hW', hs', hr⟩ := h2 W P (Q + 1) hW hs (by omega) false (by simp)
+-    have e2 : D.vol W' = massI D (P + Q) := ih W' hW' (fun τ => by rw [hs' τ]; simp) hP
+-    have hb := h2b (P + (Q + 1)) (by omega)
+-    rw [hrk, ← hb, e2] at hr
+-    have e3 : P + (Q + 1) - 1 = P + Q := by omega
+-    rw [e3] at hr
+-    have hpos := massI_pos D (P + Q)
+-    field_simp at hr
+-    exact hr
+-
+ section Landherr
+ 
+ variable {E : Type} [Field E] [NumberField E] [StarRing E]
+ 
+-def OrthoFam (W : HSpace E) (n : ℕ) : Prop :=
+-  ∃ e : Fin n → W.V, ∀ i j, W.hT (e i) (e j) = if i = j then 1 else 0
+-
+-theorem exists_orthogonal_lattice (W : HSpace E) (h : OrthoFam W W.rank) :
+-    ∃ L : Submodule (𝓞 E) W.V, Formalism.HermitianLatticesTheory.IsOrthoLattice W.hT L W.rank := by
+-  obtain ⟨e, he⟩ := h
+-  have hli : LinearIndependent E e := by
+-    rw [linearIndependent_iff']
+-    intro s c hc j hj
+-    have h1 := congrArg (W.hT (e j)) hc
+-    rw [map_sum, map_zero] at h1
+-    simp only [map_smul, he, smul_eq_mul, mul_ite, mul_one, mul_zero] at h1
+-    rw [Finset.sum_ite_eq s j] at h1
+-    simpa [hj] using h1
+-  refine ⟨Submodule.span (𝓞 E) (Set.range e), e, hli, ?_, rfl, he⟩
+-  exact hli.span_eq_top_of_card_eq_finrank' (by rw [Fintype.card_fin, W.rank_eq])
+-
+ end Landherr
+ 
+-def LandherrSmall (D : D7) : Prop :=
+-  letI := D.host.cmStar
+-  ∀ W : HSpace D.host.E, W.SigOK → (∀ τ, W.sig τ = (W.rank, 0)) → W.rank ≤ 2 → OrthoFam W W.rank
+-
+-theorem landherr_of_small (D : D7) (h2 : Conclusion2 D) (hs : LandherrSmall D) :
+-    letI := D.host.cmStar
+-    ∀ (n : ℕ) (W : HSpace D.host.E), W.rank = n → W.SigOK → (∀ τ, W.sig τ = (W.rank, 0)) → OrthoFam W W.rank := by
+-  let _ := D.host.cmStar
+-  intro n
+-  induction n with
+-  | zero => intro W hn hW hsig; exact hs W hW hsig (by omega)
+-  | succ n ih =>
+-    intro W hn hW hsig
+-    by_cases h3 : W.rank ≤ 2
+-    · exact hs W hW hsig h3
+-    · obtain ⟨x, hx, W', ι, hι, hr, hW', hs', -⟩ := h2 W W.rank 0 hW hsig (by omega) true (by simp; omega)
+-      have hrk : W'.rank = n := by
+-        have := Formalism.BasicNotions.sig_sum W' hW' D.host.φ₀
+-        rw [hs' D.host.φ₀] at this
+-        simp at this
+-        omega
+-      obtain ⟨e', he'⟩ := ih W' hrk hW' (fun τ => by rw [hs' τ, hrk, hn]; simp)
+-      have hrk' : W.rank = W'.rank + 1 := by omega
+-      rw [hrk']
+-      have hxι : ∀ y, W.hT x (ι y) = 0 := by
+-        intro y
+-        have : ι y ∈ LinearMap.ker (W.hT x) := hr ▸ LinearMap.mem_range_self ι y
+-        exact this
+-      have hιx : ∀ y, W.hT (ι y) x = 0 := by
+-        intro y
+-        rw [← W.herm.eq x (ι y), hxι, map_zero]
+-      refine ⟨Fin.cons x (fun i => ι (e' i)), fun i j => ?_⟩
+-      induction i using Fin.cases with
+-      | zero =>
+-        induction j using Fin.cases with
+-        | zero => simpa using hx
+-        | succ j => simp [hxι, (Fin.succ_ne_zero j).symm]
+-      | succ i =>
+-        induction j using Fin.cases with
+-        | zero => simp [hιx, Fin.succ_ne_zero i]
+-        | succ j => simp [hι _ _, he']
+-
+-theorem trivialClass_of_landherr (D : D7) (h2 : Conclusion2 D) (hs : LandherrSmall D) : OrthonormalLatticeRankK D := by
+-  let _ := D.host.cmStar
+-  have hpos := Formalism.BasicNotions.baseSpace_posDef D.R D.host.F D.sp
+-  have h := exists_orthogonal_lattice (D.sp.X 0) (landherr_of_small D h2 hs _ (D.sp.X 0) rfl (D.sp.X_sig 0) hpos)
+-  rw [D.sp.rank0] at h
+-  exact h
+-
+-theorem levelStatement_of_landherrSmall (D : D7) (Lv : LevelData D) (C3 : ℝ)
+-    (hfin : Module.finrank ℚ D.host.E = 2 * D.R.f)
+-    (hp : Conclusion4p D Lv) (hn : ClassNumberFormula₂ D Lv) (hs : LandherrSmall D) : ThetaChernBoundOfLastLine D Lv C3 :=
+-  fun h2 h3 h17 => levelStatement_of_classes D Lv C3 hfin hp hn (trivialClass_of_landherr D h2.1 hs) h2 h3 h17
+-
+ end Formalism.MainNotions.StandardLattice
+ 
+ namespace Formalism.MainNotions.StandardLattice
+@@ -1280,29 +103,9 @@
+ theorem volumeMass_all_of_modelMassRatio (h : SiegelMassRatioModels) : MassVolumeBoundsAll := ⟨standardMassRatio_of_modelMassRatio h, h, cmField_unramified_massIdentity⟩
+ 
+ theorem stmt2All_of_mod (D : D7) (h : SiegelMassRatioModels) : AbsoluteConstantSecondPart D := fun _ => volumeMass_all_of_modelMassRatio h
+-
+-theorem volumeMass_of_definiteVolume (D : D7) (h2 : Conclusion2 D) (hv : DefiniteVolumeEqMass D) : VolumeMass D :=
+-  ⟨h2, volume_eq_mass_of_definite D h2 hv, massRatio_of_definiteVolume D h2 hv, massIdentity_holds D⟩
+ 
+ theorem hostDegree_holds (D : D7) : PrimeSumLogBound D := by
+   exact hostDegree_of_finrank D (finrank_host D)
+-
+-theorem levelStatement_remaining (D : D7) (Lv : LevelData D) (C3 : ℝ) (hp : Conclusion4p D Lv) (hn : ClassNumberFormula₂ D Lv) (hs : LandherrSmall D) :
+-    ThetaChernBoundOfLastLine D Lv C3 := by
+-  exact levelStatement_of_landherrSmall D Lv C3 (finrank_host D) hp hn hs
+-
+-theorem familyLevel_remaining {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C3 : ℝ)
+-    (hp : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev)
+-    (hn : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ClassNumberFormula₂ (Fm.D x i) (Fm.ex x hx i).lev)
+-    (hs : ∀ x (i : Fm.Ix x), LandherrSmall (Fm.D x i)) : LiftNormFamilyStatement Fm C3 :=
+-  fun h2 h3 h17 x hx i =>
+-    levelStatement_remaining (Fm.D x i) (Fm.ex x hx i).lev C3 (hp x hx i) (hn x hx i) (hs x i) (h2 x i) (h3 x i) (h17 x hx i)
+-
+-theorem familyMass_of_definiteVolume {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
+-    (h2 : ∀ x (i : Fm.Ix x), Conclusion2 (Fm.D x i)) (hv : ∀ x (i : Fm.Ix x), DefiniteVolumeEqMass (Fm.D x i)) : DeterminantValueFamily Fm :=
+-  fun _ _ x i => volumeMass_of_definiteVolume (Fm.D x i) (h2 x i) (hv x i)
+-
+-theorem familyMass_all_of_modelRatio {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (h : SiegelMassRatioModels) : FamilyMassTheoremAll Fm := fun _ => volumeMass_all_of_modelMassRatio h
+ 
+ end Formalism.MainNotions.StandardLattice
+ 
+@@ -1508,847 +311,7 @@
+   rw [mass_ortho K hK M V h L ho, mass_ortho K hK (M - 1) V' h' L' ho']
+   exact hA K hK M hM
+ 
+-theorem modelMassRatio_iff_standard : SiegelMassRatioModels ↔ SiegelMassRatioCM := by
+-  exact ⟨standardMassRatio_of_modelMassRatio, modelMassRatio_of_standardMassRatio⟩
+-
+ theorem volumeMass_all_of_standardMassRatio (h : SiegelMassRatioCM) : MassVolumeBoundsAll := by
    exact volumeMass_all_of_modelMassRatio (modelMassRatio_of_standardMassRatio h)
  
  end Formalism.MainNotions.StandardLattice
