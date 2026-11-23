@@ -18,35 +18,19 @@ theorem UpperTheory.V.KT.grampsd :
   have hQ : Continuous Q := by
     simp only [Q, dotProduct, mulVec]
     fun_prop
-  let u : ℕ → ι → ℝ := fun n i => (⌊(n : ℝ) * x i⌋ : ℝ) / n
-  have hu : Filter.Tendsto u Filter.atTop (nhds x) := by
-    rw [tendsto_pi_nhds]
-    intro i
-    have h1 : Filter.Tendsto (fun n : ℕ => x i - 1 / (n : ℝ)) Filter.atTop (nhds (x i)) := by
-      have h2 := (tendsto_const_nhds (x := x i)).sub (tendsto_one_div_atTop_nhds_zero_nat (𝕜 := ℝ))
-      simpa using h2
-    refine tendsto_of_tendsto_of_tendsto_of_le_of_le' h1 tendsto_const_nhds ?_ ?_
-    · filter_upwards [Filter.eventually_gt_atTop 0] with n hn
-      have hn' : (0 : ℝ) < n := by exact_mod_cast hn
-      simp only [u]
-      rw [le_div_iff₀ hn']
-      have := Int.sub_one_lt_floor ((n : ℝ) * x i)
-      have e : (x i - 1 / n) * n = n * x i - 1 := by field_simp
-      rw [e]
-      linarith
-    · filter_upwards [Filter.eventually_gt_atTop 0] with n hn
-      have hn' : (0 : ℝ) < n := by exact_mod_cast hn
-      simp only [u]
-      rw [div_le_iff₀ hn']
-      have := Int.floor_le ((n : ℝ) * x i)
-      linarith
-  have hnn : ∀ n, 0 ≤ Q (u n) := by
-    intro n
-    have h := hc (fun i => ⌊(n : ℝ) * x i⌋)
-    have e : u n = (1 / (n : ℝ)) • (fun i => ((⌊(n : ℝ) * x i⌋ : ℤ) : ℝ)) := by
-      funext i
-      simp [u, div_eq_inv_mul]
-    have h0 : 0 ≤ 1 / (n : ℝ) := by positivity
-    simp only [Q, e, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul]
-    exact mul_nonneg h0 (mul_nonneg h0 h)
-  exact ge_of_tendsto' ((hQ.tendsto x).comp hu) hnn
+  have hdense : DenseRange (fun q : ι → ℚ => fun i => (q i : ℝ)) :=
+    DenseRange.piMap (fun _ => Rat.denseRange_cast)
+  refine hdense.induction_on (p := fun v => 0 ≤ Q v) x (isClosed_le continuous_const hQ) ?_
+  intro q
+  obtain ⟨d, hd⟩ := IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) q
+  choose c h using hd
+  have hcast : (fun i => (c i : ℝ)) = ((d : ℤ) : ℝ) • (fun i => (q i : ℝ)) := by
+    funext i
+    have hi : (c i : ℚ) = (d : ℤ) • q i := h i
+    rw [zsmul_eq_mul] at hi
+    change (c i : ℝ) = ((d : ℤ) : ℝ) * (q i : ℝ)
+    exact_mod_cast hi
+  have hd0 : ((d : ℤ) : ℝ) ≠ 0 := by exact_mod_cast mem_nonZeroDivisors_iff_ne_zero.mp d.2
+  apply nonneg_of_mul_nonneg_right _ (sq_pos_of_ne_zero hd0)
+  simpa only [Q, hcast, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct,
+    smul_eq_mul, sq, mul_assoc] using hc c
