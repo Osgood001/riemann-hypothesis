@@ -1,16 +1,19 @@
 {
   "core": 24,
-  "candidate": "core24-prune03",
-  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core24.tar.zst",
-  "shard_sha256": "1ecbfdbb037781041b1d5959fa1104ffd2d015f6f1ab119c86e01a2fa5cb1ad6",
+  "candidate": "core24-mergeda613895794",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 14175,
-  "local_normalized_tokens": 28964690,
+  "submitted_files": 12996,
+  "local_normalized_tokens": 26697100,
   "published_baseline_tokens": 30828159,
-  "proof_tree_sha256": "96dc5d66d1f6bc0ecee8ce3ee86a50c157bcde64023dc5136ee2ce3b659f7de4",
+  "proof_tree_sha256": "d1a0daa6ebd6c7ed556aba09769ce7eeb1f0ce15288a36f406ae10703604c70a",
   "modified_files": {
+    "Development/AbelianVarietyTheory/Definitions/Divisors/NormNegCmConstantEqAtAllEmbeddings.lean": {
+      "before": "d07c8d791d45bd5f9a8b4e9fd99192dd1a0b8fc61c0471e06c98fc5f96da98c1",
+      "after": "29d6c79b09f88fd7012a298f44ea5ae32724073287ad282ecef4bb8a298cdc9f"
+    },
     "Development/WeilBound/CoreStatements/TemperedRepresentationTheory/ArakelovCycleHeights/CycleHeightFormulas/CycleHeightsDirect.lean": {
       "before": "10fd7d280e842a721cd2d76a92d23ad6b3edead0a5bad11a5d6f2b5c04df9942",
       "after": "32e6ec5d0567f6689343d44985822854b2e3dc840feb097b6d0c8f3bc9a3a3da"
@@ -18,17 +21,44 @@
     "Development/WeilBound/CoreStatements/TemperedRepresentationTheory/ArakelovCycleHeights/CycleHeightFormulas/TopSelfTower.lean": {
       "before": "86455794c33aaf612eea23b4b98f8d7950e3a07fb1252e8109adf2c1be3c7ebd",
       "after": "4e9c145b0603e39e4102c0daa66f4b8255667bcbee5e84b5ce2a416593f652cc"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/HilbertSamuel/AssemblyBase.lean": {
+      "before": "97995622b7e52f0b9f091eb6db6aa468833c6dcb2e2fd69c26f7e33980de4681",
+      "after": "dd9e82b576f800ea6980dac3767be169e3d8e68624637f9de6699d6885ceea55"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/Intersections/Assembly.lean": {
+      "before": "89d905c08427ac43972912e48b22d38a8595814c63ee8b24a32a8fa6661e93ac",
+      "after": "2bd1d67e4f4ab9885d39c0860dfe425bfe80fbaca49dc66a027b772977b1f75b"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/LocalFiniteness/CentredDiscCoverCurveHolds.lean": {
+      "before": "508883a2cf3b52e8caefa3fa997503d8fe6e0d38c3b8ce415da7fd87f9669244",
+      "after": "aebd1f4cfcdf2366ae6eb67827af269436534889f58a77c59424454301fd9fba"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/LocalFiniteness/HilbertSamuelGrowthOffHypersurfacePolynomial.lean": {
+      "before": "e5b129eaf6b48a95d372e3d109298df1c9277c25613f3492a3ec042207f6c6cd",
+      "after": "ca4bcadcbcbf3f27a2427d741bca362db6e833906d13450d65dd61efd7f8b78f"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/LocalFiniteness/NumbersDVRC3ResidualContractionComponent.lean": {
+      "before": "d7b99d2aed4aee3b46f86be3a469c91a5d1b50bce6f1da479bbc2168b1a71588",
+      "after": "8d1832b9f57deac774e2fa4fdb1d838b622c97e0f028a7b9cd6b0ddb38440a9e"
     }
+  },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "new_contribution": "The Fortytwo DeepSeek runs supply the inherited recipient proof. Codex identified the shared cover dependency, wrote this additional source reduction, and checked the modified source and retained callers in the recipient environment. Original formalization by Levent Alpöge. Fortytwo checkpoints combined on the exact reachable source: GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.HilbertSamuelGrowthOffHypersurfacePolynomial (phase3-core24-compile-r03-resume1023-cont012), GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase (phase3-core24-compile-r03-resume1023-cont005), GroundTheory.HeightsAndTheta.Heights.Intersections.Assembly (phase3-core24-compile-r03-resume1023-cont002). Full independent replay is required for the combined source."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T10:34:09.535940+00:00",
+    "completed_utc": "2026-11-23T18:45:36.985958+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
     ]
   },
-  "hosted_score": null
+  "hosted_score": null,
+  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core24.tar.zst",
+  "shard_sha256": "1ecbfdbb037781041b1d5959fa1104ffd2d015f6f1ab119c86e01a2fa5cb1ad6"
 }
