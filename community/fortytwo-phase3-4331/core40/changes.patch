@@ -454,10 +454,21 @@
  
  theorem posIdele_exp (u : ℝ) :
      posIdele (K := E) (Real.exp u) (Real.exp_pos u) = infId E (expU fun _ : InfinitePlace E => (u : ℂ)) := by
-@@ -51,107 +48,4 @@
-   rw [coe_diagUnits]
-   rfl
+@@ -40,118 +37,4 @@
+     rw [sub_zero, add_zero]
+     exact IsDedekindDomain.FiniteAdeleRing.ext _ fun v => by rw [posIdele_finite]; rfl
  
+-omit [IsTotallyComplex E] in
+-theorem posIdele_congr {x y : ℝ} (hx : 0 < x) (hy : 0 < y) (h : x = y) :
+-    posIdele (K := E) x hx = posIdele y hy := by subst h; rfl
+-
+-theorem diagUnits_posIdele (a : ℕ) {x : ℝ} (hx : 0 < x) :
+-    diagUnits a (fun _ : Fin a => posIdele (K := E) x hx) = splitCentre E a (Real.log x) := by
+-  rw [splitCentre_eq_scalar, ← posIdele_exp, posIdele_congr hx (Real.exp_pos _) (Real.exp_log hx).symm]
+-  refine Units.ext ?_
+-  rw [coe_diagUnits]
+-  rfl
+-
 -omit [IsTotallyComplex E] in
 -
 -theorem continuous_posIdele_pos :
@@ -636,16 +647,27 @@
  
  noncomputable section
  
-@@ -20,27 +32,22 @@
+@@ -15,32 +27,29 @@
+ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
+ 
+ theorem tor_const (N : ℕ) (t : ℝ) : An.tor E (fun _ : Fin N => t) = splitCentre E N t :=
+-  (GlobalTheory.CuspBoundSiegel.diagUnits_posIdele N (Real.exp_pos t)).trans (by rw [Real.log_exp])
++  by
++    rw [GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_eq_scalar]
++    simp only [An.tor, GlobalTheory.CuspBoundSiegel.posIdele_exp]
++    apply Units.ext
++    rw [coe_diagUnits]
++    rfl
+ 
  theorem aT_eq (N r : ℕ) (t : ℝ) : aT E N r t = An.aR E N r t := by
-   have e : An.aR E N r t = diagUnits N (fun i : Fin N =>
-       infId E (expU fun _ : InfinitePlace E => (((if (i : ℕ) < r then t else 0 : ℝ)) : ℂ))) := by
+-  have e : An.aR E N r t = diagUnits N (fun i : Fin N =>
+-      infId E (expU fun _ : InfinitePlace E => (((if (i : ℕ) < r then t else 0 : ℝ)) : ℂ))) := by
 -    show diagUnits N (fun i : Fin N => posIdele (K := E) (Real.exp (if (i : ℕ) < r then t else 0)) (Real.exp_pos _)) = _
 -    congr 1
 -    funext i
 -    exact GlobalTheory.CuspBoundSiegel.posIdele_exp _
-+    simp only [An.aR, An.tor, GlobalTheory.CuspBoundSiegel.posIdele_exp]
-   rw [e]
+-  rw [e]
++  simp only [An.aR, An.tor, GlobalTheory.CuspBoundSiegel.posIdele_exp]
    refine Units.ext (Matrix.ext fun i j => ?_)
    rw [coe_diagUnits, Matrix.diagonal_apply]
    change (1 : Matrix (Fin N) (Fin N) (Ad E)) i j - sInf E ((1 : Matrix (Fin N) (Fin N) (Cinf E)) i j) +
@@ -671,3 +693,18 @@
  
  theorem lat_eq (N : ℕ) : latticeGL E N = An.lat E N := by
    unfold latticeGL An.lat
+@@ -94,11 +103,9 @@
+           ∫ x in unipFundamentalDomain E N r, f x ∂unipMeasure E N r := by
+   have h : m = MeasurableSpace.pi := hb.measurable_eq.trans (pi_eq_borel E N r).symm
+   subst h
+-  have hpos := vol_pos E N r
+-  set a := unipMeasure E N r (unipFundamentalDomain E N r) with ha
+-  have h0 : a ≠ 0 := fun h => by simp [Measure.real, ← ha, h] at hpos
+-  have htop : a ≠ ⊤ := fun h => by simp [Measure.real, ← ha, h] at hpos
+-  refine ⟨a⁻¹ • unipMeasure E N r, Measure.IsAddHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 htop) (ENNReal.inv_ne_top.2 h0),
++  set a := unipMeasure E N r (unipFundamentalDomain E N r)
++  obtain ⟨h0, htop⟩ := ENNReal.toReal_pos_iff.mp (vol_pos E N r)
++  refine ⟨a⁻¹ • unipMeasure E N r, Measure.IsAddHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 htop.ne) (ENNReal.inv_ne_top.2 h0.ne'), 
+     isAddFundamentalDomain_unipFundamentalDomain.mono Measure.smul_absolutelyContinuous, fun f => ?_⟩
+   rw [Measure.restrict_smul, integral_smul_measure, ENNReal.toReal_inv, Complex.real_smul, Complex.ofReal_inv]
+   rfl

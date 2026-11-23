@@ -1,14 +1,14 @@
 {
   "core": 40,
-  "candidate": "core40-fastdiag6245b69c5523",
+  "candidate": "core40-fasttorus078afe27282d",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 6,
-  "local_normalized_tokens": 2553,
+  "local_normalized_tokens": 2327,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "e5c1762d605d1e67005c3340c39085a9c9f4f4ed2f11d5c4e401f1a370d5ee84",
+  "proof_tree_sha256": "7e08a728fb470a3cc8a850b3c0d08af344b22c6e4b9c9c202e1412604d5f6567",
   "modified_files": {
     "Development/AbelianVarietyTheory/Definitions/AutomorphicMembership/T2SpaceAdelicGeneralLinearGroupNumberField.lean": {
       "before": "4da9f6c04893f65c5e1a5c60e8ae0b88d2348049a6bdd8ef61ea5e464ed3b24b",
@@ -16,7 +16,7 @@
     },
     "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/IdeleModuleDetDiagUnitsPosIdele.lean": {
       "before": "2c551e7b4fc802ffde2e80dde7936d923d72b38de9cdd0d12b492abb66e909af",
-      "after": "36d2b0ea6ff56263a0722e0ae6b17a367b150cdb03c899287e27a98a9e7351bd"
+      "after": "5c4ce3c95969e61297f7c6fc37b85d4bd2bad21ce7cd5a25349b4198919ed562"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/IsAddHaarMeasureUnipMeasure.lean": {
       "before": "ecffeaecffd9c58a4779a9ab984f4b415a73a476ae22c27666a2e07102af030d",
@@ -28,21 +28,18 @@
     },
     "Development/WeilBound/RepresentationTheoryGL/ResidualSpectrum/ExponentialNegativity/NormalisedExistence/ExistsNormed.lean": {
       "before": "4a3cc553822786714992fcd3bea4513907acdb443f6f6960ea225db8b5fb6485",
-      "after": "6245b69c55234c12c71ffa1aadb8ba3e99b7573546aabc4618763451b805e8c7"
+      "after": "95cdb52b43ab387bf5d7317f480a091316f9247d5bb8515107eeb57c84b47c44"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo DeepSeek derived the diagonal proof term for aT_eq in its Core 40 native session. Codex placed the original term into the six-file residual-spectrum dictionary and independently compiled all six files and the frozen challenge. Original formalization by Levent Alpöge.",
-    "unreachable_parent_edits": [
-      "Formalism.SharpRestriction.Divisibility.LiftErrorLocal"
-    ]
+    "new_contribution": "Fortytwo DeepSeek supplied the diagonal positive-idèle simplification. Codex shortened the six-file residual-spectrum dictionary and independently rechecked the changed source and the frozen target. Original formalization by Levent Alpöge."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T20:26:06.172404+00:00",
+    "completed_utc": "2026-11-23T21:19:48.531549+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
