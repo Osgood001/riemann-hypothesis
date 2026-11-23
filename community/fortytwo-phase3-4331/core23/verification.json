@@ -1,19 +1,24 @@
 {
   "core": 23,
-  "candidate": "core23-prune03",
+  "candidate": "core23-covnorm29d6c7",
   "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core23.tar.zst",
   "shard_sha256": "b6864c35ffba3a2846c2f4bf63d4bb02af215054bbda77ac8feb43ce4ca8ed98",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 11827,
-  "local_normalized_tokens": 25444425,
+  "submitted_files": 10958,
+  "local_normalized_tokens": 23408674,
   "published_baseline_tokens": 47617266,
-  "proof_tree_sha256": "99d8db4c1a738601104b630cceac8e6d7e04d384e3e81ce726df18fe8aa5fb74",
+  "proof_tree_sha256": "db1e317def1878e6f64cc73fa0149e2a2639dbe0acd052005d6bad688c9efca7",
   "modified_files": {
     "Development/AbelianVarietyTheory/Proofs/DivisorProofs/ArithHilbertSamuelNefOfAmpleStatement.lean": {
       "before": "4e9de8d82588f03f9305384cbbbb43c53af781af59540c75fe22665d1ca1b7ed",
       "after": "5856dddee5250fa4d065419280918d1f1c1a072c5bd3890b723f7655f1c1122e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/ExistsGeneratedTwistSectionNonvanishingFiniteSet.lean": {
+      "before": "36327f1bf2e666dee2039088038a68facbd1dc08b92fafde8170c51abca58c3c",
+      "after": "c6e4ce87b12397b6344fa0ad3c1ed4a13679946350c3a86568c50b8fad1fd88b"
     },
     "Development/AbelianVarietyTheory/Proofs/DivisorProofs/InducedModelDominantCurveRestriction.lean": {
       "before": "de29edd9b6a578d685de58fb55ef331934f7e01e89442fdc49e66a9df9fa0c39",
@@ -22,12 +27,22 @@
     "Development/AbelianVarietyTheory/Proofs/DivisorProofs/IsometricShiftOfIsometric.lean": {
       "before": "a5e07a5b051b5a7d4a5d58d59dff96bad9fb2c262d4ce410ac6ca3c56d11c5cc",
       "after": "e493c4d18db66066aa1b57ba79fefac0749b97366382fe5ad255b212033ab577"
+    },
+    "Development/AbelianVarietyTheory/Definitions/Divisors/NormNegCmConstantEqAtAllEmbeddings.lean": {
+      "before": "d07c8d791d45bd5f9a8b4e9fd99192dd1a0b8fc61c0471e06c98fc5f96da98c1",
+      "after": "29d6c79b09f88fd7012a298f44ea5ae32724073287ad282ecef4bb8a298cdc9f"
     }
+  },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "public_method_context": "Keith Adler rh-trim wrapper/dependency pruning analysis supplied as unverified method context; no proof source copied.",
+    "new_contribution": "The Fortytwo DeepSeek runs supply the inherited recipient proof. Codex identified the shared cover dependency, wrote this additional source reduction, and checked the modified source and retained callers in the recipient environment. Original formalization by Levent Alpöge."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T11:08:19.020583+00:00",
+    "completed_utc": "2026-11-23T17:42:04.490895+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
