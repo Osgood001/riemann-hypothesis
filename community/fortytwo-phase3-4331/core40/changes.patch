@@ -636,3 +636,15 @@
  
  noncomputable section
  
+@@ -20,10 +32,7 @@
+ theorem aT_eq (N r : ℕ) (t : ℝ) : aT E N r t = An.aR E N r t := by
+   have e : An.aR E N r t = diagUnits N (fun i : Fin N =>
+       infId E (expU fun _ : InfinitePlace E => (((if (i : ℕ) < r then t else 0 : ℝ)) : ℂ))) := by
+-    show diagUnits N (fun i : Fin N => posIdele (K := E) (Real.exp (if (i : ℕ) < r then t else 0)) (Real.exp_pos _)) = _
+-    congr 1
+-    funext i
+-    exact GlobalTheory.CuspBoundSiegel.posIdele_exp _
++    simp only [An.aR, An.tor, GlobalTheory.CuspBoundSiegel.posIdele_exp]
+   rw [e]
+   refine Units.ext (Matrix.ext fun i j => ?_)
+   rw [coe_diagUnits, Matrix.diagonal_apply]

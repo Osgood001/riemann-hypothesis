@@ -4,8 +4,6 @@ These source changes reduce the size of Levent Alpöge’s Phase 3 proofs. Forty
 
 Levent Alpöge authored the original Core 37 formalization. Codex reduced the Bernstein–Zelevinsky finite-length proof by narrowing dependencies in two modules. Fortytwo conducted the preceding search and verified the parent proof. Its edit to ExampleSatisfiesConditionsAtFive falls outside this 74-file import closure. The independent local Comparator and Lean default kernel accepted this source-only study.
 
-Levent Alpöge authored the original Core 40 proof. Codex extracted the five source modules and verified the resulting six-file reduction. Fortytwo contributed the earlier search and verified parent proof. Its LiftErrorLocal edit falls outside this final import closure. The six-file result has a local Comparator and kernel verification.
-
 | Core | Editable Lean files | Baseline tokens | Verified local tokens | Tokens saved |
 | ---: | ---: | ---: | ---: | ---: |
 | 14 | 1,121 | 3,467,872 | 2,150,099 | 1,317,773 |
@@ -22,7 +20,7 @@ Levent Alpöge authored the original Core 40 proof. Codex extracted the five sou
 | 33 | 42 | 826,075 | 74,366 | 751,709 |
 | 34 | 188 | 400,204 | 239,570 | 160,634 |
 | 37 | 74 | 1,852,115 | 256,560 | 1,595,555 |
-| 40 | 6 | 1,031,987 | 2,677 | 1,029,310 |
+| 40 | 6 | 1,031,987 | 2,639 | 1,029,348 |
 
 The independent Comparator and the Lean 4.33.1 default kernel accepted each exact target with `propext`, `Quot.sound` and `Classical.choice`. Each directory records the local replay, complete source-tree digest, Mathlib revision and the checksums of its original sources. The local check derived the protected boundary from the organizer’s published frozen roots. The table reports locally measured token counts.
 

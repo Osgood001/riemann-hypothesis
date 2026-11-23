@@ -1,14 +1,14 @@
 {
   "core": 40,
-  "candidate": "core40-study4c33ca8a7e",
+  "candidate": "core40-fastdiag42f66c6dd6e1",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 6,
-  "local_normalized_tokens": 2677,
+  "local_normalized_tokens": 2639,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "11bc55e597744011d8244d13e6c110e8aea23f65f6a1768d2f1c77b3f89bf375",
+  "proof_tree_sha256": "9f4083caacd9e86c1f492afa31afb0e7685ba14d2adad19ab5b715b4b623e435",
   "modified_files": {
     "Development/AbelianVarietyTheory/Definitions/AutomorphicMembership/T2SpaceAdelicGeneralLinearGroupNumberField.lean": {
       "before": "4da9f6c04893f65c5e1a5c60e8ae0b88d2348049a6bdd8ef61ea5e464ed3b24b",
@@ -28,26 +28,26 @@
     },
     "Development/WeilBound/RepresentationTheoryGL/ResidualSpectrum/ExponentialNegativity/NormalisedExistence/ExistsNormed.lean": {
       "before": "4a3cc553822786714992fcd3bea4513907acdb443f6f6960ea225db8b5fb6485",
-      "after": "c35e867e4a009b4b508f19799aca64ecee53acf15c23666721b51ffe67d9f7a5"
+      "after": "42f66c6dd6e17e74165c7d5b5360b851d72d20920bc1104a44a5bc919bfd75b5"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
-    "proof_edits": "Codex",
-    "prior_search": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "verified_parent": "core40-fast427710ac73",
-    "public_source_note": "Levent Alpöge authored the original Core 40 proof. Codex extracted the five source modules and verified the resulting six-file reduction. Fortytwo contributed the earlier search and verified parent proof. Its LiftErrorLocal edit falls outside this final import closure. The six-file result has a local Comparator and kernel verification."
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "new_contribution": "Fortytwo DeepSeek derived the diagonal proof term for aT_eq in its Core 40 native session. Codex placed the original term into the six-file residual-spectrum dictionary and independently compiled all six files and the frozen challenge. Original formalization by Levent Alpöge.",
+    "unreachable_parent_edits": [
+      "Formalism.SharpRestriction.Divisibility.LiftErrorLocal"
+    ]
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T19:04:52.393456+00:00",
+    "completed_utc": "2026-11-23T20:21:42.270924+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
-    ],
-    "target_declaration": "AlpogeRHCore40.residualSpectrumConstantTermDict"
+    ]
   },
   "hosted_score": null,
   "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
