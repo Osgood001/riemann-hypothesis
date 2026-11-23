@@ -1,14 +1,14 @@
 {
   "core": 29,
-  "candidate": "core29-fastslice3e43c836cf",
+  "candidate": "core29-fastsliceed5390d714",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 82,
-  "local_normalized_tokens": 178722,
+  "submitted_files": 81,
+  "local_normalized_tokens": 171680,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "085442dcbec162c790e40e705309ec214697ad49cab7c02200229310bd8d4d1b",
+  "proof_tree_sha256": "0068874e8248151b15a7c81804603adbf4cddc3f993254673186bc18ee390dba",
   "modified_files": {
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean": {
       "before": "38bea0a8be8b648482565fd3ec40ccfe299c495a45e06a005176683d2d7e8309",
@@ -45,6 +45,10 @@
     "GroundTheory/LocalFields/PadicLogSeries.lean": {
       "before": "c35523c4c37e5565c294b36e182508790f9669a66d067c3be2f66382a7bf8e77",
       "after": "32ed54bafd5ec60b73f75aa4cc56e616578f66602261b4f112b548e823f99c48"
+    },
+    "GroundTheory/LocalFields/SeparableClosureValuation.lean": {
+      "before": "21bccb6888afe13860911908a20854a07a439962f15efaf3e960ba6b289c922b",
+      "after": "4f2f22efc039b243405341337e1d3567dd56ceeae37d5bd6f47cc1485b7b856c"
     }
   },
   "attribution": {
@@ -55,7 +59,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T21:40:04.049526+00:00",
+    "completed_utc": "2026-11-23T22:00:51.797033+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -146,7 +150,6 @@
     "GroundTheory/LocalFields/LocalFourierHaar.lean": "be4f997956eda9d125972f2d779ebc375321eaaa699f7bd9bae4395c634b54a7",
     "GroundTheory/LocalFields/LocalFourierSchwartz.lean": "1b9f64e2ec5b1de5f776d3089264cead8366edafdd3fd66066ffa439308ee7a3",
     "GroundTheory/LocalFields/PadicLogSeries.lean": "c35523c4c37e5565c294b36e182508790f9669a66d067c3be2f66382a7bf8e77",
-    "GroundTheory/LocalFields/SeparableClosure.lean": "32fa2620e7e73aeff22b301440e938db8e5ad49cda9c529c277f0b762f0efea7",
     "GroundTheory/LocalFields/SeparableClosureValuation.lean": "21bccb6888afe13860911908a20854a07a439962f15efaf3e960ba6b289c922b"
   }
 }
