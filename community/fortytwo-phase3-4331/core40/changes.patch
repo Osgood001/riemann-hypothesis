@@ -1,0 +1,10 @@
+--- a/Formalism/SharpRestriction/Divisibility/LiftErrorLocal.lean
++++ b/Formalism/SharpRestriction/Divisibility/LiftErrorLocal.lean
+@@ -9,7 +9,6 @@
+ import Formalism.SharpRestriction.Divisibility.ModuliIntegralCharts
+ import Formalism.SharpRestriction.LevelLetterCocycles.IntegralHeckeForms
+ import Formalism.SharpRestriction.LevelLetterCocycles.TwGood
+-import Formalism.SharpRestriction.GrowthBounds.WeilJacquetShalikaLaw
+ import Formalism.SharpRestriction.LevelLetterCocycles.LocsCoverTw
+ 
+ noncomputable section
