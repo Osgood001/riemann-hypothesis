@@ -1,14 +1,14 @@
 {
   "core": 29,
-  "candidate": "core29-fastslice39a1151575",
+  "candidate": "core29-fastslice3e43c836cf",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 84,
-  "local_normalized_tokens": 185074,
+  "submitted_files": 82,
+  "local_normalized_tokens": 178722,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "373b72b5c15d19440214cc9994ba33c2bdd605adc477e583e7460de4a0da99ef",
+  "proof_tree_sha256": "085442dcbec162c790e40e705309ec214697ad49cab7c02200229310bd8d4d1b",
   "modified_files": {
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean": {
       "before": "38bea0a8be8b648482565fd3ec40ccfe299c495a45e06a005176683d2d7e8309",
@@ -41,17 +41,21 @@
     "GroundTheory/GlobalFields/TateThesis/RootNumberLocalPlace.lean": {
       "before": "3f1d4dd3030ba4c372790ce3f563c24e3eb7796339d49b5aca148dcdb72a03f3",
       "after": "91088f0c2ff43e0ad956e90565ab3d76b374a595c1959b1f849b23f77e056bbd"
+    },
+    "GroundTheory/LocalFields/PadicLogSeries.lean": {
+      "before": "c35523c4c37e5565c294b36e182508790f9669a66d067c3be2f66382a7bf8e77",
+      "after": "32ed54bafd5ec60b73f75aa4cc56e616578f66602261b4f112b548e823f99c48"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo native Lean proof simplification in GroundTheory.AutomorphicForms.GL2.FiniteIdeleDecomp, from phase3-core25-r02-resume1023-cont007, adapted to the published Core 29 target. Original proof by Levent Alpöge. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle."
+    "new_contribution": "Fortytwo native Lean proof simplification in GroundTheory.AutomorphicForms.GL2.FiniteIdeleDecomp, from phase3-core25-r02-resume1023-cont007, adapted to the published Core 29 target. Original proof by Levent Alpöge. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T20:53:39.877681+00:00",
+    "completed_utc": "2026-11-23T21:40:04.049526+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -137,8 +141,6 @@
     "GroundTheory/GlobalFields/TateThesis/TraceFourier.lean": "462bc65e1fd64c9854721c7f0c67e7bfa9503b928a12e70935309755b00b4fb4",
     "GroundTheory/GlobalFields/TateThesis/TraceLatticeEuclidean.lean": "85f2cc8f1b3a80cef0e8052e3867b2c5ec161e6193113f8989cd9b3c79210ed0",
     "GroundTheory/GlobalFields/TateThesis/TraceLatticePoisson.lean": "aeaa1ccfb65b2be6ba81922431d51f4fa8501cd7754be9c70967d446088a0245",
-    "GroundTheory/LocalFields/Examples.lean": "1958bba6c58a5144d67f9b04a2236780ff721cbe50daae64f0457bb7de3bade7",
-    "GroundTheory/LocalFields/ExamplesCharZero.lean": "afaf9fdbb2d1897f8dd6febd3352b8c90756609911f2fa05ea6a858855bfebd0",
     "GroundTheory/LocalFields/LocalFourier.lean": "2a1daadfdca18da8b6c0bd4be502c7ec936b71e820c4c808e29107ea6570db65",
     "GroundTheory/LocalFields/LocalFourierChar.lean": "99caf1b53ebcd1f4c4222d4f4d44eaa9072a644a756e8aadfc2585d965da819c",
     "GroundTheory/LocalFields/LocalFourierHaar.lean": "be4f997956eda9d125972f2d779ebc375321eaaa699f7bd9bae4395c634b54a7",
