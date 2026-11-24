@@ -1,0 +1,3141 @@
+--- a/Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/PredMulSumPadicValNatFactorialAddCardLe.lean
++++ b/Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/PredMulSumPadicValNatFactorialAddCardLe.lean
+@@ -10,86 +10,23 @@
+ 
+ def opWord (D : Λ → B) (w : List Λ) : B := (w.map D).prod
+ 
+-@[simp] theorem opWord_nil (D : Λ → B) : opWord D [] = 1 := rfl
+ 
+ @[simp] theorem opWord_cons (D : Λ → B) (l : Λ) (w : List Λ) :
+     opWord D (l :: w) = D l * opWord D w := by simp [opWord]
+ 
+-theorem opWord_append (D : Λ → B) (w w' : List Λ) :
+-    opWord D (w ++ w') = opWord D w * opWord D w' := by simp [opWord]
+ 
+-theorem opWord_perm {D : Λ → B} (hD : ∀ l l', Commute (D l) (D l')) {w w' : List Λ}
+-    (h : w.Perm w') : opWord D w = opWord D w' := by
+-  induction h with
+-  | nil => rfl
+-  | cons l _ ih => simp [ih]
+-  | swap l l' w => simp only [opWord_cons, ← mul_assoc, (hD l l').eq]
+-  | trans _ _ h₁ h₂ => exact h₁.trans h₂
+ 
+-def IsOrderingRule (ord : (Λ →₀ ℕ) → List Λ) : Prop :=
+-  ∀ α, (ord α : Multiset Λ) = Finsupp.toMultiset α
+ 
+-theorem isOrderingRule_toList :
+-    IsOrderingRule (fun α : Λ →₀ ℕ => (Finsupp.toMultiset α).toList) :=
+-  fun _ => Multiset.coe_toList _
+ 
+-theorem IsOrderingRule.length_eq {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord)
+-    (α : Λ →₀ ℕ) : (ord α).length = degree α := by
+-  rw [← Multiset.coe_card, h α, Finsupp.card_toMultiset]
+-  rfl
+ 
+-noncomputable def opPoly (D : Λ → B) (ord : (Λ →₀ ℕ) → List Λ) : MvPolynomial Λ R →ₗ[R] B :=
+-  (MvPolynomial.basisMonomials Λ R).constr R (fun α => opWord D (ord α))
+ 
+-theorem opPoly_monomial (D : Λ → B) (ord : (Λ →₀ ℕ) → List Λ) (α : Λ →₀ ℕ) (c : R) :
+-    opPoly D ord (MvPolynomial.monomial α c) = c • opWord D (ord α) := by
+-  have h : MvPolynomial.monomial α c = c • MvPolynomial.basisMonomials Λ R α := by
+-    simp [MvPolynomial.smul_monomial]
+-  rw [h, map_smul, opPoly, Module.Basis.constr_basis]
+ 
+-theorem opPoly_mul_of_commute {D : Λ → B} (hD : ∀ l l', Commute (D l) (D l'))
+-    {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord) (P Q : MvPolynomial Λ R) :
+-    opPoly D ord (P * Q) = opPoly D ord P * opPoly D ord Q := by
+-  induction P using MvPolynomial.induction_on' with
+-  | add p q hp hq => simp only [add_mul, map_add, hp, hq]
+-  | monomial α a =>
+-    induction Q using MvPolynomial.induction_on' with
+-    | add p q hp hq => simp only [mul_add, map_add, hp, hq]
+-    | monomial β b =>
+-      have hp : (ord (α + β)).Perm (ord α ++ ord β) := by
+-        rw [← Multiset.coe_eq_coe, ← Multiset.coe_add, h, h, h, map_add]
+-      rw [MvPolynomial.monomial_mul, opPoly_monomial, opPoly_monomial, opPoly_monomial,
+-        opWord_perm hD hp, opWord_append, smul_mul_smul_comm]
+ 
+-theorem IsOrderingRule.ord_zero {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord) :
+-    ord 0 = [] := by
+-  have := h 0
+-  simpa using this
+ 
+-theorem IsOrderingRule.ord_single {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord) (l : Λ) :
+-    ord (single l 1) = [l] := by
+-  have := h (single l 1)
+-  rw [Finsupp.toMultiset_single, one_smul] at this
+-  exact List.perm_singleton.mp (Multiset.coe_eq_coe.mp this)
+ 
+-theorem opPoly_C (D : Λ → B) {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord) (c : R) :
+-    opPoly D ord (MvPolynomial.C c) = algebraMap R B c := by
+-  rw [MvPolynomial.C_apply, opPoly_monomial, h.ord_zero, opWord_nil, Algebra.algebraMap_eq_smul_one]
+ 
+-theorem opPoly_X (D : Λ → B) {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord) (l : Λ) :
+-    opPoly D ord (MvPolynomial.X l : MvPolynomial Λ R) = D l := by
+-  rw [MvPolynomial.X, opPoly_monomial, h.ord_single]
+-  simp
+ 
+-noncomputable def commEval (D : Λ → B) (hD : ∀ l l', Commute (D l) (D l')) :
+-    MvPolynomial Λ R →ₐ[R] B :=
+-  AlgHom.ofLinearMap (opPoly D fun α => (Finsupp.toMultiset α).toList)
+-    (by rw [← MvPolynomial.C_1, opPoly_C D isOrderingRule_toList, map_one])
+-    (opPoly_mul_of_commute hD isOrderingRule_toList)
+ 
+-@[simp] theorem commEval_X (D : Λ → B) (hD : ∀ l l', Commute (D l) (D l')) (l : Λ) :
+-    commEval D hD (MvPolynomial.X l : MvPolynomial Λ R) = D l :=
+-  opPoly_X D isOrderingRule_toList l
+ 
+ end Words
+ 
+@@ -106,49 +43,15 @@
+ 
+ variable {R σ Λ : Type*} [CommRing R]
+ 
+-noncomputable def constDeriv (v : σ → R) : Derivation R (MvPolynomial σ R) (MvPolynomial σ R) :=
+-  mkDerivation R fun i => C (v i)
+ 
+-@[simp] theorem constDeriv_X (v : σ → R) (i : σ) : constDeriv v (X i) = C (v i) :=
+-  mkDerivation_X _ _ _
+ 
+-theorem constDeriv_single [DecidableEq σ] (i : σ) :
+-    constDeriv (Pi.single i (1 : R)) = pderiv i := by
+-  refine derivation_ext fun j => ?_
+-  rw [constDeriv_X, pderiv_X]
+-  by_cases h : j = i
+-  · subst h; simp
+-  · simp [h]
+ 
+-theorem constDeriv_commute (v v' : σ → R) :
+-    Commute ((constDeriv v).toLinearMap : Module.End R (MvPolynomial σ R))
+-      (constDeriv v').toLinearMap := by
+-  have h : ⁅constDeriv v, constDeriv v'⁆ = 0 :=
+-    derivation_ext fun j => by simp [Derivation.commutator_apply]
+-  refine LinearMap.ext fun p => ?_
+-  have := congrArg (fun D : Derivation R (MvPolynomial σ R) (MvPolynomial σ R) => D p) h
+-  simpa [Derivation.commutator_apply, sub_eq_zero] using this
+ 
+-theorem pderiv_commute (i j : σ) :
+-    Commute ((pderiv i).toLinearMap : Module.End R (MvPolynomial σ R)) (pderiv j).toLinearMap := by
+-  classical
+-  rw [← constDeriv_single, ← constDeriv_single]
+-  exact constDeriv_commute _ _
+ 
+-noncomputable def pderivEval : MvPolynomial σ R →ₐ[R] Module.End R (MvPolynomial σ R) :=
+-  commEval (fun i => (pderiv i).toLinearMap) pderiv_commute
+ 
+-@[simp] theorem pderivEval_X (i : σ) :
+-    pderivEval (X i : MvPolynomial σ R) = (pderiv i).toLinearMap := commEval_X _ _ i
+ 
+-noncomputable def constDerivEval (v : Λ → σ → R) :
+-    MvPolynomial Λ R →ₐ[R] Module.End R (MvPolynomial σ R) :=
+-  commEval (fun l => (constDeriv (v l)).toLinearMap) fun _ _ => constDeriv_commute _ _
+ 
+-@[simp] theorem constDerivEval_X (v : Λ → σ → R) (l : Λ) :
+-    constDerivEval v (X l) = (constDeriv (v l)).toLinearMap := commEval_X _ _ l
+ 
+-def multiFactorial (α : σ →₀ ℕ) : ℕ := α.prod fun _ n => n.factorial
+ 
+ end Constant
+ 
+@@ -245,11 +148,7 @@
+ 
+ variable [Finite σ]
+ 
+-noncomputable def leadingForm (N : ℕ) : MvPowerSeries σ R →ₗ[R] MvPolynomial σ R :=
+-  MvPolynomial.homogeneousComponent N ∘ₗ truncTotal (N + 1)
+ 
+-noncomputable def derivAtOrigin (D : Derivation R (MvPowerSeries σ R) (MvPowerSeries σ R)) :
+-    σ → R := fun i => constantCoeff (D (X i))
+ 
+ end Series
+ 
+--- a/Development/AbelianVarietyTheory/Proofs/DegenerationProofs/ExistsRingEquivPowerSeriesOfComplete.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DegenerationProofs/ExistsRingEquivPowerSeriesOfComplete.lean
+@@ -6,7 +6,6 @@
+ import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
+ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RangeAlgebraMapEqIInfDiscreteValuationSubring
+ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.StalkGenericPointSpecializesOfSpecializes
+-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsValuationSubringLiftOfSpecialFibre
+ 
+ open IsLocalRing
+ 
+@@ -45,127 +44,8 @@
+     exact hπ.ne_zero (eq_zero_of_pow_eq_zero ha)
+   exact ⟨RingEquiv.ofBijective ψ ⟨hi, hs⟩, hC⟩
+ 
+-theorem exists_ringHom_powerSeries_of_dvr {k V : Type*} [Field k] [CommRing V] [IsDomain V]
+-    [IsDiscreteValuationRing V] (ι : k →+* V) (hι : Function.Surjective ((residue V).comp ι)) :
+-    ∃ φ : V →+* PowerSeries k, Function.Injective φ ∧ (∀ a, φ (ι a) = PowerSeries.C a) ∧
+-      ∀ v, v ∈ maximalIdeal V ↔ PowerSeries.constantCoeff (φ v) = 0 := by
+-  let O := AdicCompletion (maximalIdeal V) V
+-  obtain ⟨e, he⟩ := exists_ringEquiv_powerSeries_of_complete ((algebraMap V O).comp ι) (by
+-    intro y
+-    obtain ⟨z, rfl⟩ := (AdicCompletion.residueField_map_bijective V).2 y
+-    obtain ⟨a, rfl⟩ := hι z
+-    exact ⟨a, rfl⟩)
+-  refine ⟨(e.symm : O →+* PowerSeries k).comp (algebraMap V O),
+-    e.symm.injective.comp (algebraMap_adicCompletion_injective_of_dvr V), fun a => ?_, fun v => ?_⟩
+-  · exact e.symm_apply_eq.mpr (he a).symm
+-  · rw [mem_maximalIdeal, mem_nonunits_iff, ← isUnit_map_iff (algebraMap V O),
+-      ← isUnit_map_iff e.symm, PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]
+-    rfl
+ 
+-open Polynomial in
+ 
+-theorem surjective_residue_of_isAlgebraic {k V : Type*} [Field k] [IsAlgClosed k] [CommRing V]
+-    [IsDomain V] [IsLocalRing V] [Algebra k[X] V] [Algebra.IsAlgebraic k[X] V]
+-    [FaithfulSMul k[X] V] (hX : algebraMap k[X] V X ∈ maximalIdeal V) :
+-    Function.Surjective ((residue V).comp ((algebraMap k[X] V).comp C)) := by
+-  classical
+-  letI : Algebra k (ResidueField V) := ((residue V).comp ((algebraMap k[X] V).comp C)).toAlgebra
+-  have hc : (algebraMap k (ResidueField V)).comp (constantCoeff : k[X] →+* k) =
+-      (residue V).comp (algebraMap k[X] V) := by
+-    refine Polynomial.ringHom_ext (fun a => ?_) ?_
+-    · simp [RingHom.algebraMap_toAlgebra]
+-    · simpa using ((residue_eq_zero_iff _).mpr hX).symm
+-  have : Algebra.IsAlgebraic k (ResidueField V) := ⟨fun y => by
+-    obtain ⟨x, rfl⟩ := residue_surjective y
+-    obtain ⟨p, hp0, hp⟩ := Algebra.IsAlgebraic.isAlgebraic (R := k[X]) x
+-    have h1 := aeval_primPart_eq_zero hp0 hp
+-    refine ⟨p.primPart.map constantCoeff, fun h => ?_, ?_⟩
+-    · refine Polynomial.not_isUnit_X (R := k) (p.isPrimitive_primPart X ?_)
+-      rw [C_dvd_iff_dvd_coeff]
+-      intro i
+-      have := congrArg (fun q => q.coeff i) h
+-      simpa [X_dvd_iff] using this
+-    · rw [aeval_def, eval₂_map, hc, ← hom_eval₂, ← aeval_def, h1, map_zero]⟩
+-  exact (IsAlgClosed.algebraMap_bijective_of_isIntegral (k := k) (K := ResidueField V)).2
+ 
+-open Polynomial in
+-
+-theorem exists_injective_of_height_le_one {k B : Type*} [Field k] [IsAlgClosed k] [CommRing B]
+-    [IsDomain B] [Algebra k B] [Algebra.FiniteType k B] (m : Ideal B) [hm : m.IsMaximal]
+-    (h1 : m.height ≤ 1) :
+-    ∃ φ : B →ₐ[k] PowerSeries k, Function.Injective φ ∧
+-      ∀ b, b ∈ m ↔ PowerSeries.constantCoeff (φ b) = 0 := by
+-  rcases eq_or_ne m ⊥ with rfl | hne
+-  · letI : Field B := (Ring.isField_iff_maximal_bot.mpr hm).toField
+-    have : Module.Finite k B := finite_of_finite_type_of_isJacobsonRing k B
+-    let e : k ≃ₐ[k] B :=
+-      .ofBijective (Algebra.ofId k B) IsAlgClosed.algebraMap_bijective_of_isIntegral
+-    refine ⟨(Algebra.ofId k (PowerSeries k)).comp e.symm, RingHom.injective _, fun b => ?_⟩
+-    simp [Algebra.ofId_apply]
+-  obtain ⟨t, htm, ht0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne
+-  letI : Algebra k[X] B := (aeval t : k[X] →ₐ[k] B).toRingHom.toAlgebra
+-  have hal : ∀ p : k[X], algebraMap k[X] B p = aeval t p := fun _ => rfl
+-  have : IsScalarTower k k[X] B := .of_algebraMap_eq fun a => by simp [hal]
+-  have : Algebra.FiniteType k[X] B := .of_restrictScalars_finiteType k k[X] B
+-  have hinj : Function.Injective (algebraMap k[X] B) := by
+-    refine transcendental_iff_injective.mp fun halg => hm.ne_top ?_
+-    exact m.eq_top_of_isUnit_mem htm (halg.isIntegral.isUnit ht0)
+-  obtain ⟨K', _, _, _, V, φ, hφ, hφi, hφm⟩ := exists_valuationSubring_of_height_le_one
+-    (O := k[X]) (K := FractionRing k[X]) hinj m h1 X X_ne_zero (by simpa [hal] using htm)
+-  letI : Algebra k[X] V := (φ.comp (algebraMap k[X] B)).toAlgebra
+-  letI : Algebra k[X] K' :=
+-    ((algebraMap (FractionRing k[X]) K').comp (algebraMap k[X] (FractionRing k[X]))).toAlgebra
+-  have : IsScalarTower k[X] (FractionRing k[X]) K' := .of_algebraMap_eq fun _ => rfl
+-  have : IsScalarTower k[X] V K' := .of_algebraMap_eq fun a => (hφ a).symm
+-  have : FaithfulSMul k[X] V := (faithfulSMul_iff_algebraMap_injective _ _).mpr (hφi.comp hinj)
+-  have halg : Algebra.IsAlgebraic k[X] K' :=
+-    (IsFractionRing.comap_isAlgebraic_iff (A := k[X]) (K := FractionRing k[X]) (C := K')).mpr
+-      inferInstance
+-  have : Algebra.IsAlgebraic k[X] V :=
+-    .of_injective (IsScalarTower.toAlgHom k[X] V K') Subtype.val_injective
+-  have hXV : algebraMap k[X] V X ∈ maximalIdeal V := by
+-    change algebraMap k[X] B X ∈ (maximalIdeal V).comap φ
+-    simpa [hal, hφm] using htm
+-  let W : Subalgebra k[X] K' :=
+-    { V.toSubring with algebraMap_mem' := fun r => (hφ r) ▸ (φ (algebraMap k[X] B r)).2 }
+-  have hVn : IsNoetherianRing V := (krullAkizuki (FractionRing k[X]) W).1
+-  have hnf : ¬ IsField V := by
+-    rw [isField_iff_maximalIdeal_eq]
+-    intro h
+-    rw [h] at hXV
+-    exact X_ne_zero ((FaithfulSMul.algebraMap_eq_zero_iff k[X] V).mp hXV)
+-  have hval : ValuationRing V := inferInstance
+-  have : IsDiscreteValuationRing V := ((IsDiscreteValuationRing.TFAE V hnf).out 1 0).mp hval
+-  obtain ⟨ψ, hψi, hψC, hψm⟩ :=
+-    exists_ringHom_powerSeries_of_dvr _ (surjective_residue_of_isAlgebraic hXV)
+-  refine ⟨{ ψ.comp φ with commutes' := fun a => ?_ }, hψi.comp hφi, fun b => ?_⟩
+-  · have := hψC a
+-    rw [IsScalarTower.algebraMap_apply k k[X] B]
+-    exact this
+-  · rw [← hφm]
+-    exact hψm (φ b)
+-
+-theorem exists_algHom_powerSeries_ne_zero :
+-    ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Type) [CommRing B] [IsDomain B] [Algebra k B]
+-      [Algebra.FiniteType k B] (m : Ideal B), m.IsMaximal → ∀ f : B, f ≠ 0 →
+-      ∃ φ : B →ₐ[k] PowerSeries k, φ f ≠ 0 ∧
+-        ∀ b, b ∈ m ↔ PowerSeries.constantCoeff (φ b) = 0 := by
+-  intro k _ _ B _ _ _ _ m hm f hf
+-  have : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing k B
+-  obtain ⟨q, hqf, hqm, hht⟩ := exists_mem_height_map_le_one m (PrimeSpectrum.basicOpen f).isOpen
+-    ⟨⊥, hf, bot_le⟩
+-  have hsurj := Ideal.Quotient.mk_surjective (I := q.asIdeal)
+-  have hcomap : (m.map (Ideal.Quotient.mk q.asIdeal)).comap (Ideal.Quotient.mk q.asIdeal) = m := by
+-    rw [Ideal.comap_map_of_surjective _ hsurj, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]
+-    exact sup_eq_left.mpr hqm
+-  have : (m.map (Ideal.Quotient.mk q.asIdeal)).IsMaximal :=
+-    (Ideal.map_eq_top_or_isMaximal_of_surjective _ hsurj hm).resolve_left fun e => by
+-      rw [e, Ideal.comap_top] at hcomap
+-      exact hm.ne_top hcomap.symm
+-  obtain ⟨φ, hφi, hφm⟩ := exists_injective_of_height_le_one (k := k) _ hht
+-  refine ⟨φ.comp (Ideal.Quotient.mkₐ k q.asIdeal), fun h => hqf ?_, fun b => ?_⟩
+-  · exact Ideal.Quotient.eq_zero_iff_mem.mp (hφi (h.trans (map_zero φ).symm))
+-  · conv_lhs => rw [← hcomap]
+-    exact hφm _
+ 
+ end GlobalTheory.ArcAvoid
+--- a/Development/AbelianVarietyTheory/Proofs/FoundationProofs/ExistsUniqueFixedPointOfAdicContraction.lean
++++ b/Development/AbelianVarietyTheory/Proofs/FoundationProofs/ExistsUniqueFixedPointOfAdicContraction.lean
+@@ -24,10 +24,8 @@
+ 
+ theorem eq_of_forall_sub_mem_ideal_pow (J : Ideal S) [IsHausdorff J S] {x y : S}
+     (h : ∀ n, x - y ∈ J ^ n) : x = y := by
+-  rw [← sub_eq_zero]
+-  refine IsHausdorff.haus' (I := J) _ fun n => ?_
+-  rw [SModEq.zero]
+-  simpa using h n
++  apply (IsHausdorff.eq_iff_smodEq (I := J)).2
++  simpa only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] using h
+ 
+ variable [Finite σ]
+ 
+@@ -38,9 +36,6 @@
+       Ideal.Quotient.eq_zero_iff_mem.2 (aeval_mem_pow_of_mem_idealOfVars hx hp)).comp
+     ((truncTotalAlgHom σ A n).restrictScalars A)
+ 
+-theorem mvEvalMod_apply (J : Ideal S) (x : σ → S) (hx : ∀ i, x i ∈ J) (n : ℕ)
+-    (f : MvPowerSeries σ A) :
+-    mvEvalMod A J x hx n f = Ideal.Quotient.mk _ (MvPolynomial.aeval x (truncTotal n f)) := rfl
+ 
+ theorem factor_comp_mvEvalMod (J : Ideal S) (x : σ → S) (hx : ∀ i, x i ∈ J) {m n : ℕ}
+     (hle : m ≤ n) :
+@@ -79,9 +74,6 @@
+     (hx : ∀ i, x i ∈ J) (i : σ) : mvEvalAdic A J x hx (X i) = x i := by
+   simpa using mvEvalAdic_coe (A := A) J x hx (MvPolynomial.X i)
+ 
+-@[simp] theorem mvEvalAdic_C (J : Ideal S) [IsAdicComplete J S] (x : σ → S)
+-    (hx : ∀ i, x i ∈ J) (a : A) : mvEvalAdic A J x hx (C a) = algebraMap A S a :=
+-  (mvEvalAdic A J x hx).commutes a
+ 
+ theorem algHom_mem_pow_of_le_order (φ : MvPowerSeries σ A →ₐ[A] S) {K : Ideal S}
+     (hφ : ∀ i, φ (X i) ∈ K) {n : ℕ} {g : MvPowerSeries σ A} (hg : (n : ℕ∞) ≤ g.order) :
+@@ -140,40 +132,7 @@
+   AlgHom.ext fun g => eq_of_forall_sub_mem_ideal_pow J fun n =>
+     algHom_sub_mem_pow φ ψ hφ (fun i => h i ▸ hφ i) (fun i => by simp [h i]) g
+ 
+-theorem eq_mvEvalAdic (J : Ideal S) [IsAdicComplete J S] (x : σ → S) (hx : ∀ i, x i ∈ J)
+-    (φ : MvPowerSeries σ A →ₐ[A] S) (h : ∀ i, φ (X i) = x i) : φ = mvEvalAdic A J x hx :=
+-  mvPowerSeries_algHom_ext_of_isHausdorff J (fun i => h i ▸ hx i) (by simp [h])
+ 
+-theorem algHom_sub_mem_of_two_le_order (φ ψ : MvPowerSeries σ A →ₐ[A] S) {J B : Ideal S}
+-    (hB : B ≤ J) (hφ : ∀ i, φ (X i) ∈ B) (hψ : ∀ i, ψ (X i) ∈ B) {n : ℕ}
+-    (h : ∀ i, φ (X i) - ψ (X i) ∈ B * J ^ n) {g : MvPowerSeries σ A} (hg : 2 ≤ g.order) :
+-    φ g - ψ g ∈ B ^ 2 * J ^ n := by
+-  cases nonempty_fintype σ
+-  have key : ∀ g : MvPowerSeries σ A, 1 ≤ g.order → φ g - ψ g ∈ B * J ^ n := by
+-    intro g hg
+-    obtain ⟨k, -, rfl⟩ := exists_eq_sum_X_mul (n := 0) (g := g) fun d hd =>
+-      coeff_of_lt_order (lt_of_lt_of_le (by exact_mod_cast hd) hg)
+-    rw [map_sum, map_sum, ← Finset.sum_sub_distrib]
+-    refine Ideal.sum_mem _ fun i _ => ?_
+-    have e : φ (X i * k i) - ψ (X i * k i) =
+-        φ (X i) * (φ (k i) - ψ (k i)) + (φ (X i) - ψ (X i)) * ψ (k i) := by
+-      simp only [map_mul]; ring
+-    rw [e]
+-    refine add_mem (Ideal.mul_mem_mul (hφ i) ?_) (Ideal.mul_mem_right _ _ (h i))
+-    exact algHom_sub_mem_pow φ ψ (fun i => hB (hφ i)) (fun i => hB (hψ i))
+-      (fun i => (Ideal.mul_le_inf (I := B) (J := J ^ n) (h i)).2) _
+-  obtain ⟨k, hk, rfl⟩ := exists_eq_sum_X_mul (n := 1) (g := g) fun d hd =>
+-    coeff_of_lt_order (lt_of_lt_of_le (by exact_mod_cast hd) hg)
+-  have hk' : ∀ i, ((1 : ℕ) : ℕ∞) ≤ (k i).order := fun i => nat_le_order (hk i)
+-  rw [map_sum, map_sum, ← Finset.sum_sub_distrib]
+-  refine Ideal.sum_mem _ fun i _ => ?_
+-  have e : φ (X i * k i) - ψ (X i * k i) =
+-      φ (X i) * (φ (k i) - ψ (k i)) + ψ (k i) * (φ (X i) - ψ (X i)) := by
+-    simp only [map_mul]; ring
+-  rw [e, sq, mul_assoc]
+-  refine add_mem (Ideal.mul_mem_mul (hφ i) (key _ (by exact_mod_cast hk' i)))
+-    (Ideal.mul_mem_mul ?_ (h i))
+-  simpa using algHom_mem_pow_of_le_order ψ hψ (hk' i)
+ 
+ end Eval
+ 
+@@ -181,98 +140,8 @@
+ 
+ variable {A S τ ι : Type*} [CommRing A] [CommRing S] [Algebra A S]
+ 
+-theorem existsUnique_fixedPoint_of_adic_contraction (J : Ideal S) [IsAdicComplete J S]
+-    (T : (ι → S) → ι → S)
+-    (hT : ∀ n x y, (∀ i, x i - y i ∈ J ^ n) → ∀ i, T x i - T y i ∈ J ^ (n + 1)) :
+-    ∃! x, T x = x := by
+-  have hit : ∀ n x y i, T^[n] x i - T^[n] y i ∈ J ^ n := by
+-    intro n
+-    induction n with
+-    | zero => simp
+-    | succ n ih =>
+-      intro x y i
+-      rw [Function.iterate_succ_apply', Function.iterate_succ_apply']
+-      exact hT n _ _ (ih x y) i
+-  have hc : ∀ i, ∃ L : S, ∀ n, T^[n] 0 i - L ∈ J ^ n := by
+-    intro i
+-    obtain ⟨L, hL⟩ := IsPrecomplete.prec' (I := J) (fun n => T^[n] 0 i) fun {m n} hmn => by
+-      obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hmn
+-      rw [SModEq.sub_mem, Function.iterate_add_apply]
+-      simpa using hit m 0 _ i
+-    exact ⟨L, fun n => by simpa [SModEq.sub_mem] using hL n⟩
+-  choose L hL using hc
+-  refine ⟨L, funext fun i => eq_of_forall_sub_mem_ideal_pow J fun n => ?_, fun y hy => ?_⟩
+-  · have h1 := hT n _ _ (fun i => hL i n) i
+-    have h2 := hL i (n + 1)
+-    rw [Function.iterate_succ_apply'] at h2
+-    have := sub_mem h2 h1
+-    refine Ideal.pow_le_pow_right n.le_succ ?_
+-    convert this using 1
+-    ring
+-  · refine funext fun i => eq_of_forall_sub_mem_ideal_pow J fun n => ?_
+-    have h1 := hit n y 0 i
+-    rw [Function.iterate_fixed hy] at h1
+-    simpa using add_mem h1 (hL i n)
+ 
+-theorem sumElim_mem {K : Ideal S} {u : τ → S} {s : ι → S} (hu : ∀ k, u k ∈ K)
+-    (hs : ∀ i, s i ∈ K) : ∀ v, Sum.elim u s v ∈ K := by
+-  rintro (k | i)
+-  exacts [hu k, hs i]
+ 
+-theorem existsUnique_algHom_implicit [Finite τ] [Finite ι] (J : Ideal S) [IsAdicComplete J S]
+-    {b : S} (hb : b ∈ nonZeroDivisors S) (hbJ : b ∈ J) (c : ι → A)
+-    (hc : ∀ i, ∃ e ∈ J, b = algebraMap A S (c i) * e)
+-    (Q : ι → MvPowerSeries (τ ⊕ ι) A) (hQ : ∀ i, 2 ≤ (Q i).order)
+-    (u : τ → S) (hu : ∀ k, u k ∈ Ideal.span {b}) :
+-    ∃! φ : MvPowerSeries (τ ⊕ ι) A →ₐ[A] S, (∀ k, φ (X (Sum.inl k)) = u k) ∧
+-      (∀ i, φ (X (Sum.inr i)) ∈ Ideal.span {b}) ∧ ∀ i, φ (c i • X (Sum.inr i) + Q i) = 0 := by
+-  choose e he hbe using hc
+-  have hB : Ideal.span {b} ≤ J := (Ideal.span_singleton_le_iff_mem _).2 hbJ
+-  have hpt : ∀ t : ι → S, ∀ v, Sum.elim u (fun i => b * t i) v ∈ Ideal.span {b} := fun t =>
+-    sumElim_mem hu fun i => Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self b)
+-  let ev : (ι → S) → (MvPowerSeries (τ ⊕ ι) A →ₐ[A] S) := fun t =>
+-    mvEvalAdic A J (Sum.elim u fun i => b * t i) fun v => hB (hpt t v)
+-  have hev : ∀ t v, ev t (X v) = Sum.elim u (fun i => b * t i) v := fun t v => by simp [ev]
+-  have hr : ∀ t i, ∃ r, ev t (Q i) = b ^ 2 * r := fun t i => by
+-    have := algHom_mem_pow_of_le_order (ev t) (fun v => hev t v ▸ hpt t v) (n := 2)
+-      (by exact_mod_cast hQ i)
+-    rwa [Ideal.span_singleton_pow, Ideal.mem_span_singleton] at this
+-  choose r hr using hr
+-  have hcb : ∀ i, algebraMap A S (c i) * b ∈ nonZeroDivisors S := fun i =>
+-    mul_mem (mul_mem_nonZeroDivisors.1 (hbe i ▸ hb)).1 hb
+-  have hiff : ∀ t, (fun i => -(e i * r t i)) = t ↔ ∀ i, ev t (c i • X (Sum.inr i) + Q i) = 0 := by
+-    intro t
+-    rw [funext_iff]
+-    refine forall_congr' fun i => ?_
+-    have : ev t (c i • X (Sum.inr i) + Q i) = algebraMap A S (c i) * b * (t i + e i * r t i) := by
+-      rw [map_add, map_smul, hev, hr, Algebra.smul_def, Sum.elim_inr]
+-      linear_combination (b * r t i) * hbe i
+-    rw [this, mul_left_mem_nonZeroDivisors_eq_zero_iff (hcb i), neg_eq_iff_add_eq_zero, add_comm]
+-  obtain ⟨t, ht, huniq⟩ := existsUnique_fixedPoint_of_adic_contraction J
+-    (fun t i => -(e i * r t i)) fun n x y hxy i => by
+-      have h1 := algHom_sub_mem_of_two_le_order (ev x) (ev y) hB (fun v => hev x v ▸ hpt x v)
+-        (fun v => hev y v ▸ hpt y v) (n := n) (fun v => by
+-          rw [hev, hev]
+-          rcases v with k | i
+-          · simp
+-          · simp only [Sum.elim_inr, ← mul_sub]
+-            exact Ideal.mul_mem_mul (Ideal.mem_span_singleton_self b) (hxy i)) (hQ i)
+-      rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton_mul] at h1
+-      obtain ⟨w, hw, hw'⟩ := h1
+-      rw [hr, hr, ← mul_sub] at hw'
+-      have h2 : w = r x i - r y i :=
+-        (mul_cancel_left_mem_nonZeroDivisors (pow_mem hb 2)).1 hw'
+-      have h3 : -(e i * r x i) - -(e i * r y i) = e i * -w := by rw [h2]; ring
+-      rw [h3, pow_succ']
+-      exact Ideal.mul_mem_mul (he i) (neg_mem hw)
+-  refine ⟨ev t, ⟨fun k => hev t _, fun i => hev t _ ▸ hpt t _, (hiff t).1 ht⟩, ?_⟩
+-  rintro φ ⟨h1, h2, h3⟩
+-  choose t' ht' using fun i => Ideal.mem_span_singleton.1 (h2 i)
+-  have hφ : φ = ev t' := eq_mvEvalAdic J _ _ φ (by
+-    rintro (k | i)
+-    exacts [h1 k, ht' i])
+-  rw [hφ] at h3 ⊢
+-  rw [huniq t' ((hiff t').2 h3)]
+ 
+ end Contraction
+ 
+--- a/Development/AbelianVarietyTheory/Proofs/FoundationProofs/IsDiscreteValuationRingIntegralClosure.lean
++++ b/Development/AbelianVarietyTheory/Proofs/FoundationProofs/IsDiscreteValuationRingIntegralClosure.lean
+@@ -1,7 +1,5 @@
+ import Mathlib
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.FiniteAlgebraLocalCompletion
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.FourierCoeffIntSt
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HasSubstEv
+ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegularOfSupportDimQuotientAddLengthLe
+ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RangeAlgebraMapEqIInfDiscreteValuationSubring
+ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueFixedPointOfAdicContraction
+@@ -51,30 +49,7 @@
+     exact .equiv (Submodule.Quotient.restrictScalarsEquiv A (I.map (algebraMap A B))).symm
+   exact finite_of_finite_quotient_smul_top I
+ 
+-theorem isPrecomplete_of_pow_le {A : Type*} [CommRing A] {I J : Ideal A} (hJ : J ≤ I) {e : ℕ}
+-    (he : I ^ e ≤ J) [IsPrecomplete J A] : IsPrecomplete I A := by
+-  refine ⟨fun u hu => ?_⟩
+-  have he' : ∀ n, I ^ ((e + 1) * n) ≤ J ^ n := fun n => by
+-    rw [pow_mul]
+-    exact Ideal.pow_right_mono ((Ideal.pow_le_pow_right e.le_succ).trans he) n
+-  obtain ⟨L, hL⟩ := IsPrecomplete.prec' (I := J) (fun n => u ((e + 1) * n)) fun {m n} hmn =>
+-    (hu (Nat.mul_le_mul_left _ hmn)).mono (Submodule.smul_mono_left (he' m))
+-  exact ⟨L, fun n => (hu (Nat.le_mul_of_pos_left n e.succ_pos)).trans
+-    ((hL n).mono (Submodule.smul_mono_left (Ideal.pow_right_mono hJ n)))⟩
+-
+-theorem isAdicComplete_maximalIdeal_of_finite (R S : Type*) [CommRing R] [IsLocalRing R]
+-    [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [CommRing S] [IsLocalRing S]
+-    [Algebra R S] [Module.Finite R S] : IsAdicComplete (maximalIdeal S) S := by
+-  have := IsNoetherianRing.of_finite R S
+-  have := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra (R := R) S
+-  obtain ⟨e, he⟩ : ∃ e, maximalIdeal S ^ e ≤ (maximalIdeal R).map (algebraMap R S) := by
+-    refine Ideal.exists_pow_le_of_le_radical_of_fg (fun b hb => ?_) (IsNoetherian.noetherian _)
+-    obtain ⟨N, -, hN⟩ := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.exists_pow_mem_map_maximalIdeal (R := R) S b
+-      fun n hn => eq_maximalIdeal hn ▸ hb
+-    exact ⟨N, hN⟩
+-  have := isPrecomplete_of_pow_le
+-    (ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.map_maximalIdeal_le_maximal (R := R) S _ inferInstance) he
+-  exact ⟨⟩
++
+ 
+ end Nakayama
+ 
+@@ -145,24 +120,7 @@
+   rw [mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff,
+     isUnit_iff_constantCoeff]
+ 
+-theorem mem_map_C_of_coeff_mem {I : Ideal R} (hI : I.FG) {g : MvPowerSeries σ R}
+-    (hg : ∀ d, coeff d g ∈ I) : g ∈ I.map (C : R →+* MvPowerSeries σ R) := by
+-  obtain ⟨n, s, rfl⟩ := Submodule.fg_iff_exists_fin_generating_family.1 hI
+-  choose c hc using fun d => (Submodule.mem_span_range_iff_exists_fun R).1 (hg d)
+-  have : g = ∑ i, (show MvPowerSeries σ R from fun d => c d i) * C (s i) := by
+-    ext d
+-    rw [← hc d, map_sum]
+-    exact Finset.sum_congr rfl fun i _ => by rw [coeff_mul_C]; rfl
+-  rw [this]
+-  exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _
+-    (Ideal.mem_map_of_mem _ (Submodule.subset_span ⟨i, rfl⟩))
+-
+-theorem map_surjective_of_surjective {S : Type*} [CommRing S] {φ : R →+* S}
+-    (hφ : Function.Surjective φ) :
+-    Function.Surjective (MvPowerSeries.map φ : MvPowerSeries σ R →+* MvPowerSeries σ S) := by
+-  intro g
+-  choose c hc using fun d => hφ (coeff d g)
+-  exact ⟨c, by ext d; exact hc d⟩
++
+ 
+ theorem ringKrullDim_powerSeries (R : Type*) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] :
+     ringKrullDim (PowerSeries R) = ringKrullDim R + 1 := by
+@@ -218,98 +176,12 @@
+ 
+ variable [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Finite σ]
+ 
+-theorem finite_quotient_of_residue (J : Ideal (MvPowerSeries σ R))
+-    (h : Module.Finite (ResidueField R)
+-      (MvPowerSeries σ (ResidueField R) ⧸ J.map (MvPowerSeries.map (residue R)))) :
+-    Module.Finite R (MvPowerSeries σ R ⧸ J) := by
+-  have h1 : IsHausdorff (maximalIdeal R) (MvPowerSeries σ R ⧸ J) := by
+-    refine IsHausdorff.of_map (J := maximalIdeal (MvPowerSeries σ R)) ?_
+-    rw [Ideal.map_le_iff_le_comap]
+-    intro r hr
+-    exact mem_maximalIdeal_iff_constantCoeff.2 hr
+-  have h2 := (IsHausdorff.map_algebraMap_iff (S := MvPowerSeries σ R ⧸ J)).2 h1
+-  have h3 : Module.Finite R
+-      (MvPowerSeries σ (ResidueField R) ⧸ J.map (MvPowerSeries.map (residue R))) :=
+-    .trans (ResidueField R) _
+-  have hsurj := map_surjective_of_surjective (σ := σ) (residue_surjective (R := R))
+-  let p : MvPowerSeries σ R →ₐ[R]
+-      MvPowerSeries σ (ResidueField R) ⧸ J.map (MvPowerSeries.map (residue R)) :=
+-    (Ideal.Quotient.mkₐ R _).comp
+-      { MvPowerSeries.map (residue R) with
+-        commutes' := fun r => by simp [MvPowerSeries.algebraMap_apply] }
+-  have hp : Function.Surjective p := Ideal.Quotient.mk_surjective.comp hsurj
+-  let q : MvPowerSeries σ R →ₐ[R] (MvPowerSeries σ R ⧸ J) ⧸
+-      (maximalIdeal R).map (algebraMap R (MvPowerSeries σ R ⧸ J)) :=
+-    (Ideal.Quotient.mkₐ R _).comp (Ideal.Quotient.mkₐ R _)
+-  have hq : Function.Surjective q :=
+-    Ideal.Quotient.mk_surjective.comp Ideal.Quotient.mk_surjective
+-  have hpq : ∀ g ∈ RingHom.ker p, q g = 0 := by
+-    intro g hg
+-    have h4 : MvPowerSeries.map (residue R) g ∈ J.map (MvPowerSeries.map (residue R)) :=
+-      Ideal.Quotient.eq_zero_iff_mem.1 hg
+-    obtain ⟨u, hu, hug⟩ := (Ideal.mem_map_iff_of_surjective _ hsurj).1 h4
+-    have h5 : g - u ∈ (maximalIdeal R).map (C : R →+* MvPowerSeries σ R) :=
+-      mem_map_C_of_coeff_mem (IsNoetherian.noetherian _) fun d => by
+-        rw [← residue_eq_zero_iff, ← coeff_map, map_sub, hug, sub_self, map_zero]
+-    have h6 := Ideal.mem_map_of_mem (Ideal.Quotient.mk J) h5
+-    rw [Ideal.map_map, map_sub, Ideal.Quotient.eq_zero_iff_mem.2 hu, sub_zero] at h6
+-    exact Ideal.Quotient.eq_zero_iff_mem.2 h6
+-  have h7 : Module.Finite R (MvPowerSeries σ R ⧸ RingHom.ker p) :=
+-    .equiv (Ideal.quotientKerAlgEquivOfSurjective hp).symm.toLinearEquiv
+-  have h8 : Module.Finite R ((MvPowerSeries σ R ⧸ J) ⧸
+-      (maximalIdeal R).map (algebraMap R (MvPowerSeries σ R ⧸ J))) :=
+-    Module.Finite.of_surjective (Ideal.Quotient.liftₐ _ q hpq).toLinearMap
+-      (Ideal.Quotient.lift_surjective_of_surjective _ hpq hq)
+-  exact finite_of_finite_quotient_map (maximalIdeal R)
+-
+-def FiniteReduction {R : Type*} [CommRing R] [IsLocalRing R] {σ τ : Type*}
+-    (f : τ → MvPowerSeries σ R) : Prop :=
+-  Module.Finite (ResidueField R) (MvPowerSeries σ (ResidueField R) ⧸
+-    Ideal.span (Set.range fun j => MvPowerSeries.map (residue R) (f j)))
+-
+-theorem FiniteReduction.finite_quotient {f : τ → MvPowerSeries σ R} (h : FiniteReduction f) :
+-    Module.Finite R (MvPowerSeries σ R ⧸ Ideal.span (Set.range f)) := by
+-  refine finite_quotient_of_residue _ ?_
+-  rw [Ideal.map_span, ← Set.range_comp]
+-  exact h
++
++
+ 
+ variable [Finite τ]
+ 
+-theorem finite_of_finiteReduction (φ : MvPowerSeries τ R →ₐ[R] MvPowerSeries σ R)
+-    (h0 : ∀ j, constantCoeff (φ (X j)) ∈ maximalIdeal R) (h : FiniteReduction fun j => φ (X j)) :
+-    φ.toRingHom.Finite := by
+-  have h1 := h.finite_quotient
+-  have key : ∀ (A : Type _) [CommRing A] [Algebra R A] [Algebra A (MvPowerSeries σ R)]
+-      [IsScalarTower R A (MvPowerSeries σ R)] (I : Ideal A) [IsPrecomplete I A],
+-      I.map (algebraMap A (MvPowerSeries σ R)) = Ideal.span (Set.range fun j => φ (X j)) →
+-      Module.Finite A (MvPowerSeries σ R) := by
+-    intro A _ _ _ _ I _ hI
+-    have : IsHausdorff (I.map (algebraMap A (MvPowerSeries σ R))) (MvPowerSeries σ R) := by
+-      refine IsHausdorff.of_isLocalRing _ _ (ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top ?_)
+-      rw [hI, Ideal.span_le]
+-      rintro _ ⟨j, rfl⟩
+-      exact mem_maximalIdeal_iff_constantCoeff.2 (h0 j)
+-    have : Module.Finite A (MvPowerSeries σ R ⧸ I.map (algebraMap A (MvPowerSeries σ R))) := by
+-      rw [hI]
+-      exact .of_restrictScalars_finite R _ _
+-    exact finite_of_finite_quotient_map I
+-  refine @key (MvPowerSeries τ R) _ _ φ.toRingHom.toAlgebra
+-    (@IsScalarTower.of_algebraMap_eq _ _ _ _ _ _ _ φ.toRingHom.toAlgebra _ fun r => (φ.commutes r).symm)
+-    (Ideal.span (Set.range X)) _ ?_
+-  rw [Ideal.map_span, ← Set.range_comp]
+-  rfl
+-
+-omit [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Finite σ] in
+-
+-theorem isLocalHom_of_constantCoeff_mem (φ : MvPowerSeries τ R →ₐ[R] MvPowerSeries σ R)
+-    (h0 : ∀ j, constantCoeff (φ (X j)) ∈ maximalIdeal R) : IsLocalHom φ.toRingHom := by
+-  refine ((IsLocalRing.local_hom_TFAE _).out 0 3).2 fun g hg => ?_
+-  have h1 := algHom_sub_constantCoeff_mem φ (K := maximalIdeal _)
+-    (fun j => mem_maximalIdeal_iff_constantCoeff.2 (h0 j)) g
+-  have h2 : algebraMap R (MvPowerSeries σ R) (constantCoeff g) ∈ maximalIdeal _ := by
+-    exact mem_maximalIdeal_iff_constantCoeff.2
+-      ((mem_maximalIdeal_iff_constantCoeff (g := g)).1 hg)
+-  simpa using add_mem h1 h2
++
+ 
+ end PowerSeries
+ 
+@@ -317,58 +189,11 @@
+ 
+ variable {R : Type*} [CommRing R] {σ τ : Type*} [Finite σ]
+ 
+-theorem finite_quotient_of_pow_le {J : Ideal (MvPowerSeries σ R)} {N : ℕ}
+-    (h : Ideal.span (Set.range X) ^ N ≤ J) : Module.Finite R (MvPowerSeries σ R ⧸ J) := by
+-  refine Module.Finite.of_surjective (((Ideal.Quotient.mkₐ R J).comp
+-    (MvPolynomial.coeToMvPowerSeries.algHom R)).toLinearMap ∘ₗ
+-      (MvPolynomial.restrictTotalDegree σ R N).subtype) fun y => ?_
+-  obtain ⟨g, rfl⟩ := Ideal.Quotient.mk_surjective y
+-  refine ⟨⟨truncTotal (N + 1) g, (MvPolynomial.mem_restrictTotalDegree _ _ _).2
+-    (Nat.le_of_lt_succ (totalDegree_truncTotal_lt _ N.succ_ne_zero))⟩, ?_⟩
+-  refine Ideal.Quotient.eq.2 (h ?_)
+-  rw [← germIdeal_eq_span, mem_germIdeal_pow_iff_le_order]
+-  refine nat_le_order fun d hd => ?_
+-  simp [coeff_truncTotal _ (Nat.lt_succ_of_lt hd)]
+-
+-theorem exists_pow_le_of_finite_quotient {k : Type*} [Field k] {J : Ideal (MvPowerSeries σ k)}
+-    (h : Module.Finite k (MvPowerSeries σ k ⧸ J)) : ∃ N, Ideal.span (Set.range X) ^ N ≤ J := by
+-  have : IsArtinianRing (MvPowerSeries σ k ⧸ J) := IsArtinianRing.of_finite k _
+-  obtain ⟨N, hN⟩ := IsArtinianRing.isNilpotent_jacobson_bot (R := MvPowerSeries σ k ⧸ J)
+-  have h1 : (Ideal.span (Set.range X)).map (Ideal.Quotient.mk J) ≤ Ideal.jacobson ⊥ := by
+-    rw [Ideal.map_span, Ideal.span_le]
+-    rintro _ ⟨_, ⟨i, rfl⟩, rfl⟩
+-    refine Ideal.mem_jacobson_bot.2 fun y => ?_
+-    obtain ⟨g, rfl⟩ := Ideal.Quotient.mk_surjective y
+-    have : IsUnit (X i * g + 1 : MvPowerSeries σ k) := by simp [isUnit_iff_constantCoeff]
+-    simpa using this.map (Ideal.Quotient.mk J)
+-  refine ⟨N, ?_⟩
+-  have h2 := Ideal.pow_right_mono h1 N
+-  rwa [hN, ← Ideal.map_pow, Ideal.zero_eq_bot, Ideal.map_le_iff_le_comap,
+-    ← RingHom.ker_eq_comap_bot, Ideal.mk_ker] at h2
++
+ 
+ variable [IsLocalRing R]
+ 
+-theorem finiteReduction_iff {f : τ → MvPowerSeries σ R} : FiniteReduction f ↔
+-    ∃ N, Ideal.span (Set.range X) ^ N ≤
+-      Ideal.span (Set.range fun j => MvPowerSeries.map (residue R) (f j)) :=
+-  ⟨exists_pow_le_of_finite_quotient, fun ⟨_, h⟩ => finite_quotient_of_pow_le h⟩
+-
+-theorem FiniteReduction.map {S : Type*} [CommRing S] [IsLocalRing S] (ρ : R →+* S) [IsLocalHom ρ]
+-    {f : τ → MvPowerSeries σ R} (h : FiniteReduction f) :
+-    FiniteReduction fun j => MvPowerSeries.map ρ (f j) := by
+-  obtain ⟨N, hN⟩ := finiteReduction_iff.1 h
+-  refine finiteReduction_iff.2 ⟨N, ?_⟩
+-  have := Ideal.map_mono (f := MvPowerSeries.map (σ := σ) (ResidueField.map ρ)) hN
+-  rw [Ideal.map_pow, Ideal.map_span, Ideal.map_span, ← Set.range_comp, ← Set.range_comp] at this
+-  have e1 : (MvPowerSeries.map (σ := σ) (ResidueField.map ρ)) ∘ X = X := by
+-    ext1 i
+-    simp
+-  have e2 : ((MvPowerSeries.map (ResidueField.map ρ)) ∘
+-      fun j => MvPowerSeries.map (residue R) (f j)) =
+-      fun j => MvPowerSeries.map (residue S) (MvPowerSeries.map ρ (f j)) := by
+-    ext j d
+-    simp only [Function.comp_apply, coeff_map, ResidueField.map_residue]
+-  rwa [e1, e2] at this
++
+ 
+ end Criterion
+ 
+@@ -377,35 +202,7 @@
+ variable {R : Type*} [CommRing R] [IsRegularLocalRing R] [IsAdicComplete (maximalIdeal R) R]
+   {σ τ : Type*} [Finite σ] [Finite τ]
+ 
+-theorem flat_injective_basis_of_finite {A B : Type*} [CommRing A] [CommRing B]
+-    [IsRegularLocalRing A] [IsRegularLocalRing B] (ψ : A →+* B) [IsLocalHom ψ] (hψ : ψ.Finite)
+-    (hd : ringKrullDim A ≤ ringKrullDim B) :
+-    ψ.Flat ∧ Function.Injective ψ ∧ @Module.Free A B _ _ ψ.toAlgebra.toModule ∧
+-      ∃ (n : ℕ) (e : Fin n → B), ∀ g : B, ∃! c : Fin n → A, g = ∑ i, ψ (c i) * e i := by
+-  letI := ψ.toAlgebra
+-  have : Module.Finite A B := hψ
+-  have : IsLocalHom (algebraMap A B) := ‹_›
+-  have hf : Module.Flat A B := flat_of_isCM_of_quasiFinite (isCM_of_isRegularLocalRing B) hd
+-  have hfr : Module.Free A B := Module.free_of_flat_of_isLocalRing
+-  refine ⟨hf, FaithfulSMul.algebraMap_injective A B, hfr, _, Module.finBasis A B, fun g => ?_⟩
+-  refine ⟨(Module.finBasis A B).equivFun g, ?_, fun c hc => ?_⟩
+-  · exact ((Module.finBasis A B).sum_equivFun g).symm
+-  · rw [eq_comm, ← LinearEquiv.eq_symm_apply, Module.Basis.equivFun_symm_apply, hc]
+-    rfl
+-
+-theorem flat_injective_basis_of_finiteReduction (φ : MvPowerSeries τ R →ₐ[R] MvPowerSeries σ R)
+-    (h0 : ∀ j, constantCoeff (φ (X j)) ∈ maximalIdeal R) (h : FiniteReduction fun j => φ (X j))
+-    (hc : Nat.card τ ≤ Nat.card σ) :
+-    φ.toRingHom.Flat ∧ Function.Injective φ ∧
+-      @Module.Free (MvPowerSeries τ R) (MvPowerSeries σ R) _ _ φ.toRingHom.toAlgebra.toModule ∧
+-      ∃ (n : ℕ) (e : Fin n → MvPowerSeries σ R),
+-        ∀ g, ∃! c : Fin n → MvPowerSeries τ R, g = ∑ i, φ (c i) * e i := by
+-  have := isRegularLocalRing_mvPowerSeries R σ
+-  have := isRegularLocalRing_mvPowerSeries R τ
+-  have := isLocalHom_of_constantCoeff_mem φ h0
+-  refine flat_injective_basis_of_finite φ.toRingHom (finite_of_finiteReduction φ h0 h) ?_
+-  rw [ringKrullDim_mvPowerSeries, ringKrullDim_mvPowerSeries]
+-  gcongr
++
+ 
+ end Free
+ 
+@@ -421,55 +218,12 @@
+ 
+ section FormalGroup
+ 
+-open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.TB
+ 
+ variable {R : Type} [CommRing R] {d : ℕ}
+ 
+-theorem constantCoeff_mulN (G : FGLaw R d) (k : ℕ) (i : Fin d) :
+-    constantCoeff (mulN G k i) = 0 := by
+-  induction k generalizing i with
+-  | zero => simp [mulN]
+-  | succ k ih =>
+-    have h : ∀ (j : Fin 2) (l : Fin d),
+-        constantCoeff ((![mulN G k, pt R d 0] : Fin 2 → Pt R 1 d) j l) = 0 := by
+-      intro j l; fin_cases j <;> simp [pt, ih]
+-    exact constantCoeff_subst_eq_zero (hasSubst_ev _ h) (fun p => h p.1 p.2) (G.const i)
+-
+-theorem constantCoeff_vec_mulN (G : FGLaw R d) (k : ℕ) (j : Fin 1) (i : Fin d) :
+-    constantCoeff ((![mulN G k] : Fin 1 → Pt R 1 d) j i) = 0 := by
+-  simp [constantCoeff_mulN]
+-
+-def mulNHom (G : FGLaw R d) (k : ℕ) : PS R 1 d →ₐ[R] PS R 1 d :=
+-  substAlgHom (hasSubst_ev ![mulN G k] (constantCoeff_vec_mulN G k))
+-
+-def mulLaw (R : Type) [CommRing R] (d : ℕ) : FGLaw R d where
+-  F := fun i => X ((0 : Fin 2), i) + X ((1 : Fin 2), i) + X ((0 : Fin 2), i) * X ((1 : Fin 2), i)
+-  const := fun i => by simp
+-  unit := fun i => by
+-    have h : ∀ (j : Fin 2) (l : Fin d),
+-        constantCoeff ((![0, pt R d 0] : Fin 2 → Pt R 1 d) j l) = 0 := by
+-      intro j l; fin_cases j <;> simp [pt]
+-    simp only [ev_add _ h, ev_mul _ h, ev_X _ h]
+-    simp [pt]
+-  comm := fun i => by
+-    have h : ∀ (j : Fin 2) (l : Fin d),
+-        constantCoeff ((![pt R d 1, pt R d 0] : Fin 2 → Pt R 2 d) j l) = 0 := by
+-      intro j l; fin_cases j <;> simp [pt]
+-    simp only [ev_add _ h, ev_mul _ h, ev_X _ h]
+-    simp [pt, add_comm, mul_comm]
+-  assoc := fun i => by
+-    have key : ∀ a b : Pt R 3 d, (∀ l, constantCoeff (a l) = 0) → (∀ l, constantCoeff (b l) = 0) →
+-        ∀ l, ev ![a, b] (X ((0 : Fin 2), l) + X ((1 : Fin 2), l) +
+-          X ((0 : Fin 2), l) * X ((1 : Fin 2), l) : PS R 2 d) = a l + b l + a l * b l := by
+-      intro a b ha hb l
+-      have h : ∀ (j : Fin 2) (l : Fin d), constantCoeff ((![a, b] : Fin 2 → Pt R 3 d) j l) = 0 := by
+-        intro j l; fin_cases j <;> simp [ha, hb]
+-      simp only [ev_add _ h, ev_mul _ h, ev_X _ h]
+-      simp
+-    have hp : ∀ (j : Fin 3) (l : Fin d), constantCoeff (pt R d j l) = 0 := by simp [pt]
+-    rw [funext (key _ _ (hp 0) (hp 1)), funext (key _ _ (hp 1) (hp 2)),
+-      key _ _ (by simp [hp]) (hp 2), key _ _ (hp 0) (by simp [hp])]
+-    ring
++
++
++
+ 
+ end FormalGroup
+ 
+--- a/Development/AbelianVarietyTheory/Proofs/FoundationProofs/RangeAlgebraMapEqIInfDiscreteValuationSubring.lean
++++ b/Development/AbelianVarietyTheory/Proofs/FoundationProofs/RangeAlgebraMapEqIInfDiscreteValuationSubring.lean
+@@ -165,132 +165,9 @@
+ 
+ variable {L : Type*} [Field L]
+ 
+-theorem exists_discreteValuationSubring_of_subring (B : Subring L) [IsNoetherianRing B]
+-    (hB : ∀ z : L, ∃ c ∈ B, c ≠ 0 ∧ c * z ∈ B) {y : L} (hy : y ∈ B) (hy0 : y ≠ 0)
+-    (hy1 : y⁻¹ ∉ B) :
+-    ∃ V : ValuationSubring L, IsDiscreteValuationRing V ∧ B ≤ V.toSubring ∧ y ∈ V.nonunits := by
+-  set y' : B := ⟨y, hy⟩ with hy'
+-  have hyu : ¬ IsUnit y' := by
+-    intro h
+-    obtain ⟨z, hz⟩ := h.exists_right_inv
+-    have hz' : y * (z : L) = 1 := congrArg Subtype.val hz
+-    apply hy1
+-    rw [← eq_inv_of_mul_eq_one_right hz']
+-    exact z.2
+-  have hspan : Ideal.span {y'} ≠ ⊤ := by
+-    rwa [Ne, Ideal.span_singleton_eq_top]
+-  obtain ⟨p, hp⟩ : Nonempty (Ideal.span {y'}).minimalPrimes := Ideal.nonempty_minimalPrimes hspan
+-  haveI hpp : p.IsPrime := hp.1.1
+-  have hyp : y' ∈ p := hp.1.2 (Ideal.mem_span_singleton_self y')
+-  have hht : p.height ≤ 1 := Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ p hp
+-  set A0 := (LocalSubring.ofPrime B p).toSubring with hA0
+-  haveI : IsNoetherianRing A0 := IsLocalization.isNoetherianRing p.primeCompl A0 inferInstance
+-  haveI : Ring.KrullDimLE 1 A0 := by
+-    rw [Ring.krullDimLE_iff, IsLocalization.AtPrime.ringKrullDim_eq_height p A0]
+-    exact_mod_cast hht
+-  haveI : Ring.DimensionLEOne A0 := ⟨fun hq hq' => Ideal.IsPrime.isMaximal_of_ne_bot hq' hq⟩
+-  set y'' : A0 := algebraMap B A0 y' with hy''
+-  have hy''m : y'' ∈ IsLocalRing.maximalIdeal A0 := by
+-    rw [← IsLocalization.AtPrime.map_eq_maximalIdeal p A0]
+-    exact Ideal.mem_map_of_mem _ hyp
+-  have hspan2 : Ideal.span {y''} ≠ ⊤ := by
+-    rw [Ne, Ideal.span_singleton_eq_top]
+-    exact (IsLocalRing.mem_maximalIdeal _).mp hy''m
+-  obtain ⟨V, hAV, hVy⟩ := Ideal.image_subset_nonunits_valuationSubring _ hspan2
+-  have hyV : y ∈ V.nonunits := hVy ⟨y'', Ideal.mem_span_singleton_self _, rfl⟩
+-  have hBV : B ≤ V.toSubring := (LocalSubring.le_ofPrime B p).trans hAV
+-  letI : Algebra A0 V := (Subring.inclusion hAV).toAlgebra
+-  haveI : FaithfulSMul A0 V := (faithfulSMul_iff_algebraMap_injective A0 V).mpr
+-    fun a b h => Subtype.ext (show (a : L) = b from congrArg (fun v : V => (v : L)) h)
+-  have hbir : ∀ x : V, ∃ c : A0, c ≠ 0 ∧ ∃ b : A0, algebraMap A0 V c * x = algebraMap A0 V b := by
+-    intro x
+-    obtain ⟨c, hc, hc0, hcx⟩ := hB x
+-    refine ⟨⟨c, LocalSubring.le_ofPrime B p hc⟩, fun h => hc0 (congrArg Subtype.val h),
+-      ⟨c * x, LocalSubring.le_ofPrime B p hcx⟩, Subtype.ext rfl⟩
+-  have hKA := krullAkizuki_of_birational (A := A0) (B := V) hbir
+-  haveI : IsNoetherianRing V := hKA.1
+-  haveI : IsPrincipalIdealRing V := ((IsBezout.TFAE (R := V)).out 0 1).mp hKA.1
+-  have hVy0 : y ∈ V := hBV hy
+-  have hne : IsLocalRing.maximalIdeal V ≠ ⊥ := by
+-    intro h
+-    have hm : (⟨y, hVy0⟩ : V) ∈ IsLocalRing.maximalIdeal V :=
+-      (ValuationSubring.valuation_lt_one_iff V _).mpr ((ValuationSubring.mem_nonunits_iff V).mp hyV)
+-    rw [h, Ideal.mem_bot] at hm
+-    exact hy0 (congrArg Subtype.val hm)
+-  exact ⟨V, IsDiscreteValuationRing.mk hne, hBV, hyV⟩
+ 
+ variable {R : Type*} [CommRing R] [IsNoetherianRing R] [Algebra R L]
+ 
+-theorem exists_discreteValuationSubring_of_valuationSubring [Algebra.EssFiniteType R L]
+-    (W : ValuationSubring L) (hW : ∀ r, algebraMap R L r ∈ W) {s t : Set L} (hsf : s.Finite)
+-    (htf : t.Finite) (hs : ∀ x ∈ s, x ∈ W) (ht : ∀ x ∈ t, x ∈ W.nonunits) (h0 : ∃ x ∈ t, x ≠ 0) :
+-    ∃ V : ValuationSubring L, IsDiscreteValuationRing V ∧ (∀ r, algebraMap R L r ∈ V) ∧
+-      (∀ x ∈ s, x ∈ V) ∧ ∀ x ∈ t, x ∈ V.nonunits := by
+-  classical
+-  obtain ⟨x₀, hx₀, hx₀0⟩ := h0
+-  obtain ⟨y, hyt, hy⟩ := Set.exists_max_image t W.valuation htf ⟨x₀, hx₀⟩
+-  have hy0 : y ≠ 0 := by
+-    rintro rfl
+-    exact hx₀0 (by simpa using hy x₀ hx₀)
+-  obtain ⟨σ, hσ⟩ := (Algebra.essFiniteType_iff R L).mp inferInstance
+-  let g : L → L := fun e => if e ∈ W then e else e⁻¹
+-  let G : Set L := g '' σ ∪ s ∪ (fun x => x / y) '' t ∪ {y}
+-  have hG : G.Finite :=
+-    (((σ.finite_toSet.image _).union hsf).union (htf.image _)).union (Set.finite_singleton _)
+-  let W' : Subalgebra R L := { W.toSubring with algebraMap_mem' := hW }
+-  let B := Algebra.adjoin R G
+-  have hBW : B ≤ W' := by
+-    refine Algebra.adjoin_le ?_
+-    rintro x (((⟨e, -, rfl⟩ | hx) | ⟨e, he, rfl⟩) | rfl)
+-    · change g e ∈ W
+-      simp only [g]
+-      split_ifs with h
+-      · exact h
+-      · exact (W.mem_or_inv_mem e).resolve_left h
+-    · exact hs x hx
+-    · change e / y ∈ W
+-      rw [← W.valuation_le_one_iff, map_div₀]
+-      exact div_le_one_of_le₀ (hy e he) zero_le
+-    · exact W.nonunits_subset (ht _ hyt)
+-  have hBft : Algebra.FiniteType R B := .adjoin_of_finite hG
+-  have hBn : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing R B
+-  have hBn' : IsNoetherianRing B.toSubring := hBn
+-  have hyB : y ∈ B := Algebra.subset_adjoin (Or.inr rfl)
+-  have hfrac : ∀ z : L, ∃ c ∈ B.toSubring, c ≠ 0 ∧ c * z ∈ B.toSubring := by
+-    let F := Subfield.closure (B : Set L)
+-    let F' : Subalgebra R L :=
+-      { F.toSubring with algebraMap_mem' := fun r => Subfield.subset_closure (B.algebraMap_mem r) }
+-    have h1 : Algebra.adjoin R (σ : Set L) ≤ F' := by
+-      refine Algebra.adjoin_le fun e he => ?_
+-      have h2 : g e ∈ F :=
+-        Subfield.subset_closure (Algebra.subset_adjoin (Or.inl (Or.inl (Or.inl ⟨e, he, rfl⟩))))
+-      change e ∈ F
+-      simp only [g] at h2
+-      split_ifs at h2 with h
+-      · exact h2
+-      · simpa using F.inv_mem h2
+-    intro z
+-    obtain ⟨u, hu, hu', hzu⟩ := hσ z
+-    have hz : z ∈ F := by
+-      have := F.div_mem (h1 hzu) (h1 hu)
+-      rwa [mul_div_cancel_right₀ _ hu'.ne_zero] at this
+-    obtain ⟨a, ha, b, hb, rfl⟩ := Subfield.mem_closure_iff.mp hz
+-    have hc : Subring.closure (B : Set L) = B.toSubring := Subring.closure_eq B.toSubring
+-    rw [hc] at ha hb
+-    rcases eq_or_ne b 0 with rfl | hb0
+-    · exact ⟨1, one_mem _, one_ne_zero, by simp⟩
+-    · exact ⟨b, hb, hb0, by rwa [mul_div_cancel₀ _ hb0]⟩
+-  have hy1 : y⁻¹ ∉ B.toSubring := fun h =>
+-    ((W.mem_nonunits_iff_or.mp (ht y hyt)).resolve_left hy0) (hBW h)
+-  obtain ⟨V, hV, hBV, hyV⟩ :=
+-    exists_discreteValuationSubring_of_subring B.toSubring hfrac hyB hy0 hy1
+-  refine ⟨V, hV, fun r => hBV (B.algebraMap_mem r),
+-    fun x hx => hBV (Algebra.subset_adjoin (Or.inl (Or.inl (Or.inr hx)))), fun x hx => ?_⟩
+-  have h1 : x / y ∈ V := hBV (Algebra.subset_adjoin (Or.inl (Or.inr ⟨x, hx, rfl⟩)))
+-  rw [V.mem_nonunits_iff] at hyV ⊢
+-  rw [← V.valuation_le_one_iff] at h1
+-  rw [← div_mul_cancel₀ x hy0, map_mul]
+-  exact mul_lt_one_of_nonneg_of_lt_one_right h1 zero_le hyV
+ 
+ end Existence
+ 
+@@ -298,130 +175,13 @@
+ 
+ variable {R L : Type*} [CommRing R] [IsLocalRing R] [Field L]
+ 
+-theorem localSubring_range_le_valuationSubring_iff (f : R →+* L) (V : ValuationSubring L) :
+-    LocalSubring.range f ≤ V.toLocalSubring ↔
+-      (∀ r, f r ∈ V) ∧ ∀ r ∈ maximalIdeal R, f r ∈ V.nonunits := by
+-  have hl : IsLocalHom f.rangeRestrict := .of_surjective _ f.rangeRestrict_surjective
+-  constructor
+-  · rintro ⟨h1, h2⟩
+-    refine ⟨fun r => h1 ⟨r, rfl⟩, fun r hr => ?_⟩
+-    refine (ValuationSubring.coe_mem_nonunits_iff (a := ⟨f r, h1 ⟨r, rfl⟩⟩)).mpr fun hu => hr ?_
+-    exact hl.1 r (h2.1 _ hu)
+-  · rintro ⟨h1, h2⟩
+-    refine ⟨by rintro _ ⟨r, rfl⟩; exact h1 r, ⟨?_⟩⟩
+-    rintro ⟨_, r, rfl⟩ hu
+-    by_contra hn
+-    have hr : r ∈ maximalIdeal R := fun h => hn (h.map f.rangeRestrict)
+-    exact (ValuationSubring.coe_mem_nonunits_iff (a := ⟨f r, h1 r⟩)).mp (h2 r hr) hu
+-
+-theorem localSubring_range_le_valuationSubring_iff_isLocalHom (f : R →+* L)
+-    (V : ValuationSubring L) :
+-    LocalSubring.range f ≤ V.toLocalSubring ↔
+-      ∃ h : ∀ r, f r ∈ V, IsLocalHom (f.codRestrict V h) := by
+-  rw [localSubring_range_le_valuationSubring_iff]
+-  constructor
+-  · rintro ⟨h1, h2⟩
+-    refine ⟨h1, ⟨fun r hu => ?_⟩⟩
+-    by_contra hn
+-    exact (ValuationSubring.coe_mem_nonunits_iff (a := ⟨f r, h1 r⟩)).mp (h2 r hn) hu
+-  · rintro ⟨h1, h2⟩
+-    refine ⟨h1, fun r hr => ?_⟩
+-    exact (ValuationSubring.coe_mem_nonunits_iff (a := ⟨f r, h1 r⟩)).mpr fun hu => hr (h2.1 r hu)
++
+ 
+ variable [IsNoetherianRing R] [Algebra R L]
+ 
+-theorem exists_discreteValuationSubring_dominating_of_le [Algebra.EssFiniteType R L]
+-    (W : ValuationSubring L) (hW : LocalSubring.range (algebraMap R L) ≤ W.toLocalSubring)
+-    {s t : Set L} (hsf : s.Finite) (htf : t.Finite) (hs : ∀ x ∈ s, x ∈ W)
+-    (ht : ∀ x ∈ t, x ∈ W.nonunits)
+-    (h0 : (∃ r ∈ maximalIdeal R, algebraMap R L r ≠ 0) ∨ ∃ x ∈ t, x ≠ 0) :
+-    ∃ V : ValuationSubring L, IsDiscreteValuationRing V ∧
+-      LocalSubring.range (algebraMap R L) ≤ V.toLocalSubring ∧
+-      (∀ x ∈ s, x ∈ V) ∧ ∀ x ∈ t, x ∈ V.nonunits := by
+-  rw [localSubring_range_le_valuationSubring_iff] at hW
+-  obtain ⟨g, hg⟩ := (maximalIdeal R).fg_of_isNoetherianRing
+-  have hgm : ∀ r ∈ g, r ∈ maximalIdeal R := fun r hr => hg ▸ Ideal.subset_span hr
+-  obtain ⟨V, hV, h1, h2, h3⟩ := exists_discreteValuationSubring_of_valuationSubring W hW.1
+-    (t := algebraMap R L '' g ∪ t) hsf ((g.finite_toSet.image _).union htf) hs
+-    (by
+-      rintro x (⟨r, hr, rfl⟩ | hx)
+-      · exact hW.2 r (hgm r hr)
+-      · exact ht x hx)
+-    (by
+-      rcases h0 with ⟨r, hr, hr0⟩ | ⟨x, hx, hx0⟩
+-      · by_contra hn
+-        apply hr0
+-        have : maximalIdeal R ≤ RingHom.ker (algebraMap R L) := by
+-          rw [← hg, Ideal.span_le]
+-          intro a ha
+-          by_contra h
+-          exact hn ⟨_, Or.inl ⟨a, ha, rfl⟩, h⟩
+-        exact this hr
+-      · exact ⟨x, Or.inr hx, hx0⟩)
+-  refine ⟨V, hV, ?_, h2, fun x hx => h3 x (Or.inr hx)⟩
+-  rw [localSubring_range_le_valuationSubring_iff]
+-  refine ⟨h1, fun r hr => ?_⟩
+-  have : maximalIdeal R ≤ (maximalIdeal V).comap ((algebraMap R L).codRestrict V h1) := by
+-    rw [← hg, Ideal.span_le]
+-    intro a ha
+-    exact (ValuationSubring.coe_mem_nonunits_iff (a := ⟨_, h1 a⟩)).mp (h3 _ (Or.inl ⟨a, ha, rfl⟩))
+-  exact (ValuationSubring.coe_mem_nonunits_iff (a := ⟨_, h1 r⟩)).mpr (this hr)
+-
+-theorem exists_discreteValuationSubring_dominating_of_essFiniteType [Algebra.EssFiniteType R L]
+-    [FaithfulSMul R L] (hR : ¬ IsField R) :
+-    ∃ V : ValuationSubring L, IsDiscreteValuationRing V ∧
+-      LocalSubring.range (algebraMap R L) ≤ V.toLocalSubring := by
+-  obtain ⟨W, hW⟩ := (LocalSubring.range (algebraMap R L)).exists_le_valuationSubring
+-  obtain ⟨r, hr, hr0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot
+-    (isField_iff_maximalIdeal_eq.not.mp hR)
+-  obtain ⟨V, h1, h2, -⟩ := exists_discreteValuationSubring_dominating_of_le W hW
+-    Set.finite_empty Set.finite_empty (by simp) (by simp) (Or.inl ⟨r, hr, by simpa using hr0⟩)
+-  exact ⟨V, h1, h2⟩
+-
+-theorem exists_discreteValuationSubring_dominating_notMem [Algebra.EssFiniteType R L] {x : L}
+-    (hx : ¬ IsIntegral R x) :
+-    ∃ V : ValuationSubring L, IsDiscreteValuationRing V ∧
+-      LocalSubring.range (algebraMap R L) ≤ V.toLocalSubring ∧ x ∉ V := by
+-  have hx0 : x ≠ 0 := by
+-    rintro rfl
+-    exact hx isIntegral_zero
+-  letI := invertibleOfNonzero (inv_ne_zero hx0)
+-  let B := Algebra.adjoin R {x⁻¹}
+-  let xinv : B := ⟨x⁻¹, Algebra.subset_adjoin rfl⟩
+-  have hne : (maximalIdeal R).map (algebraMap R B) ⊔ Ideal.span {xinv} ≠ ⊤ := by
+-    intro heq
+-    obtain ⟨p, hp, hpx⟩ := Algebra.exists_aeval_invOf_eq_zero_of_idealMap_adjoin_sup_span_eq_top
+-      x⁻¹ _ (maximalIdeal.isMaximal R).ne_top heq
+-    have H : IsUnit p.leadingCoeff := of_not_not fun h ↦ by simpa using sub_mem h hp
+-    refine hx ⟨Polynomial.C H.unit⁻¹.1 * p,
+-      Polynomial.monic_C_mul_of_mul_leadingCoeff_eq_one (by simp), ?_⟩
+-    rw [invOf_eq_inv, inv_inv] at hpx
+-    rw [← Polynomial.aeval_def, map_mul, hpx, mul_zero]
+-  obtain ⟨W, hW, hW'⟩ := Ideal.image_subset_nonunits_valuationSubring (A := B.toSubring) _ hne
+-  have hWd : LocalSubring.range (algebraMap R L) ≤ W.toLocalSubring := by
+-    rw [localSubring_range_le_valuationSubring_iff]
+-    exact ⟨fun r => hW (B.algebraMap_mem r), fun r hr =>
+-      hW' ⟨_, Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hr), rfl⟩⟩
+-  have hxW : x⁻¹ ∈ W.nonunits := hW' ⟨xinv, Ideal.mem_sup_right (Ideal.subset_span rfl), rfl⟩
+-  obtain ⟨V, h1, h2, -, h3⟩ := exists_discreteValuationSubring_dominating_of_le W hWd
+-    Set.finite_empty (Set.finite_singleton x⁻¹) (by simp) (by simpa using hxW)
+-    (Or.inr ⟨_, rfl, inv_ne_zero hx0⟩)
+-  exact ⟨V, h1, h2, (V.inv_mem_nonunits_iff.mp (h3 _ rfl)).resolve_left hx0⟩
+-
+-theorem integralClosure_eq_iInf_discreteValuationSubring [Algebra.EssFiniteType R L] :
+-    (integralClosure R L).toSubring =
+-      ⨅ V : {V : ValuationSubring L // IsDiscreteValuationRing V ∧
+-        LocalSubring.range (algebraMap R L) ≤ V.toLocalSubring}, V.1.toSubring := by
+-  refine le_antisymm (le_iInf fun V x hx => ?_) fun x hx => ?_
+-  · have h := ((localSubring_range_le_valuationSubring_iff _ _).mp V.2.2).1
+-    letI : Algebra R V.1 := ((algebraMap R L).codRestrict V.1 h).toAlgebra
+-    have : IsScalarTower R V.1 L := .of_algebraMap_eq fun _ => rfl
+-    obtain ⟨y, rfl⟩ := (IsIntegrallyClosed.isIntegral_iff (R := V.1) (K := L)).mp
+-      (IsIntegral.tower_top (R := R) hx)
+-    exact y.2
+-  · by_contra hn
+-    obtain ⟨V, h1, h2, h3⟩ := exists_discreteValuationSubring_dominating_notMem (R := R) hn
+-    exact h3 (iInf_le_of_le (α := Subring L) ⟨V, h1, h2⟩ le_rfl hx)
++
++
++
+ 
+ end Domination
+ 
+@@ -496,11 +256,6 @@
+     IsDiscreteValuationRing (AdicCompletion (maximalIdeal V) V) :=
+   (adicCompletion_isDVR_irreducible V (IsDiscreteValuationRing.exists_irreducible V).choose_spec).2.1
+ 
+-variable {V} in
+-
+-theorem irreducible_algebraMap_adicCompletion_of_dvr {π : V} (hπ : Irreducible π) :
+-    Irreducible (algebraMap V (AdicCompletion (maximalIdeal V) V) π) :=
+-  (adicCompletion_isDVR_irreducible V hπ).2.2
+ 
+ end Completion
+ 
+@@ -544,15 +299,6 @@
+   · change algebraMap A L (d * c) * x = (d : A) • c • (x : L)
+     rw [← mul_smul, Algebra.smul_def]
+ 
+-include K in
+-
+-theorem isDedekindDomain_integralClosure_of_dimensionLEOne :
+-    IsDedekindDomain (integralClosure A L) := by
+-  obtain ⟨h1, h2⟩ := krullAkizuki K (integralClosure A L)
+-  have h3 : IsIntegrallyClosed (integralClosure A L) :=
+-    integralClosure.isIntegrallyClosedOfFiniteExtension K
+-  have h4 : IsDedekindRing (integralClosure A L) := { }
+-  exact { }
+ 
+ end KrullAkizukiFinite
+ 
+@@ -563,171 +309,16 @@
+ variable (R : Type u) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsLocalRing R]
+   (K : Type v) [Field K] [Algebra R K] [IsFractionRing R K]
+ 
+-theorem exists_discreteValuationSubring_dominating (L : Type w) [Field L] [Algebra K L]
+-    [Algebra R L] [IsScalarTower R K L] [FiniteDimensional K L] (hR : ¬ IsField R) :
+-    ∃ V : ValuationSubring L, IsDiscreteValuationRing V ∧
+-      LocalSubring.range (algebraMap R L) ≤ V.toLocalSubring := by
+-  have : FaithfulSMul R L := (faithfulSMul_iff_algebraMap_injective _ _).mpr (by
+-    rw [IsScalarTower.algebraMap_eq R K L]
+-    exact (algebraMap K L).injective.comp (IsFractionRing.injective R K))
+-  have : Algebra.EssFiniteType R K := .of_isLocalization K (nonZeroDivisors R)
+-  have : Algebra.EssFiniteType R L := .comp R K L
+-  exact exists_discreteValuationSubring_dominating_of_essFiniteType hR
+-
+-theorem range_algebraMap_eq_iInf_discreteValuationSubring [IsIntegrallyClosed R] :
+-    (algebraMap R K).range =
+-      ⨅ V : {V : ValuationSubring K // IsDiscreteValuationRing V ∧
+-        LocalSubring.range (algebraMap R K) ≤ V.toLocalSubring}, V.1.toSubring := by
+-  have : Algebra.EssFiniteType R K := .of_isLocalization K (nonZeroDivisors R)
+-  rw [← integralClosure_eq_iInf_discreteValuationSubring]
+-  ext x
+-  exact (IsIntegrallyClosed.isIntegral_iff (R := R) (K := K)).symm
+-
+-variable {R K} in
+-
+-theorem exists_algebraMap_eq_of_forall_discreteValuationSubring [IsIntegrallyClosed R] {x : K}
+-    (hx : ∀ V : ValuationSubring K, IsDiscreteValuationRing V → (∀ r, algebraMap R K r ∈ V) →
+-      (∀ r ∈ maximalIdeal R, algebraMap R K r ∈ V.nonunits) → x ∈ V) :
+-    ∃ r : R, algebraMap R K r = x := by
+-  change x ∈ (algebraMap R K).range
+-  rw [range_algebraMap_eq_iInf_discreteValuationSubring, Subring.mem_iInf]
+-  rintro ⟨V, h1, h2⟩
+-  rw [localSubring_range_le_valuationSubring_iff] at h2
+-  exact hx V h1 h2.1 h2.2
+-
+-theorem injective_and_isLocalHom_adicCompletion_comp {S : Type*} [CommRing S] {V : Type*}
+-    [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (f : S →+* V)
+-    (hf : Function.Injective f) [IsLocalHom f] :
+-    Function.Injective ((algebraMap V (AdicCompletion (maximalIdeal V) V)).comp f) ∧
+-      IsLocalHom ((algebraMap V (AdicCompletion (maximalIdeal V) V)).comp f) :=
+-  ⟨(algebraMap_adicCompletion_injective_of_dvr V).comp hf, RingHom.isLocalHom_comp _ _⟩
+-
+-theorem exists_complete_discreteValuationRing_dominating (hR : ¬ IsField R) :
+-    ∃ (O : Type u) (_ : CommRing O) (_ : IsDomain O) (_ : IsDiscreteValuationRing O)
+-      (_ : IsAdicComplete (maximalIdeal O) O) (φ : R →+* O),
+-      Function.Injective φ ∧ IsLocalHom φ := by
+-  obtain ⟨V, hV, h⟩ :=
+-    exists_discreteValuationSubring_dominating R (FractionRing R) (FractionRing R) hR
+-  obtain ⟨h1, h2⟩ := (localSubring_range_le_valuationSubring_iff_isLocalHom _ _).mp h
+-  exact ⟨AdicCompletion (maximalIdeal V) V, inferInstance, inferInstance, inferInstance,
+-    inferInstance, _, injective_and_isLocalHom_adicCompletion_comp
+-      ((algebraMap R (FractionRing R)).codRestrict V h1)
+-      fun a b hab => IsFractionRing.injective R (FractionRing R) (congrArg Subtype.val hab)⟩
+-
+-theorem map_maximalIdeal_pow_le {S O : Type*} [CommRing S] [IsLocalRing S] [CommRing O]
+-    [IsLocalRing O] (φ : S →+* O) [IsLocalHom φ] (n : ℕ) :
+-    (maximalIdeal S ^ n).map φ ≤ maximalIdeal O ^ n := by
+-  rw [Ideal.map_pow]
+-  exact Ideal.pow_right_mono (map_maximalIdeal_le φ) n
+-
+-open TensorProduct in
+-
+-theorem tensorProduct_mk_one_injective_of_isTorsionFree {S : Type*} [CommRing S] [IsDomain S]
+-    (F : Type*) [Field F] [Algebra S F] [FaithfulSMul S F] (M : Type*) [AddCommGroup M]
+-    [Module S M] [Module.IsTorsionFree S M] :
+-    Function.Injective (TensorProduct.mk S F M 1) := by
+-  letI : Algebra (FractionRing S) F := FractionRing.liftAlgebra S F
+-  have h1 : Function.Injective (TensorProduct.mk S (FractionRing S) M 1) := by
+-    rw [IsLocalizedModule.injective_iff_isRegular (nonZeroDivisors S)]
+-    intro c
+-    exact IsSMulRegular.of_ne_zero (nonZeroDivisors.coe_ne_zero c)
+-  have h2 := Module.FaithfullyFlat.tensorProduct_mk_injective
+-    (A := FractionRing S) (B := F) (FractionRing S ⊗[S] M)
+-  have h3 := (AlgebraTensorModule.cancelBaseChange S (FractionRing S) F F M).injective.comp
+-    (h2.comp h1)
+-  intro a b hab
+-  apply h3
+-  simpa using hab
+-
+-theorem exists_complete_discreteValuationRing_ker_eq {S : Type u} [CommRing S]
+-    [IsNoetherianRing S] [IsLocalRing S] (q : Ideal S) [q.IsPrime] (hq : q ≠ maximalIdeal S) :
+-    ∃ (O : Type u) (_ : CommRing O) (_ : IsDomain O) (_ : IsDiscreteValuationRing O)
+-      (_ : IsAdicComplete (maximalIdeal O) O) (φ : S →+* O),
+-      RingHom.ker φ = q ∧ IsLocalHom φ := by
+-  have hl : IsLocalRing (S ⧸ q) := .of_surjective' _ Ideal.Quotient.mk_surjective
+-  have hm : IsLocalHom (Ideal.Quotient.mk q) := .of_surjective _ Ideal.Quotient.mk_surjective
+-  have hf : ¬ IsField (S ⧸ q) := fun h =>
+-    hq (eq_maximalIdeal (Ideal.Quotient.maximal_of_isField q h))
+-  obtain ⟨O, _, _, _, _, φ, h1, h2⟩ := exists_complete_discreteValuationRing_dominating (S ⧸ q) hf
+-  refine ⟨O, inferInstance, inferInstance, inferInstance, inferInstance,
+-    φ.comp (Ideal.Quotient.mk q), ?_, RingHom.isLocalHom_comp _ _⟩
+-  rw [RingHom.ker_comp_of_injective _ h1, Ideal.mk_ker]
+-
+-theorem exists_complete_discreteValuationRing_of_prime_lt {A : Type u} [CommRing A]
+-    [IsNoetherianRing A] (q p : Ideal A) [q.IsPrime] [p.IsPrime] (hqp : q < p) :
+-    ∃ (O : Type u) (_ : CommRing O) (_ : IsDomain O) (_ : IsDiscreteValuationRing O)
+-      (_ : IsAdicComplete (maximalIdeal O) O) (φ : A →+* O),
+-      RingHom.ker φ = q ∧ (maximalIdeal O).comap φ = p := by
+-  let S := Localization.AtPrime p
+-  have hdis : Disjoint (p.primeCompl : Set A) q := by
+-    rw [Set.disjoint_left]
+-    exact fun x hx hx' => hx (hqp.le hx')
+-  have hq' : (q.map (algebraMap A S)).IsPrime :=
+-    IsLocalization.isPrime_of_isPrime_disjoint p.primeCompl S q inferInstance hdis
+-  have hc : (q.map (algebraMap A S)).comap (algebraMap A S) = q :=
+-    IsLocalization.comap_map_of_isPrime_disjoint p.primeCompl S inferInstance hdis
+-  have hm : (maximalIdeal S).comap (algebraMap A S) = p :=
+-    Localization.AtPrime.comap_maximalIdeal
+-  obtain ⟨O, _, _, _, _, φ, h1, h2⟩ := exists_complete_discreteValuationRing_ker_eq
+-    (q.map (algebraMap A S)) (fun h => hqp.ne (by rw [← hc, h, hm]))
+-  refine ⟨O, inferInstance, inferInstance, inferInstance, inferInstance,
+-    φ.comp (algebraMap A S), ?_, ?_⟩
+-  · rw [← RingHom.comap_ker, h1, hc]
+-  · rw [← Ideal.comap_comap, maximalIdeal_comap, hm]
+-
+-open AlgebraicGeometry CategoryTheory in
+-
+-theorem exists_complete_discreteValuationRing_of_specializes {X : Scheme.{u}}
+-    [IsLocallyNoetherian X] {η x : X} (h : η ⤳ x) (hne : η ≠ x) :
+-    ∃ (O : CommRingCat.{u}) (_ : IsDomain O) (_ : IsDiscreteValuationRing O)
+-      (_ : IsAdicComplete (maximalIdeal O) O) (f : Spec O ⟶ X),
+-      f (⊥ : PrimeSpectrum O) = η ∧ f (closedPoint O) = x := by
+-  have h1 : η ∈ Set.range (X.fromSpecStalk x) := by
+-    rw [Scheme.range_fromSpecStalk]
+-    exact h
+-  obtain ⟨q, rfl⟩ := h1
+-  have hq : q.asIdeal ≠ maximalIdeal (X.presheaf.stalk x) := by
+-    intro e
+-    apply hne
+-    have : q = closedPoint (X.presheaf.stalk x) := PrimeSpectrum.ext e
+-    rw [this, Scheme.fromSpecStalk_closedPoint]
+-  have hqp : Ideal.IsPrime (α := X.presheaf.stalk x) q.asIdeal := q.isPrime
+-  obtain ⟨O, _, hO, hO', hO'', φ, h1, h2⟩ :=
+-    exists_complete_discreteValuationRing_ker_eq (S := X.presheaf.stalk x) q.asIdeal hq
+-  refine ⟨.of O, hO, hO', hO'', Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk x, ?_, ?_⟩
+-  · refine (Scheme.Hom.comp_apply _ _ _).trans (congrArg (X.fromSpecStalk x) ?_)
+-    exact PrimeSpectrum.ext h1
+-  · refine (Scheme.Hom.comp_apply _ _ _).trans
+-      (Eq.trans (congrArg (X.fromSpecStalk x) ?_) (Scheme.fromSpecStalk_closedPoint (x := x)))
+-    exact comap_closedPoint φ
+-
+-theorem discreteValuationRing_dominating_noetherian_local (L : Type w) [Field L] [Algebra K L]
+-    [Algebra R L] [IsScalarTower R K L] [FiniteDimensional K L] :
+-    (¬ IsField R → ∃ V : ValuationSubring L, IsDiscreteValuationRing V ∧
+-      LocalSubring.range (algebraMap R L) ≤ V.toLocalSubring) ∧
+-    (IsIntegrallyClosed R → (algebraMap R K).range =
+-      ⨅ V : {V : ValuationSubring K // IsDiscreteValuationRing V ∧
+-        LocalSubring.range (algebraMap R K) ≤ V.toLocalSubring}, V.1.toSubring) ∧
+-    ∀ (V : ValuationSubring L) [IsDiscreteValuationRing V],
+-      LocalSubring.range (algebraMap R L) ≤ V.toLocalSubring →
+-      IsDiscreteValuationRing (AdicCompletion (maximalIdeal V) V) ∧
+-      IsAdicComplete (maximalIdeal (AdicCompletion (maximalIdeal V) V))
+-        (AdicCompletion (maximalIdeal V) V) ∧
+-      (∀ π : V, Irreducible π → Irreducible (algebraMap V (AdicCompletion (maximalIdeal V) V) π)) ∧
+-      ∃ h : ∀ r, algebraMap R L r ∈ V,
+-        Function.Injective ((algebraMap V (AdicCompletion (maximalIdeal V) V)).comp
+-          ((algebraMap R L).codRestrict V h)) ∧
+-        IsLocalHom ((algebraMap V (AdicCompletion (maximalIdeal V) V)).comp
+-          ((algebraMap R L).codRestrict V h)) := by
+-  refine ⟨exists_discreteValuationSubring_dominating R K L,
+-    fun _ => range_algebraMap_eq_iInf_discreteValuationSubring R K, fun V _ h => ?_⟩
+-  obtain ⟨h1, h2⟩ := (localSubring_range_le_valuationSubring_iff_isLocalHom _ _).mp h
+-  have hinj : Function.Injective (algebraMap R L) := by
+-    rw [IsScalarTower.algebraMap_eq R K L]
+-    exact (algebraMap K L).injective.comp (IsFractionRing.injective R K)
+-  exact ⟨inferInstance, inferInstance, fun π => irreducible_algebraMap_adicCompletion_of_dvr, h1,
+-    injective_and_isLocalHom_adicCompletion_comp _
+-      fun a b hab => hinj (congrArg Subtype.val hab)⟩
++
++
++
++
++
++
++
++
++
++
+ 
+ end Main
+ 
+--- a/Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/StalkGenericPointSpecializesOfSpecializes.lean
++++ b/Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/StalkGenericPointSpecializesOfSpecializes.lean
+@@ -10,8 +10,6 @@
+ 
+ variable {Z : Scheme.{u}} (η : Z) [IsDomain (Z.presheaf.stalk η)]
+ 
+-noncomputable def stalkGenericPoint : Z :=
+-  Z.fromSpecStalk η (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Z.presheaf.stalk η))
+ 
+ variable [IsDiscreteValuationRing (Z.presheaf.stalk η)]
+ 
+--- a/Development/AbelianVarietyTheory/Proofs/UniformizationProofs/ExistsCompleteDvrFiniteSubalgebra.lean
++++ b/Development/AbelianVarietyTheory/Proofs/UniformizationProofs/ExistsCompleteDvrFiniteSubalgebra.lean
+@@ -39,47 +39,5 @@
+ 
+ end CompleteFiniteExtension
+ 
+-theorem exists_complete_dvr_finite_subalgebra :
+-    ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
+-      [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [CharZero V] (F : Type) [Field F]
+-      [Algebra V F] [FaithfulSMul V F] [Algebra.IsAlgebraic V F] (s : Finset F),
+-      ∃ (W : Subalgebra V F) (_ : IsDiscreteValuationRing W),
+-        IsAdicComplete (IsLocalRing.maximalIdeal W) W ∧
+-        IsAdicComplete ((IsLocalRing.maximalIdeal V).map (algebraMap V W)) W ∧
+-        Module.Finite V W ∧ Module.Free V W ∧ IsLocalHom (algebraMap V W) ∧
+-        (∀ x ∈ s, ∃ a ∈ W, ∃ b ∈ W, b ≠ 0 ∧ x * b = a) ∧
+-        ∀ x ∈ s, IsIntegral V x → x ∈ W := by
+-  intro V _ _ _ _ _ F _ _ _ _ s
+-  let K := FractionRing V
+-  let _ : Algebra K F := FractionRing.liftAlgebra V F
+-  have : IsScalarTower V K F := FractionRing.isScalarTower_liftAlgebra V F
+-  have : Algebra.IsAlgebraic K F :=
+-    (IsFractionRing.comap_isAlgebraic_iff (A := V) (K := K) (C := F)).mp inferInstance
+-  let L : IntermediateField K F := IntermediateField.adjoin K (s : Set F)
+-  have : FiniteDimensional K L :=
+-    IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x
+-  let f : L →ₐ[V] F := L.val.restrictScalars V
+-  have hf : Function.Injective f := Subtype.val_injective
+-  let W : Subalgebra V F := (integralClosure V L).map f
+-  let e : integralClosure V L ≃ₐ[V] W := Subalgebra.equivMapOfInjective _ f hf
+-  have : CharZero K := IsFractionRing.charZero_of_isFractionRing V
+-  have hB : Module.Finite V (integralClosure V L) := IsIntegralClosure.finite V K L _
+-  have hBd : IsDiscreteValuationRing (integralClosure V L) :=
+-    ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr V K L
+-  have hfin : Module.Finite V W := Module.Finite.equiv e.toLinearEquiv
+-  have hd : IsDiscreteValuationRing W :=
+-    IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e
+-  have hmem : ∀ x ∈ L, IsIntegral V x → x ∈ W := fun x hx hi =>
+-    ⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 hi, rfl⟩
+-  have hsL : ∀ x ∈ s, x ∈ L := fun x hx => IntermediateField.subset_adjoin K _ hx
+-  refine ⟨W, hd, CompleteFiniteExtension.isAdicComplete_of_finite_local V W,
+-    ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra W, hfin, inferInstance, inferInstance,
+-    fun x hx => ?_, fun x hx => hmem x (hsL x hx)⟩
+-  obtain ⟨y, hy, h⟩ := (Algebra.IsAlgebraic.isAlgebraic (R := V) x).exists_integral_multiple
+-  refine ⟨y • x, hmem _ ?_ h, algebraMap V F y, W.algebraMap_mem y,
+-    (map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective V F)).2 hy, ?_⟩
+-  · rw [← algebraMap_smul K y x]
+-    exact L.smul_mem (hsL x hx)
+-  · rw [Algebra.smul_def, mul_comm]
+ 
+ end GlobalTheory
+--- a/Development/AbelianVarietyTheory/Proofs/UniformizationProofs/ExistsGradedRingKernelLift.lean
++++ b/Development/AbelianVarietyTheory/Proofs/UniformizationProofs/ExistsGradedRingKernelLift.lean
+@@ -21,115 +21,6 @@
+ theorem mem_reesShiftIdeal {R : Type} [CommRing R] {I : Ideal R} (p : reesAlgebra I) :
+     p ∈ reesShiftIdeal I ↔ ∀ n, (p : R[X]).coeff n ∈ I ^ (n + 1) := Iff.rfl
+ 
+-theorem coeff_sum_algebraMap_mul_rees {R : Type} [CommRing R] {I : Ideal R} {a : ℕ}
+-    (r : Fin a → R) (p : Fin a → reesAlgebra I) (n : ℕ) :
+-    ((∑ k, algebraMap R (reesAlgebra I) (r k) * p k : reesAlgebra I) : R[X]).coeff n
+-      = ∑ k, r k * (p k : R[X]).coeff n := by
+-  simp [Polynomial.algebraMap_eq]
+ 
+-theorem exists_graded_ring_kernel_lift : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), ∃ (S : Type) (_ : CommRing S) (g : R →+* S), IsNoetherianRing S ∧ (∀ x ∈ I, g x = 0) ∧ ∀ (e : ℕ) (g' : R ⧸ I ^ (e + 1 + 1) →+* S), g'.comp (Ideal.Quotient.mk _) = g → ∀ (a b c : ℕ) (D₀ : Matrix (Fin b) (Fin a) (R ⧸ I ^ (e + 1 + 1))) (D₁ : Matrix (Fin c) (Fin b) (R ⧸ I ^ (e + 1 + 1))), D₁ * D₀ = 0 → (∀ w : Fin b → S, (D₁.map g').mulVec w = 0 → ∃ v, (D₀.map g').mulVec v = w) → ∀ v' : Fin a → R ⧸ I ^ (e + 1), (D₀.map (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) : R ⧸ I ^ (e + 1 + 1) →+* R ⧸ I ^ (e + 1))).mulVec v' = 0 → ∃ v, D₀.mulVec v = 0 ∧ ∀ k, (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) : R ⧸ I ^ (e + 1 + 1) →+* R ⧸ I ^ (e + 1)) (v k) = v' k := by
+-  intro R _ _ I
+-  refine ⟨reesAlgebra I ⧸ reesShiftIdeal I, inferInstance,
+-    (Ideal.Quotient.mk _).comp (algebraMap R (reesAlgebra I)), inferInstance, ?_, ?_⟩
+-  ·
+-    intro x hx
+-    rw [RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem, mem_reesShiftIdeal]
+-    intro n
+-    rw [Subalgebra.coe_algebraMap, Polynomial.algebraMap_eq, Polynomial.coeff_C]
+-    split_ifs with hn
+-    · subst hn
+-      simpa using hx
+-    · exact Ideal.zero_mem _
+-  · intro e g' hg' a b c D₀ D₁ hD hex v' hv'
+-    have hg'x : ∀ x : R, g' (Ideal.Quotient.mk _ x) =
+-        Ideal.Quotient.mk (reesShiftIdeal I) (algebraMap R (reesAlgebra I) x) := fun x => by
+-      have := RingHom.congr_fun hg' x
+-      simpa only [RingHom.comp_apply] using this
+-
+-    obtain ⟨d₀, rfl⟩ : ∃ d : Matrix (Fin b) (Fin a) R, D₀ = d.map (Ideal.Quotient.mk _) :=
+-      ⟨Matrix.of fun j k => (Ideal.Quotient.mk_surjective (D₀ j k)).choose, by
+-        ext j k
+-        simp [(Ideal.Quotient.mk_surjective (D₀ j k)).choose_spec]⟩
+-    obtain ⟨d₁, rfl⟩ : ∃ d : Matrix (Fin c) (Fin b) R, D₁ = d.map (Ideal.Quotient.mk _) :=
+-      ⟨Matrix.of fun i j => (Ideal.Quotient.mk_surjective (D₁ i j)).choose, by
+-        ext i j
+-        simp [(Ideal.Quotient.mk_surjective (D₁ i j)).choose_spec]⟩
+-    obtain ⟨r, rfl⟩ : ∃ r : Fin a → R, v' = fun k => Ideal.Quotient.mk _ (r k) :=
+-      ⟨fun k => (Ideal.Quotient.mk_surjective (v' k)).choose,
+-        funext fun k => (Ideal.Quotient.mk_surjective (v' k)).choose_spec.symm⟩
+-
+-    have hs : ∀ j, ∑ k, d₀ j k * r k ∈ I ^ (e + 1) := fun j => by
+-      have h := congrFun hv' j
+-      simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, Ideal.Quotient.factor_mk,
+-        Pi.zero_apply] at h
+-      rw [← Ideal.Quotient.eq_zero_iff_mem, map_sum]
+-      simpa only [map_mul] using h
+-
+-    have hs2 : ∀ i, ∑ j, d₁ i j * ∑ k, d₀ j k * r k ∈ I ^ (e + 1 + 1) := fun i => by
+-      have hrow : ∀ k, ∑ j, d₁ i j * d₀ j k ∈ I ^ (e + 1 + 1) := fun k => by
+-        have h := congrFun (congrFun hD i) k
+-        simp only [Matrix.mul_apply, Matrix.map_apply, Matrix.zero_apply] at h
+-        rw [← Ideal.Quotient.eq_zero_iff_mem, map_sum]
+-        simpa only [map_mul] using h
+-      have heq : ∑ j, d₁ i j * ∑ k, d₀ j k * r k = ∑ k, (∑ j, d₁ i j * d₀ j k) * r k := by
+-        simp only [Finset.mul_sum, Finset.sum_mul, mul_assoc]
+-        exact Finset.sum_comm
+-      rw [heq]
+-      exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (hrow k)
+-
+-    obtain ⟨m, hm⟩ : ∃ m : Fin b → reesAlgebra I,
+-        ∀ j, (m j : R[X]) = Polynomial.monomial (e + 1) (∑ k, d₀ j k * r k) :=
+-      ⟨fun j => ⟨Polynomial.monomial (e + 1) (∑ k, d₀ j k * r k),
+-        reesAlgebra.monomial_mem.mpr (hs j)⟩, fun _ => rfl⟩
+-
+-    have hW : ((d₁.map (Ideal.Quotient.mk _)).map g').mulVec
+-        (fun j => Ideal.Quotient.mk (reesShiftIdeal I) (m j)) = 0 := by
+-      funext i
+-      have hmem : (∑ j, algebraMap R (reesAlgebra I) (d₁ i j) * m j) ∈ reesShiftIdeal I := by
+-        rw [mem_reesShiftIdeal]
+-        intro n
+-        rw [coeff_sum_algebraMap_mul_rees]
+-        simp only [hm, Polynomial.coeff_monomial]
+-        by_cases hn : e + 1 = n
+-        · subst hn
+-          simpa using hs2 i
+-        · simp [hn]
+-      have := Ideal.Quotient.eq_zero_iff_mem.mpr hmem
+-      rw [map_sum] at this
+-      simpa only [Matrix.mulVec, dotProduct, Matrix.map_apply, hg'x, Pi.zero_apply,
+-        map_mul] using this
+-
+-    obtain ⟨V, hV⟩ := hex _ hW
+-    choose P hP using fun k => Ideal.Quotient.mk_surjective (I := reesShiftIdeal I) (V k)
+-    have hdiff : ∀ j, ∑ k, d₀ j k * (P k : R[X]).coeff (e + 1) - ∑ k, d₀ j k * r k ∈
+-        I ^ (e + 1 + 1) := fun j => by
+-      have h := congrFun hV j
+-      simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, hg'x, ← hP] at h
+-      have h' : Ideal.Quotient.mk (reesShiftIdeal I)
+-          (∑ k, algebraMap R (reesAlgebra I) (d₀ j k) * P k) =
+-          Ideal.Quotient.mk (reesShiftIdeal I) (m j) := by
+-        rw [map_sum]
+-        simpa only [map_mul] using h
+-      rw [Ideal.Quotient.eq, mem_reesShiftIdeal] at h'
+-      have h'' := h' (e + 1)
+-      rw [Subalgebra.coe_sub, Polynomial.coeff_sub, coeff_sum_algebraMap_mul_rees, hm,
+-        Polynomial.coeff_monomial, if_pos rfl] at h''
+-      exact h''
+-    refine ⟨fun k => Ideal.Quotient.mk _ (r k - (P k : R[X]).coeff (e + 1)), ?_, ?_⟩
+-    · funext j
+-      have hmem : ∑ k, d₀ j k * (r k - (P k : R[X]).coeff (e + 1)) ∈ I ^ (e + 1 + 1) := by
+-        have heq : ∑ k, d₀ j k * (r k - (P k : R[X]).coeff (e + 1)) =
+-            -(∑ k, d₀ j k * (P k : R[X]).coeff (e + 1) - ∑ k, d₀ j k * r k) := by
+-          simp only [mul_sub, Finset.sum_sub_distrib]
+-          ring
+-        rw [heq]
+-        exact neg_mem (hdiff j)
+-      have := Ideal.Quotient.eq_zero_iff_mem.mpr hmem
+-      rw [map_sum] at this
+-      simpa only [Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.zero_apply, map_mul] using this
+-    · intro k
+-      simp only [Ideal.Quotient.factor_mk]
+-      rw [Ideal.Quotient.eq, sub_sub_cancel_left]
+-      exact neg_mem ((P k).2 (e + 1))
+ 
+ end GlobalTheory
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/IsWeaklyRegularPairModOneLeft.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/IsWeaklyRegularPairModOneLeft.lean
+@@ -35,11 +35,6 @@
+     rw [IsLocalRing.maximalIdeal_eq_bot]
+     infer_instance
+ 
+-theorem HasBase.of_ringEquiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S)
+-    (h : HasBase R) : HasBase S := by
+-  obtain ⟨A, _, _, i, hA, hi, hf⟩ := h
+-  exact ⟨A, inferInstance, inferInstance, e.toRingHom.comp i, hA, e.injective.comp hi,
+-    (RingHom.Finite.of_surjective _ e.surjective).comp hf⟩
+ 
+ theorem isWeaklyRegularPairMod_one_left {A : Type} [CommRing A] (J : Ideal A) (v : A) : Reg2 J 1 v :=
+   ⟨fun a h => by simpa using h, fun a _ => by simp⟩
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/IrrIffSpan.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/IrrIffSpan.lean
+@@ -1,4 +1,4 @@
+-import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.IrreducibleSpans.Burnside
++import Mathlib
+ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IrrIffSpan
+ 
+ open Polynomial Matrix
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/MapApi.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/MapApi.lean
+@@ -2,10 +2,6 @@
+ 
+ open Polynomial UpperTheory.V.W
+ 
+-private theorem UpperTheory.V.AlgebraTools.Det.mapApi_congr {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G)
+-    (B : Type) [CommRing B] (i j : Algebra A B) (h : i = j) (x : MonoidAlgebra B G) :
+-    @GDet.D n A G _ _ D B _ i x = @GDet.D n A G _ _ D B _ j x := by
+-  subst h; rfl
+ 
+ private theorem UpperTheory.V.AlgebraTools.Det.map_D_mapRingHom_eq {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G)
+     {A' : Type} [CommRing A'] (f : A →+* A') (B₀ : Type) [CommRing B₀] [Algebra A B₀]
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/RepApi.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/RepApi.lean
+@@ -39,7 +39,7 @@
+ private theorem ofRep_D (ρ : G →* Matrix (Fin n) (Fin n) A) (B : Type) [CommRing B] [Algebra A B]
+     (x : MonoidAlgebra B G) : (GDet.ofRep ρ).D B x = (GDet.repAlg ρ B x).det := rfl
+ 
+-private theorem chi_eq (ρ : G →* Matrix (Fin n) (Fin n) A) (y : MonoidAlgebra A G) :
++theorem core32_RepApi_chi_eq (ρ : G →* Matrix (Fin n) (Fin n) A) (y : MonoidAlgebra A G) :
+     (GDet.ofRep ρ).chi y = (GDet.repAlg ρ A y).charpoly := by
+   unfold GDet.chi
+   rw [ofRep_D, ← Polynomial.algebraMap_eq, map_sub, repAlg_single, repAlg_map, map_one]
+@@ -48,9 +48,9 @@
+   ext i j
+   by_cases h : i = j <;> simp [Matrix.charmatrix_apply, Matrix.one_apply, h]
+ 
+-private theorem chi_single (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
++theorem core32_RepApi_chi_single (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
+     (GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
+-  rw [chi_eq, repAlg_single]; simp
++  rw [core32_RepApi_chi_eq, repAlg_single]; simp
+ 
+ end
+ 
+@@ -67,15 +67,15 @@
+     (∀ {H : Type} [Group H] (φ : H →* G), (GDet.ofRep ρ).comap φ = GDet.ofRep (ρ.comp φ)) ∧
+     (∀ (ρ' : G →* Matrix (Fin n) (Fin n) A) (P : GL (Fin n) A), (∀ g, (P : Matrix (Fin n) (Fin n) A) * ρ' g = ρ g * P) → GDet.ofRep ρ' = GDet.ofRep ρ) := by
+   intro n A G _ _ ρ
+-  refine ⟨chi_eq ρ, chi_single ρ, ?_, ?_, ?_, ?_, ?_, ?_⟩
++  refine ⟨core32_RepApi_chi_eq ρ, core32_RepApi_chi_single ρ, ?_, ?_, ?_, ?_, ?_, ?_⟩
+   · intro hn y
+     haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+     unfold GDet.tr GDet.lam
+-    rw [chi_eq, Matrix.trace_eq_neg_charpoly_coeff, Fintype.card_fin]
++    rw [core32_RepApi_chi_eq, Matrix.trace_eq_neg_charpoly_coeff, Fintype.card_fin]
+     ring
+   · intro g
+     unfold GDet.lam
+-    rw [chi_single, Matrix.det_eq_sign_charpoly_coeff, Fintype.card_fin, Nat.sub_self]
++    rw [core32_RepApi_chi_single, Matrix.det_eq_sign_charpoly_coeff, Fintype.card_fin, Nat.sub_self]
+   · intro y hy
+     unfold GDet.Kills
+     intro B _ _ h
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/SignLemma.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/SignLemma.lean
+@@ -1,5 +1,4 @@
+ import Mathlib
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.DeterminantRepresentations.SchurLine
+ 
+ open Polynomial Matrix
+ 
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/EqLagIff.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/EqLagIff.lean
+@@ -24,10 +24,6 @@
+   rw [← hv, Ring.inverse_unit, ← Units.smul_def, ← Units.smul_def]
+   exact eq_inv_smul_iff
+ 
+-example (R : Type) [CommRing R] (a : Unit → R) (P : R) : lag a P () = 1 := by
+-  have : (Finset.univ : Finset Unit).erase () = ∅ := rfl
+-  simp [lag, this]
+-
+ def pat {ι : Type*} (R : Type*) [CommRing R] (p : ι → ι → Prop) : Submodule R (Matrix ι ι R) where
+   carrier := {X | ∀ i j, ¬ p i j → X i j = 0}
+   add_mem' := fun hX hY i j h => by simp [hX i j h, hY i j h]
+@@ -37,7 +33,4 @@
+ theorem mem_pat {ι R : Type*} [CommRing R] {p : ι → ι → Prop} {X : Matrix ι ι R} :
+     X ∈ pat R p ↔ ∀ i j, ¬ p i j → X i j = 0 := Iff.rfl
+ 
+-example {ι R : Type} [CommRing R] : pat R (fun _ _ : ι => True) = ⊤ := by
+-  ext X; simp [mem_pat]
+-
+ end UpperTheory.V.AlgebraTools
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoCaten.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoCaten.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.CmOfRegular
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoEvLow
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoSurj
+@@ -9,9 +10,7 @@
+ open IsLocalRing MvPowerSeries UpperTheory.V.Alg
+ 
+ private theorem cm_of_regular (A : Type) [CommRing A] [IsRegularLocalRing A] : ReciprocityTheory.CA.IsCM A := by
+-  obtain ⟨xs, h1, h2, h3⟩ :=
+-    PI.UnitaryGroupMassFormula.RLRS.IsRegularLocalRing.exists_isRegular_ofList_eq_maximalIdeal A
+-  exact ⟨inferInstance, xs.length, h2.symm, xs, rfl, fun r hr => h1 ▸ Ideal.subset_span hr, h3⟩
++  apply _root_.core32_CmOfRegular_cm_of_regular <;> assumption
+ 
+ private theorem dim_quot (A : Type) [CommRing A] [IsRegularLocalRing A] (P : Ideal A) [P.IsPrime]
+     (p : Ideal (A ⧸ P)) [p.IsPrime] :
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoSpan.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoSpan.lean
+@@ -2,7 +2,7 @@
+ 
+ open IsLocalRing MvPowerSeries UpperTheory.V.Alg
+ 
+-private theorem co_span_dual (O : Type) [CommRing O] [IsLocalRing O] (M : Type) [AddCommGroup M] [Module O M]
++theorem core32_CoSpan_co_span_dual (O : Type) [CommRing O] [IsLocalRing O] (M : Type) [AddCommGroup M] [Module O M]
+     (h : Module.IsTorsionBySet O M (maximalIdeal O)) (x : M) (hx : x ≠ 0) :
+     ∃ D : M →ₗ[O] ResidueField O, D x ≠ 0 := by
+   letI : Module (ResidueField O) M := h.module
+@@ -52,7 +52,7 @@
+     refine (Submodule.Quotient.mk_eq_zero N).2 (hIN _ ?_)
+     rw [Algebra.smul_def]
+     exact I.mul_mem_right _ (hO a ha)
+-  obtain ⟨φ, hφ⟩ := co_span_dual O _ htor _ hxN
++  obtain ⟨φ, hφ⟩ := core32_CoSpan_co_span_dual O _ htor _ hxN
+   let D : R →ₗ[O] ResidueField O := φ ∘ₗ N.mkQ
+   have hD : ∀ y ∈ N, D y = 0 := fun y hy => by
+     show φ (N.mkQ y) = 0
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/Graded.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/Graded.lean
+@@ -9,16 +9,6 @@
+ instance gradedAlgebra : GradedAlgebra W.gr :=
+   { (inferInstance : SetLike.GradedMonoid W.gr), (UpperTheory.V.Alg.gr_internal O X R W).chooseDecomposition with }
+ 
+-def originA (h : W.HasOrigin) : W.A →ₐ[O] O := (W.origin h).comp W.A.val
+ 
+-omit [DecidableEq X] in
+-
+-def quot {R' : Type} [CommRing R'] [Algebra O R'] (p : R →ₐ[O] R') (hp : Function.Surjective p)
+-    (h : IsHomog O W.wt (RingHom.ker (p.comp W.π))) : WPres O X R' where
+-  σ := W.σ
+-  wt := W.wt
+-  π := p.comp W.π
+-  surj := hp.comp W.surj
+-  homog := h
+ 
+ end UpperTheory.V.Alg.WPres
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ChEltOne.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ChEltOne.lean
+@@ -7,7 +7,7 @@
+ section
+ variable {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E)
+ 
+-private theorem chiS_map (S T : Type) [CommRing S] [Algebra A S] [CommRing T] [Algebra A T] (f : S →ₐ[A] T)
++theorem core32_ChEltOne_chiS_map (S T : Type) [CommRing S] [Algebra A S] [CommRing T] [Algebra A T] (f : S →ₐ[A] T)
+     (y : S ⊗[A] E) :
+     D.chiS T (Algebra.TensorProduct.map f (AlgHom.id A E) y) = (D.chiS S y).map (f : S →+* T) := by
+   have h := D.nat (Polynomial S) (Polynomial T) (Polynomial.mapAlgHom f) (Polynomial.X ⊗ₜ 1 -
+@@ -24,12 +24,12 @@
+     | tmul s x => simp
+     | add a b ha hb => simp only [map_add, ha, hb]
+ 
+-private theorem F_map (S T : Type) [CommRing S] [Algebra A S] [CommRing T] [Algebra A T] (f : S →ₐ[A] T)
++theorem core32_ChEltOne_F_map (S T : Type) [CommRing S] [Algebra A S] [CommRing T] [Algebra A T] (f : S →ₐ[A] T)
+     (y : S ⊗[A] E) :
+     Polynomial.aeval (Algebra.TensorProduct.map f (AlgHom.id A E) y)
+       (D.chiS T (Algebra.TensorProduct.map f (AlgHom.id A E) y)) =
+       Algebra.TensorProduct.map f (AlgHom.id A E) (Polynomial.aeval y (D.chiS S y)) := by
+-  rw [chiS_map]
++  rw [core32_ChEltOne_chiS_map]
+   generalize D.chiS S y = p
+   induction p using Polynomial.induction_on' with
+   | add p q hp hq => simp only [Polynomial.map_add, map_add, hp, hq]
+@@ -73,7 +73,7 @@
+   have : ∑ j, s j ⊗ₜ[A] x j =
+       Algebra.TensorProduct.map (MvPolynomial.aeval s) (AlgHom.id A E) (Det.gen (A := A) x) := by
+     simp [Det.gen, map_sum]
+-  rw [this, F_map]
++  rw [this, core32_ChEltOne_F_map]
+   exact expand S _ _ _ fun α => TwoSidedIdeal.subset_span ⟨k, x, α, rfl⟩
+ 
+ private theorem rT_mem (P S : Type) [CommRing P] [Algebra A P] [CommRing S] [Algebra A S] (g : P →ₗ[A] S)
+@@ -133,7 +133,7 @@
+       Algebra.TensorProduct.map (MvPolynomial.mapAlgHom (Algebra.ofId A S)) (AlgHom.id A E)
+         (Det.gen (A := A) x) := by
+     simp [Det.gen, map_sum, Det.cancel_tmul]
+-  rw [this, F_map]
++  rw [this, core32_ChEltOne_F_map]
+   unfold Det.chElt
+   generalize Polynomial.aeval (Det.gen (A := A) x) (D.chiS (MvPolynomial (Fin k) A) (Det.gen x)) = w
+   induction w with
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/CmOfRegular.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/CmOfRegular.lean
+@@ -4,7 +4,7 @@
+ 
+ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
+ 
+-private theorem cm_of_regular (A : Type) [CommRing A] [IsRegularLocalRing A] : ReciprocityTheory.CA.IsCM A := by
++theorem core32_CmOfRegular_cm_of_regular (A : Type) [CommRing A] [IsRegularLocalRing A] : ReciprocityTheory.CA.IsCM A := by
+   obtain ⟨xs, hspan, hlen, hreg⟩ :=
+     PI.UnitaryGroupMassFormula.RLRS.IsRegularLocalRing.exists_isRegular_ofList_eq_maximalIdeal A
+   refine ⟨inferInstance, xs.length, hlen.symm, xs, rfl, fun r hr => ?_, hreg⟩
+@@ -16,13 +16,13 @@
+   refine ⟨fun O _ _ _ _ d => ⟨?_, ?_⟩, fun k _ d => ⟨?_, ?_⟩⟩
+   · haveI : IsRegularLocalRing (MvPowerSeries (Fin d) O) :=
+       GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries O (Fin d)
+-    exact cm_of_regular _
++    exact core32_CmOfRegular_cm_of_regular _
+   · rw [GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, IsDiscreteValuationRing.ringKrullDim_eq_one,
+       Nat.card_eq_fintype_card, Fintype.card_fin, add_comm]
+     push_cast
+     rfl
+   · haveI : IsRegularLocalRing (MvPowerSeries (Fin d) k) :=
+       GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries k (Fin d)
+-    exact cm_of_regular _
++    exact core32_CmOfRegular_cm_of_regular _
+   · rw [GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, ringKrullDim_eq_zero_of_field,
+       Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DChKer.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DChKer.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.ChEltOne
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.OfDetToDet
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.IsLocalHom
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.HomTwo
+@@ -90,31 +91,14 @@
+ private theorem chk_chiS_map (S T : Type) [CommRing S] [Algebra A S] [CommRing T] [Algebra A T] (f : S →ₐ[A] T)
+     (y : S ⊗[A] E) :
+     D.chiS T (Algebra.TensorProduct.map f (AlgHom.id A E) y) = (D.chiS S y).map (f : S →+* T) := by
+-  have h := D.nat (Polynomial S) (Polynomial T) (Polynomial.mapAlgHom f) (Polynomial.X ⊗ₜ 1 -
+-    Algebra.TensorProduct.map (IsScalarTower.toAlgHom A S (Polynomial S)) (AlgHom.id A E) y)
+-  refine Eq.trans ?_ h
+-  unfold Det.chiS
+-  congr 1
+-  rw [map_sub]
+-  congr 1
+-  · simp
+-  · clear h
+-    induction y with
+-    | zero => simp
+-    | tmul s x => simp
+-    | add a b ha hb => simp only [map_add, ha, hb]
++  apply _root_.core32_ChEltOne_chiS_map <;> assumption
+ 
+ private theorem chk_F_map (S T : Type) [CommRing S] [Algebra A S] [CommRing T] [Algebra A T] (f : S →ₐ[A] T)
+     (y : S ⊗[A] E) :
+     Polynomial.aeval (Algebra.TensorProduct.map f (AlgHom.id A E) y)
+       (D.chiS T (Algebra.TensorProduct.map f (AlgHom.id A E) y)) =
+       Algebra.TensorProduct.map f (AlgHom.id A E) (Polynomial.aeval y (D.chiS S y)) := by
+-  rw [chk_chiS_map]
+-  generalize D.chiS S y = p
+-  induction p using Polynomial.induction_on' with
+-  | add p q hp hq => simp only [Polynomial.map_add, map_add, hp, hq]
+-  | monomial k a =>
+-    simp [Polynomial.aeval_monomial, Algebra.TensorProduct.algebraMap_apply]
++  apply _root_.core32_ChEltOne_F_map <;> assumption
+ 
+ private def chkK (B : Type) [CommRing B] [Algebra A B] (w : B ⊗[A] E) : Prop :=
+   ∀ (S : Type) [CommRing S] [Algebra A S] (f : B →ₐ[A] S) (h : S ⊗[A] E),
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/FinDefs.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/FinDefs.lean
+@@ -19,7 +19,6 @@
+   inj : Function.Injective χ
+   fin : ∀ i j, i ≠ j → Module.Finite k (Z1 (χ i) (χ j)) ∧ Module.finrank k (Z1 (χ i) (χ j)) ≤ h
+ 
+-def finBound (n h : ℕ) : ℕ := n + ∑ p ∈ Finset.range n, (n ^ 2 * h) ^ p
+ 
+ structure IsGMA {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (e : Fin n → E) : Prop where
+   ch : D.IsCH
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/IsLocalHom.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/IsLocalHom.lean
+@@ -32,8 +32,6 @@
+ 
+ abbrev Cpl : Type := AdicCompletion (maximalIdeal (Localization.AtPrime x)) (Localization.AtPrime x)
+ 
+-def toCpl : C →+* Cpl x :=
+-  (algebraMap (Localization.AtPrime x) (Cpl x)).comp (algebraMap C (Localization.AtPrime x))
+ 
+ def dimAt (I : Ideal C) : WithBot ℕ∞ :=
+   ringKrullDim (Localization.AtPrime x ⧸ I.map (algebraMap C (Localization.AtPrime x)))
+@@ -47,11 +45,5 @@
+   comap_pow : ∀ n : ℕ, (maximalIdeal R ^ n).comap (algebraMap C R) = x ^ n
+   dense : ∀ (n : ℕ) (r : R), ∃ c : C, r - algebraMap C R c ∈ maximalIdeal R ^ n
+ 
+-theorem IsCplAt.self (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
+-    [IsAdicComplete (maximalIdeal R) R] : IsCplAt (maximalIdeal R) R where
+-  noeth := inferInstance
+-  complete := inferInstance
+-  comap_pow n := Ideal.comap_id _
+-  dense n r := ⟨r, by simp⟩
+ 
+ end UpperTheory.V.CA
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/OfDetToDet.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/OfDetToDet.lean
+@@ -1,5 +1,5 @@
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.RepAlg
+-import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.UnopSMul
++import Mathlib
+ 
+ noncomputable section
+ 
+@@ -107,30 +107,8 @@
+     haveI : IsScalarTower A B S := .of_algebraMap_eq fun _ => rfl
+     exact (congrArg (D.D S) (map_smul (cancel A E B S) s x)).trans (D.homog S s _)
+ 
+-def unopS (A E S : Type) [CommRing A] [Ring E] [Algebra A E] [CommRing S] [Algebra A S] :
+-    S ⊗[A] Eᵐᵒᵖ →ₗ[S] S ⊗[A] E :=
+-  (MulOpposite.opLinearEquiv A : E ≃ₗ[A] Eᵐᵒᵖ).symm.toLinearMap.baseChange S
+ 
+-theorem unopS_mul (S : Type) [CommRing S] [Algebra A S] (x y : S ⊗[A] Eᵐᵒᵖ) :
+-    unopS A E S (x * y) = unopS A E S y * unopS A E S x :=
+-  _root_.UpperTheory.Reformulated.B.Qk3.unopS_mul S x y
+ 
+-def op : Det n A Eᵐᵒᵖ where
+-  D S _ _ :=
+-    { toFun := fun x => D.D S (unopS A E S x)
+-      map_one' := by
+-        have : unopS A E S 1 = 1 := by simp [unopS, Algebra.TensorProduct.one_def]
+-        rw [this, map_one]
+-      map_mul' := fun x y => by rw [unopS_mul, map_mul, mul_comm] }
+-  nat S T _ _ _ _ φ x := by
+-    have : unopS A E T (Algebra.TensorProduct.map φ (AlgHom.id A _) x) =
+-        Algebra.TensorProduct.map φ (AlgHom.id A E) (unopS A E S x) := by
+-      induction x with
+-      | zero => simp
+-      | add a b ha hb => simp only [map_add, ha, hb]
+-      | tmul s a => simp [unopS]
+-    exact (congrArg (D.D T) this).trans (D.nat S T φ _)
+-  homog S _ _ s x := (congrArg (D.D S) (map_smul (unopS A E S) s x)).trans (D.homog S s _)
+ 
+ theorem ext' {D D' : Det n A E} (h : ∀ (S : Type) [CommRing S] [Algebra A S] (x), D.D S x = D'.D S x) : D = D' := by
+   cases D; cases D'; congr; funext S _ _; exact MonoidHom.ext (h S)
+@@ -164,17 +142,6 @@
+   | add a b ha hb => simp only [map_add, ha, hb]
+   | single g s => simp [toT_single, ofT_tmul]
+ 
+-theorem toT_ofT (x : S ⊗[A] MonoidAlgebra A G) : toT A G S (ofT A G S x) = x := by
+-  induction x with
+-  | zero => simp
+-  | add a b ha hb => simp only [map_add, ha, hb]
+-  | tmul s y =>
+-    induction y using MonoidAlgebra.induction_linear with
+-    | zero => simp
+-    | add a b ha hb => simp only [tmul_add, map_add, ha, hb]
+-    | single g a =>
+-      rw [ofT_tmul, map_smul, MonoidAlgebra.mapRingHom_single, toT_single, smul_tmul', smul_eq_mul, mul_comm,
+-        ← Algebra.smul_def, smul_tmul, MonoidAlgebra.smul_single, smul_eq_mul, mul_one]
+ 
+ end Grp
+ 
+@@ -209,22 +176,12 @@
+ theorem ofDet_toDet (D : GDet n A G) : ofDet D.toDet = D :=
+   GDet.ext fun S _ _ x => congrArg (D.D S) (ofT_toT (A := A) x)
+ 
+-def diagRep {ι : Type} [Fintype ι] [DecidableEq ι] (χ : ι → G →* Aˣ) : G →* Matrix ι ι A where
+-  toFun g := Matrix.diagonal fun i => (χ i g : A)
+-  map_one' := by simp
+-  map_mul' g h := by simp [Matrix.diagonal_mul_diagonal]
+ 
+-def ofChars (χ : Fin n → G →* Aˣ) : GDet n A G := ofRep (diagRep χ)
+ 
+ variable [IsLocalRing A] [TopologicalSpace G]
+ 
+-def chBar (D : GDet n A G) (Z : Set (MonoidAlgebra A G)) : TwoSidedIdeal (MonoidAlgebra A G) :=
+-  closureIdeal (maximalIdeal A) (D.CH ∪ Z)
+ 
+-abbrev CHQuot (D : GDet n A G) (Z : Set (MonoidAlgebra A G)) : Type := (D.chBar Z).ringCon.Quotient
+ 
+-def toQuot (D : GDet n A G) (Z : Set (MonoidAlgebra A G)) : MonoidAlgebra A G →ₐ[A] D.CHQuot Z :=
+-  RingCon.mkₐ A (D.chBar Z).ringCon
+ 
+ end GDet
+ 
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/UGenApprox.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/UGenApprox.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoSpan
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.FinDefs
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoRes
+ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LayerApproximation
+@@ -13,12 +14,7 @@
+ private theorem u_gen_dual (O : Type) [CommRing O] [IsLocalRing O] (M : Type) [AddCommGroup M] [Module O M]
+     (h : Module.IsTorsionBySet O M (maximalIdeal O)) (x : M) (hx : x ≠ 0) :
+     ∃ D : M →ₗ[O] ResidueField O, D x ≠ 0 := by
+-  letI : Module (ResidueField O) M := h.module
+-  haveI : IsScalarTower O (ResidueField O) M := h.isScalarTower
+-  have := (Module.forall_dual_apply_eq_zero_iff (ResidueField O) x).not.2 hx
+-  push Not at this
+-  obtain ⟨φ, hφ⟩ := this
+-  exact ⟨φ.restrictScalars O, hφ⟩
++  apply _root_.core32_CoSpan_co_span_dual <;> assumption
+ 
+ private theorem u_gen_span (O : Type) [CommRing O] [IsLocalRing O] (R : Type) [CommRing R] [Algebra O R]
+     [IsCO O R] (S : Set R) (hS : S ⊆ maximalIdeal R)
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/FullEx.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/FullEx.lean
+@@ -6,135 +6,8 @@
+ 
+ open Matrix
+ 
+-private theorem comb {G ι : Type} [Group G] [Fintype ι] (R : G → ι → ι → Prop)
+-    (h1 : ∀ i, R 1 i i) (hinv : ∀ g i, ∃ k, R g i k ∧ R g⁻¹ k i)
+-    (hc : ∀ g h, ∃ x, (∀ i k j, R g i k → R h k j → R x i j) ∧
+-      (∀ i k j, R h⁻¹ i k → R g⁻¹ k j → R x⁻¹ i j)) :
+-    ∃ b, (∀ i, R b i i) ∧ (∀ i j, R b i j → R b⁻¹ i j) ∧
+-      ∀ g i k l j, R g i k → R b k l → R g⁻¹ l j → R b i j := by
+-  classical
+-  let T : G → Finset (Bool × ι × ι) := fun g =>
+-    Finset.univ.filter fun s => if s.1 then R g s.2.1 s.2.2 else R g⁻¹ s.2.1 s.2.2
+-  let P : G → Prop := fun g => (∀ i, R g i i) ∧ ∀ i, R g⁻¹ i i
+-  have hP1 : P 1 := ⟨h1, by rw [inv_one]; exact h1⟩
+-  obtain ⟨b, hb, hmax⟩ : ∃ b, P b ∧ ∀ c, P c → (T c).card ≤ (T b).card := by
+-    have hfin : ((fun g => (T g).card) '' {g | P g}).Finite :=
+-      (Set.finite_Iic (Fintype.card (Bool × ι × ι))).subset (by
+-        rintro _ ⟨g, _, rfl⟩
+-        exact Finset.card_le_univ _)
+-    obtain ⟨_, ⟨b, hb, rfl⟩, hm⟩ := Set.exists_max_image _ id hfin ⟨_, 1, hP1, rfl⟩
+-    exact ⟨b, hb, fun c hc => hm _ ⟨c, hc, rfl⟩⟩
+-  have key : ∀ c, P c → (∀ i j, R c i j → R b i j) ∧ ∀ i j, R c⁻¹ i j → R b⁻¹ i j := by
+-    intro c hcP
+-    obtain ⟨x, hx1, hx2⟩ := hc b c
+-    have hPx : P x := ⟨fun i => hx1 i i i (hb.1 i) (hcP.1 i), fun i => hx2 i i i (hcP.2 i) (hb.2 i)⟩
+-    have hsub : T b ⊆ T x := by
+-      rintro ⟨t, i, j⟩ hs
+-      cases t
+-      · simp only [T, Finset.mem_filter, Finset.mem_univ, true_and, Bool.false_eq_true, if_false] at hs ⊢
+-        exact hx2 i i j (hcP.2 i) hs
+-      · simp only [T, Finset.mem_filter, Finset.mem_univ, true_and, if_true] at hs ⊢
+-        exact hx1 i j j hs (hcP.1 j)
+-    have heq : T b = T x := Finset.eq_of_subset_of_card_le hsub (hmax x hPx)
+-    constructor
+-    · intro i j hij
+-      have : ((true, i, j) : Bool × ι × ι) ∈ T x := by
+-        simp only [T, Finset.mem_filter, Finset.mem_univ, true_and, if_true]
+-        exact hx1 i i j (hb.1 i) hij
+-      rw [← heq] at this
+-      simpa only [T, Finset.mem_filter, Finset.mem_univ, true_and, if_true] using this
+-    · intro i j hij
+-      have : ((false, i, j) : Bool × ι × ι) ∈ T x := by
+-        simp only [T, Finset.mem_filter, Finset.mem_univ, true_and, Bool.false_eq_true, if_false]
+-        exact hx2 i j j hij (hb.2 j)
+-      rw [← heq] at this
+-      simpa only [T, Finset.mem_filter, Finset.mem_univ, true_and, Bool.false_eq_true, if_false] using this
+-  refine ⟨b, hb.1, ?_, ?_⟩
+-  · have := (key b⁻¹ ⟨hb.2, by rw [inv_inv]; exact hb.1⟩).2
+-    rwa [inv_inv] at this
+-  · intro g i k l j hik hkl hlj
+-    obtain ⟨x, hx1, hx2⟩ := hc g b
+-    obtain ⟨y, hy1, hy2⟩ := hc x g⁻¹
+-    rw [inv_inv] at hy2
+-    have hPy : P y := by
+-      constructor
+-      · intro t
+-        obtain ⟨s, hs1, hs2⟩ := hinv g t
+-        exact hy1 t s t (hx1 t s s hs1 (hb.1 s)) hs2
+-      · intro t
+-        obtain ⟨s, hs1, hs2⟩ := hinv g t
+-        exact hy2 t s t hs1 (hx2 s s t (hb.2 s) hs2)
+-    exact (key y hPy).1 i j (hy1 i l j (hx1 i k l hik hkl) hlj)
+ 
+-private theorem expProd {κ : Type} [Field κ] {n : ℕ} (α : Fin n → κˣ) (hα : FreeRatios α)
+-    (A B C D : Matrix (Fin n) (Fin n) κ) : ∃ m : ℕ,
+-    (∀ i k j, A i k ≠ 0 → B k j ≠ 0 → (A * diagonal (fun i => ((α i : κˣ) : κ)) ^ m * B) i j ≠ 0) ∧
+-    (∀ i k j, C i k ≠ 0 → D k j ≠ 0 → (C * diagonal (fun i => (((α i)⁻¹ : κˣ) : κ)) ^ m * D) i j ≠ 0) := by
+-  let c0 : Bool × Fin n × Fin n → Fin n → κ := fun s k =>
+-    if s.1 then A s.2.1 k * B k s.2.2 else C s.2.1 k * D k s.2.2
+-  let a0 : Bool → Fin n → κˣ := fun t k => if t then α k else (α k)⁻¹
+-  have ha0 : ∀ t, FreeRatios (a0 t) := by
+-    intro t
+-    cases t
+-    · intro i j hij m hm h
+-      apply hα i j hij m hm
+-      simpa [a0] using h
+-    · simpa [a0] using hα
+-  obtain ⟨m, hm⟩ := expSums κ (Fin n) {s : Bool × Fin n × Fin n // ∃ k, c0 s k ≠ 0}
+-    (fun s => a0 s.1.1) (fun s => c0 s.1) (fun s => ha0 _) (fun s => s.2)
+-  refine ⟨m, ?_, ?_⟩
+-  · intro i k j h1 h2
+-    have := hm ⟨(true, i, j), k, by simpa [c0] using ⟨h1, h2⟩⟩
+-    convert this using 1
+-    rw [diagonal_pow, mul_apply]
+-    refine Finset.sum_congr rfl fun t _ => ?_
+-    simp only [mul_diagonal, c0, a0, if_true, Pi.pow_apply]
+-    ring
+-  · intro i k j h1 h2
+-    have := hm ⟨(false, i, j), k, by simpa [c0] using ⟨h1, h2⟩⟩
+-    convert this using 1
+-    rw [diagonal_pow, mul_apply]
+-    refine Finset.sum_congr rfl fun t _ => ?_
+-    simp only [mul_diagonal, c0, a0, Bool.false_eq_true, if_false, Pi.pow_apply]
+-    ring
+ 
+-private theorem finOrbit {G κ : Type} [Group G] [Field κ] {n : ℕ} (r : G →* GL (Fin n) κ) (hr : StrongIrr r)
+-    (W : Submodule κ (Fin n → κ)) (F : Set (Submodule κ (Fin n → κ))) (hF : F.Finite)
+-    (hW : ∀ g, W.map (Matrix.toLin' (gm r g)) ∈ F) : W = ⊥ ∨ W = ⊤ := by
+-  letI : MulAction G (Submodule κ (Fin n → κ)) :=
+-    { smul := fun g W => W.map (Matrix.toLin' (gm r g))
+-      one_smul := fun W => by
+-        change W.map (Matrix.toLin' (gm r 1)) = W
+-        simp [gm]
+-      mul_smul := fun g h W => by
+-        change W.map (Matrix.toLin' (gm r (g * h))) =
+-          (W.map (Matrix.toLin' (gm r h))).map (Matrix.toLin' (gm r g))
+-        rw [← Submodule.map_comp, ← Matrix.toLin'_mul]
+-        simp [gm] }
+-  have hfin : (MulAction.orbit G W).Finite := hF.subset (by
+-    rintro _ ⟨g, rfl⟩
+-    exact hW g)
+-  haveI : Finite (MulAction.orbit G W) := hfin
+-  haveI : Finite (G ⧸ MulAction.stabilizer G W) :=
+-    Finite.of_equiv _ (MulAction.orbitEquivQuotientStabilizer G W)
+-  refine hr W (MulAction.stabilizer G W) Subgroup.finiteIndex_of_finite_quotient fun g => ?_
+-  rw [MulAction.mem_stabilizer_iff]
+-  change W.map (Matrix.toLin' (gm r g)) = W ↔ _
+-  constructor
+-  · intro h v hv
+-    rw [← h]
+-    exact ⟨v, hv, by simp⟩
+-  · intro h
+-    have hinj : Function.Injective (Matrix.toLin' (gm r g)) := by
+-      intro v w hvw
+-      have := congrArg (fun x => gm r g⁻¹ *ᵥ x) hvw
+-      have h1 : gm r g⁻¹ * gm r g = 1 := by
+-        rw [gm, gm, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
+-      simpa only [toLin'_apply, mulVec_mulVec, h1, one_mulVec] using this
+-    apply Submodule.eq_of_le_of_finrank_eq
+-    · rintro _ ⟨v, hv, rfl⟩
+-      simpa using h v hv
+-    · exact (Submodule.equivMapOfInjective _ hinj W).finrank_eq.symm
+ 
+ end UpperTheory.V.Pr
+ 
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/PointEx.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/PointEx.lean
+@@ -1,3 +1,5 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.DeterminantRepresentations.RepApi
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.PhiMaps
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.SecondThirdPrimeConditionTransferAlt
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Integral
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.SelfTwistEigenvalues.UnipTorsion
+@@ -120,15 +122,11 @@
+ 
+ private theorem pe_inj {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Group G] (f : A →+* B)
+     (hf : Function.Injective f) (D D' : W.GDet n A G) (h : D.map f = D'.map f) : D = D' := by
+-  refine CA.d_gext D D' fun g i _ _ => hf ?_
+-  rw [← ((CA.d_gmap D).2.2.1 f _).2 i, ← ((CA.d_gmap D').2.2.1 f _).2 i, h]
++  exact _root_.UpperTheory.V.Pr.gdet_map_inj f hf h
+ 
+ private theorem pe_chi {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
+     (W.GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
+-  rw [Matrix.charpoly]
+-  show Matrix.det _ = _
+-  congr 1
+-  simp [W.GDet.repAlg, MonoidAlgebra.lift_single, Matrix.charmatrix, Matrix.smul_one_eq_diagonal]
++  apply _root_.UpperTheory.V.AlgebraTools.Det.core32_RepApi_chi_single <;> assumption
+ 
+ private theorem pe_cont {Γ R R' : Type} [TopologicalSpace Γ] [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
+     (f : R →+* R') [IsLocalHom f] {a : Γ → R} (h : AdicCont (maximalIdeal R) a) :
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/PropagationTheoremGL3.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/PropagationTheoremGL3.lean
+@@ -1,3 +1,11 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Integral
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.SumLe
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.EnnrealVolumeRatioStepCancel
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Detsec
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.AnnOfFlat
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Oddm
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoMvps
++import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosure
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.PropagationTheoremGL2
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.NicePrimeEx
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.ExistsNicePrimeAboveOfLargeDim
+@@ -15,15 +23,149 @@
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ExistsNonzeroLowCocycle
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.KrullDimLtOfNotLeTriangular
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.QuotientHomNonvanishingBound
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ChainedOfComap
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ThickOfDer
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Seedpt
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.HasObs
+ 
+-open IsLocalRing UpperTheory.V.Alg UpperTheory.V.Fr
++set_option linter.overlappingInstances false
++
++open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
++
++private theorem dim_comap {A R : Type} [CommRing A] [CommRing R] (p : A →+* R) (hp : Function.Surjective p)
++    (P : Ideal R) : ringKrullDim (A ⧸ P.comap p) = ringKrullDim (R ⧸ P) := by
++  have h : RingHom.ker ((Ideal.Quotient.mk P).comp p) = P.comap p := by
++    rw [← RingHom.comap_ker, Ideal.mk_ker]
++  rw [← h]
++  exact ringKrullDim_eq_of_ringEquiv
++    (RingHom.quotientKerEquivOfSurjective (Ideal.Quotient.mk_surjective.comp hp))
++
++private theorem chained_of_comap {A R : Type} [CommRing A] [CommRing R] (p : A →+* R) (hp : Function.Surjective p)
++    (I : Ideal R) (D : ℕ) (h : Chained (I.comap p) D) : Chained I D := by
++  have hm : (I.comap p).minimalPrimes = Ideal.comap p '' I.minimalPrimes :=
++    Ideal.comap_minimalPrimes_eq_of_surjective hp I
++  refine ⟨fun P hP => ?_, fun P hP Q hQ => ?_⟩
++  · rw [← dim_comap p hp]
++    exact h.1 _ (hm ▸ ⟨P, hP, rfl⟩)
++  · have h1 := h.2 (P.comap p) (hm ▸ ⟨P, hP, rfl⟩) (Q.comap p) (hm ▸ ⟨Q, hQ, rfl⟩)
++    have h2 : ∀ b, Relation.ReflTransGen (fun P Q : Ideal A => P ∈ (I.comap p).minimalPrimes ∧
++        Q ∈ (I.comap p).minimalPrimes ∧ (D : WithBot ℕ∞) ≤ ringKrullDim (A ⧸ (P ⊔ Q))) (P.comap p) b →
++        Relation.ReflTransGen (fun P Q : Ideal R => P ∈ I.minimalPrimes ∧ Q ∈ I.minimalPrimes ∧
++          (D : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ (P ⊔ Q))) P (b.map p) := by
++      intro b hb
++      induction hb with
++      | refl => rw [Ideal.map_comap_of_surjective p hp]
++      | tail _ hab ih =>
++        refine ih.tail ?_
++        obtain ⟨ha, hb, hd⟩ := hab
++        rw [hm] at ha hb
++        obtain ⟨a, ha, rfl⟩ := ha
++        obtain ⟨b, hb, rfl⟩ := hb
++        rw [Ideal.map_comap_of_surjective p hp, Ideal.map_comap_of_surjective p hp]
++        refine ⟨ha, hb, ?_⟩
++        have : (a ⊔ b).comap p = a.comap p ⊔ b.comap p := by
++          conv_lhs => rw [← Ideal.map_comap_of_surjective p hp a, ← Ideal.map_comap_of_surjective p hp b,
++            ← Ideal.map_sup, Ideal.comap_map_of_surjective p hp]
++          exact sup_eq_left.2 (le_sup_of_le_left (Ideal.comap_mono bot_le))
++        rwa [← dim_comap p hp, this]
++    have h3 := h2 _ h1
++    rwa [Ideal.map_comap_of_surjective p hp] at h3
++
++private theorem cc_mem {σ O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Nontrivial R]
++    (p : MvPowerSeries σ O →+* R) (f : MvPowerSeries σ O) (hf : p f = 0) :
++    MvPowerSeries.constantCoeff f ∈ maximalIdeal O := by
++  intro hu
++  have := (MvPowerSeries.isUnit_iff_constantCoeff.2 hu).map p
++  rw [hf] at this
++  exact not_isUnit_zero this
++
++private theorem detsec' (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
++    [IsAdicComplete (maximalIdeal O) O] (a b g D : ℕ) (hg : g ≠ 0) (f : Fin b → MvPowerSeries (Fin a ⊕ Fin g) O)
++    (M : Matrix (Fin g) (Fin g) (MvPowerSeries (Fin a ⊕ Fin g) O)) (h : a = b + D)
++    (hf : ∀ i, MvPowerSeries.constantCoeff (f i) ∈ maximalIdeal O)
++    (hM : ∀ i j, MvPowerSeries.constantCoeff (M i j) ∈ maximalIdeal O) :
++    Chained (Ideal.span (Set.range f ∪ Set.range (M *ᵥ fun j => MvPowerSeries.X (.inr j)) ∪ {M.det})) D := by
++  obtain ⟨g, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hg
++  exact detsec O a b g D f M h hf hM
++
++theorem UpperTheory.V.Fr.sharp3 :
++    ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ S : Space O F 3, ∀ (x : Ideal S.A) (L : S.Loc x), F.Big C₀ → ¬ S.u.triP ≤ x → ∃ I : Ideal L.R, L.Sharp I := by
++  classical
++  intro l _ O _ _ _ _ F C₀ hF S x L hB hx
++  obtain ⟨-, -, hcmp, htri⟩ := loc_rho hF (Or.inr rfl) S x L
++  have hoff : ∀ I : Ideal L.R, Chained I (3 * F.d + 1) → ∀ P ∈ I.minimalPrimes, L.ρ.OffTri P := by
++    intro I hI P hP
++    refine ⟨fun h => hP.1.1.ne_top (top_le_iff.1 ((htri hx).1 ▸ h)), fun h => ?_⟩
++    have h1 := (krull_dim_lt_of_not_le_triangular hF (Or.inr rfl) S x L hB hx).1
++    have h2 : ringKrullDim (L.R ⧸ P) ≤ ringKrullDim (L.R ⧸ L.ρ.triM) :=
++      ringKrullDim_le_of_surjective (Ideal.Quotient.factor h) (Ideal.Quotient.factor_surjective h)
++    have h3 := ((hI.1 P hP).trans h2).trans_lt h1
++    have h4 : 3 * F.d + 1 + 1 < 3 * F.d := by exact_mod_cast h3
++    omega
++  rcases Classical.em (S.u.ee ≤ x) with hee | hee
++  · obtain ⟨E⟩ := epres hF S x L hee
++    have hG : ∀ i, E.Go i ∈ RingHom.ker E.p := fun i =>
++      E.ker ▸ Ideal.subset_span (Or.inr ⟨i, rfl⟩)
++    have hFe : ∀ i, E.Fe i ∈ RingHom.ker E.p := fun i =>
++      E.ker ▸ Ideal.subset_span (Or.inl ⟨i, rfl⟩)
++    choose M hM hGM using fun i => oddm L.O' E.a E.g (E.Go i) (E.odd i) (E.min _ (hG i))
++    have hGo : E.Go = Matrix.of M *ᵥ fun j => MvPowerSeries.X (.inr j) := funext hGM
++    have hch : Chained (Ideal.span {E.p (Matrix.of M).det}) (3 * F.d + 1) := by
++      refine chained_of_comap E.p.toRingHom E.surj _ _ ?_
++      have h1 := detsec' L.O' E.a E.b E.g _ (gpos hF S x L hx E) E.Fe (Matrix.of M) E.num
++        (fun i => cc_mem E.p.toRingHom _ (hFe i)) hM
++      rw [← hGo, Ideal.span_union, ← E.ker] at h1
++      convert h1 using 1
++      have : Ideal.span {E.p (Matrix.of M).det} = (Ideal.span {(Matrix.of M).det}).map E.p.toRingHom := by
++        rw [Ideal.map_span, Set.image_singleton]; rfl
++      rw [this, Ideal.comap_map_of_surjective E.p.toRingHom E.surj, sup_comm]
++      rfl
++    refine ⟨_, fun h => absurd hee h, fun P hP hne => ?_, hch, fun P hP => ?_⟩
++    · rw [E.ee, Ideal.span_le, Set.range_subset_iff, not_forall] at hne
++      obtain ⟨j, hj⟩ := hne
++      rw [Ideal.span_singleton_le_iff_mem]
++      refine (hP.mem_or_mem ?_).resolve_right hj
++      have h1 : ((Matrix.of M).adjugate *ᵥ E.Go) j = (Matrix.of M).det * MvPowerSeries.X (.inr j) := by
++        rw [hGo, Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]; rfl
++      have h2 : ((Matrix.of M).adjugate *ᵥ E.Go) j ∈ RingHom.ker E.p := by
++        rw [Matrix.mulVec, dotProduct]
++        exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (hG i)
++      rw [h1, RingHom.mem_ker, map_mul] at h2
++      rw [h2]
++      exact P.zero_mem
++    · by_cases he : L.ρ.ee ≤ P
++      · exact Or.inr (thick hF S x L E _ hGo P hP.1.1 ⟨hoff _ hch P hP, rfl, he⟩
++          (hP.1.2 (Ideal.mem_span_singleton_self _)))
++      · exact Or.inl ⟨hoff _ hch P hP, fun _ => he⟩
++  · obtain ⟨N, N', p, f, hN, hp, hk⟩ := pres hF (Or.inr rfl) S x L
++    have hch : Chained (⊥ : Ideal L.R) (3 * F.d + 1) := by
++      refine chained_of_comap p.toRingHom hp _ _ ?_
++      haveI : IsAdicComplete (maximalIdeal L.O') L.O' := L.coef.complete
++      haveI : IsCO L.O' L.O' := IsCO.self _
++      haveI hco : IsCO L.O' (MvPowerSeries (Fin N) L.O') := co_mvps L.O' L.O' (Fin N)
++      haveI : IsNoetherianRing (MvPowerSeries (Fin N) L.O') := hco.toIsNoetherian
++      haveI : IsAdicComplete (maximalIdeal (MvPowerSeries (Fin N) L.O')) (MvPowerSeries (Fin N) L.O') :=
++        hco.complete
++      have h1 := c1ch (MvPowerSeries (Fin N) L.O') N' (3 * F.d + 1) f
++        (by rw [nilradical_eq_zero]; exact Ideal.isPrime_bot) ⟨L.O', L.cO, L.dO, L.vO, inferInstance, _, hco⟩
++        (fun i hu => by
++          have h0 : f i ∈ RingHom.ker p := hk ▸ Ideal.subset_span ⟨i, rfl⟩
++          have := hu.map p
++          rw [RingHom.mem_ker.1 h0] at this
++          exact not_isUnit_zero this)
++        (by
++          rw [GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, IsDiscreteValuationRing.ringKrullDim_eq_one,
++            Nat.card_eq_fintype_card, Fintype.card_fin, hN]
++          norm_cast
++          omega)
++      rw [← hk] at h1
++      exact h1
++    refine ⟨⊥, fun _ => rfl, fun _ _ _ => bot_le, hch, fun P hP => Or.inl ⟨hoff _ hch P hP, fun _ h => hee ?_⟩⟩
++    exact ((hcmp P).2.2.1 h).trans ((Ideal.comap_mono (le_maximalIdeal hP.1.1.ne_top)).trans L.lies.le)
++
+ 
+ namespace UpperTheory.V.Pr
+ 
+-set_option linter.overlappingInstances false
++
+ 
+ noncomputable section
+ 
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/StableOf.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/StableOf.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.FibDim
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.SecondThirdPrimeConditionTransferAlt
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Integral
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.IrrOfConn
+@@ -9,8 +10,7 @@
+ 
+ private theorem exists_field_embedding_of_domain (D : Type) [CommRing D] [IsDomain D] :
+     ∃ (K : Type) (_ : Field K) (j : D →+* K), Function.Injective j := by
+-  set_option synthInstance.maxHeartbeats 400000 in
+-  exact ⟨FractionRing D, inferInstance, algebraMap D _, IsFractionRing.injective D (FractionRing D)⟩
++  apply _root_.core32_FibDim_exists_field_injective_ringHom_of_isDomain <;> assumption
+ 
+ private theorem exists_algClosed_embedding_of_field (F : Type) [Field F] :
+     ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (j : F →+* K), Function.Injective j :=
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/ThickAlg.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/ThickAlg.lean
+@@ -1,7 +1,9 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.DeterminantRepresentations.RepApi
++import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.ExistsDeterminantPairMapOfAlgHom
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.UniversalOrdinaryDeterminantRing
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.DGmap
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.SelfTwistEigenvalues.UnipTorsion
+-import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.IrreducibleSpans.Burnside
++import Mathlib
+ 
+ noncomputable section
+ 
+@@ -39,47 +41,12 @@
+ 
+ theorem chi_ofRep (σ : G →* Matrix (Fin n) (Fin n) Q) (y : MonoidAlgebra Q G) :
+     (GDet.ofRep σ).chi y = (GDet.repAlg σ Q y).charpoly := by
+-  have key : ∀ y : MonoidAlgebra Q G, GDet.repAlg σ Q[X] (MonoidAlgebra.mapRingHom G C y) = (C : Q →+* Q[X]).mapMatrix (GDet.repAlg σ Q y) := by
+-    intro y
+-    induction y using MonoidAlgebra.induction_linear with
+-    | zero => simp
+-    | add a b ha hb =>
+-      rw [map_add, map_add, ha, hb]
+-      ext i k
+-      simp
+-    | single g a =>
+-      ext i k
+-      simp [GDet.repAlg, MonoidAlgebra.lift_single]
+-  simp only [GDet.chi, GDet.ofRep]
+-  rw [Matrix.charpoly, Matrix.charmatrix]
+-  simp [map_sub, key]
+-  congr 2
+-  ext i k
+-  simp [GDet.repAlg, MonoidAlgebra.lift_single, Matrix.diagonal, Matrix.one_apply, Algebra.smul_def]
++  apply _root_.UpperTheory.V.AlgebraTools.Det.core32_RepApi_chi_eq <;> assumption
+ 
+ private theorem gdet_map_chi_mapRingHom {n : ℕ} {A Q G : Type} [CommRing A] [CommRing Q] [Group G]
+     (D : GDet n A G) (f : A →+* Q) (y : MonoidAlgebra A G) :
+     (D.map f).chi (MonoidAlgebra.mapRingHom G f y) = (D.chi y).map f := by
+-  letI : Algebra A Q[X] := ((algebraMap Q Q[X]).comp f).toAlgebra
+-  let φ : A[X] →ₐ[A] Q[X] :=
+-    { Polynomial.mapRingHom f with
+-      commutes' := fun a => by simp [RingHom.algebraMap_toAlgebra] }
+-  have hn := D.nat A[X] Q[X] φ (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom G C y)
+-  have e : MonoidAlgebra.mapRingHom G (φ : A[X] →+* Q[X])
+-      (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom G C y) =
+-      MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom G C (MonoidAlgebra.mapRingHom G f y) := by
+-    rw [map_sub, MonoidAlgebra.mapRingHom_single]
+-    congr 1
+-    · congr 1
+-      show Polynomial.map f X = X
+-      simp
+-    · rw [← RingHom.comp_apply, ← RingHom.comp_apply, ← MonoidAlgebra.mapRingHom_comp,
+-        ← MonoidAlgebra.mapRingHom_comp]
+-      congr 2
+-      exact RingHom.ext fun a => by simp [φ]
+-  rw [e] at hn
+-  unfold GDet.chi GDet.map
+-  exact hn
++  apply _root_.core32_ExistsDeterminantPairMapOfAlgHom_pm_chi_map <;> assumption
+ 
+ theorem charpoly_th {D : GDet n A G} {f : A →+* Q} {σ : G →* Matrix (Fin n) (Fin n) Q}
+     (h : D.map f = GDet.ofRep σ) (y : MonoidAlgebra A G) : (th f σ y).charpoly = (D.chi y).map f := by
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgDefs.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgDefs.lean
+@@ -33,7 +33,6 @@
+       exact Submodule.smul_mem _ _ (SetLike.one_mem_graded P)
+     · exact zero_mem _
+ 
+-theorem mem_lauSub {p : AddMonoidAlgebra K ℤ} : p ∈ lauSub P ↔ ∀ j, p.coeff j ∈ P j := Iff.rfl
+ 
+ theorem single_mem_lauSub {j : ℤ} {x : K} (hx : x ∈ P j) : AddMonoidAlgebra.single j x ∈ lauSub P := by
+   classical
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgQuot.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgQuot.lean
+@@ -2,7 +2,7 @@
+ 
+ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+ 
+-private theorem adicComplete_of_pow_eq_bot {R : Type} [CommRing R] (I : Ideal R) (n : ℕ) (h : I ^ n = ⊥) :
++theorem core32_AlgQuot_adicComplete_of_pow_eq_bot {R : Type} [CommRing R] (I : Ideal R) (n : ℕ) (h : I ^ n = ⊥) :
+     IsAdicComplete I R := by
+   have key : ∀ x y : R, x ≡ y [SMOD (I ^ n • ⊤ : Submodule R R)] → x = y := by
+     intro x y hxy
+@@ -74,7 +74,7 @@
+   haveI : IsNoetherianRing D := hV.noeth
+   refine ⟨@IsCO.mk O (D ⧸ 𝔪 ^ (N + 1)) _ _ _ _ hloc inferInstance ?_ ?_ ?_, hMeq⟩
+   · rw [hMeq]
+-    exact adicComplete_of_pow_eq_bot M (N + 1) hMpow
++    exact core32_AlgQuot_adicComplete_of_pow_eq_bot M (N + 1) hMpow
+   · refine ⟨fun a ha => ?_⟩
+     have hC : IsUnit (algebraMap O C a) := by
+       by_contra hnu
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgTwist.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgTwist.lean
+@@ -7,7 +7,7 @@
+   simp only [w, Fin.val_rev]
+   split_ifs <;> omega
+ 
+-private theorem J_apply {K : Type} [CommRing K] {n : ℕ} (X : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
++theorem core32_AlgTwist_J_apply {K : Type} [CommRing K] {n : ℕ} (X : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
+     (Jmat K n * Xᵀ * Jmat K n) i j = X j.rev i.rev := by
+   simp only [Matrix.mul_apply, Jmat, Matrix.transpose_apply, ite_mul, one_mul, zero_mul,
+     mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+@@ -57,9 +57,9 @@
+   refine ⟨⟨(tw n u).toRingHom.toMonoidHom.comp ρ.r, ρ.ψ, ?_, ?_, ?_⟩, fun g i j => rfl, rfl⟩
+   · intro g
+     ext i j
+-    rw [J_apply]
++    rw [core32_AlgTwist_J_apply]
+     show tw n u (ρ.r (F.star g)) i j = tw n u (ρ.r g) j.rev i.rev
+-    rw [tw_apply, tw_apply, ρ.pol, J_apply, w_rev, w_rev]
++    rw [tw_apply, tw_apply, ρ.pol, core32_AlgTwist_J_apply, w_rev, w_rev]
+     congr 3
+     ring
+   · intro i j h
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ArtinRees.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ArtinRees.lean
+@@ -27,11 +27,7 @@
+     {F : UpperTheory.V.Fr.Frame l (ResidueField O)}
+     {n : ℕ} (S : Space O F n) (L : List (F.G0 × Fin n × Fin n)) :
+     (((L.map fun s => S.u.r s.1 s.2.1 s.2.2).prod : S.A) : S.R) = (L.map fun s => S.ρ.r s.1 s.2.1 s.2.2).prod := by
+-  induction L with
+-  | nil => simp
+-  | cons a L ih =>
+-    rw [List.map_cons, List.prod_cons, Subalgebra.coe_mul, ih, List.map_cons, List.prod_cons]
+-    rfl
++  apply _root_.core32_ContMap_val_prod <;> assumption
+ 
+ theorem UpperTheory.V.Fr.cone_u :
+     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ [IsCO O S.B], Cone O S.B S.u ∧ Integral O S.B S.u := by
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ContMap.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ContMap.lean
+@@ -295,7 +295,7 @@
+       exact Subalgebra.sub_mem _ (Algebra.subset_adjoin (Or.inr ⟨v, i, g, rfl⟩))
+         (Subalgebra.algebraMap_mem _ _)
+ 
+-private theorem val_prod {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)}
++theorem core32_ContMap_val_prod {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)}
+     {n : ℕ} (S : Space O F n) (L : List (F.G0 × Fin n × Fin n)) :
+     (((L.map fun s => S.u.r s.1 s.2.1 s.2.2).prod : S.A) : S.R) = (L.map fun s => S.ρ.r s.1 s.2.1 s.2.2).prod := by
+   induction L with
+@@ -363,7 +363,7 @@
+         obtain ⟨μ, c, X, hc, hX, rfl⟩ := dec j y hy
+         refine Subalgebra.sum_mem _ fun m hm => S.A.mul_mem (Algebra.subset_adjoin (Or.inl (hc m))) ?_
+         obtain ⟨L, -, hXL⟩ := hX m hm
+-        rw [hXL, ← val_prod S L]
++        rw [hXL, ← core32_ContMap_val_prod S L]
+         exact SetLike.coe_mem _
+       exact hle hx'
+   · intro j a
+@@ -372,7 +372,7 @@
+       refine Submodule.span_induction (p := fun (a : S.A) _ => (a : S.R) ∈ W.part j) ?_ ?_ ?_ ?_
+         (show a ∈ Submodule.span S.B (S.u.mon j) from ha)
+       · rintro x ⟨L, hL, rfl⟩
+-        rw [val_prod]
++        rw [core32_ContMap_val_prod]
+         exact mon_part S.ρ W hr ⟨L, hL, rfl⟩
+       · simp
+       · intro x y _ _ hx hy
+@@ -389,7 +389,7 @@
+       have hXu : ∀ m ∈ μ, ∃ a' ∈ S.u.mon j, (a' : S.R) = X m := by
+         intro m hm
+         obtain ⟨L, hL, e'⟩ := hX m hm
+-        exact ⟨_, ⟨L, hL, rfl⟩, by rw [val_prod, e']⟩
++        exact ⟨_, ⟨L, hL, rfl⟩, by rw [core32_ContMap_val_prod, e']⟩
+       choose! A' hA' hA'e using hXu
+       have hsum : a = ∑ m ∈ μ, (⟨c m, hc m⟩ : S.B) • A' m := by
+         apply Subtype.ext
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/CornerUnits.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/CornerUnits.lean
+@@ -10,7 +10,6 @@
+ 
+ def cor : Fin 2 → Fin 3 := ![0, 2]
+ 
+-@[simp] theorem cor_zero : cor 0 = 0 := rfl
+ 
+ @[simp] theorem cor_one : cor 1 = 2 := rfl
+ 
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/DefIso.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/DefIso.lean
+@@ -6,7 +6,7 @@
+ 
+ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+ 
+-private theorem residue_eq_residueField_map_comp_res {O' C : Type} [CommRing O'] [IsLocalRing O'] [CommRing C] [Algebra O' C]
++theorem core32_DefIso_residue_eq_residueField_map_comp_res {O' C : Type} [CommRing O'] [IsLocalRing O'] [CommRing C] [Algebra O' C]
+     [IsCO O' C] [IsLocalHom (algebraMap O' C)] :
+     IsLocalRing.residue C =
+       (IsLocalRing.ResidueField.map (algebraMap O' C)).comp (res O' C : C →+* ResidueField O') := by
+@@ -74,11 +74,11 @@
+     rw [IsLocalRing.ResidueField.map_residue, IsLocalRing.ResidueField.map_residue,
+       IsScalarTower.algebraMap_apply O L.O' L.R a]
+   have hbR := (loc_rho hF hn S x L).2.1 _ hfR
+-  rw [residue_eq_residueField_map_comp_res (O' := L.O') (C := L.R)] at hbR
++  rw [core32_DefIso_residue_eq_residueField_map_comp_res (O' := L.O') (C := L.R)] at hbR
+   have hσ : NRep.IsBar f0 (NRep.map (res L.O' L.R : L.R →+* ResidueField L.O') L.ρ) :=
+     (nRep_isBar_comp_map_iff f0 jR _).mp hbR
+   have hbar : NRep.IsBar (jC.comp f0) (NRep.map (IsLocalRing.residue C) ρ) := by
+-    rw [residue_eq_residueField_map_comp_res (O' := L.O') (C := C)]
++    rw [core32_DefIso_residue_eq_residueField_map_comp_res (O' := L.O') (C := C)]
+     show NRep.IsBar (jC.comp f0) (NRep.map jC (NRep.map (res L.O' C : C →+* ResidueField L.O') ρ))
+     rw [hres]
+     exact (nRep_isBar_comp_map_iff f0 jC _).mpr hσ
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpDproj.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpDproj.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.NegOneZpowSg
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.EpresGr
+ 
+ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+@@ -5,14 +6,12 @@
+ private theorem sg_add (K : Type) [CommRing K] (i j : ZMod 2) : sg K (i + j) = sg K i * sg K j := by
+   simp only [sg, ZMod.val_add, ← neg_one_pow_eq_pow_mod_two, pow_add]
+ 
+-private theorem sg_sub (K : Type) [CommRing K] (i j : ZMod 2) : sg K (i - j) = sg K i * sg K j := by
++theorem core32_EpDproj_sg_sub (K : Type) [CommRing K] (i j : ZMod 2) : sg K (i - j) = sg K i * sg K j := by
+   have h : i - j = i + j := by revert i j; decide
+   rw [h, sg_add]
+ 
+ private theorem sg_sq (K : Type) [CommRing K] (i : ZMod 2) : sg K i * sg K i = 1 := by
+-  have h : i + i = 0 := by revert i; decide
+-  rw [← sg_add, h]
+-  simp [sg]
++  apply _root_.core32_NegOneZpowSg_sg_sq <;> assumption
+ 
+ private theorem sg_ne (K : Type) [CommRing K] (i j : ZMod 2) (e : i ≠ j) : sg K i * sg K j = -1 := by
+   have h : i + j = 1 := by revert i j; decide
+@@ -38,7 +37,7 @@
+     exact Matrix.diagonal_one
+   have hconj : ∀ (A : Matrix (Fin 3) (Fin 3) K) a b, (E * A * E) a b = sg K (pw a b) * A a b := by
+     intro A a b
+-    rw [hE, Matrix.mul_diagonal, Matrix.diagonal_mul, pw_eq, sg_sub]
++    rw [hE, Matrix.mul_diagonal, Matrix.diagonal_mul, pw_eq, core32_EpDproj_sg_sub]
+     ring
+   have hEG : E * (G : Matrix (Fin 3) (Fin 3) K) * E = G := by
+     ext a b
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpGflag.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpGflag.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.EpDproj
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.EpresGr
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.EpUpt
+ 
+@@ -7,8 +8,7 @@
+   rw [sg, ← mul_pow, neg_one_mul, neg_neg, one_pow]
+ 
+ private theorem sg_sub (R : Type) [CommRing R] (i j : ZMod 2) : sg R (i - j) = sg R i * sg R j := by
+-  have key : ∀ a b : ZMod 2, (a - b).val % 2 = (a.val + b.val) % 2 := by decide
+-  rw [sg, sg, sg, ← pow_add, neg_one_pow_eq_pow_mod_two, key, ← neg_one_pow_eq_pow_mod_two]
++  apply _root_.core32_EpDproj_sg_sub <;> assumption
+ 
+ private theorem map_sg {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R) (j : ZMod 2) :
+     σ (sg R j) = sg R j := by simp [sg]
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpGlift.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpGlift.lean
+@@ -22,9 +22,7 @@
+ end Av
+ 
+ private theorem sg_sub_eq_mul {R : Type} [CommRing R] (j k : ZMod 2) : sg R (j - k) = sg R j * sg R k := by
+-  obtain rfl | rfl : j = 0 ∨ j = 1 := by revert j; decide
+-  all_goals obtain rfl | rfl : k = 0 ∨ k = 1 := by revert k; decide
+-  all_goals simp [sg, show (0:ZMod 2) - 1 = 1 from rfl, show (1:ZMod 2) - 1 = 0 from rfl, ZMod.val_one]
++  apply _root_.core32_GrMIff_sg_sub <;> assumption
+ 
+ private theorem sg_mul_self_eq_one {R : Type} [CommRing R] (j : ZMod 2) : sg R j * sg R j = 1 := by
+   unfold sg
+@@ -56,34 +54,12 @@
+ private theorem grM_mul_of_grM_of_grM {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
+     (α β γ : Fin 3 → ZMod 2) (M N : Matrix (Fin 3) (Fin 3) R) (hM : GrM σ α β M) (hN : GrM σ β γ N) :
+     GrM σ α γ (M * N) := by
+-  rw [grM_iff_map_eq_diagonal_mul_mul_diagonal] at hM hN ⊢
+-  have e : (M * N).map σ = M.map σ * N.map σ := Matrix.map_mul (f := (σ : R →+* R))
+-  rw [e, hM, hN]
+-  simp only [Matrix.mul_assoc, diagonal_sg_mul_diagonal_sg_mul_cancel]
++  apply _root_.core32_GrMIff_grM_mul <;> assumption
+ 
+ private theorem grM_gl_inv_of_grM {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
+     (α β : Fin 3 → ZMod 2) (g : GL (Fin 3) R) (hg : GrM σ α β (g : Matrix (Fin 3) (Fin 3) R)) :
+     GrM σ β α ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) := by
+-  rw [grM_iff_map_eq_diagonal_mul_mul_diagonal] at hg ⊢
+-  set G : Matrix (Fin 3) (Fin 3) R := (g : Matrix (Fin 3) (Fin 3) R) with hG
+-  set Gi : Matrix (Fin 3) (Fin 3) R := ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) with hGi
+-  have hGiG : Gi * G = 1 := by rw [hG, hGi]; simp
+-  have hGGi : G * Gi = 1 := by rw [hG, hGi]; simp
+-  have e : (Gi * G).map σ = Gi.map σ * G.map σ := Matrix.map_mul (f := (σ : R →+* R))
+-  have e1 : Gi.map σ * G.map σ = 1 := by
+-    rw [← e, hGiG]
+-    simp
+-  have key : Matrix.diagonal (fun a => sg R (α a)) * G * Matrix.diagonal (fun b => sg R (β b)) *
+-      (Matrix.diagonal (fun b => sg R (β b)) * Gi * Matrix.diagonal (fun a => sg R (α a))) = 1 := by
+-    simp only [Matrix.mul_assoc, diagonal_sg_mul_diagonal_sg_mul_cancel]
+-    rw [← Matrix.mul_assoc G, hGGi, Matrix.one_mul, Matrix.diagonal_mul_diagonal]
+-    simp only [sg_mul_self_eq_one]
+-    exact Matrix.diagonal_one
+-  calc Gi.map σ
+-      = Gi.map σ * (G.map σ *
+-        (Matrix.diagonal (fun b => sg R (β b)) * Gi * Matrix.diagonal (fun a => sg R (α a)))) := by
+-        rw [hg, key, Matrix.mul_one]
+-    _ = _ := by rw [← Matrix.mul_assoc, e1, Matrix.one_mul]
++  apply _root_.core32_GrMIff_grM_inv <;> assumption
+ 
+ private theorem av_mem_evp_of_involutive {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (h : O) (σ' : R →ₐ[O] R)
+     (hinv : ∀ y, σ' (σ' y) = y) (j : ZMod 2) (x : R) : av h σ' j x ∈ evp σ' j := by
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FibDim.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FibDim.lean
+@@ -8,7 +8,7 @@
+ 
+ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+ 
+-private theorem dim_le_of_primes {R : Type} [CommRing R] (I : Ideal R) (d : WithBot ℕ∞)
++theorem core32_FibDim_dim_le_of_primes {R : Type} [CommRing R] (I : Ideal R) (d : WithBot ℕ∞)
+     (h : ∀ P : Ideal R, P.IsPrime → I ≤ P → ringKrullDim (R ⧸ P) ≤ d) : ringKrullDim (R ⧸ I) ≤ d := by
+   rw [ringKrullDim_quotient]
+   unfold Order.krullDim
+@@ -44,7 +44,7 @@
+   have hdt : d ≤ t := by exact_mod_cast h
+   exact_mod_cast hdt
+ 
+-private theorem exists_field_injective_ringHom_of_isDomain (D : Type) [CommRing D] [IsDomain D] :
++theorem core32_FibDim_exists_field_injective_ringHom_of_isDomain (D : Type) [CommRing D] [IsDomain D] :
+     ∃ (K : Type) (_ : Field K) (j : D →+* K), Function.Injective j := by
+   set_option synthInstance.maxHeartbeats 400000 in
+   exact ⟨FractionRing D, inferInstance, algebraMap D _, IsFractionRing.injective D (FractionRing D)⟩
+@@ -58,7 +58,7 @@
+   obtain ⟨-, -, -, -, hft, -, -⟩ := gr_A hF hn S
+   haveI := hft
+   have hl42 := finrank_frameSpace_eq hF hn S
+-  apply dim_le_of_primes
++  apply core32_FibDim_dim_le_of_primes
+   intro P hP hbP
+   have hπ : S.mB ≤ L.π P := by
+     show S.mB ≤ Ideal.comap (S.inc : S.B →+* S.A) (Ideal.comap (L.ι : S.A →+* L.R) P)
+@@ -81,7 +81,7 @@
+       Ideal.comap_mono (IsLocalRing.le_maximalIdeal hP.ne_top)
+     exact h1.trans L.lies.le
+   haveI : IsDomain (S.A ⧸ L.im P) := Ideal.Quotient.isDomain _
+-  obtain ⟨K, hK, j, hj⟩ := exists_field_injective_ringHom_of_isDomain (S.A ⧸ L.im P)
++  obtain ⟨K, hK, j, hj⟩ := core32_FibDim_exists_field_injective_ringHom_of_isDomain (S.A ⧸ L.im P)
+   have hker : RingHom.ker (j.comp (Ideal.Quotient.mk (L.im P))) = L.im P := by
+     rw [RingHom.ker_comp_of_injective _ hj, Ideal.mk_ker]
+   have htypes := (types hF hn S K (j.comp (Ideal.Quotient.mk (L.im P)))).2
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerConeMap.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerConeMap.lean
+@@ -24,7 +24,7 @@
+   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
+   | smul a x _ hx => rw [Algebra.smul_def, map_mul, h, ← Algebra.smul_def]; exact M.smul_mem _ hx
+ 
+-private theorem lc_of {X A B : Type} [TopologicalSpace X] {u : X → A} {v : X → B} (hu : IsLocallyConstant u)
++theorem core32_FrobeniusCornerConeMap_lc_of {X A B : Type} [TopologicalSpace X] {u : X → A} {v : X → B} (hu : IsLocallyConstant u)
+     (h : ∀ x y, u x = u y → v x = v y) : IsLocallyConstant v := by
+   rw [IsLocallyConstant.iff_eventually_eq] at hu ⊢
+   exact fun x => (hu x).mono fun y hy => h _ _ hy
+@@ -52,7 +52,7 @@
+       refine span_map φ f h (s := (t : Set K)) (fun x hx => Submodule.subset_span ?_) (x := ρ.r g i j) ?_
+       · exact Finset.mem_coe.2 (Finset.mem_image_of_mem f hx)
+       · rw [ht]; exact Submodule.subset_span ⟨g, rfl⟩
+-  · refine lc_of (H.cont i j N) fun x y hxy => ?_
++  · refine core32_FrobeniusCornerConeMap_lc_of (H.cont i j N) fun x y hxy => ?_
+     rw [Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq] at hxy ⊢
+     rw [NRep.map_r, NRep.map_r, ← map_sub]
+     refine Submodule.smul_induction_on hxy (fun a ha z hz => ?_) (fun a b ha hb => ?_)
+@@ -61,7 +61,7 @@
+     · rw [map_add]; exact add_mem ha hb
+   · obtain ⟨χ, h1, h2⟩ := H.psi
+     refine ⟨fun v i g => φ (χ v i g), fun v i => ⟨fun N => ?_, fun g => ?_⟩, fun v i g => ?_⟩
+-    · refine lc_of ((h1 v i).1 N) fun x y hxy => ?_
++    · refine core32_FrobeniusCornerConeMap_lc_of ((h1 v i).1 N) fun x y hxy => ?_
+       rw [Ideal.Quotient.eq] at hxy ⊢
+       rw [← map_sub]
+       exact pow_map φ N hxy
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerLiftTwoToThree.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerLiftTwoToThree.lean
+@@ -125,7 +125,7 @@
+   · intro hin
+     exact hxη (Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hin _ hm0))
+ 
+-private theorem w_lt {n : ℕ} {i j : Fin n} (h : i < j) : w n j < w n i := by
++theorem core32_FrobeniusCornerLiftTwoToThree_w_lt {n : ℕ} {i j : Fin n} (h : i < j) : w n j < w n i := by
+   have : (i : ℕ) < j := h
+   unfold w
+   split_ifs <;> omega
+@@ -145,8 +145,8 @@
+   simp only [NRep.triP, NRep.triM, Ideal.span_le, Set.not_subset] at hP hM
+   obtain ⟨_, ⟨g, i, j, hji, rfl⟩, hb⟩ := hP
+   obtain ⟨_, ⟨g', i', j', hij', rfl⟩, ha⟩ := hM
+-  have hbd : w n i - w n j < 0 := by have := w_lt hji; omega
+-  have had : 0 < w n i' - w n j' := by have := w_lt hij'; omega
++  have hbd : w n i - w n j < 0 := by have := core32_FrobeniusCornerLiftTwoToThree_w_lt hji; omega
++  have had : 0 < w n i' - w n j' := by have := core32_FrobeniusCornerLiftTwoToThree_w_lt hij'; omega
+   have hle' : η.comap (algebraMap S.B S.A) ≤ ξ.comap (algebraMap S.B S.A) := by
+     rw [hηc]; exact hle
+   have hab := pair S.gr h0 hξ hle' (hr g' i' j') (hr g i j) had hbd ha hb
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/GgMapOfGL.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/GgMapOfGL.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PresDefs
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrOpen
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrOfbox
+@@ -14,21 +15,11 @@
+ 
+ private theorem res_dual (O : Type) [CommRing O] [IsLocalRing O] [IsCO O (DualNumber (ResidueField O))]
+     (x : DualNumber (ResidueField O)) : res O (DualNumber (ResidueField O)) x = x.fst := by
+-  obtain ⟨a, ha⟩ := residue_surjective x.fst
+-  have h1 : x - algebraMap O _ a ∈ maximalIdeal (DualNumber (ResidueField O)) := by
+-    rw [mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst, isUnit_iff_ne_zero, not_not,
+-      TrivSqZeroExt.fst_sub, ← ha]
+-    exact sub_self _
+-  have h2 := (res_eq_zero_iff O _ _).2 h1
+-  rw [map_sub, AlgHom.commutes, sub_eq_zero] at h2
+-  rw [h2, ← ha]
+-  rfl
++  apply _root_.core32_ResDual_res_dual <;> assumption
+ 
+ private theorem of_unique {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ} {C : Type}
+     [CommRing C] {B : Box F n C} {ρ ρ' : NRep F n C} (h : B.Of ρ) (h' : B.Of ρ') : ρ = ρ' := by
+-  have e : ρ.r = ρ'.r := MonoidHom.ext fun s => (h.res s).symm.trans (h'.res s)
+-  refine NRep.ext e (funext fun v => funext fun i => MonoidHom.ext fun s => Units.ext ?_)
+-  rw [← h.psi, ← h'.psi, e]
++  apply _root_.UpperTheory.V.Fr.core32_PrNorm_of_unique <;> assumption
+ 
+ private theorem conj_mat {m : ℕ} {C : Type} [CommRing C] (h : GL (Fin m) C) (x : GG m C) (hx : x.right = 1) :
+     (GG.ofGL h * x * (GG.ofGL h)⁻¹).left = h * x.left * h⁻¹ := by
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/GrMIff.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/GrMIff.lean
+@@ -2,7 +2,7 @@
+ 
+ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+ 
+-private theorem sg_sub (R : Type) [CommRing R] (i j : ZMod 2) : sg R (i - j) = sg R i * sg R j := by
++theorem core32_GrMIff_sg_sub (R : Type) [CommRing R] (i j : ZMod 2) : sg R (i - j) = sg R i * sg R j := by
+   have h : ∀ i : ZMod 2, i = 0 ∨ i = 1 := by decide
+   have s0 : sg R 0 = 1 := pow_zero _
+   have s1 : sg R 1 = -1 := pow_one _
+@@ -14,7 +14,7 @@
+   · rw [sub_self, s0, s1, neg_mul_neg, one_mul]
+ 
+ private theorem sg_sq (R : Type) [CommRing R] (i : ZMod 2) : sg R i * sg R i = 1 := by
+-  rw [← sg_sub, sub_self]
++  rw [← core32_GrMIff_sg_sub, sub_self]
+   exact pow_zero _
+ 
+ private def sgM (R : Type) [CommRing R] (α : Fin 3 → ZMod 2) : Matrix (Fin 3) (Fin 3) R :=
+@@ -30,9 +30,9 @@
+   refine forall₂_congr fun a b => ?_
+   rw [sgM, sgM, Matrix.mul_diagonal, Matrix.diagonal_mul]
+   show σ (M a b) = sg R (α a - β b) * M a b ↔ σ (M a b) = _
+-  rw [sg_sub, mul_right_comm]
++  rw [core32_GrMIff_sg_sub, mul_right_comm]
+ 
+-private theorem grM_mul {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
++theorem core32_GrMIff_grM_mul {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
+     (α β γ : Fin 3 → ZMod 2) (M N : Matrix (Fin 3) (Fin 3) R) (h : GrM σ α β M) (h' : GrM σ β γ N) :
+     GrM σ α γ (M * N) := by
+   rw [grM_iff] at h h' ⊢
+@@ -41,7 +41,7 @@
+       = sgM R α * M * (sgM R β * sgM R β) * N * sgM R γ := by simp only [Matrix.mul_assoc]
+     _ = sgM R α * (M * N) * sgM R γ := by rw [sgM_sq, Matrix.mul_one, Matrix.mul_assoc _ M]
+ 
+-private theorem grM_inv {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
++theorem core32_GrMIff_grM_inv {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
+     (α β : Fin 3 → ZMod 2) (g : GL (Fin 3) R) (h : GrM σ α β (g : Matrix (Fin 3) (Fin 3) R)) :
+     GrM σ β α ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) := by
+   rw [grM_iff] at h ⊢
+@@ -76,15 +76,15 @@
+   intro a b
+   have e : σ (M b a) = sg R (α b - β a) * M b a := h b a
+   show σ (M b a) = sg R (β a - α b) * M b a
+-  rw [e, sg_sub, sg_sub, mul_comm (sg R (α b))]
++  rw [e, core32_GrMIff_sg_sub, core32_GrMIff_sg_sub, mul_comm (sg R (α b))]
+ 
+ theorem UpperTheory.V.Fr.ep_grm :
+     ∀ {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R), (∀ α, GrM σ α α 1) ∧ (∀ α β M N, GrM σ α β M → GrM σ α β N → GrM σ α β (M - N)) ∧ (∀ α β γ M N, GrM σ α β M → GrM σ β γ N → GrM σ α γ (M * N)) ∧ (∀ α β (g : GL (Fin 3) R), GrM σ α β (g : Matrix (Fin 3) (Fin 3) R) → GrM σ β α ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)) ∧ ∀ (e : ℤˣ) (g : GL (Fin 3) R), GrM σ pq pq (g : Matrix (Fin 3) (Fin 3) R) → GrM σ pq pq ((sgnAct 3 R e g : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) := by
+   intro O R _ _ _ σ
+-  refine ⟨fun α => ?_, fun α β M N h h' a b => Submodule.sub_mem _ (h a b) (h' a b), grM_mul σ, grM_inv σ,
++  refine ⟨fun α => ?_, fun α β M N h h' a b => Submodule.sub_mem _ (h a b) (h' a b), core32_GrMIff_grM_mul σ, core32_GrMIff_grM_inv σ,
+     fun e g h => ?_⟩
+   · rw [grM_iff, map_one, Matrix.mul_one, sgM_sq]
+   · rcases Int.units_eq_one_or e with rfl | rfl
+     · rwa [sgnAct_one]
+     · rw [sgnAct_neg_one, theta_val]
+-      exact grM_mul σ _ pq _ _ _ (grM_mul σ _ pq _ _ _ (grM_J σ) (grM_tr σ _ _ _ (grM_inv σ _ _ g h))) (grM_J σ)
++      exact core32_GrMIff_grM_mul σ _ pq _ _ _ (core32_GrMIff_grM_mul σ _ pq _ _ _ (grM_J σ) (grM_tr σ _ _ _ (core32_GrMIff_grM_inv σ _ _ g h))) (grM_J σ)
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/IrrOfConn.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/IrrOfConn.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.FrobeniusCornerLiftTwoToThree
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Integral
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.CoB
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ArtinRees
+@@ -51,13 +52,10 @@
+ 
+ private theorem jtj {K : Type} [CommRing K] {n : ℕ} (m : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
+     (Jmat K n * mᵀ * Jmat K n) i j = m j.rev i.rev := by
+-  have h : ∀ k : Fin n, (j = k.rev) = (k = j.rev) := fun k => propext ⟨fun e => by simp [e], fun e => by simp [e]⟩
+-  simp [Matrix.mul_apply, Jmat, h]
++  apply _root_.core32_AlgTwist_J_apply <;> assumption
+ 
+ private theorem w_lt {n : ℕ} {i j : Fin n} (h : i < j) : w n j < w n i := by
+-  have : (i : ℕ) < j := h
+-  unfold w
+-  split_ifs <;> omega
++  apply _root_.core32_FrobeniusCornerLiftTwoToThree_w_lt <;> assumption
+ 
+ private theorem conn2 (Z : Fin 2 → Fin 2 → Prop) (hP : ¬ ∀ i j, j < i → Z i j) (hM : ¬ ∀ i j, i < j → Z i j)
+     (P : Fin 2 → Prop) (h : ∀ i j, ¬ Z i j → P j → P i) : ∀ i j, P j → P i := by
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/JconjApply.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/JconjApply.lean
+@@ -1,26 +1,11 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.AlgTwist
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PresDefs
+ 
+ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+ 
+ private theorem jconj_apply {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
+     (Jmat R n * Mᵀ * Jmat R n) i j = M j.rev i.rev := by
+-  have h1 : ∀ k, (Jmat R n * Mᵀ) i k = M k i.rev := by
+-    intro k
+-    rw [Matrix.mul_apply, Finset.sum_eq_single i.rev]
+-    · simp [Jmat]
+-    · intro b _ hb
+-      simp [Jmat, hb]
+-    · simp
+-  rw [Matrix.mul_apply, Finset.sum_eq_single j.rev]
+-  · rw [h1]
+-    simp [Jmat]
+-  · intro b _ hb
+-    have : j ≠ b.rev := by
+-      intro h
+-      apply hb
+-      rw [h, Fin.rev_rev]
+-    simp [Jmat, this]
+-  · simp
++  apply _root_.core32_AlgTwist_J_apply <;> assumption
+ 
+ theorem UpperTheory.V.Fr.pr_norm2 :
+     ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (C' : Type) [CommRing C'] [Algebra O C'] [IsCO O C'] (C : Type) [CommRing C] [Algebra O C] (p : C' →ₐ[O] C) (n : ℕ) (Z : Matrix (Fin n) (Fin n) C'), maximalIdeal C' * RingHom.ker p = ⊥ → RingHom.ker p ≤ maximalIdeal C' → thetaLie Z = Z → (∀ i j, i ≠ j → p (Z i j) = 0) → (∀ i j, i ≠ j → res O C' (Z i i) ≠ res O C' (Z j j)) → ∃ h : GL (Fin n) C', (h : Matrix (Fin n) (Fin n) C').map p = 1 ∧ theta h = h ∧ ∀ i j, i ≠ j → ((h : Matrix (Fin n) (Fin n) C') * Z * ((h⁻¹ : GL (Fin n) C') : Matrix (Fin n) (Fin n) C')) i j = 0 := by
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/KrullDimLtOfNotLeTriangular.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/KrullDimLtOfNotLeTriangular.lean
+@@ -6,13 +6,7 @@
+ 
+ private theorem dim_le_of_primes {A : Type} [CommRing A] (I : Ideal A) (c : WithBot ℕ∞)
+     (h : ∀ P : Ideal A, P.IsPrime → I ≤ P → ringKrullDim (A ⧸ P) ≤ c) : ringKrullDim (A ⧸ I) ≤ c := by
+-  rw [ringKrullDim_quotient]
+-  refine iSup_le fun s => ?_
+-  refine le_trans ?_ (h s.head.1.asIdeal s.head.1.isPrime s.head.2)
+-  rw [ringKrullDim_quotient]
+-  let t : LTSeries (PrimeSpectrum.zeroLocus (R := A) s.head.1.asIdeal) :=
+-    ⟨s.length, fun i => ⟨(s i).1, (show s.head.1 ≤ (s i).1 from s.head_le i)⟩, fun i => s.step i⟩
+-  exact Order.LTSeries.length_le_krullDim t
++  apply _root_.core32_FibDim_dim_le_of_primes <;> assumption
+ 
+ private theorem dim_anti {A : Type} [CommRing A] {I J : Ideal A} (h : I ≤ J) :
+     ringKrullDim (A ⧸ J) ≤ ringKrullDim (A ⧸ I) :=
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LocCpl.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LocCpl.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.AlgQuot
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Integral
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.IsInternalCongr
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoQuot
+@@ -5,22 +6,9 @@
+ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+ 
+ private theorem cpl_of_nil {R : Type} [CommRing R] (I : Ideal R) (N : ℕ) (h : I ^ N = ⊥) : IsAdicComplete I R := by
+-  have hle : ∀ n, N ≤ n → (I ^ n • ⊤ : Submodule R R) = ⊥ := by
+-    intro n hn
+-    rw [eq_bot_iff]
+-    calc (I ^ n • ⊤ : Submodule R R) ≤ I ^ N • ⊤ := Submodule.smul_mono (Ideal.pow_le_pow_right hn) le_rfl
+-      _ = ⊥ := by rw [h, Submodule.bot_smul]
+-  refine { haus' := fun x hx => ?_, prec' := fun f hf => ⟨f N, fun n => ?_⟩ }
+-  · have hxN := hx N
+-    rw [hle N le_rfl, SModEq.bot] at hxN
+-    exact hxN
+-  · rcases le_total n N with hn | hn
+-    · exact hf hn
+-    · have hfn := hf hn
+-      rw [hle N le_rfl, SModEq.bot] at hfn
+-      rw [hfn]
++  apply _root_.core32_AlgQuot_adicComplete_of_pow_eq_bot <;> assumption
+ 
+-private theorem res_eq_of {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
++theorem core32_LocCpl_res_eq_of {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
+     {x : R} {a : O} (h : x - algebraMap O R a ∈ maximalIdeal R) : res O R x = algebraMap O _ a := by
+   have := (res_eq_zero_iff O R _).2 h
+   rwa [map_sub, AlgHom.commutes, sub_eq_zero] at this
+@@ -88,8 +76,8 @@
+   refine ⟨hco, ?_, fun d => ?_⟩
+   · rw [← hMeq]; exact hMN
+   · obtain ⟨a, ha⟩ := IsCO.res_surj (O := O) (ι d)
+-    rw [res_eq_of ha]
+-    apply res_eq_of
++    rw [core32_LocCpl_res_eq_of ha]
++    apply core32_LocCpl_res_eq_of
+     rw [hmem, map_sub, hfq, hf'mk]
+     have h0 := (res_eq_zero_iff O R _).2 ha
+     rw [map_sub, AlgHom.commutes, sub_eq_zero] at h0
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LowerTriangularConjAntidiag.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LowerTriangularConjAntidiag.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.AlgTwist
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.StrSMul
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Imports
+ 
+@@ -5,9 +6,7 @@
+ 
+ private theorem jconj {K : Type} [CommRing K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
+     (Jmat K n * Mᵀ * Jmat K n) i j = M j.rev i.rev := by
+-  simp only [Matrix.mul_apply, Jmat]
+-  simp [Fin.rev_eq_iff]
+-  simp [eq_comm (a := j), Fin.rev_eq_iff]
++  apply _root_.core32_AlgTwist_J_apply <;> assumption
+ 
+ private theorem ord3 {K : Type} [CommRing K] (α β γ p₀ q₀ p₁ q₁ p₂ q₂ : K) :
+     (!![p₀, 0, 0; (p₀ - 1) * α, 1, 0; (p₀ - q₀) * γ - (1 - q₀) * (α * β), (1 - q₀) * β, q₀] -
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/NegOneZpowSg.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/NegOneZpowSg.lean
+@@ -20,7 +20,7 @@
+ private theorem map_sg {K K' : Type} [CommRing K] [CommRing K'] (f : K →+* K') (j : ZMod 2) :
+     f (sg K j) = sg K' j := by simp [sg]
+ 
+-private theorem sg_sq (K : Type) [CommRing K] (j : ZMod 2) : sg K j * sg K j = 1 := by
++theorem core32_NegOneZpowSg_sg_sq (K : Type) [CommRing K] (j : ZMod 2) : sg K j * sg K j = 1 := by
+   rw [sg, ← mul_pow]; simp
+ 
+ section
+@@ -130,7 +130,7 @@
+   · rw [e1, map_mul, e1, ← mul_assoc]
+     have := map_sg (τA : S.A →+* S.A) (pw i j)
+     rw [RingHom.coe_coe] at this
+-    rw [this, sg_sq, one_mul]
++    rw [this, core32_NegOneZpowSg_sg_sq, one_mul]
+   · rw [map_add, map_add, qa, qb]
+   · rw [map_mul, map_mul, qa, qb]
+   · rw [e1, pw, ← neg_one_zpow_sg]
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PointLoc.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PointLoc.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.FrobeniusCornerConeMap
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.AlgVring
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Imports
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.CoB
+@@ -272,16 +273,7 @@
+ 
+ private theorem lc_lemma {X A B : Type} [TopologicalSpace X] (φ : X → A) (g : X → B)
+     (hφ : IsLocallyConstant φ) (h : ∀ x y, φ x = φ y → g x = g y) : IsLocallyConstant g := by
+-  classical
+-  rcases isEmpty_or_nonempty X with hX | ⟨⟨x₀⟩⟩
+-  · exact IsLocallyConstant.of_constant _ (fun x => (hX.false x).elim)
+-  have e : g = (fun a => if ha : ∃ x, φ x = a then g ha.choose else g x₀) ∘ φ := by
+-    funext x
+-    have ha : ∃ y, φ y = φ x := ⟨x, rfl⟩
+-    simp only [Function.comp_apply, dif_pos ha]
+-    exact h _ _ ha.choose_spec.symm
+-  rw [e]
+-  exact hφ.comp _
++  apply _root_.core32_FrobeniusCornerConeMap_lc_of <;> assumption
+ 
+ theorem UpperTheory.V.Fr.point_loc :
+     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ (C : Type) [CommRing C] [IsLocalRing C] [Algebra O C], UpperTheory.V.CA.IsCL O C → ∀ (f : ResidueField O →+* ResidueField C), IsResMap O C f → ∀ ρ : NRep F n C, ρ.Cont (maximalIdeal C) → (ρ.map (residue C)).IsBar f → ∃ ξ : S.A →ₐ[O] C, S.u.map (ξ : S.A →+* C) = ρ ∧ S.x0 ≤ (maximalIdeal C).comap (ξ : S.A →+* C) := by
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrBrig.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrBrig.lean
+@@ -2,7 +2,7 @@
+ 
+ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+ 
+-private theorem upT_mul {K : Type} [CommRing K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K} (hA : UpT A) (hB : UpT B) :
++theorem core32_PrBrig_upT_mul {K : Type} [CommRing K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K} (hA : UpT A) (hB : UpT B) :
+     UpT (A * B) := by
+   intro i j h
+   rw [Matrix.mul_apply]
+@@ -51,6 +51,6 @@
+   refine upT_of_comm hT (fun i j hij => ?_) ?_
+   · rw [hres, hOf.psi, hOf.psi]
+     exact fun e => hs i j hij (Units.ext e)
+-  · convert upT_mul h1 hT using 1
++  · convert core32_PrBrig_upT_mul h1 hT using 1
+     simp only [GG.adFun, hr, if_true, GG.mat, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc,
+       Units.inv_mul_cancel_left]
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrBstab.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrBstab.lean
+@@ -1,15 +1,11 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrBrig
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PresDefs
+ 
+ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+ 
+ private theorem upT_mul {C : Type} [CommRing C] {n : ℕ} {M N : Matrix (Fin n) (Fin n) C}
+     (hM : UpT M) (hN : UpT N) : UpT (M * N) := by
+-  intro i j h
+-  rw [Matrix.mul_apply]
+-  refine Finset.sum_eq_zero fun a _ => ?_
+-  by_cases ha : a < i
+-  · rw [hM i a ha, zero_mul]
+-  · rw [hN a j (lt_of_lt_of_le h (not_lt.mp ha)), mul_zero]
++  apply _root_.core32_PrBrig_upT_mul <;> assumption
+ 
+ theorem UpperTheory.V.Fr.pr_bstab :
+     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ}, ∀ (C : Type) [CommRing C] (B : Box F n C) (v : F.V) (s : F.Gv v), ∀ X ∈ B.b v, B.ad (F.loc v s) X ∈ B.b v := by
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrNorm.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrNorm.lean
+@@ -89,7 +89,7 @@
+   simp only [GG.mat] at hMy ⊢
+   simp only [conj_left, B.nu, hy, Units.val_mul, Matrix.mul_apply, map_sum, map_mul, hMy]
+ 
+-private theorem of_unique {B : Box F n C} {ρ ρ' : NRep F n C} (h : B.Of ρ) (h' : B.Of ρ') : ρ = ρ' := by
++theorem core32_PrNorm_of_unique {B : Box F n C} {ρ ρ' : NRep F n C} (h : B.Of ρ) (h' : B.Of ρ') : ρ = ρ' := by
+   have e : ρ.r = ρ'.r := MonoidHom.ext fun s => (h.res s).symm.trans (h'.res s)
+   apply NRep.ext e
+   funext v i
+@@ -174,7 +174,7 @@
+     exact (congrArg₂ (· * ·) hh2 hh1).trans (Matrix.one_mul 1)
+   · have e := hof'.map (p : C' →+* C)
+     rw [show B2.map (p : C' →+* C) = B'.map (p : C' →+* C) from (cj_map _ h2' B1 hh2).trans hB1map] at e
+-    exact of_unique e hof
++    exact core32_PrNorm_of_unique e hof
+   · rw [conj_mul]
+     exact hB2c
+   · intro s
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrRes.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrRes.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.DefIso
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PresDefs
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.LocRho
+ 
+@@ -7,16 +8,7 @@
+     [IsCO O' C] [IsLocalHom (algebraMap O' C)] :
+     IsLocalRing.residue C =
+       (IsLocalRing.ResidueField.map (algebraMap O' C)).comp (res O' C : C →+* ResidueField O') := by
+-  ext z
+-  obtain ⟨a, ha⟩ := IsCO.res_surj (O := O') z
+-  have h1 : (res O' C) z = (res O' C) (algebraMap O' C a) := by
+-    rw [← sub_eq_zero, ← map_sub, res_eq_zero_iff]
+-    exact ha
+-  have h2 : IsLocalRing.residue C z = IsLocalRing.residue C (algebraMap O' C a) := by
+-    rw [← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]
+-    exact ha
+-  rw [RingHom.comp_apply, RingHom.coe_coe, h1, h2, AlgHom.commutes]
+-  exact (IsLocalRing.ResidueField.map_residue _ a).symm
++  apply _root_.core32_DefIso_residue_eq_residueField_map_comp_res <;> assumption
+ 
+ private theorem nRep_isBar_of_isBar_comp_map {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ}
+     {K K' : Type} [Field K] [CommRing K'] [Nontrivial K'] (f : k →+* K) (j : K →+* K')
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ResDual.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ResDual.lean
+@@ -3,7 +3,7 @@
+ 
+ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+ 
+-private theorem res_dual (O : Type) [CommRing O] [IsLocalRing O] [IsCO O (DualNumber (ResidueField O))]
++theorem core32_ResDual_res_dual (O : Type) [CommRing O] [IsLocalRing O] [IsCO O (DualNumber (ResidueField O))]
+     (x : DualNumber (ResidueField O)) : res O _ x = x.fst := by
+   obtain ⟨o, ho⟩ := IsLocalRing.residue_surjective x.fst
+   have ha : (algebraMap O (DualNumber (ResidueField O)) o).fst = x.fst := by
+@@ -35,7 +35,7 @@
+   intro l _ k _ _ F C₀ n hF O _ _ _ R _ _ _ ρ B hU hOf ρ' r' hc' hbar hnu hatc hres
+   obtain ⟨g, hg, -⟩ := hU.univ _ ρ' hc' hbar
+   have hfst : ∀ x, (g x).fst = res O R x := fun x => by
+-    rw [← res_dual O (g x), res_map]
++    rw [← core32_ResDual_res_dual O (g x), res_map]
+   let Dd : R →ₗ[O] ResidueField O :=
+     { toFun := fun x => (g x).snd
+       map_add' := fun x y => by
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ResEqOf.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ResEqOf.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.LocCpl
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.Integral
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.IsInternalCongr
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.CoB
+@@ -49,8 +50,7 @@
+ 
+ private theorem res_eq_of {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
+     {x : R} {a : O} (h : x - algebraMap O R a ∈ maximalIdeal R) : res O R x = algebraMap O _ a := by
+-  have := (res_eq_zero_iff O R _).2 h
+-  rwa [map_sub, AlgHom.commutes, sub_eq_zero] at this
++  apply _root_.core32_LocCpl_res_eq_of <;> assumption
+ 
+ private theorem cpl_univ (O D R : Type) [CommRing O] [IsLocalRing O] [CommRing D] [Algebra O D] [IsNoetherianRing D]
+     (φ : D →ₐ[O] ResidueField O) [CommRing R] [IsLocalRing R] [Algebra D R] [Algebra O R] [IsScalarTower O D R]
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SgWeight.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SgWeight.lean
+@@ -7,7 +7,7 @@
+ 
+ private theorem sg0 (K : Type) [CommRing K] : sg K 0 = 1 := by simp [sg]
+ 
+-private theorem sg1 (K : Type) [CommRing K] : sg K 1 = -1 := by
++theorem core32_SgWeight_sg1 (K : Type) [CommRing K] : sg K 1 = -1 := by
+   show (-1 : K) ^ ((1 : ZMod 2).val) = -1
+   rw [show (1 : ZMod 2).val = 1 from rfl]
+   simp
+@@ -17,7 +17,7 @@
+   · simp [sg0]
+   · simp [sg0]
+   · simp [sg0]
+-  · rw [show (1 : ZMod 2) + 1 = 0 from rfl, sg0, sg1]
++  · rw [show (1 : ZMod 2) + 1 = 0 from rfl, sg0, core32_SgWeight_sg1]
+     ring
+ 
+ private theorem sg_nsmul (K : Type) [CommRing K] (m : ℕ) (i : ZMod 2) : sg K (m • i) = sg K i ^ m := by
+@@ -38,7 +38,7 @@
+ 
+ private theorem coeff_sg (O : Type) [CommRing O] {ι : Type} (j : ZMod 2) (y : MvPowerSeries ι O) (n : ι →₀ ℕ) :
+     MvPowerSeries.coeff n (sg _ j * y) = sg O j * MvPowerSeries.coeff n y := by
+-  rcases zcases j with rfl | rfl <;> simp [sg0, sg1]
++  rcases zcases j with rfl | rfl <;> simp [sg0, core32_SgWeight_sg1]
+ 
+ theorem UpperTheory.V.Fr.ep_ps :
+     ∀ (O : Type) [CommRing O], IsUnit (2 : O) → ∀ (ι : Type) [Finite ι] (wt : ι → ZMod 2), ∃ τ : MvPowerSeries ι O →ₐ[O] MvPowerSeries ι O, (∀ y, τ (τ y) = y) ∧ (∀ j, evp τ j = wtPart O wt j) ∧ ∀ j y, (2 : MvPowerSeries ι O) * wcomp O wt j y = y + sg _ j * τ y := by
+@@ -55,8 +55,8 @@
+     intro i j hij
+     rcases zcases i with rfl | rfl <;> rcases zcases j with rfl | rfl
+     · exact absurd rfl hij
+-    · simp [sg0, sg1]
+-    · simp [sg0, sg1]
++    · simp [sg0, core32_SgWeight_sg1]
++    · simp [sg0, core32_SgWeight_sg1]
+     · exact absurd rfl hij
+   let a : ι → O := fun s => sg O (wt s)
+   have hcoef : ∀ y n, MvPowerSeries.coeff n (MvPowerSeries.rescale a y)
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SgZero.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SgZero.lean
+@@ -1,3 +1,4 @@
++import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.SgWeight
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.EpresDefs
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoQuot
+ 
+@@ -6,8 +7,7 @@
+ private theorem sg_zero (R : Type) [CommRing R] : sg R 0 = 1 := by simp [sg]
+ 
+ private theorem sg_one (R : Type) [CommRing R] : sg R 1 = -1 := by
+-  show (-1 : R) ^ (1 : ZMod 2).val = -1
+-  rw [show (1 : ZMod 2).val = 1 from rfl, pow_one]
++  apply _root_.core32_SgWeight_sg1 <;> assumption
+ 
+ theorem UpperTheory.V.Fr.ep_ee :
+     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ S : Space O F 3, ∀ (x : Ideal S.A) (L : S.Loc x), S.u.ee ≤ x → ∀ σ, L.IsInv σ → L.ρ.ee = Ideal.span (evp σ 1 : Set L.R) := by
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/GaloisLibrary/LocalRingsCompletion/MemMaxPow.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/GaloisLibrary/LocalRingsCompletion/MemMaxPow.lean
+@@ -1,6 +1,6 @@
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.IsCharOneOfSubsingleton
++import Mathlib
+ 
+-open PowerSeries IsLocalRing UpperTheory.V.abelian₂
++open PowerSeries IsLocalRing
+ open IsDiscreteValuationRing (addVal)
+ open scoped Pointwise TensorProduct Topology
+ 
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/GaloisLibrary/LocalRingsCompletion/adicComplete.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/GaloisLibrary/LocalRingsCompletion/adicComplete.lean
+@@ -1,4 +1,4 @@
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.IsCharOneOfSubsingleton
++import Mathlib
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.MemMaxPow
+ 
+ open PowerSeries IsLocalRing UpperTheory.V.abelian₂
+@@ -18,8 +18,9 @@
+   refine { haus' := ?_, prec' := ?_ }
+   · intro x hx
+     ext i
+-    apply eq_of_sub_mem_pow (maximalIdeal O)
++    apply (IsHausdorff.eq_iff_smodEq (I := maximalIdeal O)).2
+     intro n
++    rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
+     have h := (key x 0 (n + i)).1 (hx (n + i)) i
+     simpa using h
+   · intro f hf
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/WeilGroupCharacters/ExistsDeterminantPairMapOfAlgHom.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/WeilGroupCharacters/ExistsDeterminantPairMapOfAlgHom.lean
+@@ -1,4 +1,4 @@
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.Inertia
++import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.UniversalOrdinaryDeterminantRing
+ 
+ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W
+ 
+@@ -11,7 +11,7 @@
+ private theorem pm_map_map (D : GDet n A G) (f : A →+* A') (g : A' →+* A'') :
+     (D.map f).map g = D.map (g.comp f) := rfl
+ 
+-private theorem pm_chi_map (D : GDet n A G) (f : A →+* A') (y : MonoidAlgebra A G) :
++theorem core32_ExistsDeterminantPairMapOfAlgHom_pm_chi_map (D : GDet n A G) (f : A →+* A') (y : MonoidAlgebra A G) :
+     (D.map f).chi (MonoidAlgebra.mapRingHom G f y) = (D.chi y).map f := by
+   letI : Algebra A A'[X] := ((algebraMap A' A'[X]).comp f).toAlgebra
+   have h := D.nat A[X] A'[X]
+@@ -34,7 +34,7 @@
+ 
+ private theorem pm_lam_map (D : GDet n A G) (f : A →+* A') (i : ℕ) (y : MonoidAlgebra A G) :
+     (D.map f).lam i (MonoidAlgebra.mapRingHom G f y) = f (D.lam i y) := by
+-  simp [GDet.lam, pm_chi_map]
++  simp [GDet.lam, core32_ExistsDeterminantPairMapOfAlgHom_pm_chi_map]
+ 
+ private theorem pm_lam_single (D : GDet n A G) (f : A →+* A') (i : ℕ) (g : G) :
+     (D.map f).lam i (MonoidAlgebra.single g 1) = f (D.lam i (MonoidAlgebra.single g 1)) := by
+--- a/Development/AutomorphicArithmetic/CyclotomicBounds/ClassNumberBounds/CyclotomicTotient/SkolemNoether.lean
++++ b/Development/AutomorphicArithmetic/CyclotomicBounds/ClassNumberBounds/CyclotomicTotient/SkolemNoether.lean
+@@ -123,13 +123,5 @@
+     simp_rw [hl, hr]
+     rw [Finset.sum_ite_eq, Finset.sum_ite_eq, if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _)]
+ 
+-theorem det_algHom {B : Type} [CommRing B] [IsLocalRing B] {r : ℕ}
+-    (θ : Matrix (Fin r) (Fin r) B →ₐ[B] Matrix (Fin r) (Fin r) B) (x : Matrix (Fin r) (Fin r) B) : (θ x).det = x.det := by
+-  obtain ⟨J, hJ⟩ := exists_conj_of_algHom θ
+-  have h := congrArg Matrix.det (hJ x)
+-  rw [Matrix.det_mul, Matrix.det_mul, mul_comm (J : Matrix (Fin r) (Fin r) B).det] at h
+-  have hu : IsUnit (J : Matrix (Fin r) (Fin r) B).det :=
+-    (Matrix.isUnit_iff_isUnit_det _).mp J.isUnit
+-  exact hu.mul_right_cancel h
+ 
+ end KStar.Tree
+--- a/Formalism/PeriodIntegrals/UnitaryGroupMassFormula/RegularLocalRegularSequence/RingKrullDimQuotientSpanSingletonAddOne.lean
++++ b/Formalism/PeriodIntegrals/UnitaryGroupMassFormula/RegularLocalRegularSequence/RingKrullDimQuotientSpanSingletonAddOne.lean
+@@ -1,3 +1,4 @@
++import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegularOfSupportDimQuotientAddLengthLe
+ import Mathlib
+ 
+ namespace PI.UnitaryGroupMassFormula.RLRS
+@@ -43,13 +44,7 @@
+ 
+ theorem isLocalRing_quotient_span_singleton {R : Type*} [CommRing R] [IsLocalRing R]
+     {x : R} (hx : x ∈ maximalIdeal R) : IsLocalRing (R ⧸ Ideal.span ({x} : Set R)) := by
+-  have hne : Ideal.span ({x} : Set R) ≠ ⊤ := fun h => by
+-    have hle : Ideal.span ({x} : Set R) ≤ maximalIdeal R :=
+-      Ideal.span_le.mpr (Set.singleton_subset_iff.mpr hx)
+-    rw [h] at hle
+-    exact (inferInstance : (maximalIdeal R).IsMaximal).ne_top (top_le_iff.mp hle)
+-  have : Nontrivial (R ⧸ Ideal.span ({x} : Set R)) := Ideal.Quotient.nontrivial_iff.mpr hne
+-  exact IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective
++  apply _root_.GlobalTheory.isLocalRing_quotient_span_singleton <;> assumption
+ 
+ theorem spanFinrank_maximalIdeal_quotient_succ_le (R : Type*) [CommRing R] [IsLocalRing R]
+     [IsNoetherianRing R] {x : R} (hx : x ∈ maximalIdeal R) (hx2 : x ∉ maximalIdeal R ^ 2)

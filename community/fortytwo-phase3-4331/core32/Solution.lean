@@ -1,0 +1,9 @@
+import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.AbsMain
+import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.SecondThirdPrimeConditionTransferAlt
+
+namespace AlpogeRHCore32
+
+theorem curveDVRSpecializationPropagation : UpperTheory.V.Pr.AbsMain :=
+  UpperTheory.V.Pr.absMain
+
+end AlpogeRHCore32
