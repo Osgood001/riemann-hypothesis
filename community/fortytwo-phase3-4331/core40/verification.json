@@ -1,14 +1,14 @@
 {
   "core": 40,
-  "candidate": "core40-fastcornermap3a8b7463bf86",
+  "candidate": "core40-fastcornermapab964b15d4ee",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 558,
+  "local_normalized_tokens": 550,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "671e5c19f4aec82f6bdcc0f7b08e8393b0bcc61aaf1243306f60bdb773f5f042",
+  "proof_tree_sha256": "c0b03e81295961dd6b68ef7fa9ed57de13eceffbaf7291b39facb583f3e786ad",
   "modified_files": {},
   "attribution": {
     "original_author": "Levent Alpöge",
@@ -31,17 +31,17 @@
       "source_kind": "complete new side of publicly published organizer Lean diff",
       "sha256": "a77382248ffde3ab0db815fb14850dedc6a95feef3225d939772b2c9fd4d1a66"
     },
-    "new_contribution": "Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators explicitly credit Fortytwo #103322 in their #103701 and shortened the torus, Haar measure and unipotent arguments. Starting with that published file, Codex used the equality of the complete mapped matrix before taking entries and reused the Haar scalar nonzero witness. The unchanged target and formalization are by Levent Alpöge.",
+    "new_contribution": "Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators shortened the torus and Haar arguments in #103701 and explicitly credit Fortytwo #103322. Codex applied the equality of the complete mapped matrix. For a second fundamental domain the proof now uses absolute continuity of additive Haar measures directly. The positive Haar scalar is used only to provide the nonzero proportionality factor. The unchanged target and formalization are by Levent Alpöge.",
     "native_contribution_draft_sha256": "ac0bfb090db4f54327e05652aa993daec193ee9b38fa20f1038558e76a57c93f",
-    "adapted_solution_sha256": "3a8b7463bf86c060c8509eb488373c1cb0c6f8fb267811c2e4f719b9a4af37c3",
-    "native_contribution_note": "Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators explicitly credit Fortytwo #103322 in their #103701 and shortened the torus, Haar measure and unipotent arguments. Starting with that published file, Codex used the equality of the complete mapped matrix before taking entries and reused the Haar scalar nonzero witness. The unchanged target and formalization are by Levent Alpöge.",
-    "public_source_note": "Core 40. Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators explicitly credit Fortytwo #103322 in their #103701 and shortened the torus, Haar measure and unipotent arguments. Starting with that published file, Codex used the equality of the complete mapped matrix before taking entries and reused the Haar scalar nonzero witness. The unchanged target and formalization are by Levent Alpöge. [Published starting proof](https://riemann.verifytask.cn/api/attempt/103701)",
+    "adapted_solution_sha256": "ab964b15d4eebedd8a41b0d49d11566c42ac2656f83f2cd0c78e7e9d6448103f",
+    "native_contribution_note": "Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators shortened the torus and Haar arguments in #103701 and explicitly credit Fortytwo #103322. Codex applied the equality of the complete mapped matrix. For a second fundamental domain the proof now uses absolute continuity of additive Haar measures directly. The positive Haar scalar is used only to provide the nonzero proportionality factor. The unchanged target and formalization are by Levent Alpöge.",
+    "public_source_note": "Core 40. Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators shortened the torus and Haar arguments in #103701 and explicitly credit Fortytwo #103322. Codex applied the equality of the complete mapped matrix. For a second fundamental domain the proof now uses absolute continuity of additive Haar measures directly. The positive Haar scalar is used only to provide the nonzero proportionality factor. The unchanged target and formalization are by Levent Alpöge. [Published starting proof](https://riemann.verifytask.cn/api/attempt/103701)",
     "prior_public_lineage": "Pi / Gemini 4 Neon via Antigravity published the earlier one-file proof in #102851. Fortytwo and Codex revised it in #103322, which Mikko Nyman expressly credits in #103701."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T08:48:00.475279+00:00",
+    "completed_utc": "2026-11-24T09:11:08.051425+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",

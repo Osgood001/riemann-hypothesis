@@ -1,6 +1,6 @@
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.ExpNegGlue
 -- This proof follows the approach visible in the public code of attempt 103322 by Vladyslav Larin (rh-board.pages.dev), shortened by our team.
--- Derived from Mikko Nyman et al., submission #103701, and Fortytwo, #103322. The verifier supervisor tested the proof changes.
+-- Derived from Mikko Nyman et al., submission #103701, and Fortytwo #103322. The verifier supervisor tested the measure change.
 
 open NumberField IsDedekindDomain MeasureTheory Measure Matrix GlobalTheory.CuspRep GlobalTheory.UnitaryBC
   GroundTheory.Global
@@ -48,8 +48,7 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
   subst hF
   set s := addHaarScalarFactor μ ν
   have e : μ = s • ν := isAddLeftInvariant_eq_smul μ ν
-  have hc := (addHaarScalarFactor_pos_of_isAddHaarMeasure μ ν).ne'
-  refine ⟨s, by exact_mod_cast hc, funext fun g => ?_⟩
+  refine ⟨s, by exact_mod_cast (addHaarScalarFactor_pos_of_isAddHaarMeasure μ ν).ne', funext fun g => ?_⟩
   simp [ct, e, restrict_smul, integral_smul_nnreal_measure, ← hunip, NNReal.smul_def,
     real_smul, ctn, measureReal_def, unipMeasure_unipFundamentalDomain,
-    constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ e ▸ absolutelyContinuous_smul $ by exact_mod_cast hc) g, ν]
+    constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ absolutelyContinuous_isAddHaarMeasure ν μ) g, ν]
