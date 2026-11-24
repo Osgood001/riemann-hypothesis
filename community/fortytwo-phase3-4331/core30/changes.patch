@@ -48,6 +48,26 @@
      (charPair h) (weil h) (GlobalTheory.weilIs_alternating_skew_natural g lift)
      (GlobalTheory.twisted_pow_translate (GlobalTheory.AbSquare.square_of_cube h).1 (mulA_props h))
  
+--- a/Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/CubeTheoremAndSectionsFiniteGrowthAbelianVariety.lean
++++ b/Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/CubeTheoremAndSectionsFiniteGrowthAbelianVariety.lean
+@@ -5,7 +5,7 @@
+ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsKerIffMinors
+ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.TrivPullCompIff
+ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.TrivBasicOpenOfTrivFibre
+-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianVarietyLineBundleSectionsFiniteStatement
++import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianVarietyLineBundleSectionsFinite
+ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FinrankTotalDegreeImageGrowth
+ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FiniteOfNotLinearIndependent
+ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsAffineOpenInfOfIsSeparated
+@@ -33,7 +33,7 @@
+ 
+ theorem sections_finite :
+     ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (M : LB P.A.left), M.IsLB → ∃ n : ℕ, ∀ s : Fin n → LB.Sec M, ∃ c : Fin n → Γ(Spec (CommRingCat.of K), ⊤), c ≠ 0 ∧ ∀ i, ∑ k, (P.A.hom.appLE ⊤ (M.U i) le_top).hom (c k) * (s k).f i = 0 :=
+-  GlobalTheory.T.abelianVariety_lineBundle_sections_finite GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj (GlobalTheory.AbLaw.polAV_veryAmpleBy GlobalTheory.laws_without_cohomology.2.2.1)
++  GlobalTheory.AbLaw.sections_finite_of_perf GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj (GlobalTheory.AbLaw.polAV_veryAmpleBy GlobalTheory.laws_without_cohomology.2.2.1)
+ 
+ theorem sections_growth :
+     ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))), (∀ j : ℕ, Module.Finite Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L (j : ℤ) (baseOver (Spec (CommRingCat.of K))))) ∧ ∃ N c C : ℕ, 1 ≤ N ∧ 1 ≤ c ∧ ∀ t : ℕ, 1 ≤ t → t ^ P.g ≤ c * Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L ((N * t : ℕ) : ℤ) (baseOver (Spec (CommRingCat.of K)))) ∧ Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L ((N * t : ℕ) : ℤ) (baseOver (Spec (CommRingCat.of K)))) ≤ C * t ^ P.g :=
 --- a/Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/NonemptyPerfectSectionsComplexOfSmoothProj.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/NonemptyPerfectSectionsComplexOfSmoothProj.lean
 @@ -1,8 +1,8 @@
@@ -145,6 +165,34 @@
    haveI := P.smoothDim
    haveI : Smooth P.A.hom := SmoothOfRelativeDimension.smooth P.g _
    rw [HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]
+--- a/Development/AbelianVarietyTheory/Proofs/ToricGeometry/ThetaUnifAVOfLaws.lean
++++ b/Development/AbelianVarietyTheory/Proofs/ToricGeometry/ThetaUnifAVOfLaws.lean
+@@ -37,7 +37,6 @@
+ import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsIndepSections
+ import Development.AbelianVarietyTheory.Proofs.ToricGeometry.IsAHOfPolarisation
+ import Development.AbelianVarietyTheory.Proofs.ToricGeometry.MemSpanOfCardLe
+-import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ThetaUnifAVOfParts
+ 
+ open AlgebraicGeometry CategoryTheory
+ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
+@@ -84,6 +83,16 @@
+   have hpos := @ThetaPositivity.re_form_pos_of_theta_ne_zero
+   have hisah := @isAH_of_polarisation hval hpos hindep hsecfn
+   have hseconto := @ThetaOnto.theta_from_section hval hdim hindep hsecfn
+-  exact thetaUnifAV_of_parts hexp htan hendo hframe hweil hperf hsecfn hseconto hisah
++  intro P rig hrig
++  obtain ⟨u₀, hco, hlift⟩ := hexp P
++  obtain ⟨u, Hm, χ, Ef, hex, hr, hd⟩ := hframe P rig hrig u₀
++  rw [← hex] at hco hlift
++  have hb := hperf P u Hm χ Ef hd
++  have hAH := hisah P u Hm χ Ef hd hb
++  have ht := htan P.A P.L P.g u hco
++  refine ⟨u, Hm, χ, Ef, hAH, hr, ht.1, ht.2, hendo P.A P.L P.g u hlift, fun n => ⟨(hsecfn P u Hm χ Ef hd n).1, fun θ hθ => ?_⟩,
++    hd.2.2.1, hb, hweil P u Hm χ Ef hd⟩
++  obtain ⟨s, hs⟩ := hseconto P u Hm χ Ef hAH hd hb n θ hθ
++  exact ⟨s, hs, fun s' hs' => (hsecfn P u Hm χ Ef hd n).2 θ s' s hs' hs⟩
+ 
+ end GlobalTheory
 --- a/Development/AbelianVarietyTheory/Proofs/UniformizationProofs/CyclicIdeal.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/UniformizationProofs/CyclicIdeal.lean
 @@ -1,7 +1,6 @@
