@@ -14,7 +14,6 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
     change _ = 1 - infEq E 1 + infEq E _
     rw [map_one, sub_self, zero_add]
     funext w
-    change (posIdele (K := E) _ _).val.1 w = _
     rw [← coe_infiniteProj, infiniteProj_posIdele]
     change posRealElem w _ = _
     simp [posRealElem, InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w),
@@ -29,7 +28,7 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
         matN N (sInf E) A i j = sInf E (A i j) := rfl
     refine Units.ext (Matrix.ext fun i j => ?_)
     simp only [An.tor, coe_diagUnits, pExp]
-    by_cases h : i = j <;> simp [infGL, cornerGL, corner, entry, hM, infId, diagonal_apply, h, expU]
+    by_cases h : i = j <;> simp [infGL, cornerGL, corner, entry, hM, infId, h, expU]
   have htor t : splitCentre E N t = An.tor E fun _ => t :=
     hdiag _ _ rfl
   refine ⟨fun r t => hdiag _ _ $ congrArg diagonal $ by funext i w; split_ifs <;> simp,
@@ -55,8 +54,8 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
   subst hF
   set s := addHaarScalarFactor μ ν
   have e : μ = s • ν := isAddLeftInvariant_eq_smul μ ν
-  have hc : 0 < s := addHaarScalarFactor_pos_of_isAddHaarMeasure μ ν
-  refine ⟨s, by exact_mod_cast hc.ne', funext fun g => ?_⟩
+  have hc := (addHaarScalarFactor_pos_of_isAddHaarMeasure μ ν).ne'
+  refine ⟨s, by exact_mod_cast hc, funext fun g => ?_⟩
   simp [ct, e, restrict_smul, integral_smul_nnreal_measure, ← hunip, NNReal.smul_def,
     Complex.real_smul, An.ctn, Measure.real, unipMeasure_unipFundamentalDomain,
-    constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ e ▸ absolutelyContinuous_smul $ by exact_mod_cast hc.ne') g, ν]
+    constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ e ▸ absolutelyContinuous_smul $ by exact_mod_cast hc) g, ν]
