@@ -1,14 +1,14 @@
 {
   "core": 34,
-  "candidate": "core34-fastslice66e5b798f8",
+  "candidate": "core34-fastsliceec5891c2ab",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 127,
-  "local_normalized_tokens": 106158,
+  "local_normalized_tokens": 106038,
   "published_baseline_tokens": 400204,
-  "proof_tree_sha256": "c0a99b4d61efe6d96684a4f869e675829432aa70733d7b9a8ca2359781afa72b",
+  "proof_tree_sha256": "3b1a651013aaa66b529014db3980fcc6770e4812fc62ba0ba76b572c21d70620",
   "modified_files": {
     "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PDivCycleMul.lean": {
       "before": "7b44bb2bcc590eec8a8f5d98f60ece6da14a1bd5ef3746155ead419cab9fbace",
@@ -28,7 +28,7 @@
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/HilbEventuallyPolyQualified.lean": {
       "before": "3b4bc3149597bde3b4e9330080222262d00b73c846e18cdbec021cc1b8b789a3",
-      "after": "4603c98fbe0a04df41f7130e307a99124f26b49c43007cf3317b6a11f653bb2d"
+      "after": "784baaa14c31e5c38875ab6aec7ce1b0b97e6cb645c4537107ffc11e1b63d303"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LengthSumLocalizations.lean": {
       "before": "bd85a7d81aa83c5d54e8a1d1a744ad7165b2305d03916fedc8ec070d99b8d6dc",
@@ -44,7 +44,7 @@
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PCutRegular.lean": {
       "before": "88b5b00fc5713acee3b88f042fd8acd04fe6797f9ccc7427d0205461d414dcdc",
-      "after": "da5ccfdce52ab0ba0207575ada66af7f18132d18fd2565ec2db4178505efefdb"
+      "after": "3964442109fe0f0542d122174dd46fe8740aba845a2ac8438311f6fd16e50c25"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDegZeroLocDim.lean": {
       "before": "592ae4fd560ceaf55b34b0097f6f37045156083428251cd3d55202be93486b87",
@@ -92,7 +92,7 @@
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean": {
       "before": "ed3a729e65d80e69eeca0225865e79fc9bd95d869306ab17b5a757a023d555ea",
-      "after": "0c6724771ceb5aa049300a7e9dd2a67560692fc2a97e7e806f827f5596c658ab"
+      "after": "5e45010726fa102f57f1f6365a7c7f66494f0f1d9afb2bbacba4b63cfd68c8a8"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDegZeroLocSeparate.lean": {
       "before": "4c9c0daee540563295eae49066df86c34158eb64f9dc80463eeb55a161c36f4c",
@@ -151,7 +151,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T03:54:53.843320+00:00",
+    "completed_utc": "2026-11-24T04:06:03.825433+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",

@@ -716,7 +716,7 @@
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/HilbEventuallyPolyQualified.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/HilbEventuallyPolyQualified.lean
 @@ -1,3 +1,4 @@
-+import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContracted
  import Mathlib
  import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
  set_option maxSynthPendingDepth 1
@@ -730,7 +730,7 @@
 -  rw [Set.mem_singleton_iff] at hx
 -  subst hx
 -  exact ⟨c, hs⟩
-+  apply GroundTheory.Heights₂.Heights.FieldNumbers.PrimeFiltration.multiHomog_sup_span <;> assumption
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PFContracted.isMultiHomogIdeal_sup_span <;> assumption
  
  theorem hilbFn_eq_zero_of_block {I : Ideal (MRing ι F)} (k : K)
      (hk : ∀ i, (X ⟨k, i⟩ : MRing ι F) ∈ I) (m : K → ℤ) (hm : 1 ≤ m k) : hilbFn I m = 0 := by
@@ -836,13 +836,27 @@
  end GroundTheory.Heights₂.Heights.FieldNumbers
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PCutRegular.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PCutRegular.lean
-@@ -1,3 +1,5 @@
+@@ -1,3 +1,6 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContracted
 +import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbDegreeBound
 +import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration
  import Mathlib
  import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
  import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbExactDivide
-@@ -52,17 +54,7 @@
+@@ -40,11 +43,7 @@
+ 
+ theorem eventualValue_eq_zero {f : (K → ℤ) → ℤ} (hf : ∀ᶠ m in Filter.atTop, f m = 0) :
+     eventualValue f = 0 := by
+-  unfold eventualValue
+-  split_ifs with h
+-  · obtain ⟨m, h1, h2⟩ := (h.choose_spec.and hf).exists
+-    rw [← h1, h2]
+-  · rfl
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PFContracted.eventualValue_eq_zero <;> assumption
+ 
+ theorem intNum_eq_zero_of_eventually {I : Ideal (MRing ι F)}
+     (hI : ∀ᶠ m in Filter.atTop, hilbFn I m = 0) {n : ℕ} (bs : Fin n → K → ℤ) :
+@@ -52,17 +51,7 @@
    eventualValue_eq_zero (foldr_diffStep_eventually_zero hI (List.ofFn bs))
  
  theorem hilbFn_top (m : K → ℤ) : hilbFn (⊤ : Ideal (MRing ι F)) m = 0 := by
@@ -861,7 +875,22 @@
  
  theorem mem_of_block_le {I : Ideal (MRing ι F)} {k : K}
      (hk : ∀ i : ι k, (X ⟨k, i⟩ : MRing ι F) ∈ I) {m : K → ℕ} (hm : 1 ≤ m k)
-@@ -124,9 +116,7 @@
+@@ -110,23 +99,13 @@
+ theorem isMultiHomogIdeal_sup_span {P : Ideal (MRing ι F)} (hP : IsMultiHomogIdeal P)
+     {c : K → ℕ} {s : MRing ι F} (hs : IsMultiHomog s c) :
+     IsMultiHomogIdeal (P ⊔ Ideal.span {s}) := by
+-  classical
+-  intro f hf b
+-  obtain ⟨a, ha, t', ht', rfl⟩ := Submodule.mem_sup.mp hf
+-  obtain ⟨t, rfl⟩ := Ideal.mem_span_singleton'.mp ht'
+-  rw [map_add, HilbExactDivide.component_mul_form hs]
+-  refine Ideal.add_mem _ (Ideal.mem_sup_left (hP a ha b)) ?_
+-  split_ifs
+-  · exact Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self s))
+-  · exact Ideal.zero_mem _
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PFContracted.isMultiHomogIdeal_sup_span <;> assumption
+ 
+ omit [DecidableEq K] in
  
  theorem colon_eq_of_not_mem {P : Ideal (MRing ι F)} [hP : P.IsPrime] {s : MRing ι F}
      (hs : s ∉ P) : P.colon (Ideal.span {s}) = P := by
@@ -872,7 +901,7 @@
  
  omit [DecidableEq K] in
  
-@@ -146,21 +136,11 @@
+@@ -146,21 +125,11 @@
        · exact WithTop.top_ne_coe (WithBot.coe_inj.mp h)
        · exact ENat.top_ne_natCast _ (WithBot.coe_inj.mp h)
      | coe e =>
@@ -899,7 +928,7 @@
  
  theorem eq_of_add_one_le_of_le {x : WithBot ℕ∞} {e : ℕ}
      (h1 : x + 1 ≤ ((e + 1 : ℕ) : WithBot ℕ∞)) (h2 : ((e : ℕ) : WithBot ℕ∞) ≤ x) :
-@@ -170,17 +150,12 @@
+@@ -170,17 +139,12 @@
    | coe y =>
      cases y using ENat.recTopCoe with
      | top =>
@@ -922,7 +951,7 @@
  
  theorem le_of_height_add {h : ℕ∞} {x : WithBot ℕ∞} {e : ℕ} (hh : h ≤ 1)
      (hsum : (h : WithBot ℕ∞) + x = ((e + 1 : ℕ) : WithBot ℕ∞)) : ((e : ℕ) : WithBot ℕ∞) ≤ x := by
-@@ -206,15 +181,7 @@
+@@ -206,15 +170,7 @@
  theorem ringKrullDim_sup_span_add_one_le {P : Ideal (MRing ι F)} [P.IsPrime] {s : MRing ι F}
      (hs : s ∉ P) :
      ringKrullDim (MRing ι F ⧸ (P ⊔ Ideal.span {s})) + 1 ≤ ringKrullDim (MRing ι F ⧸ P) := by
@@ -1470,15 +1499,16 @@
  
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean
-@@ -1,5 +1,7 @@
+@@ -1,5 +1,8 @@
 +import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbExactDivide
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContracted
  import Mathlib
  import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
 +
  set_option maxSynthPendingDepth 1
  
  namespace GroundTheory.Heights₂.Heights.FieldNumbers
-@@ -16,116 +18,42 @@
+@@ -16,116 +19,42 @@
  
  variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type u} [Field F]
  
@@ -1614,7 +1644,7 @@
  
  omit [Fintype K] [DecidableEq K] in
  theorem mem_colon_iff {J : Ideal (MRing ι F)} {s f : MRing ι F} :
-@@ -151,8 +79,8 @@
+@@ -151,8 +80,8 @@
    obtain ⟨P, hP, hmax⟩ := set_has_maximal_iff_noetherian.mpr hnoeth 𝒮 hne
    obtain ⟨s, ⟨i, hsi⟩, hsJ, hPs⟩ := hP
    subst hPs
@@ -1625,16 +1655,19 @@
    have hmh := multiHomog_colon hJ hc
    have hcolon := isHomogeneous_of_multiHomog hmh
    have hprime : (J.colon (Ideal.span {s})).IsPrime := by
-@@ -183,7 +111,7 @@
-   refine multiHomog_of_isHomogeneous ((isHomogeneous_of_multiHomog hJ).sup ?_)
-   refine Ideal.homogeneous_span _ _ ?_
-   rintro x rfl
+@@ -180,10 +109,7 @@
+ 
+ theorem multiHomog_sup_span {J : Ideal (MRing ι F)} (hJ : IsMultiHomogIdeal J) {s : MRing ι F}
+     {c : K → ℕ} (hs : IsMultiHomog s c) : IsMultiHomogIdeal (J ⊔ Ideal.span {s}) := by
+-  refine multiHomog_of_isHomogeneous ((isHomogeneous_of_multiHomog hJ).sup ?_)
+-  refine Ideal.homogeneous_span _ _ ?_
+-  rintro x rfl
 -  exact ⟨_, mem_lexGrading hs⟩
-+  exact ⟨toLex c, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr hs⟩
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PFContracted.isMultiHomogIdeal_sup_span <;> assumption
  
  end Lex
  
-@@ -191,111 +119,45 @@
+@@ -191,111 +117,45 @@
  
  variable {K : Type} {ι : K → Type} {F : Type u} [Field F]
  
