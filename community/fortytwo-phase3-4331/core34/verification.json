@@ -1,29 +1,145 @@
 {
   "core": 34,
-  "candidate": "core34-fasta22a84b83d",
+  "candidate": "core34-fastsliceaf824eafad",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 188,
-  "local_normalized_tokens": 239570,
+  "submitted_files": 127,
+  "local_normalized_tokens": 106815,
   "published_baseline_tokens": 400204,
-  "proof_tree_sha256": "b79330690ae9fbd6d11d335cb0bebebb7534eaa61e1481122d86ac4dd30cf407",
+  "proof_tree_sha256": "38b99c60aaebcb3ee93a6f87c5d1c86424a6266fbaeda17a4a9138e92a46d6ab",
   "modified_files": {
+    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PDivCycleMul.lean": {
+      "before": "7b44bb2bcc590eec8a8f5d98f60ece6da14a1bd5ef3746155ead419cab9fbace",
+      "after": "a5e1f8d1fae25495789199e75d72308b526cb23af4f43d68bd163f49b1ccd3ed"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PRepresentative.lean": {
+      "before": "de8e61a3c9c4ba259c7634280c4cfc9fbe1d5d9105c87992cf51913ea3728df6",
+      "after": "82c0dfccc24fa76d3081ff045065d73a163850d40fb6c92ece377f65a6ceed2c"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/RelevantMinimalOfDivCycleNeZero.lean": {
+      "before": "a5315cb998d6cce51247ff2eb2c6c3bad2e2e40a9c4ddfb0110e52fd383e0d4e",
+      "after": "d74934af44460bac725def3f477370af93291d9e6b5d6f7cf9a399b51a23b385"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/Assembly.lean": {
+      "before": "65546131dcdc31380b13d727d919c2487603e2372b8792e5c30919dedf7b7013",
+      "after": "879505c19d71a33c859342f12ce671bd2bb0b16c9cc9b1bef07245388418eee6"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LengthSumLocalizations.lean": {
+      "before": "bd85a7d81aa83c5d54e8a1d1a744ad7165b2305d03916fedc8ec070d99b8d6dc",
+      "after": "1054f43a9a0cd6f381c1a1ae10a8ea50c908b412d2febcfa549ca708518fb236"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LocalIntegralClosureChart.lean": {
+      "before": "dbf938b1557e7bb43546806cd2d315abddd043fb0920490f6255e42baa42814b",
+      "after": "8bd28cfdad96de06ea8f40271dbcd4e09ceaa75271816941986c8c513f44110c"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/NoetherReduction.lean": {
+      "before": "240d42814312eceb9b6a9c8b854e523b3435b3b422f96341a2cd9655d50feba6",
+      "after": "a7bf12f3cbe0b7a08c4b44f9fdf7248cdbdcc9333e337fc099ee0c719c3e585d"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PCutRegular.lean": {
+      "before": "88b5b00fc5713acee3b88f042fd8acd04fe6797f9ccc7427d0205461d414dcdc",
+      "after": "da5ccfdce52ab0ba0207575ada66af7f18132d18fd2565ec2db4178505efefdb"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDegZeroLocDim.lean": {
+      "before": "592ae4fd560ceaf55b34b0097f6f37045156083428251cd3d55202be93486b87",
+      "after": "9a1ba6ca16afb973ecbf0dd65ddf37effd6819702b5f0b38dba5866aa0b7ca24"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPrincipalDegree.lean": {
+      "before": "61bd78a9378be16dee1a1c20719fe87a529c2036757ef0bc158f98590f87fe20",
+      "after": "5eba98ca12009e8d4c6e2850f21b2bde934821ed662e6ff94eccd3394b2bc563"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPushForward.lean": {
+      "before": "474fce70a1a7a16a40a4fa940a0742e7577f86d4e3e2314e91d7b9dc0b26ba9d",
+      "after": "0ef451bbc6a1419d761799c3cc9a678ee15354e8f521741267443a8ccc5a8322"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbDegreeBound.lean": {
+      "before": "3d9e0a7c080a1158b2bca34658873ae517b5e9f2a6194bc9e35498d4f45f3910",
+      "after": "9027c9adc1f81122f0f0c70e7a25879b1d390d797594c76b9ecc894dd38bb9f5"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbExactDivide.lean": {
+      "before": "0cecb3c9569821d15d47fd7ef6df25d25b15d441203385e7acbd44531a372ba0",
+      "after": "9a6f6bc46124134340481029e14beb8b9892fb4dcbdc31df17c01df79758fe82"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartLocDim.lean": {
+      "before": "cf8b713f5f9ca3464cfae712f2eedddc8e4b0d2546d4a0c960d17287feac0b42",
+      "after": "61458d91423fdf69dd30f577b45293da72989ae83b18ca2262c00b5bfeeab5be"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartTrdeg.lean": {
+      "before": "b18ad205b0d64adaaa81cbfe6c546fe8969611cc2c0f4b6cda628f4a8f42ad43",
+      "after": "b56f01e7156784a33b2358adde2bcc7c87e0565120c6f270114e22fdf355aea4"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContracted.lean": {
+      "before": "d6de8f815295c5726af6fffb1608338230793542f922ef7ef83ad07d86c468f1",
+      "after": "ff7a588e2f41284a9a4a9d8ae674b35dcf2564412d3590b2107d349f275cad6f"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFDegree.lean": {
+      "before": "dae79b5dc4e596cf3dcfbc05e77aae892e744a19d3c411393f8e8e611e3e8e5a",
+      "after": "5217227727f55814d415a12df37aa804b1df1fae455b95a863e18e70b83ae837"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean": {
+      "before": "ed3a729e65d80e69eeca0225865e79fc9bd95d869306ab17b5a757a023d555ea",
+      "after": "0ede414c81457195baec442a918b0b160c2dec79f3e192e1b8faa1985f1a6def"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDegZeroLocSeparate.lean": {
+      "before": "4c9c0daee540563295eae49066df86c34158eb64f9dc80463eeb55a161c36f4c",
+      "after": "1fe53015d42390b0dd1dc65c8e099a60c48a6b20d8a0eade8cbd1255bfc70bd8"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDegreeBound.lean": {
+      "before": "fe0847025ab22842be27805264a6c8edddba291503f3a673817c11d4b3f1a824",
+      "after": "f1121e6bc818696947a0c779346c5dd7ac3ff6faea9dc89f6bf12f6342a618b4"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDivPushForward.lean": {
+      "before": "fa66273bba0f3d3fe0f383aa087a21033495dd3d2bcd35f0e79a67b1f7498f4e",
+      "after": "3def3a94a5f9896af4409affed342b0d86940ce980ffd6b16d003090fcd0232c"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDivPushForwardLocal.lean": {
+      "before": "832572b032291a454c6d7ad11bb0628f122c386571aab57db5bcdaa1303e0451",
+      "after": "6ebaa56a0ac2d21829764c9e26c810b55dbcc8c49a0ba1a22b657be679e6496c"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsExamples.lean": {
+      "before": "384e31d94ce9370985de6ca327db24e0354521d35df9aae68069c7e21343baad",
+      "after": "2ef7f8b2d8c53fe174b3ae9ee3e87a1a06bc442d63f4717269f05689ebcf6e81"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsFiniteAlgebraLengthSum.lean": {
+      "before": "eb819e4fcb97800ce5e3558e085bf38b07b9a426eba268de8b1c7c328d32fd3b",
+      "after": "5304f71c2db111b6e1cfaac419c91fa3f8d9f64c4f1a63722ea59133b7802d62"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/HeightComparison/IsMultiHomogIdealIff.lean": {
+      "before": "4c8b9816766a136d717cb6537a86c5d85bfa036a66a04a937339060b4f3a41c5",
+      "after": "45ba2301d004d37a1685f0ac20d1a281e5fd9786933f4637f94f7a281e713944"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/Intersections/TableDegreeThreeBase.lean": {
+      "before": "835abba1f70cf4305f65b2cfc6a5d7684ace829a71f9a833b79fb468a0f38351",
+      "after": "5bd913c3a540f799988111c0ed8049e307d72cec7930895fae65f6a1d8751305"
+    },
     "GroundTheory/HeightsAndTheta/Heights/SemipositiveHeights/NumericalSegre.lean": {
       "before": "4d05b14c050e68c032553e77102c03c4b59c11a5f3071292044825f696516405",
       "after": "c74898ee7510bc8bdc0d01127137d958ad6ec0114a4e0712119c93caf6bf715c"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/KrullDimQuotientEqOneIffEqBot.lean": {
+      "before": "4ba6e37ec8ba2371809e3871b79d7345077b959e188f376a87b7e74c3f58abaa",
+      "after": "c5e3de92f82a8ec6de1781529b326ad2f65054a0e5f3a7b1b65a822c6a3b058b"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/LocalLengthAdditivityTorsionFree.lean": {
+      "before": "6df3df92f9eb9e2e97ee16c4cb93a69879facd975042969426a25c5b810a466e",
+      "after": "97e1a8beda95295bf249740e45af28c2496177bd49b858394aa88bf02f3c70db"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/MultihomogeneousIdeals/CycDim.lean": {
+      "before": "f7b4352b275b4dba239df897ceb9fae8a28d9a0c437974ef052e3c8427856b60",
+      "after": "9880a127cb7bfcd6ebf1d7dd98a9c1735a5cf07e85fa9f6540fc35b988a113e8"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo native Lean proof simplification in GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.NumericalSegre, from phase3-fast-core34-r01, adapted to the published Core 34 target. Original proof by Levent Alpöge."
+    "new_contribution": "Fortytwo native Lean proof simplification in GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.NumericalSegre, from phase3-fast-core34-r01, adapted to the published Core 34 target. Original proof by Levent Alpöge. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T19:46:36.969378+00:00",
+    "completed_utc": "2026-11-24T02:29:23.637154+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -37,24 +153,11 @@
   "pinned_source_files": {
     "Development/AutomorphicSpectrum/Proofs/AlgebraProofs/ProjectionFormulaDegree.lean": "e802a2641a0a054f6c494513225b6007c74f426a3b43a19936059614a2a21edc",
     "Development/AutomorphicSpectrum/Proofs/AlgebraProofs/ProjectionFormulaDegreeStatement.lean": "ecc38ba31db0647341279b71b7d6f4912a03ac12c740aeb4317a74e2ec3f9c58",
-    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/BundleObjects.lean": "ac4d72669a61e58f017c341386f62a3d53b94479e24c893f87d7aab7c83d358f",
-    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/Cartier.lean": "c464a040ab7a28ab3651bc71c7f92720a9fb1cb749ebea5ce34eeca806ec9092",
-    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/CutIdentityRightSideCongrOfSubMem.lean": "e1df82b11b3af07375533d041d1e42d345b4249d6b2da717739363f860be2946",
-    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/IsMultiHomogIdealSpanSingleton.lean": "703f17143bf0d8a40f898ce1c20e55eb114c2688659f80f535dca74f072bb331",
     "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PDivCycleMul.lean": "7b44bb2bcc590eec8a8f5d98f60ece6da14a1bd5ef3746155ead419cab9fbace",
-    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PMinimalPrimeMultiHomog.lean": "760988531b6e20c2b11765f647132284325b0a9d1bff080c698b4b380144bf6c",
-    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PMultAtPrimeAtMinimal.lean": "d26ae1fa7613283216bc83c00d07e4653bc57d4026fdcde40de5efa6f69a2cae",
     "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PRepresentative.lean": "de8e61a3c9c4ba259c7634280c4cfc9fbe1d5d9105c87992cf51913ea3728df6",
-    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PSupSpanMultiHomog.lean": "f384296ff174147853b7e1e6d215db7be4c864e44c7159ed72155c74a2c3a202",
     "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/RelevantMinimalOfDivCycleNeZero.lean": "a5315cb998d6cce51247ff2eb2c6c3bad2e2e40a9c4ddfb0110e52fd383e0d4e",
-    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/SpanTwoIsPrimeRelevant.lean": "64689485df91f2c36cadc3f291e882199d735fbef0ce98c5104b9f0b1a15dfac",
-    "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/Statements.lean": "dd8bbcb6098020b7194218edfbc0b4b566a0e50bfdd56e6d141749c8e3e94555",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/AddBlockVarEquivFst.lean": "a372b3d354677c4551380950b39945cd35f8d69e64519c28b03b531841aa1dfd",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/Assembly.lean": "65546131dcdc31380b13d727d919c2487603e2372b8792e5c30919dedf7b7013",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/ContractBlocksSplitPrime.lean": "6263051c726e4d8925e78bd648e5ea0daa8c08f664e6cebbae059bc6e6be5102",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/HilbEventuallyPolyQualified.lean": "3b4bc3149597bde3b4e9330080222262d00b73c846e18cdbec021cc1b8b789a3",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/HomFracDegZeroEqFunField.lean": "edbde4c4c2823062d41eda94d74ba3be74c162e3a8931bbb90c68124bcb9f5c4",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/IntNumRelabel.lean": "a31c67d320be40c9f91b08a87b01a5fc15362ef66493655c218d6d81e55c7666",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LengthSumLocalizations.lean": "bd85a7d81aa83c5d54e8a1d1a744ad7165b2305d03916fedc8ec070d99b8d6dc",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LocalIntegralClosureChart.lean": "dbf938b1557e7bb43546806cd2d315abddd043fb0920490f6255e42baa42814b",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/NoetherCharP.lean": "46d4e4e465e8523f5c42d2b90f264bb460c75852990bd361ad747aec2ca83997",
@@ -94,16 +197,12 @@
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PFiniteAlgebraLengthSum.lean": "7fcb2f39b6872ece087afa8c18d9074a4c312ba71fb2ca0cce636063820bc59c",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PFunctionFieldFinite.lean": "88f1cd2847f0336af92bedde1ed8bb8bd1cf6aa440a122ab91edaebeb5313b9f",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PGradedFinite.lean": "ded4cda4bcbeae6dd941120f7eb0847c4b8642cad67a089a1d39ab07b07f70f5",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbAddBlock.lean": "7735f71da224fdc817e4a16a4de2b1af8e4b3aac4f3d1a341e86128ce3d3eab4",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbDegreeBound.lean": "3d9e0a7c080a1158b2bca34658873ae517b5e9f2a6194bc9e35498d4f45f3910",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbExactDivide.lean": "0cecb3c9569821d15d47fd7ef6df25d25b15d441203385e7acbd44531a372ba0",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbIrrelevantZero.lean": "dc40baa94748b95ad3a3ceadc96d132dd2b713d579634007b2146bec131b52df",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PIntNumAdd.lean": "f751aa7d84cfcf3543b3270b9db26f640a61b0852113cd1027e797dd7b53df32",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PIntNumBase.lean": "e3501a25e8848ae3b15bfaeb9a4402eef4317ee2482a000700bf1473e94945c7",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PIntNumBaseChange.lean": "c7a17baa5fed091df740f287f962836260440f9ffe8af05d30fe778d30b11e63",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PIntNumSymm.lean": "757d94f79fc42704ee11e50af91451493864186c2c7d82328a70f7fceafe1392",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PIntNumUnique.lean": "c56132fa85b2c03f694c2d9c577a04d5c5a5808afee0958bab740d63209af779",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PIntNumZeroSlot.lean": "b1aed9e5d0b5f65ef6ef111b15e3accca18975f33fc70a585b64f371c930b4e9",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PLocalIntegralClosureFinite.lean": "f5aa8437e911df822d0c66ab242ab338ae9cbc00dc9f74829b2f02923234b1fc",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PLocalizedQuotientLength.lean": "2ada9404c691b150f85c2efad20cf479e562852bb8635f789ce7577d3a1fd43b",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartDehomog.lean": "a81a0cbf5abb3c4ad2e5bb8d83c2bce28af497367c900c05010a64c4d2838c12",
@@ -116,14 +215,9 @@
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContracted.lean": "d6de8f815295c5726af6fffb1608338230793542f922ef7ef83ad07d86c468f1",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContractedDim.lean": "b34a839c59f1b8883b9d87a89b93ff4571c38a9016da463f3e181418e32819c9",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFDegree.lean": "dae79b5dc4e596cf3dcfbc05e77aae892e744a19d3c411393f8e8e611e3e8e5a",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPNProduct.lean": "a3cc166d53798cfb660b241aecc81a971fa17bfdee052310a32c5c83306bed1f",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPolyOfDiffs.lean": "19829fe08104a0b440ad60b4ebd6dcd345f076389375f3975efe9102febee996",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean": "ed3a729e65d80e69eeca0225865e79fc9bd95d869306ab17b5a757a023d555ea",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PRelevantPrimeDimGe.lean": "f1d4871332ee2e13f0537561481cf5e7e6c2b5adcf12148087df7f5b93dff770",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PRenameHilbFn.lean": "ccc6c2320d53871106499e5bb238fc733d3574416268aa20dd9a64fd2cc45666",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PRenameIntNum.lean": "8dc3144c585c8e114e4be681ae0d2f561847004f9b9f1c3c92402faea5274b25",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PRenameMultiHomog.lean": "817b3db9699fbd92559d6882ac515fe884d41e13689a950dfab154f4550a8dd4",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PRenameMultiProjPrime.lean": "52cc4fb2db01547eb95e60056ecaa80d9da6c34d753e1c83751058be0815d8cf",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PSemilocalFinite.lean": "c5eee54ea75e9efa7f2c516a699aecc1eb4e6fa294659d4442581a75ca5780d8",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PSemilocalFiniteRank.lean": "e2476ee7010fc439c321558040b265b2f0cfe8e1ada86c1a8d72c09c971645fc",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PSemilocalIntegral.lean": "8a6630a216ff80fb89634fa6c044241c1b07109eba8fb346095265dd5e40ebdf",
@@ -131,10 +225,7 @@
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PSemilocalLengthSum.lean": "428a1de739a90db3c4ef7d382e95966d400172918583f520e80fa1002d3ea66e",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PSemilocalMaxIdeals.lean": "18c1b9218e6e17b5670732f2e990eb519164d19d8e97bd20a881f591ed8ea012",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PSemilocalResidueLength.lean": "9184cb75fa1547f1895e181afb4530e4eb8de87ed819d9f08f55514c37ea9db1",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PSplitRelDeg.lean": "a766a500a64bc9a0fcd8bce8cc2fa9f9a8648f2c3333cda069ea56ee713af9c0",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PValuativeCentre.lean": "7ed731ec51c2183173ba6b94e5abfc472cc3e5ddd99d97dbc355ad224f44cce0",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PfContractedHypothesesExample.lean": "eb3f7eecd18aac08d80b29a895247b87995919c441b0e8459f0a0a0612168dec",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsAddBlock.lean": "4194cf92ebf788aedb0c1986634e2b09b2a3e74c11a82976d7476d24e92adf6a",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsConeLocalFlat.lean": "2ef72e19d36e727598b45b82f41205b88143ec964148aabe8eb39743713d5c53",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsConeLocalLength.lean": "5eceb813035e7e0996fa011e1f5464c65fd8f2624882b1387950010810f713b0",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsConePolyLocalization.lean": "f4300688796f6d6647037fc2ee87f3fbfc0d1f4337c75027ecaa1d96c3fc532a",
@@ -169,7 +260,6 @@
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsLocalizedQuotientLength.lean": "e29097f44bc9189f1fb7a9c68ce3a7bc5b6d30f5bced9362950c9633f2f30bf8",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsMChart.lean": "9e6702aa69e4772d591909784eacba6d68708a18c66b2138dedff377d4c55609",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsNoetherIntegralClosure.lean": "2504ea15830d71678be887ec2825cf128ac2e6572c3b7b469e4ef7c98e280d2c",
-    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsRename.lean": "bc33c83b1d79bfdf989c9c2a5bbc79f971193bfb41ba5eb7c6f7421699ce8836",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsSemilocalFinite.lean": "bfebcd566c297f91ef2f06531bf0b64c73836883759609468396610ebf9b5b65",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsSemilocalFiniteRank.lean": "ded94d3089cd98695fab1fb042cdc10352ec38b453b0ae866e3ca9e4bede1d9a",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsSemilocalIntegral.lean": "327804ee9b6e0946d6be23d5c5d178fb893351cdfb9d5a02ea870b1fb9a8a28c",
@@ -179,48 +269,13 @@
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsSemilocalResidueLength.lean": "3f72a66ac8c117cc285d86c7c69f2e036aee8439bb167a74583b6cc9096e6eaf",
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsValuativeCentre.lean": "494a7d238df5c1da1711a37b9c5854367a1535e0573c20b47a7ae0e2adb6cbeb",
     "GroundTheory/HeightsAndTheta/Heights/HeightComparison/IsMultiHomogIdealIff.lean": "4c8b9816766a136d717cb6537a86c5d85bfa036a66a04a937339060b4f3a41c5",
-    "GroundTheory/HeightsAndTheta/Heights/Intersections/ImportsFurtherTail.lean": "f0b8d7eda6bb102b89e749f92495e5a5b2b608ffa1a449f869d839f5d75a5a74",
-    "GroundTheory/HeightsAndTheta/Heights/Intersections/IsMultiHomogFirstCoordinate.lean": "93f586d9212ac5b2882dc61bbf4d253f8d6ac21beddc246b05008e7b99e37d50",
-    "GroundTheory/HeightsAndTheta/Heights/Intersections/IsSmoothHermFubiniStudyO1.lean": "1e55645dd7bacba29656aca17308af17619d1468d3835f774a9c8d5f34675523",
-    "GroundTheory/HeightsAndTheta/Heights/Intersections/ProjLineRankTwoPushforwardHypotheses.lean": "6bc80455ca10ee984a1d67f5c73aebd8fcaa05c6fe9fc14cd6faa6e7b74fb3f5",
-    "GroundTheory/HeightsAndTheta/Heights/Intersections/StatementsArith.lean": "7d263d03cc06146f3437e244fdd56f57a821ae642eb1d13cb4c95168aea9d9c9",
     "GroundTheory/HeightsAndTheta/Heights/Intersections/TableDegreeThreeBase.lean": "835abba1f70cf4305f65b2cfc6a5d7684ace829a71f9a833b79fb468a0f38351",
     "GroundTheory/HeightsAndTheta/Heights/SemipositiveHeights/NumericalSegre.lean": "4d05b14c050e68c032553e77102c03c4b59c11a5f3071292044825f696516405",
-    "Lemmata/FirstBlockLemmaB/Imports.lean": "3ffc090f2747ff3eb721ff2065c893441db43dc422b201988c3b8e9b764f9329",
     "Lemmata/GeneralBFactBis/Imports.lean": "2038554ae353132b82ad5396a94a08e9571bd66fee1715f9282ab9640cad6a33",
-    "Lemmata/GeneralBFactTerForm/Imports.lean": "576f78512a69b73f2e086742a98eff7df3d00fe8c9d9089d01efe8e1af8ff83d",
-    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/IsCMOfIsRegularLocalRing.lean": "63ec111e1daa45f1842aab769a8e4a66037a30e07b36c8bd969bb6100e05179e",
-    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/RegGens.lean": "ad714bb6faa9acefc63f8139157b590a446c9b93556c242db6642a7f833b2b71",
-    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/RegGensA.lean": "bf6cadd3096e434b4c3a27df0c75371d6a90def58c310f31707c329e4fb89618",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/DiagonalDivisors/InhabitBaseStatement.lean": "2483e8b796b66213072a77bec5ecd146447b7688b0d21463b593619712e9fcfc",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/DiagonalDivisors/ModelsSt.lean": "afee555401ac8231732f6ff7e9bbd40ec31511aa8c1a199884d3aff507d65ae8",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/IndexSt.lean": "27d8e69a78bd1ad61be34ade924bfa6490085c3ccdcd34ca5769bb29bb2bc5c2",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/KrullDimQuotientEqOneIffEqBot.lean": "4ba6e37ec8ba2371809e3871b79d7345077b959e188f376a87b7e74c3f58abaa",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/LengthCokerEqKerAddDimOneOrderSum.lean": "ba4a69e2fe9c3a7139369f6fa1aee65832ecf1f9229ae916e95f269b721a2a5e",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/LengthEqRangeAddRange.lean": "b1ebee12ebe93332388c241f804574fda846461fe115599049897c800e239e14",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/LocalLengthAdditivityTorsionFree.lean": "6df3df92f9eb9e2e97ee16c4cb93a69879facd975042969426a25c5b810a466e",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/MixedFieldContraction/ContractMixedFieldStatement.lean": "a94c5b05675d247704089277dda1b1bec054d50d2815079eaec428460fb65231",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/MixedFieldContraction/GenericFibreKerTarget.lean": "a832f99ff2fdeeec73a0d9b271c26ed7a49a8a5199ce2c867dd525cb47de598e",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/MultihomogeneousIdeals/CycDim.lean": "f7b4352b275b4dba239df897ceb9fae8a28d9a0c437974ef052e3c8427856b60",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/MultihomogeneousIdeals/ExistsUniqueStatement.lean": "bb8f321f8142fb9f30acb55eac8690e725dc4c42517d477be1587fca3bcbd122",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/MultihomogeneousIdeals/InhDivCycleOfSuppEmpty.lean": "1579315eb29aa7b0b309b0b19c73d1c96f68c958d3f9b9907b2b76cb64c3e3b9",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/MultihomogeneousIdeals/IsFieldIntersection.lean": "ad732139feea3893038e8f87f5372445baf40135ae6ca67e80d027100e86ae7d",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/RationalSections/IsRatSectionOn.lean": "5d07f46716bdf289b8b2116c678a1512c4cd2e87c3b2ff2cd482a0b78de64d9e",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/RationalSections/ThmISt.lean": "a142b8fba014572402cddbc1945052fba81e873330f7c416ca7aa9a3534b05f9",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ArithmeticHilbertSamuelLowerBound.lean": "e21f4d735b586c6f60be199d03ba17a06f07f0eb50224feb4472c596daaa278d",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/Bundle.lean": "961223438f2c1db3156b958fec46cc78c05cc26829953efc830428ab6abcc82d",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterDivSupp.lean": "fac4fe2817436616f669ce34dfc118be8f10a551d9b8d310913720086393aeb7",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterDivSuppA.lean": "304564b664c96c0ebe75064d7e9919c5a1eb71fe905e43f7b26aec6a262beced",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterDivSuppAA.lean": "62dd329d0490ae4efa6109a7bc8a971218b1887e6e8604fe57bbab2eb523d012",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterDivSuppAB.lean": "5663ab33f2113c5ff5dc45c5f51ad3cb9cf74f857c335f874642c50ac94f9927",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterDivSuppAC.lean": "df1efcadbc633ac7f1e4cb79f56f370671c46c0c86a79039c63b2c1e17955524",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterRed.lean": "54fe6942aa3351ce095941e1d271b9008df4520b0a98316b21d1afac0d5aeaf2",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterRedA.lean": "524230f1b22036938fe01565c49294f6ff6c7f62e7ca85b3b2bbaa3cc0043736",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterRedB.lean": "5f56a3b88df2c312fb97a2ffe1f8b1611f9b91fbb7d034eeb7f6a9e0df65f95a",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterRedC.lean": "da8db4b892ecd6365c9324b60276214ee31b6f164734c7aa453085e190c67701",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterRedE.lean": "2efc5efc0a1fc9d762379d058bf347abccbb915d4fd05857783d752b632810ab",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterRedF.lean": "a0360a2b3577ec3b5aaad45b15795834acc98b362e8fa8d5446651d20c0561c8",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterRes.lean": "b3cdbfdad948217edde620a5956664c276407865674adc69b2d1fc735e1eadec",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/PenVol.lean": "a94bdf4dd3b73abb5580ae64394ab8b8f6687cc8cb9ad30c82bc11988ed762ac"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/InterDivSuppAC.lean": "df1efcadbc633ac7f1e4cb79f56f370671c46c0c86a79039c63b2c1e17955524"
   }
 }
