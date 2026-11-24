@@ -1,15 +1,19 @@
 {
   "core": 30,
-  "candidate": "core30-fastthetaeb2b03425185",
+  "candidate": "core30-fastmixf252b9a73e",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 383,
-  "local_normalized_tokens": 1194029,
+  "submitted_files": 381,
+  "local_normalized_tokens": 1193522,
   "published_baseline_tokens": 1438064,
-  "proof_tree_sha256": "820585e8661f84bec059bb76a88357d5ff5afad79d8ef12b3123e83e1c1b938b",
+  "proof_tree_sha256": "f686631b3288a6a842459a02dfba52010eff91fc1a3e17ea3dd7ea6f394ba318",
   "modified_files": {
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/AbelianSchemeLawsOfCubeBundleGenerator.lean": {
+      "before": "56023958f58f3640091c1de67bc1e81e08a174a111761586dc956f08a38ae239",
+      "after": "8148f3c1298d5d938243ff0351a66fdd574bf91451ddd713e739b08b4677677c"
+    },
     "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/CyclicIdeal.lean": {
       "before": "a9faa221a30c2c3a1f3c6d86d3179534d706c51410305cc2da10ac5e911f5c9b",
       "after": "e1bedc0642f16dca9757d7e9d2bb4860dde0b6a892b7e866a602dcc22ffdf2f3"
@@ -26,12 +30,12 @@
       "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaUniformisationComplexAbelianVariety": "fa3849fed28ae8ed75ca0c09e0602704ae3af827696aeb92376a9444d7e69c8e"
     },
     "credit_detail": "Fortytwo supplied the parent proof edits. Codex revised the listed mathematical proof sources and checked the resulting proof.",
-    "new_contribution": "Fortytwo native Lean proof simplification in Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CyclicIdeal, from phase3-fast-core30-r01-cont001, adapted to the published Core 30 target. Original proof by Levent Alpöge. Codex supplied the additional direct proof using only the five abelian-scheme laws needed by theta uniformisation, and rechecked the complete combined target. Original formalization by Levent Alpöge."
+    "new_contribution": "Codex incorporated the source replacement in Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsOfCubeBundleGenerator from the independently verified core23-arithtransfer59a98676b2 campaign proof. The retained Fortytwo source contributions are in Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CyclicIdeal. Codex assembled the proof and checked the full import closure. Original proof by Levent Alpöge."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T04:24:02.457179+00:00",
+    "completed_utc": "2026-11-24T04:53:05.787225+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -91,7 +95,6 @@
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/FlatOfIsFiniteOfFlatGeometricFibres.lean": "61b6f87d88ba771d7f61e164db5e6c0d75f210c91218faad6585fb1b9c90e0e2",
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ForallGeometricallyIntegralOfSmoothOfGeometrical.lean": "6a2da8a2b0513ee84bea568d38780c3e1d34027367da3017f05ab639010d7703",
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/FormallyUnramifiedMulInvertibleInteger.lean": "981d2104c79c8b91e038fe6c53045e2ae281f2c7f82651ecabe3bd5e14c27951",
-    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/FormallyUnramifiedMulInvertibleIntegerStatement.lean": "7623292110e2223fb2742436f22d58845e47a75b821e1a58153cf5adb2528738",
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/GlobalFnsHolds.lean": "f6558e42faa8a99a98cc1813f1bc7402b8615a7c92b9bf70d59dc4ba1679ae3a",
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/HasEnoughRootsOfUnityGlobalSections.lean": "12411096df9f4168356a2a15172b31023846e34f87a9dbc46d5a7b248fdc9f72",
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/IsAffineHomFromSpecResidueField.lean": "77b4f63c94a6afd0d882fc25076ca7b59bd9c24100c9f84c5d8e5c3b91e47a54",
@@ -120,7 +123,6 @@
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/SerreVanishingVeryAmpleStatement.lean": "ac8013779873c8e5ebd86fc66f55be1ff8b2dc737295fbc48afbf52b401798b4",
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/SurjectiveAppOfIsAbelianScheme.lean": "e4ffba6c26811bd0631597aea5781e748718ce12f089fed79806275820409ec4",
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/SymmetricLiftOddOrderExistsUnique.lean": "272ca51530a358502812e4345e09154f6377a90447ccee33d5c705fd9d9a72fe",
-    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/SymmetricLiftOddOrderExistsUniqueStatement.lean": "e3f15e1c4a8bb3894aec10969a75269129a6910fd44006f238cb2515e917ef9e",
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/TrdegEqOfLocallyIsStandardSmoothOfRelativeDimens.lean": "452ee7e0f1f00cf2830e1928dff302168e361ba6e8d99ac494eb91efb4a72afd",
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/TrivBasicOpenOfTrivFibre.lean": "6d94b02b7139fde16a10e61e9f33fc36d032f1f3a82034bbadbb55805bbbe7a6",
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/TrivPullCompIff.lean": "69ebeb27d4fe26ad839d4d3d29ea603e58d2b4523c7e04e8a0beb04a15ed6635",
