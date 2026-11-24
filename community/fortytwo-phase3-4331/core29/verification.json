@@ -1,15 +1,15 @@
 {
   "core": 29,
-  "candidate": "core29-independent-fourier349ceaac3050",
+  "candidate": "core29-independent-fourier6b5977977304",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 68,
-  "local_normalized_tokens": 127115,
-  "local_characters": 526017,
+  "submitted_files": 67,
+  "local_normalized_tokens": 122462,
+  "local_characters": 507381,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "684bf025a141bbf466a040e1a4b17632690e98bc4fab9fd4f3d0ceb5f4375463",
+  "proof_tree_sha256": "2f0280aeda27944cb3ea1bcdf24b79cde3625a6342d97ebbc0fe537ee9a103a1",
   "modified_files": {
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ConductorEqTopOfStandardOpen.lean": {
       "before": "32a326aa893cd7346d768a4d4e302cda98d7ccbcdd5d61d038ddec4b8b1577f1",
@@ -25,7 +25,7 @@
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean": {
       "before": "38bea0a8be8b648482565fd3ec40ccfe299c495a45e06a005176683d2d7e8309",
-      "after": "6275df93fde2be73d064f607a674a7bf33a9a0807969739428268e7bef27d798"
+      "after": "a7862e3597e7ea88a134807fd239a5e767d28a9044e4628c6866200aa09bc4a3"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/InfiniteEmbeddingMemStandardOpenSubgroup.lean": {
       "before": "936d4971e99f7d748ddd32de4b683d62472a5155ecbb057d5c68e60c4216920b",
@@ -37,7 +37,7 @@
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean": {
       "before": "909345232b14c949b84d270ae1ae8e8d7fdafd59af5b2154dc060755e45977e5",
-      "after": "ef699ac46bb1b4d6da5dba32d2977f8b34f57bf8ed46f9b67576215a1c8e847e"
+      "after": "6290eabdf8ad2609cac72dad907246ea08e5066fa112aa5991b68f8082bcb356"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/SumAddCharOfMulMulOfMulInv.lean": {
       "before": "917ad92505e98ef7d2c68651adc5a09298385b1718a628d20821b942cd1c4adf",
@@ -45,11 +45,11 @@
     },
     "Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean": {
       "before": "5e3bf1687e825702c08ae63e4c451fc6f897eab82e6b2b8ee1249f4f7776fed1",
-      "after": "f073875c641f9b3ce9717c88ebab284b611913cb2116ec2bfed27f680be5fa5a"
+      "after": "d2b1fed8b473aff47bd69fd866dfbd097c88fadb090decfa6bd772b909b2f966"
     },
     "GroundTheory/GlobalFields/AnalyticClassNumber/HeckeContinued.lean": {
       "before": "76aede10518bf5faf3ced25bc7d3f97357c9d69865874ba3a24bf68d882b2d29",
-      "after": "7ca4d29dd955f237b220bc9060ef742ed3cdaf11d850d35ea4e44e36f8485bc5"
+      "after": "583d71ab48fffe136fea626a8a28ef870e6a6f22affd5fd8ae615392473c0f17"
     },
     "GroundTheory/GlobalFields/IdeleGroups/IdeleNorms.lean": {
       "before": "c3c4299496b4db89261c42bf2a602a08973563247bb87a76e20724d6977a9b38",
@@ -89,11 +89,7 @@
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourier.lean": {
       "before": "c4535e5cc8f2e495c2498ea88aaf409305ede95af74fe60161f5d590ed2bbd2a",
-      "after": "6e5e40be9a8b4366572d8ef9ac375334d5eae3ffd8af933b5c704a3a22a96576"
-    },
-    "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierFinite.lean": {
-      "before": "2d69cbb73efb00d25576fc550d61ed0e25e6ed678e5b86d821d91a30c2646042",
-      "after": "691e2573f3f3d423d8aee0296322fbf9fc15cdf3dcc3465fe7661390425fbb0d"
+      "after": "92ee02e895e48236c476a8c02312583e675bb244a65a08d18846c34456dd8951"
     },
     "GroundTheory/GlobalFields/TateThesis/GlobalZeta.lean": {
       "before": "a2c21ea0f36d35705df95cba0bd0659e37556690fe94192eb05f40b8ef7c3528",
@@ -121,7 +117,11 @@
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremFE.lean": {
       "before": "2aa01187e9524961a88ca6edf68919521efeec96b44ba3e2b4d0e0679208a269",
-      "after": "1f7952b788cd67df7bcb1da56e651034bedcf7c19adb770fbdc6e8775478edeb"
+      "after": "a0fad6de64437050f53539b1930af58560dcc86092d24854add5976fafb91f02"
+    },
+    "GroundTheory/GlobalFields/TateThesis/HeckeTheoremScaling.lean": {
+      "before": "323e561e14c1df2a6ee4f4c5b93f41e8dace8c020ba5d24bc6a7cc40f894c237",
+      "after": "60b892cbca7c2cbd8ebba46e82b5985785145202ec7966c8005e5e0ab6e6aed9"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremTrivial.lean": {
       "before": "19bf564b401e43c938e7fb50677bd1b9c2f259ada6b4878e1e4a5873cd71b939",
@@ -193,7 +193,6 @@
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsArch.lean": "74f42b8629bacf7e2e571fcff04d238afaa17dda3679ab9a21f3309f0f6db9f1",
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFinite.lean": "7d0a33060c115a699675529b1ac8ea1930694ff85e122a8ef24c63712b5e13a9",
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourier.lean": "c4535e5cc8f2e495c2498ea88aaf409305ede95af74fe60161f5d590ed2bbd2a",
-    "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierFinite.lean": "2d69cbb73efb00d25576fc550d61ed0e25e6ed678e5b86d821d91a30c2646042",
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierInfinite.lean": "0f1b634d67760eb31ad4b4fa0b565f67c5b9d5e1e4409b3c89dede373ecbc10f",
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsInfinite.lean": "7b76eaa86e387dc72e7d995ae371edc52859e648359f5ce2fce71dd43f99f6f6",
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean": "3c39a97a34767d9e5a47d976081fa4a4e3e8b5659db95c54d4b632296fcdd93c",
@@ -239,20 +238,20 @@
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Codex",
-    "public_source_note": "Levent Alpöge authored the original Core 29 formalization. Codex derived the needed unramified character identities by finite Fourier inversion and reduced their idèle integrals. The 68-file proof also uses the scale-one theta decay estimate. Codex traced and verified its full editable dependency closure."
+    "public_source_note": "Levent Alpöge authored the original Core 29 formalization. Codex derived the required unramified character identities using finite Fourier inversion and reduced the idèle integrals. This 67-file proof retains the scale-one theta decay estimate. Codex specialized the functional equation directly to unramified characters."
   },
   "hosted_score": null,
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T05:20:31.611298+00:00",
+    "completed_utc": "2026-11-24T05:33:47.452575+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
     ],
     "target_declaration": "AlpogeRHCore29.partialZetaFunctionalEquation",
-    "log_sha256": "dbca7358f3e9ec85e742672ef06b55baa8eeea612f10ecc40598cab59116451d",
+    "log_sha256": "8ba16fe924f5bf7be753e5dda8c679723d0d006ba5d2710c629015dd450568a1",
     "comparator_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf"
   }
 }

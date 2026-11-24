@@ -56,7 +56,7 @@
  
 --- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean
 +++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean
-@@ -1,12 +1,9 @@
+@@ -1,18 +1,15 @@
  import Mathlib
  import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
 -import GroundTheory.GlobalFields.TateThesis.RootNumberLocalFinite
@@ -69,7 +69,21 @@
  open NumberField GroundTheory.Global GroundTheory.Global.IdeleGroup
  open scoped nonZeroDivisors
  
-@@ -31,15 +28,5 @@
+ namespace GlobalTheory.CompanionTheory.PartialZeta
+ 
+-theorem fe_of_parts (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (χ : HeckeCharacter F)
++theorem fe_of_parts (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (χ : HeckeCharacter F) (hcond : χ.conductor = ⊤)
+     (hD : χ.discrNormConductor = GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F)
+     (hG : ∀ s : ℂ, χ.gammaFactor s = Complex.Gammaℝ s ^ Module.finrank ℚ F)
+     (hG' : ∀ s : ℂ, (χ⁻¹).gammaFactor s = Complex.Gammaℝ s ^ Module.finrank ℚ F)
+@@ -25,21 +22,11 @@
+     intro t ht h0
+     obtain ⟨n, hn⟩ := Complex.Gammaℝ_eq_zero_iff.1 h0
+     exact ht n (by rw [hn]; ring)
+-  have key := χ.continuedLFunction_functional_equation (s := s)
++  have key := χ.continuedLFunction_functional_equation hcond (s := s)
+     (by rw [hG]; exact pow_ne_zero _ (nz s h1))
+     (by rw [hG']; exact pow_ne_zero _ (nz _ h2))
    rw [hG, hG', hD, hR] at key
    exact key
  
@@ -138,7 +152,7 @@
  
  theorem infiniteWeight_eq_zero (h : standardOpenSubgroup F ≤ χ.toIdele.ker)
      (w : InfinitePlace F) : χ.infiniteWeight w = 0 := by
-@@ -51,11 +36,36 @@
+@@ -51,11 +36,11 @@
      (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit) :
      finiteFourier F χ.finiteTestFun ((δ⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) =
        (((NNReal.sqrt ‖discr F‖₊)⁻¹ : ℝ≥0) : ℂ) := by
@@ -147,36 +161,11 @@
 -    rw [h, Ideal.dvd_iff_le, top_le_iff] at hv
 -    exact v.1.isPrime.ne_top hv⟩
 -  rw [χ.finiteFourier_finiteTestFun_inv_eq hδ, Finset.univ_eq_empty, Finset.prod_empty, mul_one]
-+  classical
-+  have htest : χ.finiteTestFun = cosetIndicator 1 0 := by
-+    funext x
-+    rw [cosetIndicator_apply, sub_zero]
-+    by_cases hx : x ∈ idealFiniteAdeles (1 : (FractionalIdeal (𝓞 F)⁰ F)ˣ)
-+    · rw [if_pos hx]
-+      have hvals := (mem_idealFiniteAdeles _).1 hx
-+      simp only [Units.val_one, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero] at hvals
-+      apply Eq.trans (finprod_congr fun v ↦ χ.finiteTest_eq_one (x := x v) ?_ (hvals v)) finprod_one
-+      intro hv
-+      rw [h, Ideal.dvd_iff_le, top_le_iff] at hv
-+      exact v.isPrime.ne_top hv
-+    · rw [if_neg hx]
-+      rw [mem_idealFiniteAdeles] at hx
-+      simp only [Units.val_one, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero, not_forall,
-+        not_le] at hx
-+      obtain ⟨v,hv⟩ := hx
-+      exact χ.finiteTestFun_eq_zero hv
-+  have hdual : traceDualIdeal F 1 = toFractionalIdeal (ofFinite δ⁻¹) := by
-+    rw [map_inv, map_inv, hδ, idealUnit_eq_one h, one_mul]
-+    apply Units.ext
-+    rw [traceDualIdeal_eq, Units.val_one, one_mul]
-+    rfl
-+  have hmem : ((δ⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) ∈
++  have hm : ((δ⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) ∈
 +      idealFiniteAdeles (traceDualIdeal F 1) := by
-+    rw [mem_idealFiniteAdeles_iff_ord, hdual]
++    rw [mem_idealFiniteAdeles_iff_ord, χ.dual_of_unramified_different h hδ]
 +    exact fun v ↦ (count_toFractionalIdeal v _).le
-+  rw [htest, finiteFourier_cosetIndicator, Set.indicator_of_mem hmem, idealFiniteAdeles_one,
-+    finiteAdeleMeasure_integralFiniteAdeles]
-+  simp
++  rw [χ.unit_lattice_fourier h, if_pos hm, mul_one]
  
  theorem discr_sqrt_mul (h : χ.conductor = ⊤) :
      (((NNReal.sqrt ‖discr F‖₊)⁻¹ : ℝ≥0) : ℂ) * (χ.discrNormConductor : ℂ) ^ (1 / 2 : ℂ) = 1 := by
@@ -248,9 +237,12 @@
  
  theorem functionalEquation_classHecke [IsTotallyReal F] (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ)
      (D : (Ideal (𝓞 F))⁰) (hD : (D : Ideal (𝓞 F)) = differentIdeal ℤ (𝓞 F))
-@@ -128,7 +117,7 @@
+@@ -126,9 +115,9 @@
+       ψ (Additive.ofMul (ClassGroup.mk0 D)) * ((GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F : ℂ) ^ ((1 - s) / 2) *
+         Complex.Gammaℝ (1 - s) ^ Module.finrank ℚ F * ((classHecke ψ)⁻¹).continuedLFunction (1 - s)) := by
    have hU := standardOpenSubgroup_le_ker ψ
-   have h := fe_of_parts F (classHecke ψ) (discrNormConductor_eq_dF_of_unramified F _ hU)
+-  have h := fe_of_parts F (classHecke ψ) (discrNormConductor_eq_dF_of_unramified F _ hU)
++  have h := fe_of_parts F (classHecke ψ) (conductor_eq_top hU) (discrNormConductor_eq_dF_of_unramified F _ hU)
      (gammaFactor_eq_of_unramified F _ hU)
 -    (gammaFactor_eq_of_unramified F _ (standardOpenSubgroup_le_ker_inv F _ hU))
 +    (gammaFactor_eq_of_unramified F _ (classHecke_neg ψ ▸ standardOpenSubgroup_le_ker (-ψ)))
@@ -305,6 +297,24 @@
  
  end Trivial
  
+@@ -180,7 +148,7 @@
+         (χ.gammaFactor s * (χ.gammaFactor s)⁻¹) * χ.completedLFunction s by ring,
+     hA, mul_inv_cancel₀ hΓ, one_mul, one_mul]
+ 
+-theorem continuedLFunction_functional_equation {s : ℂ} (hs : χ.gammaFactor s ≠ 0)
++theorem continuedLFunction_functional_equation (hcond : χ.conductor = ⊤) {s : ℂ} (hs : χ.gammaFactor s ≠ 0)
+     (hs' : χ⁻¹.gammaFactor (1 - s) ≠ 0) :
+     (χ.discrNormConductor : ℂ) ^ (s / 2) * χ.gammaFactor s * χ.continuedLFunction s =
+       χ.rootNumber * ((χ.discrNormConductor : ℂ) ^ ((1 - s) / 2) * χ⁻¹.gammaFactor (1 - s) *
+@@ -188,7 +156,7 @@
+   have h' := χ⁻¹.completedLFunction_eq_mul_continuedLFunction hs'
+   rw [discrNormConductor_inv] at h'
+   rw [← χ.completedLFunction_eq_mul_continuedLFunction hs, ← h']
+-  refine χ.completedLFunction_eq_rootNumber_mul fun τ hτ ↦ ⟨fun h0 ↦ hs ?_, fun h1 ↦ hs' ?_⟩
++  refine χ.completedLFunction_eq_rootNumber_mul hcond fun τ hτ ↦ ⟨fun h0 ↦ hs ?_, fun h1 ↦ hs' ?_⟩
+   · rw [h0]
+     exact gammaFactor_neg_of_forall hτ
+   · rw [h1, show 1 - (1 - (τ : ℂ) * I) = -(((-τ : ℝ) : ℂ) * I) by push_cast; ring]
 --- a/GroundTheory/GlobalFields/IdeleGroups/IdeleNorms.lean
 +++ b/GroundTheory/GlobalFields/IdeleGroups/IdeleNorms.lean
 @@ -151,31 +151,6 @@
@@ -928,7 +938,98 @@
      ∫ a : (w.Completion)ˣ, χ.infiniteTest w a * χ.infiniteComponent w a *
 --- a/GroundTheory/GlobalFields/TateThesis/EulerFactorsFourier.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/EulerFactorsFourier.lean
-@@ -48,11 +48,6 @@
+@@ -1,10 +1,9 @@
+ import Mathlib
+ import GroundTheory.GlobalFields.TateThesis.EulerFactors
+ import GroundTheory.GlobalFields.TateThesis.EulerFactorsFourierInfinite
+-import GroundTheory.GlobalFields.TateThesis.EulerFactorsFourierFinite
+ 
+ open NumberField InfinitePlace IsDedekindDomain MeasureTheory Complex WithZero
+-open scoped NumberField.AdeleRing nonZeroDivisors
++open scoped NumberField.AdeleRing nonZeroDivisors NNReal Classical
+ 
+ namespace GroundTheory.Global
+ 
+@@ -35,26 +34,80 @@
+   rw [count_toFractionalIdeal]
+   rfl
+ 
+-theorem valued_of_toFractionalIdeal_eq {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
++theorem finiteTestFun_unit_lattice (h : χ.conductor = ⊤) :
++    χ.finiteTestFun = cosetIndicator 1 0 := by
++  classical
++  funext x
++  rw [cosetIndicator_apply, sub_zero]
++  by_cases hx : x ∈ idealFiniteAdeles (1 : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
++  · rw [if_pos hx]
++    have hvals := (mem_idealFiniteAdeles _).1 hx
++    simp only [Units.val_one, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero] at hvals
++    apply Eq.trans (finprod_congr fun v ↦ χ.finiteTest_eq_one (x := x v) ?_ (hvals v)) finprod_one
++    intro hv
++    rw [h, Ideal.dvd_iff_le, top_le_iff] at hv
++    exact v.isPrime.ne_top hv
++  · rw [if_neg hx]
++    rw [mem_idealFiniteAdeles] at hx
++    simp only [Units.val_one, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero, not_forall,
++      not_le] at hx
++    obtain ⟨v,hv⟩ := hx
++    exact χ.finiteTestFun_eq_zero hv
++
++theorem unit_lattice_fourier (h : χ.conductor = ⊤) (z : FiniteAdeleRing (𝓞 K) K) :
++    finiteFourier K χ.finiteTestFun z =
++      (((NNReal.sqrt ‖discr K‖₊)⁻¹ : ℝ≥0) : ℂ) *
++        (if z ∈ idealFiniteAdeles (traceDualIdeal K 1) then 1 else 0) := by
++  classical
++  rw [χ.finiteTestFun_unit_lattice h, finiteFourier_cosetIndicator, idealFiniteAdeles_one,
++    finiteAdeleMeasure_integralFiniteAdeles, Set.indicator_apply]
++  split_ifs <;> simp_all
++
++theorem dual_of_unramified_different (h : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
++    (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit) :
++    traceDualIdeal K 1 = toFractionalIdeal (ofFinite δ⁻¹) := by
++  have hu : idealUnit χ.conductor χ.conductor_ne_bot = 1 := by
++    ext
++    simp [idealUnit, h]
++  rw [map_inv, map_inv, hδ, hu, one_mul]
++  apply Units.ext
++  rw [traceDualIdeal_eq, Units.val_one, one_mul]
++  rfl
++
++theorem finiteFourier_unramified_scaling (h : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
+     (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
+-    (v : HeightOneSpectrum (𝓞 K)) :
+-    Valued.v ((δ : FiniteAdeleRing (𝓞 K) K) v) = WithZero.exp (-(χ.condExp v + differentExp v)) := by
+-  rw [valued_eq_exp_ord, ← count_toFractionalIdeal, hδ, Units.val_mul,
+-    FractionalIdeal.count_mul K v (idealUnit χ.conductor χ.conductor_ne_bot).ne_zero
+-      (differentUnit (K := K)).ne_zero]
+-  rfl
++    (y : FiniteAdeleRing (𝓞 K) K) :
++    finiteFourier K χ.finiteTestFun y =
++      finiteFourier K χ.finiteTestFun ((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) *
++        (χ⁻¹).finiteTestFun ((δ : FiniteAdeleRing (𝓞 K) K) * y) := by
++  classical
++  have hd := χ.dual_of_unramified_different h hδ
++  have hm : ((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) ∈
++      idealFiniteAdeles (traceDualIdeal K 1) := by
++    rw [mem_idealFiniteAdeles_iff_ord, hd]
++    exact fun v ↦ (count_toFractionalIdeal v _).le
++  have hs : (δ : FiniteAdeleRing (𝓞 K) K) * y ∈ idealFiniteAdeles (1 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) ↔
++      y ∈ idealFiniteAdeles (traceDualIdeal K 1) := by
++    rw [mem_idealFiniteAdeles, mem_idealFiniteAdeles, hd]
++    simp only [Units.val_one, FractionalIdeal.count_one, neg_zero, exp_zero, count_toFractionalIdeal]
++    refine forall_congr' fun v ↦ ?_
++    change Valued.v ((δ : FiniteAdeleRing (𝓞 K) K) v * y v) ≤ 1 ↔ _
++    have hp := congrArg Valued.v (units_mul_inv_apply δ v)
++    rw [map_mul, map_one] at hp
++    rw [map_mul, ← valued_eq_exp_ord, eq_inv_of_mul_eq_one_left hp]
++    exact inv_mul_le_one_iff_withZero (by rw [valued_eq_exp_ord]; exact exp_ne_zero)
++  rw [χ.unit_lattice_fourier h, χ.unit_lattice_fourier h, if_pos hm, mul_one,
++     (χ⁻¹).finiteTestFun_unit_lattice (χ.conductor_inv.trans h), cosetIndicator_apply, sub_zero]
++  by_cases hy : y ∈ idealFiniteAdeles (traceDualIdeal K 1)
++  · rw [if_pos hy, if_pos (hs.2 hy)]
++  · rw [if_neg hy, if_neg (fun hz ↦ hy (hs.1 hz))]
+ 
+ def fourierConst (δ : (FiniteAdeleRing (𝓞 K) K)ˣ) : ℂ :=
    (∏ w, (-I) ^ (χ.infiniteWeight w).natAbs) *
      finiteFourier K χ.finiteTestFun ((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K)
  
@@ -938,53 +1039,19 @@
 -  mul_ne_zero (Finset.prod_ne_zero_iff.2 fun _ _ ↦ pow_ne_zero _ (neg_ne_zero.2 I_ne_zero))
 -    (χ.finiteFourier_finiteTestFun_ne_zero δ (χ.valued_of_toFractionalIdeal_eq hδ))
  
- theorem adelicFourier_testFunction {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
+-theorem adelicFourier_testFunction {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
++theorem adelicFourier_testFunction (hcond : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
      (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
---- a/GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierFinite.lean
-+++ b/GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierFinite.lean
-@@ -81,10 +81,6 @@
-     χ.condExp v = 0 := by
-   rw [condExp_eq, multiplicity_eq_zero.2 hv, Nat.cast_zero]
- 
--theorem one_le_condExp {v : HeightOneSpectrum (𝓞 K)} (hv : v.asIdeal ∣ χ.conductor) :
--    1 ≤ χ.condExp v := by
--  rw [condExp_eq]
--  exact_mod_cast multiplicity_pos_of_dvd hv
- 
- theorem finiteTestFun_add (x : FiniteAdeleRing (𝓞 K) K) {h : FiniteAdeleRing (𝓞 K) K}
-     (hh : ∀ v, Valued.v (h v) ≤ exp (-χ.condExp v)) :
-@@ -96,14 +92,6 @@
-   by_contra h
-   exact hx (χ.finiteTestFun_eq_zero (not_le.1 h))
- 
--theorem finiteTestFun_one : χ.finiteTestFun 1 = 1 := by
--  refine finprod_eq_one_of_forall_eq_one fun v ↦ ?_
--  change χ.finiteTest v 1 = 1
--  by_cases hv : v.asIdeal ∣ χ.conductor
--  · have h := χ.finiteTest_of_dvd hv 1 (by simp)
--    rw [Units.val_one] at h
--    rw [h, map_one, Circle.coe_one, inv_one]
--  · exact χ.finiteTest_eq_one hv (by simp)
- 
- theorem finiteFourier_add {y h : FiniteAdeleRing (𝓞 K) K}
-     (hh : ∀ v, Valued.v (h v) ≤ exp (differentExp v)) :
-@@ -439,17 +427,6 @@
-       exact hv ((χ⁻¹).finiteTest_eq_one hv' (ha v))
-   rw [hF, htest, mul_comm]
- 
--theorem finiteFourier_finiteTestFun_ne_zero (δ : (FiniteAdeleRing (𝓞 K) K)ˣ)
--    (hδ : ∀ v, Valued.v ((δ : FiniteAdeleRing (𝓞 K) K) v) = exp (-(χ.condExp v + differentExp v))) :
--    finiteFourier K χ.finiteTestFun ((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) ≠
--      0 := by
--  intro h0
--  have hF : finiteFourier K χ.finiteTestFun = 0 := funext fun y ↦ by
--    rw [χ.finiteFourier_finiteTestFun δ hδ y, h0, zero_mul]
--    rfl
--  have h := congrFun (finiteFourier_finiteFourier χ.finiteTestFun_mem) (-1)
--  rw [hF, finiteFourier_zero, neg_neg, χ.finiteTestFun_one] at h
--  exact zero_ne_one h
- 
- end HeckeCharacter
+     (y : 𝔸[K]) :
+     adelicFourier K χ.testFunction y = χ.fourierConst δ * (χ⁻¹).testFunction (ofFinite δ • y) := by
+@@ -64,7 +117,7 @@
+   have hy2 : (ofFinite δ • y).2 = (δ : FiniteAdeleRing (𝓞 K) K) * y.2 := rfl
+   rw [testFunction, adelicFourier_schwartzBruhatTensor, schwartzBruhatTensor,
+     mixedFourierSchwartz_apply, χ.mixedFourier_infiniteSchwartz,
+-    χ.finiteFourier_finiteTestFun δ (χ.valued_of_toFractionalIdeal_eq hδ) y.2, testFunction,
++    χ.finiteFourier_unramified_scaling hcond hδ y.2, testFunction,
+     schwartzBruhatTensor, hy1, hy2, fourierConst]
+   ring
  
 --- a/GroundTheory/GlobalFields/TateThesis/GlobalZeta.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/GlobalZeta.lean
@@ -1836,7 +1903,26 @@
    rw [Gammaℂ_def]
 --- a/GroundTheory/GlobalFields/TateThesis/HeckeTheoremFE.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/HeckeTheoremFE.lean
-@@ -83,30 +83,10 @@
+@@ -67,46 +67,26 @@
+   linear_combination (((π : ℂ) ^ nrComplexPlaces K)⁻¹ * χ.fourierConst χ.conductorDifferentIdele *
+     (χ.toIdele (ofFinite χ.conductorDifferentIdele) : ℂ) * tateZeta (χ⁻¹).testFunction χ⁻¹ (1 - s)) * hc
+ 
+-theorem completedLFunction_eq_rootNumber_mul {s : ℂ}
++theorem completedLFunction_eq_rootNumber_mul (hcond : χ.conductor = ⊤) {s : ℂ}
+     (hs : ∀ τ : ℝ, (∀ x : IdeleGroup K,
+       (χ.toIdele x : ℂ) = ((ideleModule K x : ℝ) : ℂ) ^ ((τ : ℂ) * I)) →
+         s ≠ -((τ : ℂ) * I) ∧ s ≠ 1 - (τ : ℂ) * I) :
+     χ.completedLFunction s = χ.rootNumber * χ⁻¹.completedLFunction (1 - s) := by
+   refine χ.completedLFunction_eq_rootNumber_mul_of_eq ?_
+   by_cases hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1
+-  · exact χ.tateZeta_adelicFourier_testFunction χ.toFractionalIdeal_conductorDifferentIdele hχ _
++  · exact χ.tateZeta_adelicFourier_testFunction hcond χ.toFractionalIdeal_conductorDifferentIdele hχ _
+   · push Not at hχ
+     obtain ⟨τ, hτ⟩ := (forall_normOne_eq_one_iff χ).1 hχ
+     obtain ⟨h0, h1⟩ := hs τ hτ
+-    refine χ.tateZeta_adelicFourier_testFunction_of_forall
++    refine χ.tateZeta_adelicFourier_testFunction_of_forall hcond
+       χ.toFractionalIdeal_conductorDifferentIdele hτ (fun h ↦ h1 ?_) (fun h ↦ h0 ?_)
      · linear_combination -h
      · linear_combination -h
  
@@ -1867,6 +1953,57 @@
  
  end HeckeCharacter
  
+--- a/GroundTheory/GlobalFields/TateThesis/HeckeTheoremScaling.lean
++++ b/GroundTheory/GlobalFields/TateThesis/HeckeTheoremScaling.lean
+@@ -85,7 +85,7 @@
+     absNorm_differentIdeal K (𝓞 K), discrNormConductor, Nat.cast_mul, Nat.cast_natAbs, Int.cast_abs,
+     mul_comm]
+ 
+-theorem globalZeta_adelicFourier_testFunction {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
++theorem globalZeta_adelicFourier_testFunction (hcond : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
+     (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
+     (s : ℂ) :
+     globalZeta (adelicFourier K χ.testFunction) χ⁻¹ s =
+@@ -93,7 +93,7 @@
+         globalZeta (χ⁻¹).testFunction χ⁻¹ s := by
+   have hf : adelicFourier K χ.testFunction =
+       fun y ↦ χ.fourierConst δ * (χ⁻¹).testFunction (ofFinite δ • y) :=
+-    funext (χ.adelicFourier_testFunction hδ)
++    funext (χ.adelicFourier_testFunction hcond hδ)
+   have h1 : globalZeta (fun y ↦ χ.fourierConst δ * (χ⁻¹).testFunction (ofFinite δ • y)) χ⁻¹ s =
+       χ.fourierConst δ * globalZeta (fun y ↦ (χ⁻¹).testFunction (ofFinite δ • y)) χ⁻¹ s := by
+     unfold globalZeta
+@@ -123,7 +123,7 @@
+   ((differentiable_const c).mul
+     (differentiable_id.const_cpow (Or.inl (ofReal_ne_zero.2 hr.ne')))).mul hf
+ 
+-theorem tateZeta_adelicFourier_testFunction {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
++theorem tateZeta_adelicFourier_testFunction (hcond : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
+     (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
+     (hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1) (s : ℂ) :
+     tateZeta (adelicFourier K χ.testFunction) χ⁻¹ s =
+@@ -137,10 +137,10 @@
+       χ.discrNormConductor_pos)
+     fun s hs ↦ by
+       rw [tateZeta_eq_globalZeta (χ⁻¹).testFunction_mem _ hs,
+-        χ.globalZeta_adelicFourier_testFunction hδ]
++        χ.globalZeta_adelicFourier_testFunction hcond hδ]
+   exact (congrFun h s).symm
+ 
+-theorem tateZeta_adelicFourier_testFunction_of_forall {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
++theorem tateZeta_adelicFourier_testFunction_of_forall (hcond : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
+     (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
+     {τ : ℝ}
+     (hτ : ∀ x : IdeleGroup K, (χ.toIdele x : ℂ) = ((ideleModule K x : ℝ) : ℂ) ^ ((τ : ℂ) * I))
+@@ -170,7 +170,7 @@
+         (differentiableAt_tateZeta hτ' (χ⁻¹).testFunction_mem hz.1 hz.2))
+     fun s hs ↦ by
+       rw [tateZeta_eq_globalZeta (χ⁻¹).testFunction_mem _ hs,
+-        χ.globalZeta_adelicFourier_testFunction hδ]
++        χ.globalZeta_adelicFourier_testFunction hcond hδ]
+   exact (h hmem).symm
+ 
+ end HeckeCharacter
 --- a/GroundTheory/GlobalFields/TateThesis/HeckeTheoremTrivial.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/HeckeTheoremTrivial.lean
 @@ -12,17 +12,7 @@

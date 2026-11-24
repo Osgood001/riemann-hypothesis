@@ -2,7 +2,7 @@
 
 These source changes reduce the size of Levent Alpöge’s Phase 3 proofs. Fortytwo Engine: Deepseek Flash V4.1 1017 contributed proofs through DeepSeek Harness. Codex supervised the campaign and contributed dependency analysis and proof edits. Each core’s verification file identifies its contributions. Keith Adler’s published dependency-pruning analysis informed the search.
 
-Levent Alpöge authored the original Core 29 formalization. Codex derived the needed unramified character identities by finite Fourier inversion and reduced their idèle integrals. The 68-file proof also uses the scale-one theta decay estimate. Codex traced and verified its full editable dependency closure.
+Levent Alpöge authored the original Core 29 formalization. Codex derived the required unramified character identities using finite Fourier inversion and reduced the idèle integrals. This 67-file proof retains the scale-one theta decay estimate. Codex specialized the functional equation directly to unramified characters.
 
 Levent Alpöge authored the original Core 37 formalization. Codex reduced the Bernstein–Zelevinsky finite-length proof by narrowing dependencies in two modules. Fortytwo conducted the preceding search and verified the parent proof. Its edit to ExampleSatisfiesConditionsAtFive falls outside this 74-file import closure. The independent local Comparator and Lean default kernel accepted this source-only study.
 
@@ -22,7 +22,7 @@ For Core 41, Codex narrowed the imports in Levent Alpöge’s `DiscreteSeriesWey
 | 25 | 5,067 | 29,435,752 | 10,027,174 | 19,408,578 |
 | 26 | 242 | 540,118 | 366,542 | 173,576 |
 | 28 | 153 | 920,317 | 269,287 | 651,030 |
-| 29 | 68 | 831,319 | 127,115 | 704,204 |
+| 29 | 67 | 831,319 | 122,462 | 708,857 |
 | 30 | 381 | 1,438,064 | 1,193,522 | 244,542 |
 | 31 | 282 | 420,267 | 286,968 | 133,299 |
 | 33 | 42 | 826,075 | 69,093 | 756,982 |
