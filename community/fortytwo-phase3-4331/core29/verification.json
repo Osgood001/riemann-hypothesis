@@ -1,14 +1,14 @@
 {
   "core": 29,
-  "candidate": "core29-fastrayclass59258bc05272",
+  "candidate": "core29-fastrayclasscbfb939e9629",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 59,
-  "local_normalized_tokens": 90069,
+  "local_normalized_tokens": 89268,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "a28aa20ee6b8f96957c58c4d62253d85248e0f19a803d324e0e8f57f95b59b31",
+  "proof_tree_sha256": "4d5aefe441a9ab28024ab42531f0af4948bb8332121dd6ef7870c66ecd2f3f05",
   "modified_files": {
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ExistsHeckeCharacterOfClassGroup.lean": {
       "before": "4df8c562ee5594e2996f0097d1f3140354e07b98c908b5ca0d5128f9691be0c0",
@@ -40,7 +40,7 @@
     },
     "GroundTheory/GlobalFields/IdeleGroups/IdeleNorms.lean": {
       "before": "c3c4299496b4db89261c42bf2a602a08973563247bb87a76e20724d6977a9b38",
-      "after": "47e634ffc8bc3a675caf3b81155c5ef22879410d6006847c0f33a11b96678df9"
+      "after": "40c535c2234801434b3484c333081cc296b52438a560a0f15d929bbfcaf6b9d4"
     },
     "GroundTheory/GlobalFields/TateThesis/AdeleMeasure.lean": {
       "before": "c67e439228e8e4e3033aad6d975f0d2e6ee1d9da725fa2c83a8d1d3f30612c74",
@@ -166,6 +166,10 @@
       "before": "6a5c319c6a1642a4a5a35b17da00eea187f457c55560486faa1ffd606ebdb362",
       "after": "b2728ff9d6eb54e9df2be6ec4f732efb1aa47263e1ad758835bc58eae0a58d5f"
     },
+    "GroundTheory/GlobalFields/TateThesis/TateTheta.lean": {
+      "before": "67d2055b0f1fbe151957aea61fe7273e12bc4ef3bddcf93170e465d25e891049",
+      "after": "9afc59deb3f4eff90f303605dc59edc9f281e34d946f468ab25436479881f4e5"
+    },
     "GroundTheory/GlobalFields/TateThesis/TateThetaDecay.lean": {
       "before": "cf0e6a357c9fc00efd36049c3ef1e979b464abbcc48d971f4df500589e117450",
       "after": "94e26d44888fd70c2eb7ff97898213def62f604306b9a9f50c20c525a5192b7f"
@@ -183,7 +187,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T07:53:25.969927+00:00",
+    "completed_utc": "2026-11-24T08:18:13.293266+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
