@@ -1,6 +1,6 @@
 {
   "core": 35,
-  "candidate": "core35-amplitude74f7045e92ac",
+  "candidate": "core35-directorbitc9f1215c7f6f",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/lean/src",
@@ -8,11 +8,11 @@
   "target_sha256": "eb34f555ff4f8f9067fd3efed1b3b1a425e052f17f9c240c94e52c4cff725ad9",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 196,
+  "submitted_files": 194,
   "published_baseline_tokens": 773767,
-  "local_normalized_tokens": 339769,
-  "proof_tree_sha256": "7ebd00df157215a3d2694d3dca4f4cea3376a8801f5ab262ba2d708c968c1133",
-  "proof_id": "74f7045e92ace162bfcaab5eb07342c6a9a8c9fa4f9e95d3004f069b70f15f86",
+  "local_normalized_tokens": 339043,
+  "proof_tree_sha256": "9837b19fa3b7c57a410998690b8722e6764456997642074167807b29cdc1c9bf",
+  "proof_id": "c9f1215c7f6f1096812f94cc25156dbbfe559dc320b93c1daf0126330908fa59",
   "modified_files": {
     "Development/AbelianVarietyTheory/Definitions/Foundations/IsIntegralIff.lean": {
       "before": "a561948f682666ffaba5d6883542fa6e326c766bf1cc373aa3080c82fbe429c4",
@@ -360,7 +360,7 @@
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean": {
       "before": "280cfbe22732c9511bb3162d7f89d8bbe5d5ef808791dec489ab58367d3ea27f",
-      "after": "18f1314d5afddbfaadb9aceab370fd9cb7aa8b7b5f815dccc1b0b365d2a73a17"
+      "after": "3c7c51faed2d6ce1b1dbf7f452f6ecd3a38a9285f8de21035ad700c272027f39"
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFrameClassProperties.lean": {
       "before": "cbf53511de32072178baa67fac15653d5bad47ad53c2ceff0a3f96157aae3aa3",
@@ -549,14 +549,6 @@
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LeadingMinorsProdDenominatorUnitriangularFactorsStatement.lean": {
       "before": "fc3bb3f78339e0f103b70c35d8d1478753981cc940ec7bfcaef2a0837a9b5e35",
       "after": "e37dc415c528dcd63a2e00f5273b4f2b1cf60149def8ed7553a72c48cc1ac2c7"
-    },
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbit.lean": {
-      "before": "c38ee82fb5e4f3cac95e5c18b64f74de7400746b55a5fb660648efc19569c6bf",
-      "after": "85ed4c21518541b9b34c2dff578815c5c6c198c67fbb480f283396b55446a47b"
-    },
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbitStatement.lean": {
-      "before": "09557d88775f0ca6ea0c2032ee12a89659b84ceb4cf5daa76acac40b6ab11a15",
-      "after": "9546e6af8e4e4c7792160ea569d5854741c05e7212644e51d53164123f239f01"
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalCommonStabiliserBlockUnitriangularOnFrame.lean": {
       "before": "a372257c21b8be92ed1856df72a34873b96b23ba9635d3a3afe6b2867adec142",
@@ -930,8 +922,6 @@
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeStabilizerInfLeConjNormalisingSubgroupStatement.lean": "585492420397f44702949065b0f9ec6224ba3546f68531bcf3f7f4fc595c2495",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LeadingMinorsProdDenominatorUnitriangularFactors.lean": "7fbc5128b10d0b23113c4d50c123190a409bcf958249ddc546acd19cd9b5d7f1",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LeadingMinorsProdDenominatorUnitriangularFactorsStatement.lean": "fc3bb3f78339e0f103b70c35d8d1478753981cc940ec7bfcaef2a0837a9b5e35",
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbit.lean": "c38ee82fb5e4f3cac95e5c18b64f74de7400746b55a5fb660648efc19569c6bf",
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbitStatement.lean": "09557d88775f0ca6ea0c2032ee12a89659b84ceb4cf5daa76acac40b6ab11a15",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalCommonStabiliserBlockUnitriangularOnFrame.lean": "a372257c21b8be92ed1856df72a34873b96b23ba9635d3a3afe6b2867adec142",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalCommonStabiliserBlockUnitriangularOnFrameStatement.lean": "7d9dc8999bdb6e59ab0858135793f252bee83a4973ffbdd977713089d8f7ee0b",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalLatticeBetweenScaledStandardLattices.lean": "17d6370d959644b167c96e4eb35c90cc0501ec004d526a638d723084d1cfc5fb",
@@ -1017,23 +1007,24 @@
       "Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBoundStatement"
     ],
     "changed_consumer": "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean",
-    "changed_consumer_sha256": "18f1314d5afddbfaadb9aceab370fd9cb7aa8b7b5f815dccc1b0b365d2a73a17",
-    "parent_proof_id": "50804205ea414765c6acaa13c18d8da84a35960eabdf04e0c7b00bc93954b2b7",
+    "changed_consumer_sha256": "3c7c51faed2d6ce1b1dbf7f452f6ecd3a38a9285f8de21035ad700c272027f39",
+    "parent_proof_id": "74f7045e92ace162bfcaab5eb07342c6a9a8c9fa4f9e95d3004f069b70f15f86",
     "supervisor_amplitude_reduction": "Codex specialized the internal product theorem to the amplitude identity and removed its unused real nonnegative mass identity. The original challenge theorem and the local support and finiteness arguments are retained.",
-    "finite_orbit_implementation_in_parent_sha256": "b79a7b7a2f401f1718b0c1b124a28658f758c1f0b12a26ffdc029d803b9b31ff",
-    "amplitude_entry_sha256": "394ca74db7290967322cecae0f008179ee27db1feba9ecd78d32dbfa78bd980a"
+    "finite_orbit_implementation_in_parent_sha256": "18f1314d5afddbfaadb9aceab370fd9cb7aa8b7b5f815dccc1b0b365d2a73a17",
+    "amplitude_entry_sha256": "394ca74db7290967322cecae0f008179ee27db1feba9ecd78d32dbfa78bd980a",
+    "supervisor_orbit_reduction": "Codex proved the term criterion and the complex summand equality directly on the chosen orbit representative, using stabilizer invariance of the weights and predicate. This removes the helper proving both a mass and an amplitude statement."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T11:21:03.130360+00:00",
-    "elapsed_seconds": 144.438,
+    "completed_utc": "2026-11-24T11:46:07.941451+00:00",
+    "elapsed_seconds": 122.606,
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
     ],
-    "log_sha256": "26fc8040c035afee504119453f971ce2877f263780d21cfa8df004eeba9d9071",
+    "log_sha256": "320f1a4d888c317894249d84974e51a022c300a1a2dca0d9b66ef9dc7d837d93",
     "frozen_files": 20,
     "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
     "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e"

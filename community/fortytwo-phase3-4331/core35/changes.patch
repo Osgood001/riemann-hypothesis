@@ -2446,7 +2446,7 @@
  set_option maxHeartbeats 1000000 in
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean
-@@ -1,25 +1,85 @@
+@@ -1,25 +1,84 @@
  import Mathlib
 -import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 -import Formalism.SharpRestriction.CuspSpanNormBounds.PsiEDef
@@ -2466,7 +2466,6 @@
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTermsStatement
  import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeMassEqFinprodLocalStatement
 -import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordinateLatticeUniqueTermAlmostAllPlacesStatement
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalAmplitudeSummandAtTermOrbitStatement
  import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NumberFieldLatticeDeterminedByLocalLatticesStatement
 -import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetMassLeAndFiniteStatement
 -import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTermsStatement
@@ -2544,7 +2543,7 @@
  
  namespace GlobalTheory.HL.ProdStruct
  
-@@ -93,7 +153,7 @@
+@@ -93,7 +152,7 @@
  namespace GlobalTheory.HL.ProdStruct
  attribute [local instance] instLf instChar0
  
@@ -2553,7 +2552,7 @@
    intro F E _ _ _ _ _ sig A r k G hk d hex P hPinv hPfin
    obtain ⟨Λ₀, hΛ₀⟩ := id hex
    have orb := GlobalTheory.T.globalHermitianFrames_terms_orbits_local A r k G hk d hex
-@@ -146,18 +206,15 @@
+@@ -146,18 +205,30 @@
    let Tq : Set (Quot G.LRel) := {c | G.IsTerm d c.out}
    let gC : ∀ p, O p → ℂ := fun p o => if (G.S p).IsTerm (d p) o.out ∧ P p o.out then
      ((G.S p).mu o.out : ℂ) * (G.S p).om (d p) o.out else 0
@@ -2565,17 +2564,35 @@
 -      gM p (Quotient.mk'' (A.lat p Γ)) = (if P p (A.lat p Γ) then ENNReal.ofReal ((G.S p).mu (A.lat p Γ)) else 0) := by
 +        ((G.S p).mu (A.lat p Γ) : ℂ) * (G.S p).om (d p) (A.lat p Γ) else 0) := by
      intro Γ hΓ p
-     have t := GlobalTheory.T.localAmplitude_summand_at_term_orbit (A.L p) r k (G.S p) (d p) (fun Λ => (G.S p).IsTerm (d p) Λ ∧ P p Λ) (hPinv' p)
-       (A.lat p Γ) (hΓ.2 p) ((GlobalTheory.T.numberField_lattice_determined_by_local_lattices A _ Γ hΓ.1).2.1 p) _ rfl
-     simp only [and_self_left, hΓ.2 p, true_and] at t
+-    have t := GlobalTheory.T.localAmplitude_summand_at_term_orbit (A.L p) r k (G.S p) (d p) (fun Λ => (G.S p).IsTerm (d p) Λ ∧ P p Λ) (hPinv' p)
+-      (A.lat p Γ) (hΓ.2 p) ((GlobalTheory.T.numberField_lattice_determined_by_local_lattices A _ Γ hΓ.1).2.1 p) _ rfl
+-    simp only [and_self_left, hΓ.2 p, true_and] at t
 -    exact ⟨t.1, t.2.2.1, t.2.2.2⟩
 -  have hUfin : ∀ p ∈ s, (U p).Finite := fun p _ => (GlobalTheory.T.hermitianDoubleCoset_mass_le_and_finite (A.L p) r k (G.S p) (by omega) (d p)).2
-+    exact ⟨t.1, t.2.2.1⟩
++    let S := G.S p
++    let Λ := A.lat p Γ
++    let o : O p := Quotient.mk'' Λ
++    have rel : MulAction.orbitRel S.St (Submodule (A.L p).O S.V) o.out Λ :=
++      Quotient.exact' (Quotient.out_eq' o)
++    obtain ⟨g, hg⟩ := rel
++    have hout : o.out = (g : S.GLV) • Λ := by rw [← hg]; rfl
++    have hterm : S.IsTerm (d p) Λ := hΓ.2 p
++    have hlat := ((GlobalTheory.T.numberField_lattice_determined_by_local_lattices A _ Γ hΓ.1).2.1 p)
++    obtain ⟨ht, hom, -⟩ := GlobalTheory.T.hermitianFrames_stabilizer_acts_on_terms (A.L p) r k S (d p) Λ hterm _ g.2
++    have hmu := (GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume (A.L p) r k S).1 Λ hlat |>.2.2 _ g.2
++    change S.IsTerm (d p) o.out ∧ _
++    refine ⟨hout ▸ ht, ?_⟩
++    change (if S.IsTerm (d p) o.out ∧ P p o.out then (S.mu o.out : ℂ) * S.om (d p) o.out else 0) = _
++    have cond : (S.IsTerm (d p) ((g : S.GLV) • Λ) ∧ P p ((g : S.GLV) • Λ)) ↔ P p Λ :=
++      (hPinv' p Λ _ g.2).trans (and_iff_right hterm)
++    rw [hout]
++    simp only [cond, hmu, hom]
++    rfl
 +  have hUfin : ∀ p ∈ s, (U p).Finite := fun p _ => GlobalTheory.HL.MassGlue.finite_orbits (G.S p) (d p)
    have hinj : ∀ c ∈ Tq, ∀ c' ∈ Tq, (∀ p ∈ s, Φ c p = Φ c' p) → c = c' := by
      intro c hc c' hc' he
      have hc1 : G.IsTerm d c.out := hc
-@@ -190,7 +247,6 @@
+@@ -190,7 +261,6 @@
      rw [e1, e2, ← mul_smul, (orb_eq_iff _ _ _).2 ⟨h1 * h2, (G.S p).St.mul_mem hh1 hh2, rfl⟩, Quotient.out_eq']
    haveI : ∀ p, Nonempty (O p) := fun p => ⟨Quotient.mk'' ⊥⟩
    have T5C := GlobalTheory.T.sum_prod_of_local_choices_bijection s Φ Tq U hUfin hinj hmaps hsurj gC
@@ -2583,7 +2600,7 @@
    have hPs : ∀ Γ, G.IsTerm d Γ → ((∀ p, P p (A.lat p Γ)) ↔ ∀ p ∈ s, P p (A.lat p Γ)) := fun Γ hΓ =>
      ⟨fun h p _ => h p, fun h p => if hp : p ∈ s then h p hp else (KF p hp _ _ (hΓ.2 p) (hΓ.2 p)).2.2.2⟩
    have hsumC : G.amp d (fun Λ => ∀ p, P p (A.lat p Λ)) = ∑' c, if c ∈ Tq then ∏ p ∈ s, gC p (Φ c p) else 0 := by
-@@ -201,27 +257,10 @@
+@@ -201,27 +271,10 @@
      · have hc' : G.IsTerm d c.out := hc
        rw [if_pos hc, show (∏ p ∈ s, gC p (Φ c p)) = ∏ p ∈ s, (if P p (A.lat p c.out) then
            ((G.S p).mu (A.lat p c.out) : ℂ) * (G.S p).om (d p) (A.lat p c.out) else 0) from
@@ -2612,7 +2629,7 @@
        · rfl
      · rw [if_neg hc, if_neg (fun h => hc h.1)]
    have hampC : ∀ p, (G.S p).amp (d p) (P p) = ∑' o : O p, if o ∈ U p then gC p o else 0 := by
-@@ -234,23 +273,10 @@
+@@ -234,23 +287,10 @@
        rw [if_pos this]
      · have : o ∉ U p := ho
        rw [if_neg this, if_neg (fun h => ho h.1)]
@@ -4255,39 +4272,6 @@
 -import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
 +
  open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
- open scoped Pointwise ENNReal Classical
- set_option maxHeartbeats 1000000 in
---- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbit.lean
-+++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbit.lean
-@@ -1,10 +1,8 @@
- import Mathlib
--import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
--import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
--import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
-+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTermsStatement
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFactsStatement
-+
- open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL
- open scoped Pointwise ENNReal Classical
- 
---- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbitStatement.lean
-+++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbitStatement.lean
-@@ -1,12 +1,7 @@
- import Mathlib
-+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalAmplitudeSummandAtTermOrbit
--import Mathlib
--import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
--import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
--import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTermsStatement
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFactsStatement
-+
- open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL
  open scoped Pointwise ENNReal Classical
  set_option maxHeartbeats 1000000 in
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalCommonStabiliserBlockUnitriangularOnFrame.lean
