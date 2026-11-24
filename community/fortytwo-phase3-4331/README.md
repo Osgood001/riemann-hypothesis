@@ -26,7 +26,7 @@ For Core 41, Codex narrowed the imports in Levent Alpöge’s `DiscreteSeriesWey
 | 34 | 127 | 400,204 | 105,279 | 294,925 |
 | 36 | 1 | 1,023,975 | 682 | 1,023,293 |
 | 37 | 74 | 1,852,115 | 256,560 | 1,595,555 |
-| 40 | 1 | 1,031,987 | 724 | 1,031,263 |
+| 40 | 1 | 1,031,987 | 697 | 1,031,290 |
 | 41 | 970 | 3,282,020 | 2,955,155 | 326,865 |
 
 The independent Comparator and the Lean 4.33.1 default kernel accepted each exact target with `propext`, `Quot.sound` and `Classical.choice`. Each directory records the local replay, complete source-tree digest, Mathlib revision and the checksums of its original sources. The local check derived the protected boundary from the organizer’s published frozen roots. The table reports locally measured token counts.

@@ -14,12 +14,12 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
     change _ = 1 - infEq E 1 + infEq E _
     rw [map_one, sub_self, zero_add]
     funext w
-    have hc := IsTotallyComplex.isComplex w
-    have hw := InfinitePlace.not_isReal_iff_isComplex.2 hc
     change (posIdele (K := E) _ _).val.1 w = _
     rw [← coe_infiniteProj, infiniteProj_posIdele]
-    change posRealElem w _ = (InfinitePlace.Completion.ringEquivComplexOfIsComplex hc).symm _
-    simp [posRealElem, hw, InfinitePlace.mult, Real.sqrt_sq (Real.exp_pos u).le, expU, Complex.ofReal_exp]
+    change posRealElem w _ = _
+    simp [posRealElem, InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w),
+      InfinitePlace.mult, Real.sqrt_sq (Real.exp_pos u).le, expU, Complex.ofReal_exp, infEq]
+    rfl
     change _ = (1 : Af E) - 0 + 0
     rw [sub_zero, add_zero]
     exact FiniteAdeleRing.ext _ $ posIdele_finite _ _
@@ -57,7 +57,6 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
   have e : μ = s • ν := isAddLeftInvariant_eq_smul μ ν
   have hc : 0 < s := addHaarScalarFactor_pos_of_isAddHaarMeasure μ ν
   refine ⟨s, by exact_mod_cast hc.ne', funext fun g => ?_⟩
-  simp only [ct, e, restrict_smul, integral_smul_nnreal_measure, ← hunip, NNReal.smul_def,
-    Complex.real_smul, An.ctn, Measure.real, unipMeasure_unipFundamentalDomain, ENNReal.toReal_one,
-    Complex.ofReal_one, inv_one, one_mul]
-  rw [← constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ e ▸ absolutelyContinuous_smul $ by exact_mod_cast hc.ne') g]
+  simp [ct, e, restrict_smul, integral_smul_nnreal_measure, ← hunip, NNReal.smul_def,
+    Complex.real_smul, An.ctn, Measure.real, unipMeasure_unipFundamentalDomain,
+    constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ e ▸ absolutelyContinuous_smul $ by exact_mod_cast hc.ne') g, ν]
