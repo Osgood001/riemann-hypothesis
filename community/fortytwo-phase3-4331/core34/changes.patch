@@ -1062,12 +1062,37 @@
      _ = ∑ᶠ W, ∑ᶠ W', D' W' * M W W' * N W := swap
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbDegreeBound.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbDegreeBound.lean
-@@ -1,3 +1,4 @@
+@@ -1,6 +1,8 @@
 +import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration
  import Mathlib
  import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
  import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDegreeBound
-@@ -38,12 +39,7 @@
++
+ set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.FieldNumbers
+@@ -17,33 +19,11 @@
+ 
+ attribute [local instance] MvPolynomial.weightedGradedAlgebra
+ 
+-theorem isHomogeneous_of_isMultiHomogIdeal {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I) :
+-    I.IsHomogeneous (weightedHomogeneousSubmodule F (blockWeight ι)) := by
+-  classical
+-  have e : I = Ideal.span
+-      {g | ∃ f ∈ I, ∃ b, g = weightedHomogeneousComponent (blockWeight ι) b f} := by
+-    apply le_antisymm
+-    · intro f hf
+-      rw [← sum_weightedHomogeneousComponent (blockWeight ι) f,
+-        finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]
+-      exact Ideal.sum_mem _ fun b _ => Ideal.subset_span ⟨f, hf, b, rfl⟩
+-    · rw [Ideal.span_le]
+-      rintro g ⟨f, hf, b, rfl⟩
+-      exact hI f hf b
+-  rw [e]
+-  refine Ideal.homogeneous_span _ _ fun x hx => ?_
+-  obtain ⟨f, -, b, rfl⟩ := hx
+-  exact ⟨b, weightedHomogeneousComponent_isWeightedHomogeneous b f⟩
+ 
  theorem isMultiHomogIdeal_sup_span {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I)
      {s : MRing ι F} {c : K → ℕ} (hs : IsMultiHomog s c) :
      IsMultiHomogIdeal (I ⊔ Ideal.span {s}) := by
@@ -1083,7 +1108,34 @@
  
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbExactDivide.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbExactDivide.lean
-@@ -189,8 +189,6 @@
+@@ -1,6 +1,7 @@
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PGradedFinite
++
+ set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.FieldNumbers
+@@ -44,18 +45,6 @@
+   rw [e]
+   exact hI a ha n
+ 
+-omit [DecidableEq K] in
+-
+-theorem mem_colon_span_iff {I : Ideal (MRing ι F)} {s g : MRing ι F} :
+-    g ∈ I.colon (Ideal.span {s}) ↔ g * s ∈ I := by
+-  rw [Submodule.mem_colon]
+-  constructor
+-  · intro h
+-    simpa [smul_eq_mul] using h s (Ideal.subset_span rfl)
+-  · intro h x hx
+-    obtain ⟨t, rfl⟩ := Ideal.mem_span_singleton'.mp hx
+-    rw [smul_eq_mul, show g * (t * s) = t * (g * s) by ring]
+-    exact I.mul_mem_left t h
+ 
+ open Classical in
+ 
+@@ -189,8 +178,6 @@
        omega
      simp only [hilbFn, if_neg hm, if_neg hm', sub_zero]
  
@@ -1375,7 +1427,14 @@
  
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean
-@@ -16,105 +16,34 @@
+@@ -1,5 +1,6 @@
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
++
+ set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.FieldNumbers
+@@ -16,105 +17,34 @@
  
  variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type u} [Field F]
  
@@ -1497,7 +1556,7 @@
  
  theorem component_mul_form {c : K → ℕ} {s : MRing ι F} (hs : IsMultiHomog s c)
      (t : MRing ι F) (b : K → ℕ) :
-@@ -151,8 +80,8 @@
+@@ -151,8 +81,8 @@
    obtain ⟨P, hP, hmax⟩ := set_has_maximal_iff_noetherian.mpr hnoeth 𝒮 hne
    obtain ⟨s, ⟨i, hsi⟩, hsJ, hPs⟩ := hP
    subst hPs
@@ -1508,7 +1567,7 @@
    have hmh := multiHomog_colon hJ hc
    have hcolon := isHomogeneous_of_multiHomog hmh
    have hprime : (J.colon (Ideal.span {s})).IsPrime := by
-@@ -183,7 +112,7 @@
+@@ -183,7 +113,7 @@
    refine multiHomog_of_isHomogeneous ((isHomogeneous_of_multiHomog hJ).sup ?_)
    refine Ideal.homogeneous_span _ _ ?_
    rintro x rfl
@@ -1517,14 +1576,14 @@
  
  end Lex
  
-@@ -191,111 +120,44 @@
+@@ -191,111 +121,45 @@
  
  variable {K : Type} {ι : K → Type} {F : Type u} [Field F]
  
 -theorem smul_quot_mk (I : Ideal (MRing ι F)) (r x : MRing ι F) :
 -    r • Ideal.Quotient.mk I x = Ideal.Quotient.mk I (r * x) := by
 -  exact (Submodule.Quotient.mk_smul I r x).symm
--
+ 
  theorem multAt_eq_zero {A W : Ideal (MRing ι F)} [W.IsPrime] (h : ¬ A ≤ W) : multAt A W = 0 := by
 -  obtain ⟨q, hqA, hqW⟩ := Set.not_subset.mp h
 -  have hz : ∀ z : LocalizedModule W.primeCompl (MRing ι F ⧸ A), z = 0 := by

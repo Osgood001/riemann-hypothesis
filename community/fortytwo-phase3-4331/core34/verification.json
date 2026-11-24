@@ -1,14 +1,14 @@
 {
   "core": 34,
-  "candidate": "core34-fastmixb6e8e57f70",
+  "candidate": "core34-fastslicef11d2f2272",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 127,
-  "local_normalized_tokens": 106603,
+  "local_normalized_tokens": 106318,
   "published_baseline_tokens": 400204,
-  "proof_tree_sha256": "2f2d3f274916d1ca3c4512b9c4243c00a1398c18805e704815bf93dfa1ba83f7",
+  "proof_tree_sha256": "f46ec6c657aff75190e622f5e4054c11dd6a05e262bdfa5c8bdcfa31a53f0fab",
   "modified_files": {
     "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PDivCycleMul.lean": {
       "before": "7b44bb2bcc590eec8a8f5d98f60ece6da14a1bd5ef3746155ead419cab9fbace",
@@ -56,11 +56,11 @@
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbDegreeBound.lean": {
       "before": "3d9e0a7c080a1158b2bca34658873ae517b5e9f2a6194bc9e35498d4f45f3910",
-      "after": "9027c9adc1f81122f0f0c70e7a25879b1d390d797594c76b9ecc894dd38bb9f5"
+      "after": "669768b4f73ab04eb369e271fd19ad3a12f100f793c9f7f1d4273603c7c84409"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbExactDivide.lean": {
       "before": "0cecb3c9569821d15d47fd7ef6df25d25b15d441203385e7acbd44531a372ba0",
-      "after": "9a6f6bc46124134340481029e14beb8b9892fb4dcbdc31df17c01df79758fe82"
+      "after": "957223277d5d23a08cf51e299471241d6e5950134860d7a0f100260d6e5de9a0"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartLocDim.lean": {
       "before": "cf8b713f5f9ca3464cfae712f2eedddc8e4b0d2546d4a0c960d17287feac0b42",
@@ -84,7 +84,7 @@
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean": {
       "before": "ed3a729e65d80e69eeca0225865e79fc9bd95d869306ab17b5a757a023d555ea",
-      "after": "5855d21af0f1852fb9366b62d0cc4a21b32ba9f6d6c05e6a4afe040d223d8428"
+      "after": "f746a8ac367a3f772eb709b44a5807fc7b8bf52fc4ecfce8fcba7d2d9b659635"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDegZeroLocSeparate.lean": {
       "before": "4c9c0daee540563295eae49066df86c34158eb64f9dc80463eeb55a161c36f4c",
@@ -138,12 +138,12 @@
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo DeepSeek supplied the verified replacement in GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration. The retained Fortytwo source contributions are in GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration, GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.NumericalSegre. Codex assembled the proof and checked the full import closure. Original proof by Levent Alpöge."
+    "new_contribution": "Fortytwo native Lean proof simplification in GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.NumericalSegre, from phase3-fast-core34-r01, adapted to the published Core 34 target. Original proof by Levent Alpöge. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T03:32:27.067809+00:00",
+    "completed_utc": "2026-11-24T03:44:51.392959+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
