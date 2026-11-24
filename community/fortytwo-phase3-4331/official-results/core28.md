@@ -1,6 +1,6 @@
 # Core 28 · Fundamental-domain point bound
 
-Playground confirmed **60.382409** for submission **#103184** at 06:25 UTC on 2026-11-24. At that check it ranked first, 0.047900 points ahead of #103100. [Official submission](https://play.bohrium.com/submission/103184) · [Core 28 leaderboard](https://play.bohrium.com/api/challenges/lean-4-verification-rh-fast-sub-pillar-28-fundamen-7b3737ce/attempts?sort=score&limit=20&page=1)
+Playground confirmed **60.532372** for submission **#103283** at 07:46 UTC on 2026-11-24. At that check it ranked first, 0.149963 points ahead of #103184. [Official submission](https://play.bohrium.com/submission/103283) · [Core 28 leaderboard](https://play.bohrium.com/api/challenges/lean-4-verification-rh-fast-sub-pillar-28-fundamen-7b3737ce/attempts?sort=score&limit=20&page=1)
 
 Each submission preserves Levent Alpöge’s statement that the Fundamental-domain point bound have finite length. Each revision links to the source that received its score. The token counts come from the pinned verification environment.
 
@@ -27,6 +27,7 @@ Each submission preserves Levent Alpöge’s statement that the Fundamental-doma
 | [#102996](https://play.bohrium.com/submission/102996) | 60.287049 | First | 279,169 | 153 | [`4ea3819763be`](https://github.com/vlarin/riemann-hypothesis/tree/4ea3819763be88ab335855861c23b1603cc8fc7d/community/fortytwo-phase3-4331/core28) |
 | [#103100](https://play.bohrium.com/submission/103100) | 60.334509 | First | 277,239 | 153 | [`0ddd74d1e2b5`](https://github.com/vlarin/riemann-hypothesis/tree/0ddd74d1e2b593fea2c439e1d38c43d9d7e2a8ab/community/fortytwo-phase3-4331/core28) |
 | [#103184](https://play.bohrium.com/submission/103184) | 60.382409 | First | 275,300 | 153 | [`03fa5a96b1fe`](https://github.com/vlarin/riemann-hypothesis/tree/03fa5a96b1fee37102b1304370c39b1ac4c6db48/community/fortytwo-phase3-4331/core28) |
+| [#103283](https://play.bohrium.com/submission/103283) | 60.532372 | First | 269,287 | 153 | [`0c941f67870f`](https://github.com/vlarin/riemann-hypothesis/tree/0c941f67870fce0bc5e94dc328f55c3353ea0777/community/fortytwo-phase3-4331/core28) |
 
 ## Changes in the scored proofs
 
@@ -73,3 +74,5 @@ Levent Alpöge authored the Fourier sign, contour-independence and coefficient-b
 - **#103100** Codex used the weighted Hermitian pairing laws for sums of columns in both arguments, including conjugation of the scalar in the second argument. The same coordinate split treats the signed Gram matrix and real squared norms. Positive definiteness supplies invertibility of the Gram determinant. These and the accompanying reductions saved 1,930 normalized tokens over #102996. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/0ddd74d1e2b593fea2c439e1d38c43d9d7e2a8ab/community/fortytwo-phase3-4331/core28/changes.patch)
 
 - **#103184** Codex applied the field-linear Hermitian covector and conjugate symmetry directly in lattice duality. Linear independence identifies the coefficients of equal period sums. At a chosen complex place, the invertible frame spans the ambient vector space, giving the signed orthonormal expansion. These changes and the CM embedding count saved 1,939 normalized tokens over #103100. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/03fa5a96b1fee37102b1304370c39b1ac4c6db48/community/fortytwo-phase3-4331/core28/changes.patch)
+
+- **#103283** Codex chose orthonormal bases of the positive space and the sign-reversed negative space. In these coordinates the Hermitian form is a signed sum of squared norms and its majorant is their unsigned sum, so the triangle inequality gives the comparison directly. The kernel of a continuous pairing extends orthogonality from the lattice to its span. Together with the unipotent and frequency-coordinate reductions, this saved 6,013 normalized tokens over #103184. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/0c941f67870fce0bc5e94dc328f55c3353ea0777/community/fortytwo-phase3-4331/core28/changes.patch)
