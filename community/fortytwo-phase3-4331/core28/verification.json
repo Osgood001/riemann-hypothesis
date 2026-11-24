@@ -1,14 +1,14 @@
 {
   "core": 28,
-  "candidate": "core28-fasttranslates648cf05c9a",
+  "candidate": "core28-fastcoordinatesf0247da7be",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 153,
-  "local_normalized_tokens": 283517,
+  "local_normalized_tokens": 281968,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "58a6b6d2f94cfbdc3084fe2c3e3dd3b35b88fc797eaf2c3ae91dafe2cf01a07a",
+  "proof_tree_sha256": "dc9ab66c0e3d671df6565ae904e19e94caba725dffccb378067e7d2f9d22111a",
   "modified_files": {
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
       "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
@@ -156,7 +156,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BlockIdentityExpansion.lean": {
       "before": "c7b0fe94c95d1ea4bcc3f8026a9a53992fb341c54b9847ce4bce1fcfe0e90bdf",
-      "after": "aa654debbb10120acbf79d5ad9817d005ef2b9595c6abb9c280292707dacafec"
+      "after": "f7a2a096a1bc3f59e0b9e35a607cdd5f6cc0c08ba53159c5c2ef8daf8ec30861"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscriminantTraceBounds.lean": {
       "before": "b65a5e8a4847ff861842e3307c4db8dd3aaa9b85d2164fa2dcd742d39bf927c8",
@@ -164,7 +164,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicIndexSums.lean": {
       "before": "b0c76a09ba231a638be796ce3410401e511cb65603c669cd95748bb67e928e99",
-      "after": "472bf9ef1032e017565afb0fdcafa54ef483dfdf40f41e449b03bdcd2543d4d3"
+      "after": "9b371e70c3850fe356ed56166770db50d4a5c8eb1691b9f55b5df22ec4cd9cc6"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealTangentSpace.lean": {
       "before": "45281a4e0eb835f5aa216f1160dc21edb940fe06999b98bac0a9364be7a56385",
@@ -208,7 +208,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientIndexLowerBound.lean": {
       "before": "f514607a8a33b2de4eaaf8510b04651042f3b3299907210bba0edc8ceb33746d",
-      "after": "c2f46550853619e7d186ca20457b5ef1cbc46900aa2f631ab79b3add8a6282e3"
+      "after": "35a4f3d3b0bb94cfdc1edae0c28d6bceaddbd9f079326b5ea667fc19ecca9773"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SchwarzLemmaBallHolds.lean": {
       "before": "5d23f303b108cdf9f57ca559d25e3e5498c6050ffc813e3ddebda1718ce956c6",
@@ -256,7 +256,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientHeightBoundOfLiftSupportPositivity.lean": {
       "before": "fc8b7410ec124e173f230c96d4879ff6c18442dc75a4cece49b45aa9581739d1",
-      "after": "90407b69baa8e20876c18f2700948c6889f86d3a28f979591029fb26ebe08fbc"
+      "after": "db573bd47f236aac7d3894910b2640ea976bf8ebf4cfb89abd45a7bcc6d820e9"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowCoefficientDecayHolds.lean": {
       "before": "a00ac253f0102d47d2ee46f2fd31d7b3f0479d327482204ba5fb2eb88894141e",
@@ -280,7 +280,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/AprojEqZeroOfUz.lean": {
       "before": "e0dc4c7fa005aa3454db1248c7d9f39141a16bd82b22c872ff70da7fabe5e2cd",
-      "after": "43f5a00d74f3fe6e774a0821bc10375505a8d3d2fd8f7cd48a49d1da10974409"
+      "after": "0cd4ac9de1f1860b0008391f901866aac14a7158464783f2a28d1812582ca457"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramSchmidtEigenframe.lean": {
       "before": "7d3a2ff41b65607f17028e1445975218b1edadca78b79c96e31db5f447762379",
@@ -312,7 +312,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentCoefficientShift.lean": {
       "before": "87a3ae60031ec6f05a4d6c91cd41a6d14d147a74aeff1e5e41fa94ef94c6c47c",
-      "after": "f1e526b4dbab38de8d4277085c25c8bba73c47eec21cec3877294b6fd0edcd7e"
+      "after": "83334a02937354c36efb5e866f9bbc2cf081207e19c028a49d02bbcc1167a760"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentSubOneMajorantBound.lean": {
       "before": "79511c82f7f8b23ebfda5e42057d8575478b9d805e0d9877724b2ca87362297d",
@@ -340,7 +340,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ReducedLatticeShortBound.lean": {
       "before": "25853a470340945d012a3d46bd28136c33a969106764d6bd2a85ba173974f3e5",
-      "after": "79808882d4a0f049d6f7d4c720b4e21c7c56d1f461db5f78385a160604b58ce5"
+      "after": "f5a015f1b6fee2d775132c7d1e43738319ff8b37d18117fbf2b8400e529a7efd"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CountingExponentialSumHolds.lean": {
       "before": "07737c22ff3cd685c3bcc3b59d549f79be4d87c3c9f264419abf926be4746839",
@@ -396,13 +396,17 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BfSubRight.lean": {
       "before": "91712167d4788bb5643a4aa58ee821313d585c5978851d3e51a49828611635c1",
-      "after": "c35388084c031caa350e19b24694cd8b7086decc069fcf3b7b3d9b5c65543243"
+      "after": "e9df6432902baaca7cc718e2231151ee05a61ad62726a63f5d0ff21c59d1a39c"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SignTypeCancelIdentity.lean": {
+      "before": "311ab7a6a5614e689185c1a6c9bb4db6260d7fec27476574fc6f39a569df2a16",
+      "after": "31ab8634d911f0a3b2865980e292f39bf93089b675a157989415f92254c01ab4"
     }
   },
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Original Lean formalization by Levent Alpöge. The unchanged FractionalSliceDomains proof is Fortytwo’s native edit. Codex compresses the new deductions. Writing the real flow as a unipotent translation proves commutation immediately by the abelian group law. The same fundamental domain for the period lattice proves existence for Fourier positivity. The normalized Fourier cube integral reuses its Hermitian coefficient combination, continuous character and continuous unipotent orbit. Orthogonality of a lattice null relation follows from the Hermitian linear combination and conjugate symmetry. The complex structure is linear by the established linearity of the orthogonal projection. Both consumers of the positive epsilon use the stronger quantitative epsilon estimate already proved for the same parameters on this branch. Unipotent multiplication and preservation of the original Hermitian form are recovered at one injective complex embedding from the established complex matrix laws. Conjugating a Gram matrix by an upper-triangular matrix transforms each leading minor by the existing product of the diagonal and its complex conjugate; the proof applies that identity directly at every frame. The Lean kernel dependency walk and source reference map also identified six prior unused declarations, each removed and independently recompiled. The orthogonal projection onto the positive coordinate span fixes that span and leaves an orthogonal residual. Using these two properties directly also proves the zero coordinate criterion. Linear independence survives extension along any complex embedding by scalar extension of the coordinate vectors. Sesquilinearity then proves their isotropic span gives zero pairing. Linearity of the hyperbolic projection and its value on the isotropic line replace coordinate expansion in the majorant bound. Applying unweighted AM–GM to the squared absolute values at the complex places bounds the norm on the trace-dual lattice. For the orthogonal lattice, nondegeneracy gives a vector with nonzero pairing and clearing denominators places it in the lattice. A common real-linear projection now proves real tangent-space additivity and scalar multiplication. Conjugate symmetry and two known orthogonality relations prove that a short-vector translation is isotropic. Pullback along the inclusion of the Fourier support gives the same finite count directly. In dual lattice transference, the isometry transports the integral span and an elementary shear of the independent orthogonal family preserves its independence. The signed coordinate Gram formula follows by multiplying the triangular factor and its diagonal signature matrix, with a finite prefix split to discard vanishing coordinates. Noncollinearity of the nonzero isotropic pair directly gives independence. The common inverse-square-root factor normalizes its local majorants. The four lower-block coordinate identities then follow from index bounds and equality of finite indices. The geometric, Hermitian and orthogonality arguments from the verified parent are retained.",
+    "new_contribution": "Original Lean formalization by Levent Alpöge. The unchanged FractionalSliceDomains proof is Fortytwo’s native edit. Codex contributed the following additional reductions. For the chart signature, apply the existing partial-matrix operator bound to the coordinate projection. The positive Schur complement and its negative identity block give the required minor sign. The positive and negative coordinate parts of the block shear follow by applying its four existing block formulas to a vector. For a nonzero Fourier mode, its first Hermitian coordinate and the normalized projected vector fix the norm of the second coordinate. Positivity of the integral determinant then gives the product lower bound. A positive semidefinite frequency matrix has nonnegative real diagonal. Its prescribed first diagonal coefficient and Hermitian symmetry let the two free integral entries determine it, giving the two-entry count. For the arithmetic projection of a unipotent move, linearity of the positive projection gives the period-coordinate scaling law. The positive projection preserves affine shifts along the isotropic direction by additivity and complex linearity. Use complex linearity of the positive projection to scale the unipotent coefficient shift. The positive projection is linear and the Gram form already supplies the covector in the block eigenbasis. Apply its weighted-sum identity to the existing orthogonality argument. The reduced Hermitian form is conjugate-symmetric because it is the restriction of the original lattice pairing. Orthogonality survives switching the arguments directly over the CM field.",
     "shared_module_attribution": {
       "original_author": "Levent Alpöge",
       "inherited_native_module": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains",
@@ -485,6 +489,7 @@
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ReducedLatticeShortBound",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SchwarzLemmaBallHolds",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ShortVectorBoundOfCoefficientBounds",
+        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SignTypeCancelIdentity",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TraceIntegralBasis",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TransvectionPeriodicity",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TwoSidedBoostBounds",
@@ -509,7 +514,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T01:15:31.405019+00:00",
+    "completed_utc": "2026-11-24T01:41:08.574638+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
