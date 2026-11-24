@@ -834,6 +834,48 @@
 -    finite_integralClosure_mvPolynomial_of_charZero k s L'
  
  end GroundTheory.Heights₂.Heights.FieldNumbers
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PContractRelDimLe.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PContractRelDimLe.lean
+@@ -21,37 +21,8 @@
+     (hQ : ∀ (T : Finset K) (q : MRing ι F), q ∈ Q → killBlocks T q ∈ Q) (hrel : IsRelevant Q)
+     (T : Finset K) :
+     ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) ≤
+-      ringKrullDim (MRing ι F ⧸ Q) := by
+-  choose i hi using hrel
+-  have hmono : ∀ {T T' : Finset K}, T ⊆ T' → killIdeal Q T ≤ killIdeal Q T' := by
+-    intro T T' h q hq
+-    change killBlocks T' q ∈ Q
+-    rw [← killBlocks_comp h]
+-    exact hQ T' _ hq
+-  induction T using Finset.induction_on with
+-  | empty =>
+-    have : killIdeal Q (∅ : Finset K) = Q := by
+-      ext q
+-      simp [killIdeal, killBlocks_empty]
+-    rw [this, Finset.card_empty, Nat.cast_zero, add_zero]
+-  | insert k T hk ih =>
+-    have : (killIdeal Q T).IsPrime := Ideal.comap_isPrime _ _
+-    have hstep := ringKrullDim_add_one_le (P := killIdeal Q T) (Q := killIdeal Q (insert k T))
+-      (hmono (Finset.subset_insert k T)) (f := X ⟨k, i k⟩)
+-      (by
+-        change killBlocks T (X ⟨k, i k⟩) ∉ Q
+-        rw [killBlocks_X, if_neg hk]
+-        exact hi k)
+-      (by
+-        change killBlocks (insert k T) (X ⟨k, i k⟩) ∈ Q
+-        rw [killBlocks_X, if_pos (Finset.mem_insert_self k T)]
+-        exact Q.zero_mem)
+-    calc ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + ((insert k T).card : WithBot ℕ∞)
+-        = (ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + 1) + (T.card : WithBot ℕ∞) := by
+-          rw [Finset.card_insert_of_notMem hk, Nat.cast_add, Nat.cast_one, add_assoc,
+-            add_comm (1 : WithBot ℕ∞)]
+-      _ ≤ ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) := by gcongr
+-      _ ≤ _ := ih
++      ringKrullDim (MRing ι F ⧸ Q) :=
++  PFContracted.dimension_add_killed_blocks_card_le hQ hrel T
+ 
+ end Chain
+ 
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PCutRegular.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PCutRegular.lean
 @@ -1,3 +1,6 @@
@@ -856,7 +898,7 @@
  
  theorem intNum_eq_zero_of_eventually {I : Ideal (MRing ι F)}
      (hI : ∀ᶠ m in Filter.atTop, hilbFn I m = 0) {n : ℕ} (bs : Fin n → K → ℤ) :
-@@ -52,17 +51,7 @@
+@@ -52,19 +51,9 @@
    eventualValue_eq_zero (foldr_diffStep_eventually_zero hI (List.ofFn bs))
  
  theorem hilbFn_top (m : K → ℤ) : hilbFn (⊤ : Ideal (MRing ι F)) m = 0 := by
@@ -871,10 +913,23 @@
 -      exact Subsingleton.elim _ _
 -    rw [this, finrank_bot, Nat.cast_zero]
 -  · rfl
+-
+-theorem mem_of_block_le {I : Ideal (MRing ι F)} {k : K}
 +  apply GroundTheory.Heights₂.Heights.FieldNumbers.PrimeFiltration.hilbFn_top <;> assumption
- 
- theorem mem_of_block_le {I : Ideal (MRing ι F)} {k : K}
++
++theorem mem_of_block_le {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F] {I : Ideal (MRing ι F)} {k : K}
      (hk : ∀ i : ι k, (X ⟨k, i⟩ : MRing ι F) ∈ I) {m : K → ℕ} (hm : 1 ≤ m k)
+     {f : MRing ι F} (hf : IsMultiHomog f m) : f ∈ I := by
+   have hspan : Ideal.span ((X : (Σ k, ι k) → MRing ι F) '' {v | v.1 = k}) ≤ I := by
+@@ -88,7 +77,7 @@
+   rw [hw] at h0
+   omega
+ 
+-theorem hilbFn_eventually_zero_of_not_relevant {I : Ideal (MRing ι F)} (hI : ¬ IsRelevant I) :
++theorem hilbFn_eventually_zero_of_not_relevant {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F] {I : Ideal (MRing ι F)} (hI : ¬ IsRelevant I) :
+     ∀ᶠ m in Filter.atTop, hilbFn I m = 0 := by
+   unfold IsRelevant at hI
+   push Not at hI
 @@ -110,23 +99,13 @@
  theorem isMultiHomogIdeal_sup_span {P : Ideal (MRing ι F)} (hP : IsMultiHomogIdeal P)
      {c : K → ℕ} {s : MRing ι F} (hs : IsMultiHomog s c) :
@@ -1110,6 +1165,36 @@
    calc cycEval N' D' = ∑ᶠ W', D' W' * N' W' := rfl
      _ = ∑ᶠ W', ∑ᶠ W, D' W' * M W W' * N W := finsum_congr step1
      _ = ∑ᶠ W, ∑ᶠ W', D' W' * M W W' * N W := swap
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPushForwardLocal.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPushForwardLocal.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PRepresentative
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDivCycleMinimal
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsConeLocalLength
+@@ -18,20 +19,8 @@
+ theorem exists_form_not_mem {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type u}
+     [Field F] {W : Ideal (MRing ι F)} (hW : IsMultiProjPrime W) (c : K → ℕ) :
+     ∃ h : MRing ι F, IsMultiHomog h c ∧ h ∉ W := by
+-  choose v hv using hW.relevant
+-  have := hW.isPrime
+-  refine ⟨∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ c k, ?_, ?_⟩
+-  · have hprod := IsWeightedHomogeneous.prod (w := blockWeight ι) Finset.univ
+-      (fun k => (X ⟨k, v k⟩ : MRing ι F) ^ c k) (fun k => c k • blockWeight ι ⟨k, v k⟩)
+-      (fun k _ => (isWeightedHomogeneous_X F (blockWeight ι) _).pow (c k))
+-    have hc : (∑ k, c k • blockWeight ι ⟨k, v k⟩) = c := by
+-      funext k'
+-      simp [blockWeight, Finset.sum_apply, Pi.single_apply]
+-    rw [hc] at hprod
+-    exact hprod
+-  · rw [Ideal.IsPrime.prod_mem_iff]
+-    rintro ⟨k, -, hk⟩
+-    exact hv k (Ideal.IsPrime.mem_of_pow_mem this _ hk)
++  haveI := hW.isPrime
++  exact exists_form_not_mem_of_isRelevant hW.relevant c
+ 
+ theorem DivPushForwardLocal.proof (h1 : DivCycleMinimal.Statement.{u})
+     (h2 : ConeLocalLength.Statement.{u}) (h3 : DegZeroLocalRing.Statement.{u})
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbDegreeBound.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbDegreeBound.lean
 @@ -1,6 +1,8 @@
@@ -1256,6 +1341,58 @@
  
  variable (P : Ideal (MRing ι F)) [P.IsPrime]
  
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMultEqualsCoeff.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMultEqualsCoeff.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PCutRegular
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDegreeBound
+@@ -86,43 +87,7 @@
+ 
+ theorem hilbFn_eventually_zero_of_not_relevant (I : Ideal (MRing ι F)) (hI : ¬ IsRelevant I) :
+     ∀ᶠ m in atTop, hilbFn I m = 0 := by
+-  simp only [IsRelevant, not_forall, not_exists, not_not] at hI
+-  obtain ⟨k, hk⟩ := hI
+-  filter_upwards [eventually_ge_atTop (1 : K → ℤ)] with m hm
+-  unfold hilbFn
+-  split_ifs with h0
+-  · have hbot : gradedPiece I (fun k => (m k).toNat) = ⊥ := by
+-      rw [eq_bot_iff]
+-      rintro x ⟨f, hf, rfl⟩
+-      rw [Submodule.mem_bot, AlgHom.toLinearMap_apply, Ideal.Quotient.mkₐ_eq_mk,
+-        Ideal.Quotient.eq_zero_iff_mem, MvPolynomial.as_sum f]
+-      refine Ideal.sum_mem _ fun s hs => ?_
+-      have hw := (mem_weightedHomogeneousSubmodule _ _ _ _).mp hf (mem_support_iff.mp hs)
+-      obtain ⟨v, hv, hvk⟩ : ∃ v ∈ s.support, v.1 = k := by
+-        by_contra hne
+-        simp only [not_exists, not_and] at hne
+-        have h1 := congrFun hw k
+-        rw [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply,
+-          Finset.sum_eq_zero fun v hv => by
+-            simp [blockWeight, Ne.symm (hne v hv)]] at h1
+-        have := hm k
+-        simp only [Pi.one_apply] at this
+-        omega
+-      have hle : Finsupp.single v 1 ≤ s := by
+-        rw [Finsupp.single_le_iff]
+-        exact Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hv)
+-      have hX : (X v : MRing ι F) ∈ I := by
+-        obtain ⟨k', i⟩ := v
+-        subst hvk
+-        exact hk i
+-      have e : monomial s (coeff s f) = X v * monomial (s - Finsupp.single v 1) (coeff s f) := by
+-        rw [show (X v : MRing ι F) = monomial (Finsupp.single v 1) 1 from rfl, monomial_mul,
+-          one_mul, add_tsub_cancel_of_le hle]
+-      rw [e]
+-      exact I.mul_mem_right _ hX
+-    rw [hbot]
+-    simp
+-  · rfl
++  exact GroundTheory.Heights₂.Heights.FieldNumbers.CutRegular.hilbFn_eventually_zero_of_not_relevant hI
+ 
+ end MultEqualsCoeff
+ 
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContracted.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContracted.lean
 @@ -18,12 +18,6 @@
@@ -1371,6 +1508,91 @@
  
  theorem isMultiHomogIdeal_sup_span {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I)
      {f : MRing ι F} {c : K → ℕ} (hf : IsMultiHomog f c) :
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContractedDim.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContractedDim.lean
+@@ -131,47 +131,48 @@
+ def killIdeal (Q : Ideal (MRing ι F)) (T : Finset K) : Ideal (MRing ι F) :=
+   Q.comap (killBlocks T)
+ 
+-theorem card_le_ringKrullDim [Fintype K] {Q : Ideal (MRing ι F)} [hQp : Q.IsPrime]
+-    (hQ : ∀ (T : Finset K) (q : MRing ι F), q ∈ Q → killBlocks T q ∈ Q) (hrel : IsRelevant Q) :
+-    (Fintype.card K : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ Q) := by
++theorem dimension_add_killed_blocks_card_le {Q : Ideal (MRing ι F)} [Q.IsPrime]
++    (hQ : ∀ (T : Finset K) (q : MRing ι F), q ∈ Q → killBlocks T q ∈ Q) (hrel : IsRelevant Q)
++    (T : Finset K) :
++    ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) ≤
++      ringKrullDim (MRing ι F ⧸ Q) := by
+   choose i hi using hrel
+   have hmono : ∀ {T T' : Finset K}, T ⊆ T' → killIdeal Q T ≤ killIdeal Q T' := by
+     intro T T' h q hq
+     change killBlocks T' q ∈ Q
+     rw [← killBlocks_comp h]
+     exact hQ T' _ hq
+-  have hprime : ∀ T, (killIdeal Q T).IsPrime := fun T => Ideal.comap_isPrime _ _
+-  have hchain : ∀ T : Finset K,
+-      ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) ≤
+-        ringKrullDim (MRing ι F ⧸ Q) := by
+-    intro T
+-    induction T using Finset.induction_on with
+-    | empty =>
+-      have : killIdeal Q (∅ : Finset K) = Q := by
+-        ext q
+-        simp [killIdeal, killBlocks_empty]
+-      rw [this, Finset.card_empty, Nat.cast_zero, add_zero]
+-    | insert k T hk ih =>
+-      have := hprime T
+-      have hstep := ringKrullDim_add_one_le (P := killIdeal Q T) (Q := killIdeal Q (insert k T))
+-        (hmono (Finset.subset_insert k T)) (f := X ⟨k, i k⟩)
+-        (by
+-          change killBlocks T (X ⟨k, i k⟩) ∉ Q
+-          rw [killBlocks_X, if_neg hk]
+-          exact hi k)
+-        (by
+-          change killBlocks (insert k T) (X ⟨k, i k⟩) ∈ Q
+-          rw [killBlocks_X, if_pos (Finset.mem_insert_self k T)]
+-          exact Q.zero_mem)
+-      calc ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + ((insert k T).card : WithBot ℕ∞)
+-          = (ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + 1) + (T.card : WithBot ℕ∞) := by
+-            rw [Finset.card_insert_of_notMem hk, Nat.cast_add, Nat.cast_one, add_assoc,
+-              add_comm (1 : WithBot ℕ∞)]
+-        _ ≤ ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) := by gcongr
+-        _ ≤ _ := ih
+-  have := hprime Finset.univ
++  induction T using Finset.induction_on with
++  | empty =>
++    have : killIdeal Q (∅ : Finset K) = Q := by
++      ext q
++      simp [killIdeal, killBlocks_empty]
++    rw [this, Finset.card_empty, Nat.cast_zero, add_zero]
++  | insert k T hk ih =>
++    have : (killIdeal Q T).IsPrime := Ideal.comap_isPrime _ _
++    have hstep := ringKrullDim_add_one_le (P := killIdeal Q T) (Q := killIdeal Q (insert k T))
++      (hmono (Finset.subset_insert k T)) (f := X ⟨k, i k⟩)
++      (by
++        change killBlocks T (X ⟨k, i k⟩) ∉ Q
++        rw [killBlocks_X, if_neg hk]
++        exact hi k)
++      (by
++        change killBlocks (insert k T) (X ⟨k, i k⟩) ∈ Q
++        rw [killBlocks_X, if_pos (Finset.mem_insert_self k T)]
++        exact Q.zero_mem)
++    calc ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + ((insert k T).card : WithBot ℕ∞)
++        = (ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + 1) + (T.card : WithBot ℕ∞) := by
++          rw [Finset.card_insert_of_notMem hk, Nat.cast_add, Nat.cast_one, add_assoc,
++            add_comm (1 : WithBot ℕ∞)]
++      _ ≤ ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) := by gcongr
++      _ ≤ _ := ih
++
++theorem card_le_ringKrullDim [Fintype K] {Q : Ideal (MRing ι F)} [hQp : Q.IsPrime]
++    (hQ : ∀ (T : Finset K) (q : MRing ι F), q ∈ Q → killBlocks T q ∈ Q) (hrel : IsRelevant Q) :
++    (Fintype.card K : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ Q) := by
++  haveI : (killIdeal Q (Finset.univ : Finset K)).IsPrime := Ideal.comap_isPrime _ _
+   have h0 := ringKrullDim_nonneg_of_nontrivial (R := MRing ι F ⧸ killIdeal Q Finset.univ)
+-  have := hchain Finset.univ
++  have := dimension_add_killed_blocks_card_le hQ hrel Finset.univ
+   rw [Finset.card_univ] at this
+   calc (Fintype.card K : WithBot ℕ∞) = 0 + (Fintype.card K : WithBot ℕ∞) := (zero_add _).symm
+     _ ≤ ringKrullDim (MRing ι F ⧸ killIdeal Q Finset.univ) + (Fintype.card K : WithBot ℕ∞) := by
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFDegree.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFDegree.lean
 @@ -1,4 +1,5 @@

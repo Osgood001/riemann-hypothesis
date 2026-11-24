@@ -1,14 +1,14 @@
 {
   "core": 34,
-  "candidate": "core34-fastsliceec5891c2ab",
+  "candidate": "core34-fastsliced7646d70c0",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 127,
-  "local_normalized_tokens": 106038,
+  "local_normalized_tokens": 105279,
   "published_baseline_tokens": 400204,
-  "proof_tree_sha256": "3b1a651013aaa66b529014db3980fcc6770e4812fc62ba0ba76b572c21d70620",
+  "proof_tree_sha256": "005063948b6eb7fb5dc0dcf6d35e20b894cd62e09aa36e84535925c39b81c3f4",
   "modified_files": {
     "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PDivCycleMul.lean": {
       "before": "7b44bb2bcc590eec8a8f5d98f60ece6da14a1bd5ef3746155ead419cab9fbace",
@@ -42,9 +42,13 @@
       "before": "240d42814312eceb9b6a9c8b854e523b3435b3b422f96341a2cd9655d50feba6",
       "after": "a7bf12f3cbe0b7a08c4b44f9fdf7248cdbdcc9333e337fc099ee0c719c3e585d"
     },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PContractRelDimLe.lean": {
+      "before": "3a82269905777f07fa2ed9305aeb5b5c062a18f50c4daa0e62e951fc68adb287",
+      "after": "95088435b616452bfca0924893f98fd1b72873807dba123b5bfed05f03bc730e"
+    },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PCutRegular.lean": {
       "before": "88b5b00fc5713acee3b88f042fd8acd04fe6797f9ccc7427d0205461d414dcdc",
-      "after": "3964442109fe0f0542d122174dd46fe8740aba845a2ac8438311f6fd16e50c25"
+      "after": "54d58b01138f5742ee94526d6e616a4566ec3ed14cc3e1613561dfa98f0ed21f"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDegZeroLocDim.lean": {
       "before": "592ae4fd560ceaf55b34b0097f6f37045156083428251cd3d55202be93486b87",
@@ -57,6 +61,10 @@
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPushForward.lean": {
       "before": "474fce70a1a7a16a40a4fa940a0742e7577f86d4e3e2314e91d7b9dc0b26ba9d",
       "after": "0ef451bbc6a1419d761799c3cc9a678ee15354e8f521741267443a8ccc5a8322"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPushForwardLocal.lean": {
+      "before": "83aba29680472a696848c9a3c188f7955670f85d145431b1996d0467381b63a0",
+      "after": "c990878a88106a03ac25d3d01da1f6bea7b4bf0d7116a224d8de972b72896cdf"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbDegreeBound.lean": {
       "before": "3d9e0a7c080a1158b2bca34658873ae517b5e9f2a6194bc9e35498d4f45f3910",
@@ -78,9 +86,17 @@
       "before": "b18ad205b0d64adaaa81cbfe6c546fe8969611cc2c0f4b6cda628f4a8f42ad43",
       "after": "b56f01e7156784a33b2358adde2bcc7c87e0565120c6f270114e22fdf355aea4"
     },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMultEqualsCoeff.lean": {
+      "before": "fac3dc71c0d2d6aaf83e94af6ad86a56b45a77953269d815e15e27f8ee0c2d03",
+      "after": "ca2f38b4a7c3f596c0c3628642b7b979c53b6ff1b8eee0bde1b77ccd88eb4e03"
+    },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContracted.lean": {
       "before": "d6de8f815295c5726af6fffb1608338230793542f922ef7ef83ad07d86c468f1",
       "after": "ff7a588e2f41284a9a4a9d8ae674b35dcf2564412d3590b2107d349f275cad6f"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContractedDim.lean": {
+      "before": "b34a839c59f1b8883b9d87a89b93ff4571c38a9016da463f3e181418e32819c9",
+      "after": "5b0a8fbf58178f382f8f41613ea910e0a0535619fff7f373a4e7bf1682b04e7a"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFDegree.lean": {
       "before": "dae79b5dc4e596cf3dcfbc05e77aae892e744a19d3c411393f8e8e611e3e8e5a",
@@ -146,12 +162,12 @@
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo native Lean proof simplification in GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.NumericalSegre, from phase3-fast-core34-r01, adapted to the published Core 34 target. Original proof by Levent Alpöge. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle."
+    "new_contribution": "Fortytwo native Lean proof simplification in GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.NumericalSegre, from phase3-fast-core34-r01, adapted to the published Core 34 target. Original proof by Levent Alpöge. Codex reused graded polynomial and Hilbert function lemmas across the retained proof modules. A universe-polymorphic Hilbert function vanishing theorem supplies both applications. A single induction on the killed grading blocks proves both Krull dimension bounds. The projective pushforward proof uses the existing existence theorem for a homogeneous form outside a relevant prime."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T04:06:03.825433+00:00",
+    "completed_utc": "2026-11-24T04:45:11.500091+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
