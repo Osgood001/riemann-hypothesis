@@ -1,15 +1,14 @@
 {
   "core": 29,
-  "candidate": "core29-independent-fourierfd11566b598a",
+  "candidate": "core29-fastrayclassb06ea3e44e97",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 65,
-  "local_normalized_tokens": 116500,
-  "local_characters": 485250,
+  "local_normalized_tokens": 115908,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "e21ccd1b7864a312d4b034dba55eaf8e0a7eadde2d3e39eb241ffdf7ef21a504",
+  "proof_tree_sha256": "a21a15caf860c5d516fe2157d8f9f2ab55e85a0afa314320cbb05004ba6ed23f",
   "modified_files": {
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ConductorEqTopOfStandardOpen.lean": {
       "before": "32a326aa893cd7346d768a4d4e302cda98d7ccbcdd5d61d038ddec4b8b1577f1",
@@ -117,7 +116,7 @@
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeCharRayClass.lean": {
       "before": "26e128284ce7860bbd69a4e3dc8bab211220c012760e70fade937841900ddca9",
-      "after": "2cd2936502d7fa7c86df5b1b9558c0c604c7afe52f1df989c6ecfcd17ac9b478"
+      "after": "9753b9fc94a132ad81ba5b7110bd1668203337c310ac04b74bb246401ba155ec"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeLFunction.lean": {
       "before": "e551c3d57e1e8ca1541d17838261b1b14452b86d13a55b3e62b4cf458cca9c8e",
@@ -184,6 +183,25 @@
       "after": "94e26d44888fd70c2eb7ff97898213def62f604306b9a9f50c20c525a5192b7f"
     }
   },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "new_contribution": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex evaluated the finite Euler factor on the unit lattice via the ideal character and used its coset indicator for the Schwartz–Bruhat condition."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-24T06:07:56.276390+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null,
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
+  "source_kind": "pinned_git_checkout",
+  "target_sha256": "bf191b46f8175fefc1dd5b1da442b28a57572193c5e7a4bcc3831b53a9711069",
   "pinned_source_files": {
     "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/SummableAbsNormRpowInv.lean": "eab51f06a9ba186277cfd115b998cbe5528022bf7556fd890841be45a0e41db9",
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ConductorEqTopOfStandardOpen.lean": "32a326aa893cd7346d768a4d4e302cda98d7ccbcdd5d61d038ddec4b8b1577f1",
@@ -249,27 +267,5 @@
     "GroundTheory/GlobalFields/TateThesis/TraceFourier.lean": "462bc65e1fd64c9854721c7f0c67e7bfa9503b928a12e70935309755b00b4fb4",
     "GroundTheory/GlobalFields/TateThesis/TraceLatticeEuclidean.lean": "85f2cc8f1b3a80cef0e8052e3867b2c5ec161e6193113f8989cd9b3c79210ed0",
     "GroundTheory/GlobalFields/TateThesis/TraceLatticePoisson.lean": "aeaa1ccfb65b2be6ba81922431d51f4fa8501cd7754be9c70967d446088a0245"
-  },
-  "source_kind": "pinned_git_checkout",
-  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
-  "target_sha256": "bf191b46f8175fefc1dd5b1da442b28a57572193c5e7a4bcc3831b53a9711069",
-  "attribution": {
-    "original_author": "Levent Alpöge",
-    "proof_edits": "Codex",
-    "public_source_note": "Levent Alpöge authored the original Core 29 formalization. Codex derived the required unramified character identities using finite Fourier inversion and reduced the idèle integrals. This 65-file proof retains the scale-one theta decay estimate. Codex specialized the functional equation directly to unramified characters. The Archimedean factor specializes to the totally real case. Codex also traced the declaration dependencies of the unramified coset calculation and removed unused supporting declarations. A single analytic continuation argument now proves equality off any finite set of poles with real parts at most one. The two functions agree with the global zeta integral near 2, and the complement of the pole set is connected."
-  },
-  "hosted_score": null,
-  "local_replay": {
-    "comparator_exit": 0,
-    "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T05:54:51.648338+00:00",
-    "permitted_axioms": [
-      "propext",
-      "Quot.sound",
-      "Classical.choice"
-    ],
-    "target_declaration": "AlpogeRHCore29.partialZetaFunctionalEquation",
-    "log_sha256": "0ba0dce8c1ac2328d0c528d6696b6de9f0c633eb2ebecbc6797a5bf51d0dc761",
-    "comparator_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf"
   }
 }

@@ -1557,7 +1557,7 @@
  
  end Completions
  
-@@ -82,18 +60,7 @@
+@@ -82,87 +60,8 @@
      ofInfinite (Units.map (infiniteAdeleSingle w) a) = infiniteEmbedding w a :=
    Units.ext rfl
  
@@ -1574,12 +1574,70 @@
 -  rw [map_prod]
 -  simp only [ofInfinite_map_infiniteAdeleSingle]
  
- variable (K) in
- 
-@@ -159,10 +126,6 @@
-   rw [infinitePositive_eq_ker]
-   exact Subgroup.finiteIndex_ker _
- 
+-variable (K) in
+-
+-def infinitePositive : Subgroup (InfiniteAdeleRing K)ˣ where
+-  carrier := {x | ∀ (w : InfinitePlace K) (hw : w.IsReal),
+-    0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal hw ((x : InfiniteAdeleRing K) w)}
+-  one_mem' w hw := by
+-    show 0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (1 : w.Completion)
+-    rw [map_one]
+-    exact one_pos
+-  mul_mem' {a b} ha hb w hw := by
+-    show 0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal hw
+-      ((a : InfiniteAdeleRing K) w * (b : InfiniteAdeleRing K) w)
+-    rw [map_mul]
+-    exact mul_pos (ha w hw) (hb w hw)
+-  inv_mem' {a} ha w hw := by
+-    have h0 : ((a⁻¹ : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K) w *
+-        (a : InfiniteAdeleRing K) w = 1 :=
+-      congrFun a.inv_mul w
+-    have h1 : InfinitePlace.Completion.extensionEmbeddingOfIsReal hw
+-        (((a⁻¹ : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K) w) *
+-        InfinitePlace.Completion.extensionEmbeddingOfIsReal hw ((a : InfiniteAdeleRing K) w) = 1 := by
+-      rw [← map_mul, h0, map_one]
+-    rw [eq_inv_of_mul_eq_one_left h1]
+-    exact inv_pos.2 (ha w hw)
+-
+-omit [NumberField K] in
+-theorem mem_infinitePositive {x : (InfiniteAdeleRing K)ˣ} :
+-    x ∈ infinitePositive K ↔ ∀ (w : InfinitePlace K) (hw : w.IsReal),
+-      0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal hw ((x : InfiniteAdeleRing K) w) :=
+-  Iff.rfl
+-
+-variable (K) in
+-
+-def infiniteSign : (InfiniteAdeleRing K)ˣ →* ({w : InfinitePlace K // w.IsReal} → SignTypeˣ) :=
+-  MonoidHom.pi fun w ↦ (Units.map (signHom : ℝ →*₀ SignType).toMonoidHom).comp
+-    ((Units.map (InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2 :
+-      w.1.Completion →+* ℝ).toMonoidHom).comp (infiniteComponent w.1))
+-
+-omit [NumberField K] in
+-theorem infiniteSign_apply_val (x : (InfiniteAdeleRing K)ˣ) (w : {w : InfinitePlace K // w.IsReal}) :
+-    ((infiniteSign K x w : SignTypeˣ) : SignType) =
+-      SignType.sign (InfinitePlace.Completion.extensionEmbeddingOfIsReal w.2
+-        ((x : InfiniteAdeleRing K) w.1)) :=
+-  rfl
+-
+-omit [NumberField K] in
+-
+-theorem infinitePositive_eq_ker : infinitePositive K = (infiniteSign K).ker := by
+-  ext x
+-  rw [mem_infinitePositive, MonoidHom.mem_ker]
+-  constructor
+-  · intro h
+-    funext w
+-    apply Units.ext
+-    rw [infiniteSign_apply_val, Pi.one_apply, Units.val_one, sign_eq_one_iff]
+-    exact h w.1 w.2
+-  · intro h w hw
+-    have h' := congrArg Units.val (congrFun h ⟨w, hw⟩)
+-    rwa [infiniteSign_apply_val, Pi.one_apply, Units.val_one, sign_eq_one_iff] at h'
+-
+-instance : (infinitePositive K).FiniteIndex := by
+-  rw [infinitePositive_eq_ker]
+-  exact Subgroup.finiteIndex_ker _
+-
 -variable (K) in
 -
 -def rayGroup (𝔪 : Ideal (𝓞 K)) : Subgroup (IdeleGroup K) :=
@@ -1587,7 +1645,7 @@
  
  theorem map_idealLevel_le_standardOpenSubgroup (𝔪 : Ideal (𝓞 K)) :
      (idealLevel 𝔪).map ofFinite ≤ standardOpenSubgroup K := by
-@@ -170,118 +133,25 @@
+@@ -170,118 +69,25 @@
    rw [mem_standardOpenSubgroup_iff_toFinite_mem, toFinite_ofFinite]
    exact finiteLevel_le_finiteLevel_zero _ hx
  
