@@ -1,0 +1,21 @@
+module
+
+public import Mathlib
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchemeModelsSpreadStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothSpreadsOutStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsProperSpreadsOutStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LbSpreadsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectOfModelsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasModelOfSpreadingStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CubeTheoremOfPerfectStatement
+
+@[expose] public section
+
+set_option autoImplicit false
+
+namespace GlobalTheory.SpreadingModels
+
+theorem cubeTheorem_holds : GlobalTheory.Published.CubeTheorem :=
+  GlobalTheory.T.cube_theorem_of_perfect (GlobalTheory.T.perfect_of_models (GlobalTheory.T.has_model_of_spreading GlobalTheory.T.scheme_models_spread GlobalTheory.T.smooth_spreads_out GlobalTheory.T.isProper_spreads_out GlobalTheory.T.line_bundle_spreads_out'))
+
+end GlobalTheory.SpreadingModels

@@ -1,0 +1,21 @@
+module
+
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormFsvSubOnePow
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.WaveDifferenceForm
+
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.FourierDecayAlt.P.PBO
+
+open Formalism.FourierDecayAlt
+
+def DecayUnifOfHeads : Prop := KB.RadHead → KB.HeadTop → DecayUnif
+
+theorem decayUnifOfHeads : DecayUnifOfHeads := fun hRH hHT =>
+  decayUnif_of hRH hHT Formalism.FourierDecayAlt.P.wave_difference_form
+
+end Formalism.FourierDecayAlt.P.PBO
+
+theorem Formalism.FourierDecayAlt.P.uniform_decay_of_heads : Formalism.FourierDecayAlt.P.PBO.DecayUnifOfHeads := Formalism.FourierDecayAlt.P.PBO.decayUnifOfHeads

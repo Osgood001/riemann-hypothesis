@@ -1,0 +1,282 @@
+# Phase 1 (Option A2): Decoupled Zero-Token Remote Bohrium Sandbox Lean 4 Verification
+# Target repository: Osgood001/riemann-hypothesis (works on personal AND org repos; no Runner Group needed)
+#
+# Activation (Zero-Idle-Cost):
+#   1. Add `BOHR_ACCESS_KEY` to Repository Secrets (or Environment `bohrium-verify-dispatcher` Secrets).
+#   2. Optionally set Repository Variables: `BOHRIUM_PROJECT_ID` (defaults to `3732438`),
+#      `RH_WENYON_CACHE_ID`, and `RH_WENYON_CACHE_VER`.
+#   3. Review a PR commit SHA, then comment on the PR:
+#        /verify <7-to-40-char-head-sha> [--profile=core-lean4341-c8m32|rh-lean4360-c8m32|rh-lean4360-c32m128] [--no-comparator]
+#      Or trigger manually via Actions -> "Verify Lean PR (Bohrium Zero-Token Sandbox)" -> Run workflow.
+#
+# Security Model (Safe Against Untrusted Public / Fork PRs):
+#   1. Zero automatic triggers on `pull_request` / `pull_request_target` (prevents billing DoS & secret exposure).
+#   2. Maintainer-only gate (`admin` / `maintain` / `write` collaborator check) + TOCTOU-proof exact head SHA pin.
+#   3. Privileged controller job NEVER checks out untrusted PR code into a working tree; it fetches PR commits
+#      into a bare git object store and extracts validated `.lean` blobs via `git ls-tree` + `git cat-file`
+#      (blocking symlinks, submodules, `.gitattributes` filters, protected build files, and BiDi Trojan-Source).
+#   4. Untrusted Lean compilation + Comparator run inside a zero-token, air-gapped Bohrium Sandbox
+#      (NO `--inherit-auth`, NO `--mount-user-storage`, NO secret `--env`, template egress `{"replace":[]}`,
+#      inner `bwrap --unshare-all --clearenv --uid 65534 --tmpfs /run`, mandatory `REAL_ISOLATION_CANARY`).
+#   5. Sandbox is unconditionally deleted in `finally`; only a schema-validated, size-bounded JSON verdict
+#      returns to GitHub Actions to post `$GITHUB_STEP_SUMMARY` and a sanitized sticky PR comment.
+
+name: Verify Lean PR (Bohrium Zero-Token Sandbox)
+
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Pull request number to verify"
+        type: number
+        required: true
+      head_sha:
+        description: "Exact 7-to-40-char PR head SHA inspected by maintainer"
+        type: string
+        required: true
+      profile:
+        description: "Bohrium sandbox template lane"
+        type: choice
+        default: core-lean4341-c8m32
+        options:
+          - core-lean4341-c8m32
+          - rh-lean4360-c8m32
+          - rh-lean4360-c32m128
+      run_comparator:
+        description: "Run Comparator + independent kernel replay (Core 1-13 / scoped targets)"
+        type: boolean
+        default: true
+
+permissions: {}
+
+concurrency:
+  group: bohrium-verify-${{ github.event.issue.number || inputs.pr_number }}
+  cancel-in-progress: false
+
+jobs:
+  authorize-and-pin:
+    name: Authorize Maintainer & Pin PR Head SHA
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.issue.pull_request != null &&
+       github.event.comment.user.type == 'User' &&
+       startsWith(github.event.comment.body, '/verify '))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      approved: ${{ steps.gate.outputs.approved }}
+      pr_number: ${{ steps.gate.outputs.pr_number }}
+      head_sha: ${{ steps.gate.outputs.head_sha }}
+      base_sha: ${{ steps.gate.outputs.base_sha }}
+      profile: ${{ steps.gate.outputs.profile }}
+      run_comparator: ${{ steps.gate.outputs.run_comparator }}
+    steps:
+      - name: Verify maintainer write permission & exact SHA pin (TOCTOU-proof)
+        id: gate
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            let prNumber, requestedSha, actor, profile, runComparator;
+
+            if (context.eventName === 'workflow_dispatch') {
+              prNumber = Number(context.payload.inputs.pr_number);
+              requestedSha = String(context.payload.inputs.head_sha || '').trim().toLowerCase();
+              actor = context.actor;
+              profile = String(context.payload.inputs.profile || 'core-lean4341-c8m32');
+              runComparator = String(context.payload.inputs.run_comparator) === 'true';
+              if (!/^[0-9a-f]{7,40}$/.test(requestedSha)) {
+                core.setFailed(`Invalid head_sha input: ${requestedSha}`);
+                return;
+              }
+            } else {
+              prNumber = context.payload.issue.number;
+              actor = context.payload.comment.user.login;
+              const body = String(context.payload.comment.body || '').trim();
+              // Syntax: /verify <7..40 hex sha> [--profile=<name>] [--no-comparator]
+              const m = /^\/verify\s+([0-9a-f]{7,40})(?:\s+--profile=([a-z0-9-]+))?(?:\s+(--no-comparator))?\s*$/i.exec(body);
+              if (!m) {
+                core.setFailed('Invalid syntax. Use: /verify <7-to-40-char-head-sha> [--profile=core-lean4341-c8m32|rh-lean4360-c8m32|rh-lean4360-c32m128] [--no-comparator]');
+                return;
+              }
+              requestedSha = m[1].toLowerCase();
+              profile = m[2] || 'core-lean4341-c8m32';
+              runComparator = !m[3];
+            }
+
+            const allowedProfiles = new Set([
+              'core-lean4341-c8m32',
+              'rh-lean4360-c8m32',
+              'rh-lean4360-c32m128',
+            ]);
+            if (!allowedProfiles.has(profile)) {
+              core.setFailed(`Unsupported profile: ${profile}`);
+              return;
+            }
+
+            const perm = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner,
+              repo,
+              username: actor,
+            });
+            if (!['admin', 'maintain', 'write'].includes(perm.data.permission)) {
+              core.setFailed(`Actor @${actor} lacks write permission (actual=${perm.data.permission})`);
+              return;
+            }
+
+            const pr = await github.rest.pulls.get({ owner, repo, pull_number: prNumber });
+            const actualSha = pr.data.head.sha.toLowerCase();
+            if (!actualSha.startsWith(requestedSha)) {
+              core.setFailed(`TOCTOU BLOCKED: requested SHA ${requestedSha} does not match current PR head ${actualSha}`);
+              return;
+            }
+
+            core.setOutput('approved', 'true');
+            core.setOutput('pr_number', String(prNumber));
+            core.setOutput('head_sha', actualSha);
+            core.setOutput('base_sha', pr.data.base.sha);
+            core.setOutput('profile', profile);
+            core.setOutput('run_comparator', runComparator ? 'true' : 'false');
+
+  dispatch-zero-token-sandbox:
+    name: Dispatch Zero-Token Bohrium Sandbox
+    needs: authorize-and-pin
+    if: needs.authorize-and-pin.outputs.approved == 'true'
+    runs-on: ubuntu-latest
+    environment: bohrium-verify-dispatcher
+    timeout-minutes: 90
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+    steps:
+      - name: Check BOHR_ACCESS_KEY configuration
+        env:
+          BOHR_ACCESS_KEY: ${{ secrets.BOHR_ACCESS_KEY || secrets.BOHRIUM_ACCESS_KEY }}
+        run: |
+          if [[ -z "${BOHR_ACCESS_KEY:-}" ]]; then
+            echo "::error::BOHR_ACCESS_KEY is not configured. Add BOHR_ACCESS_KEY to Repository Secrets (or Environment 'bohrium-verify-dispatcher' Secrets) to activate Bohrium Sandbox verification."
+            exit 1
+          fi
+
+      - name: Checkout trusted base harness ONLY (sparse, scripts only)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: trusted
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+          persist-credentials: false
+          submodules: false
+          lfs: false
+
+      - name: Self-test Bohrium sandbox dispatcher
+        run: python3 -m unittest trusted/scripts/test_bohrium_sandbox_dispatch.py -v
+
+      - name: Install Bohrium CLI (bohr) if missing
+        run: |
+          set -euo pipefail
+          if ! command -v bohr >/dev/null 2>&1; then
+            npm install -g @dptech-corp/bohr-cli
+          fi
+          bohr --version
+
+      - name: Fetch PR commit into bare object store (zero working-tree checkout)
+        env:
+          PR_NUMBER: ${{ needs.authorize-and-pin.outputs.pr_number }}
+          HEAD_SHA: ${{ needs.authorize-and-pin.outputs.head_sha }}
+          BASE_SHA: ${{ needs.authorize-and-pin.outputs.base_sha }}
+        run: |
+          set -euo pipefail
+          git -c core.fsmonitor=false -c core.symlinks=false init --bare candidate.git
+          git --git-dir=candidate.git fetch --no-tags --depth=1 \
+            "https://github.com/${GITHUB_REPOSITORY}.git" \
+            "refs/pull/${PR_NUMBER}/head" "${BASE_SHA}"
+          ACTUAL_SHA="$(git --git-dir=candidate.git rev-parse FETCH_HEAD)"
+          if [[ "$ACTUAL_SHA" != "$HEAD_SHA" ]]; then
+            echo "ERROR: fetched SHA ($ACTUAL_SHA) != pinned SHA ($HEAD_SHA)" >&2
+            exit 1
+          fi
+
+      - name: Dispatch air-gapped zero-token Bohrium Sandbox & collect strict JSON verdict
+        id: sandbox
+        env:
+          BOHR_ACCESS_KEY: ${{ secrets.BOHR_ACCESS_KEY || secrets.BOHRIUM_ACCESS_KEY }}
+          BOHRIUM_ACCESS_KEY: ${{ secrets.BOHR_ACCESS_KEY || secrets.BOHRIUM_ACCESS_KEY }}
+          BOHRIUM_PROJECT_ID: ${{ vars.BOHRIUM_PROJECT_ID || '3732438' }}
+          BOHR_TEMPLATE_NAME: ${{ needs.authorize-and-pin.outputs.profile }}
+          WENYON_CACHE_DATASET_ID: ${{ vars.RH_WENYON_CACHE_ID }}
+          WENYON_CACHE_VERSION: ${{ vars.RH_WENYON_CACHE_VER }}
+          PR_NUMBER: ${{ needs.authorize-and-pin.outputs.pr_number }}
+          HEAD_SHA: ${{ needs.authorize-and-pin.outputs.head_sha }}
+          BASE_SHA: ${{ needs.authorize-and-pin.outputs.base_sha }}
+          RUN_COMPARATOR: ${{ needs.authorize-and-pin.outputs.run_comparator }}
+        run: |
+          set -euo pipefail
+          python3 trusted/scripts/bohrium_sandbox_dispatch.py \
+            --bare-repo candidate.git \
+            --trusted-dir trusted \
+            --base-sha "$BASE_SHA" \
+            --head-sha "$HEAD_SHA" \
+            --pr-number "$PR_NUMBER" \
+            --template "$BOHR_TEMPLATE_NAME" \
+            --project-id "$BOHRIUM_PROJECT_ID" \
+            --timeout-sec 3600 \
+            --verdict-out verdict.json \
+            $( [[ "$RUN_COMPARATOR" == "true" ]] && echo "--run-comparator" )
+
+      - name: Publish sanitized PR summary & sticky comment from schema-validated JSON
+        if: always() && hashFiles('verdict.json') != ''
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        env:
+          PR_NUMBER: ${{ needs.authorize-and-pin.outputs.pr_number }}
+          HEAD_SHA: ${{ needs.authorize-and-pin.outputs.head_sha }}
+        with:
+          script: |
+            const fs = require('fs');
+            const v = JSON.parse(fs.readFileSync('verdict.json', 'utf8'));
+            if (v.head_sha !== process.env.HEAD_SHA) {
+              core.setFailed(`Verdict SHA mismatch: ${v.head_sha} != ${process.env.HEAD_SHA}`);
+              return;
+            }
+            const sanitize = (s) => String(s || '')
+              .replace(/```/g, "'''")
+              .replace(/@([a-zA-Z0-9_-]+)/g, '@\u200b$1')
+              .replace(/^\/([a-zA-Z]+)/gm, '\\/$1')
+              .slice(0, 1800);
+
+            const marker = '<!-- bohrium-zero-token-verify -->';
+            const badge = v.verdict === 'pass' ? '✅ PASS' : (v.verdict === 'infra_error' ? '⚠️ INFRA ERROR' : '❌ FAIL');
+            const lines = [
+              marker,
+              `### Bohrium Zero-Token Sandbox Verification: **${badge}**`,
+              `- **Pinned SHA**: \`${v.head_sha.slice(0, 12)}\` | **Profile**: \`${v.profile}\` | **Sandbox**: \`${v.sandbox_id}\``,
+              `- **Build**: \`${v.build_status}\` (${v.build_sec}s) | **Warnings-as-Error (changed files)**: \`${v.warnings_status}\``,
+              `- **Axioms**: \`${(v.axioms || []).join(', ') || 'none'}\` | **Comparator**: \`${v.comparator_status}\``,
+              `- **TOKEN_RE Delta**: \`${v.tokens_before} -> ${v.tokens_after}\` (\`${v.tokens_delta >= 0 ? '+' : ''}${v.tokens_delta}\`, \`${v.tokens_delta_pct}%\`)`,
+            ];
+            if (v.diagnostic_tail) {
+              lines.push('', '<details><summary>Diagnostic Tail (sanitized)</summary>', '', '```text', sanitize(v.diagnostic_tail), '```', '</details>');
+            }
+            const body = lines.join('\n');
+            await core.summary.addRaw(body).write();
+
+            const { owner, repo } = context.repo;
+            const issue_number = Number(process.env.PR_NUMBER);
+            const comments = await github.rest.issues.listComments({ owner, repo, issue_number, per_page: 50 });
+            const existing = comments.data.find((c) => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+            if (v.verdict !== 'pass') {
+              core.setFailed(`Verification finished with verdict=${v.verdict}`);
+            }

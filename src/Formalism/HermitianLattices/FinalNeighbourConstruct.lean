@@ -1,0 +1,48 @@
+module
+
+public import Mathlib
+public import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
+public import Formalism.HermitianLattices.HermitianLatticesProofs.IsomAct
+public import Formalism.HermitianLattices.HermitianLatticesProofs.LocBasic
+public import Formalism.HermitianLattices.StatementTheta
+public import Formalism.LatticeTheta.ThetaShiftInversion
+public import Formalism.HermitianLattices.HermitianLatticesProofs.ThetaSummable
+public import Formalism.HermitianLattices.StatementLat
+public import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
+public import Formalism.HermitianLattices.HermitianLatticesProofs.GenusBasic
+public import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
+public import Formalism.HermitianLattices.HermitianLatticesProofs.IndexBasic
+public import Formalism.HermitianLattices.HermitianLatticesProofs.FinIntermediate
+public import Formalism.HermitianLattices.HermitianLatticesProofs.ShortVectors
+public import Formalism.HermitianLattices.HermitianLatticesProofs.IsomOfTrace
+public import Formalism.HermitianLattices.HermitianLatticesProofs.DualOrthSum
+public import Formalism.HermitianLattices.HermitianLatticesProofs.GenusScale
+public import Formalism.HermitianLattices.HermitianLatticesProofs.TraceReal
+public import Formalism.HermitianLattices.HermitianLatticesProofs.GenusCovolBound
+public import Formalism.HermitianLattices.HermitianLatticesProofs.ClassSetAssembly
+public import Formalism.HermitianLattices.HermitianLatticesProofs.MajLattice
+public import Formalism.HermitianLattices.HermitianLatticesProofs.AutFinite
+public import Formalism.HermitianLattices.HermitianLatticesProofs.MajDual
+public import Formalism.HermitianLattices.StatementMaj
+public import Formalism.HermitianLattices.HermitianLatticesProofs.MajBasic
+public import Formalism.HermitianLattices.HermitianLatticesProofs.GenusCovol
+public import Formalism.HermitianLattices.HermitianLatticesProofs.NeighbourConstruct
+public import Formalism.HermitianLattices.HermitianLatticesProofs.ClassSetFinite
+public import Formalism.HermitianLattices.DiscrFinite
+public import Formalism.HermitianLattices.HermitianLatticesProofs.UnimodUnramUnique
+
+@[expose] public section
+
+namespace Formalism.HermitianLatticesTheory
+
+theorem final_isomAct : IsomAct := Formalism.HermitianLatticesTheory.isomAct
+theorem final_genusBasic : GenusBasic := Formalism.HermitianLatticesTheory.genusBasic
+theorem final_finIntermediate : FinIntermediate := Formalism.HermitianLatticesTheory.finIntermediate
+theorem final_shortVectors : ShortVectors := Formalism.HermitianLatticesTheory.shortVectors
+theorem final_isomOfTrace : IsomOfTrace := Formalism.HermitianLatticesTheory.isomOfTrace
+theorem final_traceReal : TraceReal := Formalism.HermitianLatticesTheory.traceReal
+theorem final_autFinite : AutFinite := Formalism.HermitianLatticesTheory.autFinite
+theorem final_genusCovol : GenusCovol := Formalism.HermitianLatticesTheory.genusCovol
+theorem final_classSetFinite : ClassSetFinite := Formalism.HermitianLatticesTheory.classSetFinite
+
+end Formalism.HermitianLatticesTheory

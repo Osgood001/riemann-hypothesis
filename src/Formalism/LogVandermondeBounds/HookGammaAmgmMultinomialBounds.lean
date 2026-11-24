@@ -1,0 +1,24 @@
+module
+
+public import Mathlib
+public import Formalism.LogVandermondeBounds.MultinomialPowerBound
+public import Formalism.LogVandermondeBounds.LogVandermondeProofs.BlockDimensionIdentities
+public import Formalism.LogVandermondeBounds.LogVandermondeProofs.CardStabilizerVector
+public import Formalism.LogVandermondeBounds.LogVandermondeProofs.PrimePowerSubgroupTrivial
+public import Formalism.LogVandermondeBounds.LogVandermondeVariationUnbounded
+public import Formalism.LogVandermondeBounds.FinrankFiberSumZero
+public import Formalism.LogVandermondeBounds.LogVandermondeProofs.MulSingleMulApplySelf
+public import Formalism.LogVandermondeBounds.GaussOperatorProductFormula
+public import Formalism.LogVandermondeBounds.LogVandermondeProofs.LengthQuotientLeOfLatticeSandwich
+public import Formalism.LogVandermondeBounds.LogVandermondeProofs.VandNSuccRight
+public import Formalism.LogVandermondeBounds.LogVandermondeProofs.LogRatioLowerBoundOfLogVandermondeGap
+public import Formalism.LogVandermondeBounds.LogVandermondeProofs.UpperPlaceHolds
+public import Formalism.LogVandermondeBounds.UpperPlace
+
+@[expose] public section
+
+namespace Formalism.LogVandermondeBounds
+
+theorem vandermonde_place_lower_bound : StandardLattice.LogRatioLowerBound := StandardLattice.logRatioLowerBound_of_logVandermondeGap StandardLattice.VandPlace_holds
+
+end Formalism.LogVandermondeBounds

@@ -1,0 +1,13 @@
+module
+
+public import ReciprocityTheory.L2DbarEstimates.BasicIdentity.BasicIdentityStatement
+public import ReciprocityTheory.L2DbarEstimates.BasicIdentity.HalfSumNormSubSq
+public import ReciprocityTheory.L2DbarEstimates.BasicIdentity.HasCompactSupportDTw
+public import ReciprocityTheory.L2DbarEstimates.BasicIdentity.WIbpLeft
+public import ReciprocityTheory.L2DbarEstimates.BasicIdentity.ImportsBis
+public import ReciprocityTheory.L2DbarEstimates.BasicIdentity.ImportsTer
+public import ReciprocityTheory.L2DbarEstimates.BasicIdentity.HasCompactSupportOfVanish
+public import ReciprocityTheory.L2DbarEstimates.BasicIdentity.TstarNormSq
+public import ReciprocityTheory.L2DbarEstimates.BasicIdentity.Imports
+
+@[expose] public section

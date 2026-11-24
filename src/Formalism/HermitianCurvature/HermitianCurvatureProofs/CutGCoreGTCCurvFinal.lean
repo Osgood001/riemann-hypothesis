@@ -1,0 +1,23 @@
+module
+
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTCCurvCut
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTCCurvPoly
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTCCurvScal
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTCCurvRTT
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTCCurvBlock
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTCCurvTop
+
+@[expose] public section
+
+open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
+
+namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
+
+theorem curvature_polynomial_holds : GTCCurvPoly := curvature_polynomial_of_scalar curvature_scalar_holds
+
+theorem curvature_identity_holds : GTCCurvId :=
+  gTCCurvId_of_cut curvature_polynomial_holds curvature_radial_torus_holds curvature_block_form_holds
+
+theorem top_normal_form_of_curvature : GTRTopNF := gTRTopNF_of_curvPoly curvature_polynomial_holds
+
+end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC

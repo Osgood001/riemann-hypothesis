@@ -1,0 +1,29 @@
+module
+
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.ExpForm
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.CprsMulRight
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.FixFAnti
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.EvalPowE
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.KillEx
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.HomogMonomial
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.TruncSpecAlt
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.SepPoly
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.OneSide
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation.TrOnBot
+public import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.EvExSub
+public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ParEx
+public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.CuspidalMultiplicityOneTotallyComplex
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.Imports
+public import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.TwInt
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.PolyBdAll
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SmoothDecay
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.DecayTraceClass
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.CuspTrBand
+
+@[expose] public section
+
+
+open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.Ci in
+theorem UpperTheory.ConvolutionTheory.ci : UpperTheory.ConvolutionTheory.CI :=
+  ciOf (trExp expForm) (evVal evEx Dp.parEx) valBc (killEx Dp.parEx) kfBc truncSpec sepPoly
+    (oneSide K.kern2 C.polyBdAll C.smoothDecay C.decayTraceClass C.cuspTrBand Dp.multiplicity_one_cuspidal_spectrum_normOneGL evEx) evEx kill

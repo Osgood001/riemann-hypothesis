@@ -1,0 +1,154 @@
+name: Lightweight PR Checks
+
+# Fast (<1 min), zero-compilation static checks on ubuntu-latest for pull requests.
+# Heavy Lean `lake build` / Comparator verification is intentionally gated behind
+# manual `workflow_dispatch` targeting `[self-hosted, bohrium]` runners.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+  workflow_dispatch:
+    inputs:
+      run_bohrium_verify:
+        description: "Trigger gated Bohrium Sandbox Lean verification (requires [self-hosted, bohrium] runner)"
+        type: boolean
+        required: false
+        default: false
+      target_ref:
+        description: "Git ref or PR branch to verify (defaults to current workflow ref)"
+        type: string
+        required: false
+        default: ""
+      verify_mode:
+        description: "Verification mode for Bohrium runner"
+        type: choice
+        required: false
+        default: incremental-build
+        options:
+          - incremental-build
+          - comparator
+          - challenge-only
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: rh-lightweight-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lightweight-checks:
+    name: Static Lean & Token Delta Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Sparse blobless checkout (scripts only)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+          persist-credentials: false
+
+      - name: Self-test lightweight checker
+        run: python3 -m unittest scripts/test_pr_lightweight_checks.py -v
+
+      - name: Fetch base tree for diff
+        id: refs
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_NAME" == "pull_request" && -n "$PR_BASE_SHA" ]]; then
+            git fetch --no-tags --depth=1 --filter=blob:none origin "$PR_BASE_SHA"
+            echo "base=$PR_BASE_SHA" >> "$GITHUB_OUTPUT"
+            echo "head=HEAD" >> "$GITHUB_OUTPUT"
+          else
+            # Fallback for manual workflow_dispatch: diff HEAD against its first parent if present
+            git fetch --no-tags --depth=2 --filter=blob:none origin "${GITHUB_SHA}" || true
+            if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+              echo "base=$(git rev-parse HEAD~1)" >> "$GITHUB_OUTPUT"
+            else
+              echo "base=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            fi
+            echo "head=HEAD" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run sorry/admit/axiom scan, TOKEN_RE delta, and toolchain guard
+        id: check
+        env:
+          BASE_REF: ${{ steps.refs.outputs.base }}
+          HEAD_REF: ${{ steps.refs.outputs.head }}
+          ALLOW_TOOLCHAIN_CHANGE: ${{ contains(github.event.pull_request.labels.*.name, 'allow-toolchain-change') }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/lightweight-checks"
+          python3 scripts/pr_lightweight_checks.py \
+            --base "$BASE_REF" \
+            --head "$HEAD_REF" \
+            --markdown-out "$RUNNER_TEMP/lightweight-checks/report.md" \
+            --json-out "$RUNNER_TEMP/lightweight-checks/report.json" \
+            --no-fail
+          passed=$(python3 -c 'import json,sys; print("true" if json.load(open(sys.argv[1]))["overall_passed"] else "false")' "$RUNNER_TEMP/lightweight-checks/report.json")
+          echo "passed=$passed" >> "$GITHUB_OUTPUT"
+
+      - name: Post or update sticky PR comment (when token has write permission)
+        if: ${{ github.event_name == 'pull_request' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          REPORT="$RUNNER_TEMP/lightweight-checks/report.md"
+          MARKER="<!-- rh-pr-lightweight-checks -->"
+          existing_id=$(gh api --paginate "repos/$REPO/issues/$PR_NUMBER/comments" \
+            --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" | head -n 1 || true)
+          if [[ -n "$existing_id" ]]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$existing_id" -F "body=@$REPORT" >/dev/null
+            echo "Updated sticky comment #$existing_id on PR #$PR_NUMBER"
+          else
+            gh api -X POST "repos/$REPO/issues/$PR_NUMBER/comments" -F "body=@$REPORT" >/dev/null
+            echo "Created sticky comment on PR #$PR_NUMBER"
+          fi
+
+      - name: Enforce lightweight check verdict
+        if: ${{ steps.check.outputs.passed != 'true' }}
+        run: |
+          echo "::error::Lightweight PR checks failed (sorry/admit/axiom detected or unintentional toolchain/manifest change). See job summary for details."
+          exit 1
+
+  # ---------------------------------------------------------------------------
+  # GATED PLACEHOLDER: Bohrium Sandbox Self-Hosted Runner Verification
+  # Never triggered automatically on pull_request events (zero Actions cost &
+  # safe against untrusted fork PR code execution). Enable only via manual
+  # workflow_dispatch once a [self-hosted, bohrium] runner is registered.
+  # ---------------------------------------------------------------------------
+  bohrium-sandbox-verify:
+    name: Bohrium Sandbox Lean Verification (Manual Gated Placeholder)
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_bohrium_verify == true }}
+    runs-on: [self-hosted, bohrium]
+    timeout-minutes: 120
+    permissions:
+      contents: read
+    steps:
+      - name: Placeholder Bohrium Sandbox runner handoff
+        env:
+          TARGET_REF: ${{ inputs.target_ref || github.ref_name }}
+          VERIFY_MODE: ${{ inputs.verify_mode }}
+        run: |
+          echo "=== Bohrium Sandbox Verification Placeholder ==="
+          echo "Target ref : $TARGET_REF"
+          echo "Verify mode: $VERIFY_MODE"
+          echo "Runner     : $RUNNER_NAME ($RUNNER_OS/$RUNNER_ARCH)"
+          # Future integration hook (once Bohrium ephemeral runner + shared .olean cache is mounted):
+          # 1. Mount read-only Mathlib & baseline RH .olean cache (Lean v4.36.0) inside isolated Bohrium Sandbox
+          # 2. Checkout $TARGET_REF into disposable workdir with zero GitHub/host credentials
+          # 3. Run bounded incremental `lake build` with `-DwarningAsError=true`
+          # 4. Run Comparator / `#print axioms` verification + TOKEN_RE compression report
+          echo "Bohrium verification hook is a placeholder; wire sandbox build command here when runner pool is live."

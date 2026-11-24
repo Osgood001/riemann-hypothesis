@@ -1,0 +1,29 @@
+module
+
+public import ReciprocityTheory.SemistableReduction.FinrankRestrictTotalDegree
+public import Mathlib
+public import ReciprocityTheory.SemistableReduction.ComapInclusionIsLocalHom
+public import ReciprocityTheory.SemistableReduction.CauchyInequalityOnTorus
+public import ReciprocityTheory.SemistableReduction.GenericImageFinite
+public import ReciprocityTheory.SemistableReduction.IntegralClosureRankAndResidueTrdegLe
+public import ReciprocityTheory.SemistableReduction.GaussExtensionAndResidueTrdegEq
+public import ReciprocityTheory.SemistableReduction.DetSubtypeCompAssociatedProd
+public import ReciprocityTheory.SemistableReduction.NormValuationEqFactorization
+
+@[expose] public section
+
+namespace ReciprocityTheory.MultiplicativeHeights.Closed
+
+open ReciprocityTheory.MultiplicativeHeights
+
+theorem fieldOfS : FieldOfSStatement := genericImageFinite
+
+theorem dedekindRank : DedekindRankStatement := integralClosureRank_and_residueTrdegLe.1
+
+theorem residueTrdeg : ResidueTrdegStatement := residueTrdeg_holds residueTrdegLe
+
+theorem normLength : NormLengthStatement := gaugeSplitting_holds
+
+theorem normOrd : NormOrdStatement := normValuation_eq_factorization normLength
+
+end ReciprocityTheory.MultiplicativeHeights.Closed

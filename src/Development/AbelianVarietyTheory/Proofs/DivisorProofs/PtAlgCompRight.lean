@@ -1,0 +1,47 @@
+module
+
+public import Development.AbelianVarietyTheory.Definitions.Divisors.PtAlgSpOver
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PoincareDeRhamDuality
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
+
+@[expose] public section
+
+open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
+open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp spMap epsR IsTangent IsGrpPullback)
+open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB)
+open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
+attribute [local instance] Over.cartesianMonoidalCategory
+
+namespace GlobalTheory.PtExt.SumMulFacts
+
+theorem ptAlg_comp_right {R D D' E : Type} [CommRing R] [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D']
+    [CommRing E] [Algebra R E] (φ : D →ₐ[R] D') (y : Pt (SpAlg R D') E) :
+    ptAlg (R := R) (D := D) (E := E) (y ≫ spOver φ) = (ptAlg y).comp φ := by
+  conv_lhs => rw [← spOver_ptAlg y, spOver_comp]
+  exact ptAlg_spOver _
+
+theorem main : ∀ (R D : Type) [CommRing R] [CommRing D] [Algebra R D] (B : Over (Sp R))
+    (J : Type) [Fintype J] (d : J → D) (b : J → Fn1 B),
+    ((∀ i, IsCoc (whole B) (b i)) → IsCoc (whole _) (sumMul d b)) ∧
+      ∀ (D' : Type) [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D'),
+        (sumMul d b).pull (spOver φ ▷ B) = sumMul (fun i ↦ φ (d i)) b := by
+  intro R D _ _ _ B J _ d b
+  refine ⟨fun hb ↦ ?_, fun D' _ _ φ ↦ ?_⟩
+  · unfold IsCoc at hb ⊢
+    intro E _ _ E' _ _ E'' _ _ φ ψ z _
+    have hα := ptAlg_comp (D := D) φ (z ≫ fst (SpAlg R D) B)
+    set_option synthInstance.maxHeartbeats 100000 in
+      simp only [sumMul, hα, map_sum, map_mul, AlgHom.comp_apply, Category.assoc]
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    have h := hb i E E' E'' φ ψ (z ≫ snd _ _) (sm_whole _)
+    rw [h]
+    ring
+  · unfold Fn1
+    funext E _ _ E' _ _ ψ y
+    simp only [Fn1.pull, sumMul, Category.assoc, whiskerRight_fst, whiskerRight_snd]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    simp only [← Category.assoc, ptAlg_comp_right, AlgHom.comp_apply]
+
+end GlobalTheory.PtExt.SumMulFacts

@@ -1,0 +1,16 @@
+module
+
+public import Mathlib
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HasSncCoordsOfLocal
+
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R ReciprocityTheory.ChartRestriction.G.Geo.ResK
+
+namespace GlobalTheory.CompanionTheory.Geo.SncCoordsSide
+
+theorem coordsStatement_side : ReciprocityTheory.ChartRestriction.G.Geo.ResK.CoordsStatement :=
+  GlobalTheory.CompanionTheory.Geo.SncCoords.coordsStatement
+
+end GlobalTheory.CompanionTheory.Geo.SncCoordsSide

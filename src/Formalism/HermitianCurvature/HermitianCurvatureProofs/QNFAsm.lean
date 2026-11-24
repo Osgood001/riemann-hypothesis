@@ -1,0 +1,23 @@
+module
+
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelCoordinatesCommute
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConnectionRaisingConstantEq
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.InterpolationInverseMatrixSumIdentity
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.InvariantOperatorUnderJacquet
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.InterlaceSignTwo
+
+@[expose] public section
+
+namespace Formalism.FourierDecayAlt.P
+
+theorem normalFormFromModule_statement : Formalism.FourierDecayAlt.Q.NormalFormFromModule :=
+  normal_form_from_module theorem_S_ring actual_pre_level actual_hypotheses_of_parts
+    level_coordinates_commute types_complete
+
+theorem normal_form_actual : Formalism.FourierDecayAlt.Q.NormalFormActual :=
+  JacquetIntegral.normalFormActual_of_fromModule normalFormFromModule_statement
+
+theorem level_start_actual : Formalism.FourierDecayAlt.Q.LevelStartActual :=
+  JacquetIntegral.levelStartActual_of_fromModule normalFormFromModule_statement
+
+end Formalism.FourierDecayAlt.P

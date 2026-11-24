@@ -1,0 +1,40 @@
+module
+
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.EulerFactorLevels.LocCompareSplit
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.EulerFactorLevels.DcCount
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteMassProductFormulaStatement
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.EulerFactorLevels.PUnitAE
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RationalFinitePlacesStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralPointsOpenCompactStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteLevelFactsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGoodReductionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalSupportFactsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteSupportOfTwistStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteHalfOfTwistStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteConjugacyExistsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteRestrictionVanishingStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.G8FiniteAuxiliaryStatementStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalComparisonInertStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalComparisonSplitStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalHypothesesHoldStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteReindexingStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteEulerProductOfStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalComparisonOfStatement
+
+@[expose] public section
+
+namespace PositivityTheory.Rg.BcB.G8.Fin
+
+theorem kfOC_holds : PositivityTheory.Rg.BcB.G8.KfOC := GlobalTheory.T.finite_kernel_compact_open
+
+theorem finLevel_holds : PositivityTheory.Rg.BcB.G8.FinLevel := GlobalTheory.T.finite_level_facts
+
+theorem suppFin_holds : SuppFin := GlobalTheory.T.finite_support_of_twist GlobalTheory.T.local_support_facts unitAE_holds GlobalTheory.T.rational_finite_places GlobalTheory.T.local_good_reduction
+
+theorem eulerFin_holds : EulerFin :=
+  GlobalTheory.T.finite_euler_product_of GlobalTheory.T.finite_conjugacy_exists GlobalTheory.T.finite_restriction_vanishing GlobalTheory.T.aux_statement_21 (GlobalTheory.T.local_comparison_of GlobalTheory.T.local_comparison_inert GlobalTheory.T.local_comparison_split) GlobalTheory.T.local_hypotheses_hold GlobalTheory.T.finite_reindexing
+
+theorem finHalf_holds : PositivityTheory.Rg.BcB.G8.FinHalf :=
+  GlobalTheory.T.finite_half_of_twist DcCount_pf GlobalTheory.T.finite_mass_product_formula GlobalTheory.T.rational_finite_places suppFin_holds eulerFin_holds kfOC_holds finLevel_holds
+
+end PositivityTheory.Rg.BcB.G8.Fin

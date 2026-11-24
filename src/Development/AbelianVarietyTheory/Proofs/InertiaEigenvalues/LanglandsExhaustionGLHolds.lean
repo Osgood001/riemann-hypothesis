@@ -1,0 +1,11 @@
+module
+
+public import Mathlib
+public import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.CuspidalExhaustion.LanglandsMultisegmentsOfSeg
+public import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.GrothendieckRingPolynomial.GrothendieckRingPolynomialOfSeg
+public import CompanionTheory.RealGroups.GeneralUnitaryRepresentations.ArchimedeanJacquetSegments.SegmentSubquotients.SegmentRepresentation
+
+@[expose] public section
+
+theorem GlobalTheory.langlandsExhaustionGL_holds : GlobalTheory.Published.LanglandsExhaustionGL :=
+  CompanionTheory.Exh.langlandsExhaustionGL_of_seg CompanionTheory.RgGu.segmentRepresentation

@@ -1,0 +1,45 @@
+module
+
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.FriedrichsKernels.AsmKerOneOfSteps
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbsoluteFourierCoefficientsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbsoluteCutoffBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FriedrichsExtensionFactsStatement
+public import Mathlib
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusCurveStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WvAlg
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ClosureOperatorFactsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SobolevOperatorFactsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactSobolevEmbeddingStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CasimirOperatorFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SobolevIntegrationByPartsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenseDomainFactsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionNormBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SobolevSpacePreservedStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConcentrationTimeBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusJointCurveStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusFirstAssumptionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PaleyWienerDecayStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothOperatorFactsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelRegularityStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelLocalizationStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelWeightFactsStatement
+
+@[expose] public section
+
+namespace PositivityTheory.RgBcC.Fc
+
+open PositivityTheory.RgBcC
+
+theorem calcSteps : CalcSteps :=
+  ⟨GlobalTheory.T.absolute_fourier_coefficients, GlobalTheory.T.absolute_cutoff_bound, GlobalTheory.T.functional_calculus_curve, GlobalTheory.CompanionTheory.WaveFc.wvAlg, GlobalTheory.T.closure_operator_facts, GlobalTheory.T.sobolev_operator_facts, GlobalTheory.T.compact_sobolev_embedding,
+    GlobalTheory.T.section_norm_bound, GlobalTheory.T.sobolev_space_preserved, GlobalTheory.T.concentration_time_bound, GlobalTheory.T.functional_calculus_joint_curve, GlobalTheory.T.friedrichs_extension_facts, GlobalTheory.T.casimir_operator_formula, GlobalTheory.T.sobolev_integration_by_parts,
+    GlobalTheory.T.dense_domain_facts⟩
+
+theorem asmCpt : AsmCpt :=
+  GlobalTheory.T.functional_calculus_first_assumption GlobalTheory.T.absolute_fourier_coefficients GlobalTheory.T.absolute_cutoff_bound GlobalTheory.T.functional_calculus_curve GlobalTheory.CompanionTheory.WaveFc.wvAlg GlobalTheory.T.closure_operator_facts GlobalTheory.T.sobolev_operator_facts GlobalTheory.T.compact_sobolev_embedding
+    GlobalTheory.T.section_norm_bound GlobalTheory.T.sobolev_space_preserved GlobalTheory.T.concentration_time_bound GlobalTheory.T.functional_calculus_joint_curve GlobalTheory.T.friedrichs_extension_facts GlobalTheory.T.casimir_operator_formula GlobalTheory.T.sobolev_integration_by_parts GlobalTheory.T.dense_domain_facts
+
+theorem asmKerOne : AsmKerOne :=
+  asmKerOne_of_steps asmCpt calcSteps GlobalTheory.T.smooth_operator_facts GlobalTheory.T.paley_wiener_decay GlobalTheory.T.kernel_regularity GlobalTheory.T.kernel_localization GlobalTheory.T.kernel_weight_facts
+
+end PositivityTheory.RgBcC.Fc

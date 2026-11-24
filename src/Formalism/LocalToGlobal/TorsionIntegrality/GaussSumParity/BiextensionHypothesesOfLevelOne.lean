@@ -1,0 +1,44 @@
+module
+
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.ExponentialSpecification
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.IpNormPowSubPowLe
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.EqZeroOfPowEqOne
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.SubstFirstCoboundaryThree
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.SubstZeroOfConstantCoeff
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.BiextensionHypothesesOfConditions
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.TilInvariantLOf
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.FirstMomentIdempotentLaw
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.BiextensionOfExpSpec
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.AtVariableArtinHasseEqOneLog
+
+@[expose] public section
+
+namespace Formalism.L2.Th1.D
+
+theorem expSpec : ExpSpec := exponential_specification
+theorem frobSq : FrobSq := frobenius_square
+theorem ipLemma : IPLemma := integral_part_lemma
+theorem ipClosure : IPClosure := integral_part_closure
+theorem teichSigma : TeichSigma := teichmuller_sigma
+theorem mulSpec : MulSpec := MulSpec_of expSpec ipLemma ipClosure
+theorem betaHypOfF : BetaHypOfF := BetaHypOfF_of teichSigma
+theorem letterShift : LetterShift := letter_shift
+theorem shiftIP : ShiftIP := ShiftIP_of_frobSq frobSq
+theorem substTil : SubstTil := subst_tilde
+theorem pairRules : PairRules := PairRules_of expSpec ipLemma
+theorem torusTil : TorusTil := torus_tilde
+theorem mean_second_biextension_condition : MeanTorusInvariant := second_mean_condition
+theorem mean_third_biextension_condition : MeanNoLowBidegreeTerms := third_mean_condition
+theorem torus_sum_coboundary_condition : TorusSumCoboundaryCondition := fourth_condition_of_pairing_rules pairRules substTil shiftIP letterShift
+theorem biextension_hypotheses_of_level_one : MeanBiextensionHypothesesOfCocycle := biextension_hypotheses_of_conditions torus_sum_coboundary_condition torusTil teichSigma mean_second_biextension_condition mean_third_biextension_condition
+theorem dualExpand : DualExpand := dual_expansion
+theorem tilInvariantL : TilInvariantL := TilInvariantL_of pairRules substTil torusTil teichSigma shiftIP ipClosure dualExpand frobSq
+theorem meanSimeqL : MeanSimeqL := MeanSimeqL_of tilInvariantL
+theorem beTilXY : BeTilXY := BeTilXY_of expSpec
+theorem bMinus1 : BMinus1 := BMinus1_of' expSpec
+theorem meanSimeq : MeanSimeq := MeanSimeq_of' meanSimeqL beTilXY letterShift
+theorem biextension_points_integral : BiextensionPointsIntegral := biextension_points_of_exp_spec expSpec meanSimeqL
+theorem b0 : B0 := biextension_of_exp_spec expSpec biextension_points_integral
+theorem oneLetterHalf : OneLetterHalf := OneLetterHalf_of meanSimeqL
+
+end Formalism.L2.Th1.D

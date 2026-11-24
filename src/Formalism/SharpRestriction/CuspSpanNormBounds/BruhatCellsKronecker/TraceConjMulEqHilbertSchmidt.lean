@@ -1,0 +1,82 @@
+module
+
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.OwnEvIntro
+public import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
+public import Formalism.FlagUnipotentLattices.HalfDifferenceL1Bound
+public import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.ExtensionInterSubspace
+public import Formalism.LogSumExpBounds.StatementD
+public import Formalism.LatticeRigidity.HeightMinimum.PackingCountGeometricMean
+public import Mathlib
+public import Formalism.LatticeRigidity.HeightMinimum.PowFinrankEqZeroOfTracePow
+public import Formalism.GelfandTransference.EnergyIdentity
+public import Formalism.NormUnitaryBounds.DetPolynomialWeights.ShortIndependentVectorsOfDualMinimum
+public import Formalism.LatticeTheta.ThetaShiftInversion
+public import Formalism.LatticeRigidity.StatementC
+public import Formalism.LatticeRigidity.HeightMinimum.SqrtAbsNormLeProd
+
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.BridgeLemma
+
+open MeasureTheory Matrix Finset
+open scoped InnerProductSpace ComplexOrder
+open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData
+
+section SlopeTestRemainingChoices
+
+variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+
+theorem exists_highest_weight_unit (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
+    (hσ : IsDS ε lam σ) : ∃ w : H, IsHighestUnit ε lam σ w := by
+  obtain ⟨-, -, -, -, -, ⟨S, hS⟩, -⟩ := hσ
+  obtain ⟨v, hvS, hv0, hwt⟩ := hS.2.2.2.1
+  refine ⟨((‖v‖ : ℂ)⁻¹) • v, ?_, ?_, ?_⟩
+  · rw [norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.mpr hv0)]
+  · exact (le_sSup (show S ∈ {S | IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S} from hS) :
+      S ≤ lowKSub ε lam σ) (S.smul_mem _ hvS)
+  · intro θ hθ
+    rw [map_smul, hwt θ hθ, smul_comm]
+
+end SlopeTestRemainingChoices
+
+section Dec
+
+variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+
+end Dec
+
+section Core
+
+variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+end Core
+
+section Core2
+
+variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+end Core2
+
+section Poly
+
+variable {n : ℕ}
+
+end Poly
+
+section Conj
+
+variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+
+end Conj
+
+section Bessel
+
+variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+
+end Bessel
+
+end Formalism.MainNotions.BridgeLemma
+
+end

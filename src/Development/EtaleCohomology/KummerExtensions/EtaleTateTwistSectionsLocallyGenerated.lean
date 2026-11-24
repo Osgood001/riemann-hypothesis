@@ -1,0 +1,8 @@
+module
+
+public import Development.EtaleCohomology.TateTwists.EtaleTateTwistSectionsLocallyGenerated
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistSectionsLocallyGeneratedStatement
+
+@[expose] public section
+
+theorem LateralTheory.Ext.etale_tate_twist_sections_locally_generated : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyGenerated := GlobalTheory.T.tateTwist_sections_locally_generated

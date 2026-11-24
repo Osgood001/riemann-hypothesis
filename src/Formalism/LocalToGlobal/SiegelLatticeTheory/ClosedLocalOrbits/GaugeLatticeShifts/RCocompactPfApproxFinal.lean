@@ -1,0 +1,11 @@
+module
+
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.RCocompactPfSolApprox
+
+@[expose] public section
+
+namespace Formalism.L2.SG.TermOp.Vanish
+
+theorem ratApprox_holds : RatApprox := ratApprox_of_sol ratSolApprox_holds
+
+end Formalism.L2.SG.TermOp.Vanish

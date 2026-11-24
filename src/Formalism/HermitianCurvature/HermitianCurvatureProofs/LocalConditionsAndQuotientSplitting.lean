@@ -1,0 +1,22 @@
+module
+
+public import Formalism.HermitianCurvature.PrimeToDifferent
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.DualIdealInclusion
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.FirstEmbeddingOne
+public import Formalism.HermitianCurvature.Statement
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.PeriodLatticeFactsSplitOfGeneral
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.LocalisationScaledIdealMemIff
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.FinrankLeOfMapLe
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.SplitPrimeToDifferent
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.TwistedIsRealOrderLattice
+
+@[expose] public section
+
+namespace Formalism.FourierDecayAlt.P
+
+theorem lattice_facts_general : Formalism.FourierDecayAlt.S6.LatticesGeneral :=
+  assemble_lattice_facts degreeFacts_statement different_power_conj_stable
+    unramRelative twistedLatticeBetween twistedLatticeIndex dual_lattice_subset
+    traceDualGe scaledIdealNorm covolumeIndex
+
+end Formalism.FourierDecayAlt.P

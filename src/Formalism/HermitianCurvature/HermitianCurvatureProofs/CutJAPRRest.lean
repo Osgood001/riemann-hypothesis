@@ -1,0 +1,44 @@
+module
+
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRAsm
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRTransfer
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRDatumConst
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRKapLine
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRFibStable
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRAlgSS
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRPhaseExtract
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRTWNe
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRCPCoreAsm
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRCPRcLin
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRCPRcSmooth
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRCPRcComm
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRCPLeftCov
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRCPRightCov
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRCPSecDeriv
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRCPPSCalc
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.LowerUnipotentHasRepresentation
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRPHPhaseInvOfCut
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRPHPhaseSec
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.LowerUnipotentRotationHolds
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRPHRotRadSp
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRPHThtRot
+
+@[expose] public section
+
+namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR
+
+theorem phase_invariance_holds : PhaseInv :=
+  PH.phase_invariance_of_truncation PH.phase_section_holds PH.lower_unipotent_rotation_holds PH.rotation_radial_space_holds PH.theta_rotation_holds kappa_line_holds algebraic_shift_holds
+    datum_constancy_holds fibre_stability_holds
+
+theorem corePoly_of (hD : CP.Decomp) (hW : CP.WordPSVOfCut) : CorePoly :=
+  CP.radial_polynomial_of_truncation CP.lower_unipotent_matrix_words
+    (hW CP.radial_coefficient_linearity CP.radial_coefficient_smoothness CP.radial_coefficient_commutation CP.left_covariance_holds CP.right_covariance_holds CP.section_derivative_holds hD
+      CP.polynomial_shift_calculation)
+    CP.polynomial_shift_calculation
+
+theorem polyRadialS_of (hD : CP.Decomp) (hW : CP.WordPSVOfCut) : PolyRadialS :=
+  polynomialRadial_of_base polynomial_radial_base_holds SSn.Rep.theta_facts_hold transfer_holds datum_constancy_holds kappa_line_holds
+    fibre_stability_holds algebraic_shift_holds (corePoly_of hD hW) phase_invariance_holds phase_extraction_holds word_nonvanishing_holds
+
+end Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR

@@ -1,0 +1,15 @@
+module
+
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.NFRadRedLocSec
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.RadicalReductionOperator
+
+@[expose] public section
+
+namespace Formalism.FourierDecayAlt.P
+
+theorem representation_smooth : NFRadRedS.RepSmooth := representation_smooth_of_log local_logarithm_unitary
+
+theorem radical_reduction_surjective : Formalism.FourierDecayAlt.NF.RadRedSurj :=
+  radical_surjective_of_parts local_smooth_section representation_smooth
+
+end Formalism.FourierDecayAlt.P

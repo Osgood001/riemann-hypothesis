@@ -1,0 +1,59 @@
+module
+
+public import Mathlib
+public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsobaricDiscreteSelfDualStrongMultiplicityOne
+public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDimEqOne
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivOfMapEq
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TeichmullerInertiaLabelCondition
+public import Formalism.LocalRingCardinality.SpanPowerMembership.PlacesOverNcardOfSplitInj
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DepthZeroLabelsOfLabelLaws
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTameGenAt
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTeichmullerMaps
+
+@[expose] public section
+
+noncomputable section
+
+open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
+open GlobalTheory.WeilDeligne Formalism.CyclotomicNorms
+
+namespace GlobalTheory.LabLaws
+
+section WDLaws
+
+variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
+variable {B : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver B w}
+variable {g : ℕ} [Fact g.Prime]
+
+end WDLaws
+
+section Comparison₂
+
+variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
+
+def LabTie (T : GlobalTheory.RowTie.WDTie N A) (τ : ∀ k, Fb (H.g k) (H.g_prime k) →* ℂ)
+    (γ : Fin 2 → PlE H → G H.E N.Om) : Prop :=
+  ∀ (k : Fin 2) (v : N.PlG k),
+    haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩
+    IsTeich (τ k) ∧ TameGenAt (N.plOm.1 (A.plGw k v)) (γ k (A.plGw k v)) ∧
+      ∀ a : A.LP (A.plGw k v), A.items₂ k (A.plGw k v) a = WD.lab (τ k) (γ k (A.plGw k v)) (T.e _ a)
+
+theorem tieLab_of_labTie {T : GlobalTheory.RowTie.WDTie N A} {τ : ∀ k, Fb (H.g k) (H.g_prime k) →* ℂ}
+    {γ : Fin 2 → PlE H → G H.E N.Om} (hT : LabTie T τ γ) : GlobalTheory.RowCopy.TieLab N A := by
+  refine ⟨fun k v a s => ?_, fun k v a => ?_⟩
+  · haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩
+    rw [(hT k v).2.2, (hT k v).2.2, T.tw, WD.lab_lpTw]
+  · haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩
+    rw [(hT k v).2.2, ← T.dim]
+    exact WD.natDegree_lab_le _ _ _
+
+end Comparison₂
+
+section Inhabited
+
+variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
+
+end Inhabited
+
+end GlobalTheory.LabLaws

@@ -1,0 +1,24 @@
+module
+
+public import Mathlib
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.ContractMixedFieldStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
+public import GroundTheory.HeightsAndTheta.Heights.Intersections.TableDegreeThreeBase
+public import GroundTheory.HeightsAndTheta.Heights.Intersections.MixedDiscEqZeroOfMulVec
+public import GroundTheory.HeightsAndTheta.Heights.Intersections.EqZeroOfEventuallyEval
+public import GroundTheory.HeightsAndTheta.Heights.Intersections.LeviOfRealSmulRight
+public import GroundTheory.HeightsAndTheta.Heights.Intersections.PRatioAlgDep
+public import GroundTheory.HeightsAndTheta.Heights.Intersections.IsMultiProjPrimeImageZ
+
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.Targets
+
+open ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 GroundTheory.Heights₂.Heights.Inter
+
+theorem Contract.pulledBackForms_topDensity_vanish : pointForm_holds.Statement :=
+  pointForm_holds.proof (pointFormRank_holds.proof RatioAlgDep.proof) pointFormEuler_holds.proof
+
+end GroundTheory.Heights₂.Heights.Targets

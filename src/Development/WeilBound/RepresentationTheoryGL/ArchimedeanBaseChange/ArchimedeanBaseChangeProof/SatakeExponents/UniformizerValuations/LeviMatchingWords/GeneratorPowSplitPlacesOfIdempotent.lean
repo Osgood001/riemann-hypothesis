@@ -1,0 +1,33 @@
+module
+
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.LeviMatchingWords.SplitPlaceGeneratorPowers
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatchingIdentityOfStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatchingUnitOfStatement
+public import Mathlib
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatchingWordOf
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.LeviMatchingWords.MatchLM
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MultiplicityInertStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RegularPowerTorusStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SeparablePowerTorusStatement
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.AdelicHeckeBlocks.PLocComm
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatchingSecondBlockOf
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowersDiagonalAtTBlock
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOfSubsetCpt
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermStarStatement
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.LeviMatchingWords.LeviMatchingBlocks.StabilizerDilationWeightsDualIsotropicVector
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatchLeviWordsOfStatement
+
+@[expose] public section
+
+namespace PositivityTheory.Rg.BcB.F.MLM
+
+theorem matchLMIdOf : MatchLMIdOf := GlobalTheory.T.matching_identity_of
+theorem matchLMUnitOf : MatchLMUnitOf := GlobalTheory.T.matching_unit_of
+
+theorem muInert : MuInert := GlobalTheory.T.multiplicity_inert
+theorem regPowT : RegPowT := GlobalTheory.T.regular_power_torus
+theorem sepPowT : SepPowT := GlobalTheory.T.separable_power_torus
+theorem ctStar : CtStar := GlobalTheory.T.constant_term_star
+theorem matchLMWordSOf : MatchLMWordSOf := GlobalTheory.T.match_levi_words_of
+
+end PositivityTheory.Rg.BcB.F.MLM

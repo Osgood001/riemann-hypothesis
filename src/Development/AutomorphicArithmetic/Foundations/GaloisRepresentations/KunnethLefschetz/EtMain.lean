@@ -1,0 +1,50 @@
+module
+
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.IntOne
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.POffEx
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PPairs
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PPnFacts
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PHypEmb
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PFinCov
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PFinFib
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PComps
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PRingL
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PLowTL
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PPtVanT
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.LowLHolds
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PTowerL
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PAffVan
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PTwBij
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PGysTL
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.GysinTwistZeroExists
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PQEasy
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PLimOnto
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PQOnto
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PQProj
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PKunBij
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.KunLHolds
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.SwapSymmetry
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PSlice
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PPtInt
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PDetectL
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PDualL
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PFinSupp
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PPnCls
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.InjLHolds
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PTrComp
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.DivLHolds
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PBasisOne
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.PTopPart
+
+@[expose] public section
+
+namespace UpperTheory.Gal.KunnethLefschetz
+
+theorem steps_holds : Steps :=
+  ⟨offEx_holds, pairs_holds, pnFacts_holds, hypEmb_holds, finCov_holds, finFib_holds, comps_holds, ringL_holds, lowTL_holds, ptVanT_holds, lowL_holds, towerL_holds, affVan_holds, twBij_holds, gysTL_holds, gysinTwistZero_exists, qEasy_holds, limOnto_holds, qOnto_holds, qProj_holds, kunBij_holds, kunL_holds, swap_holds, slice_holds, ptInt_holds, detectL_holds, dualL_holds, finSupp_holds, pnCls_holds, injL_holds, trComp_holds, divL_holds, basisOne_holds, topPart_holds⟩
+
+theorem qDual_holds (hI : In) (hT : TrIn) : QDual := steps_holds.qDual hI hT
+
+theorem qDiag_holds (hI : In) (hT : TrIn) : QDiag := steps_holds.qDiag hI hT
+
+end UpperTheory.Gal.KunnethLefschetz

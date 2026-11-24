@@ -1,0 +1,14 @@
+module
+
+public import Mathlib
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAdmissibleIntegralBasisChangeOne
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeNormalFormUnipotent
+
+@[expose] public section
+
+namespace GlobalTheory.Proof.latticeNormalForm_modulo_unipotentSemidirect
+
+theorem latticeNormalForm : GlobalTheory.IndefiniteRowSideFullHecke.FlagUnipotentSemidirect.LatticeNormalForm :=
+  GlobalTheory.Proof.LatticeNormalFormUnipotent.latticeNormalForm
+
+end GlobalTheory.Proof.latticeNormalForm_modulo_unipotentSemidirect

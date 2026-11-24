@@ -1,0 +1,14 @@
+module
+
+public import Mathlib
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IsClosedEmbeddingOfLocallyCompact
+public import CompanionTheory.AutomorphicTheory.PadicUnitaryWeights.DixmierMalliavin.DixmierMalliavinFactorisationHolds
+
+@[expose] public section
+
+namespace GlobalTheory
+
+theorem dixmierMalliavinFactorisation_fromLibrary : GlobalTheory.Published.DixmierMalliavinFactorisation :=
+  CompanionTheory.DM.dixmierMalliavinFactorisation_holds
+
+end GlobalTheory

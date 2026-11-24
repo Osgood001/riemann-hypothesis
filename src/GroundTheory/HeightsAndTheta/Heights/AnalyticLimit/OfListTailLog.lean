@@ -1,0 +1,64 @@
+module
+
+public import Mathlib
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Assembly
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PListProductMass
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PListTailLog
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PListTailLogSmooth
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.LocDens
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegrableOnTargetOfTsupport
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.PotentialContDiffAt
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.MaMeasure
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShift
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.Stokes
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.LogInt
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.SNCAtlas
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialPullbackStatement
+public import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.GreenSt
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.PLCurveA
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.PLLocalStatement
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.PushAFinsumInter
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.Pullback
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.AnalyticSubsetChartLocal
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.Measure
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.AtlasIndep
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.Degree
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.DegreeInt
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Objects
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.StListTailLogSmooth
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PGreenMassStep
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PGreenMassReplace
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PGreenMassError
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.ConvergenceRate
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.Telescoping
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.RegularizedMaxC2ExampleRealLine
+public import GroundTheory.HeightsAndTheta.Heights.Regularisation.IsOpenKappaOpenNeighbourhood
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.NormIteratedFDerivCompLeOfIsOpen
+public import GroundTheory.HeightsAndTheta.Heights.Regularisation.GlueCharts
+public import GroundTheory.HeightsAndTheta.Heights.AnalyticLimit.PPropertyF
+
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.AnalyticLimit
+
+theorem GreenMassStep.full : GreenMassStep.Statement := GreenMassStep.proof
+
+theorem GreenMassReplace.full : GreenMassReplace.Statement := GreenMassReplace.proof
+
+theorem GreenMassError.full : GreenMassError.Statement := GreenMassError.proof
+
+theorem UniformIntegrability.full : UniformIntegrability.Statement :=
+  UniformIntegrability.of_greenMass GreenMassStep.full GreenMassReplace.full GreenMassError.full
+
+theorem ListTailLog.of_lemmaE (hE : LemmaETailLog.Statement) (hM : ListMono.Statement)
+    (hC : RegSection.Statement) (hS : TailShift.Statement) : ListTailLog.Statement :=
+  ListTailLog.proof hE hM hC hS
+
+end GroundTheory.Heights₂.Heights.AnalyticLimit

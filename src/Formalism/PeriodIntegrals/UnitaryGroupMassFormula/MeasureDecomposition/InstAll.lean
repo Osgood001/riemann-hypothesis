@@ -1,0 +1,17 @@
+module
+
+public import Mathlib
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MeasureDecomposition.InstTop
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MeasureDecomposition.InstPlace
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MeasureDecomposition.InstExp
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MeasureDecomposition.AdaptedBasisInstance
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MeasureDecomposition.FrameGramInstance
+
+@[expose] public section
+
+namespace PI.ScMuExists.UnitaryGroupMassFormula
+
+theorem place_decomposition_instance : InstDecomp :=
+  instDecomp_of (placeDecomp_of exponent_fixed_instance adapted_basis_instance) frame_gram_instance
+
+end PI.ScMuExists.UnitaryGroupMassFormula

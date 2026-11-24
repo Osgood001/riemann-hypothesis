@@ -1,0 +1,67 @@
+module
+
+public import Mathlib
+public import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+public import Formalism.LocalRingCardinality.DataKerI
+public import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
+public import Formalism.LocalToGlobal.KernelLattices.LateralTheory
+
+@[expose] public section
+
+noncomputable section
+
+open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.TaylorLogMetric Classical
+
+namespace GlobalTheory.InertCompare
+
+section Emb
+
+variable (D : D7) {l : ℕ} [Fact l.Prime] (lam : Qbar →+* ℂ_[l])
+
+theorem embT_mem (τ : D.what₂.Tau) (x : D.host.E) : embT D τ x ∈ Qbar := by
+  rw [mem_algebraicClosure_iff]
+  exact (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom (embT D τ).toRatAlgHom
+
+def rhoH (τ : D.what₂.Tau) : D.host.E →+* ℂ_[l] :=
+  lam.comp ((embT D τ).codRestrict Qbar (embT_mem D τ))
+
+theorem rhoH_apply (τ : D.what₂.Tau) (x : D.host.E) : rhoH D lam τ x = lamC lam (embT D τ x) := by
+  unfold lamC
+  rw [dite_eq_left (embT_mem D τ x)]
+  rfl
+
+theorem coe_rhoH (τ : D.what₂.Tau) : (rhoH D lam τ : D.host.E → ℂ_[l]) = tauEmb D lam τ :=
+  funext fun x => rhoH_apply D lam τ x
+
+def rhoC (τ : D.what₂.Tau) : D.host.E →+* ℂ_[l] := (rhoH D lam τ).comp (D.host.conj : D.host.E →+* D.host.E)
+
+end Emb
+
+def SamePrime {E : Type} [Field E] {l : ℕ} [Fact l.Prime] (ρ ρ' : E →+* ℂ_[l]) : Prop :=
+  ∀ a : 𝓞 E, ‖ρ (a : E)‖ < 1 ↔ ‖ρ' (a : E)‖ < 1
+
+theorem tauPl_bijective (D : D7) : Function.Bijective (tauPl D) := by
+  have hinj := D.R.toFrame.iota_bijective.1
+  have hP := factPlaces D.R.toFrame
+  constructor
+  · rintro ⟨b, t⟩ ⟨b', t'⟩ h
+    have h1 : plGG D (b, t) = plGG D (b', t') := congrArg Subtype.val (D.eTau.symm.injective h)
+    cases b <;> cases b' <;> simp only [plGG, if_true, if_false, Bool.false_eq_true] at h1
+    · rw [show t = t' from hinj (congrArg Prod.snd h1)]
+    · exact absurd h1 (hP.2 _ _)
+    · exact absurd h1.symm (hP.2 _ _)
+    · rw [show t = t' from hinj (congrArg Prod.snd h1)]
+  · intro τ
+    rcases (hP.1 _).1 (D.eTau τ).2 with ⟨t, ht⟩ | ⟨t, ht⟩
+    · refine ⟨(false, t), ?_⟩
+      unfold tauPl
+      rw [Equiv.symm_apply_eq]
+      exact Subtype.ext (by simp [plGG, ht])
+    · refine ⟨(true, t), ?_⟩
+      unfold tauPl
+      rw [Equiv.symm_apply_eq]
+      exact Subtype.ext (by simp [plGG, ht])
+
+def plEquiv (D : D7) : (Bool × HH D) ≃ D.what₂.Tau := Equiv.ofBijective _ (tauPl_bijective D)
+
+end GlobalTheory.InertCompare

@@ -1,0 +1,20 @@
+module
+
+public import ReciprocityTheory.DualLattices.IsPairingValueAddRight
+public import ReciprocityTheory.DualLattices.HeightFunctionalStatementOfPairingProperties
+public import ReciprocityTheory.DualLattices.TangentPairingStatementOfHeightFunctional
+public import ReciprocityTheory.DualLattices.ThmAFull
+public import ReciprocityTheory.DualLattices.AinfTower
+
+@[expose] public section
+
+namespace ReciprocityTheory.PGsh
+
+theorem bx_heightFunctional {R₀ : Type*} [CommRing R₀] (B : BX R₀) : HighestWeightVectorUniformBounds B := heightFunctionalStatement_of_pairingProperties B (pairingProperties B)
+
+theorem bx_tangentPairing {R₀ : Type*} [CommRing R₀] (B : BX R₀) : TangentPairingStatement B := B.tangentPairingStatement_of_heightFunctional (bx_heightFunctional B)
+
+theorem bx_towerPairing {R₀ : Type*} [CommRing R₀] (B : BX R₀) {p : ℕ} (Tw : ATower R₀ p) : NsetExpInjectiveSurjective B Tw :=
+  b4 B (pairingProperties B) (bx_tangentPairing B) Tw
+
+end ReciprocityTheory.PGsh

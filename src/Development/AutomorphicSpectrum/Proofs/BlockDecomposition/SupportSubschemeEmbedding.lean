@@ -1,0 +1,16 @@
+module
+
+public import Mathlib
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsInjectiveOfSubsingleton
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductIrreducibleAppendEquivStatement
+
+@[expose] public section
+
+open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult GlobalTheory.SmGL.Exponents
+
+namespace GlobalTheory.CompanionTheory.SubEmb
+
+theorem subEmbedding : Ysupp.SubEmbedding :=
+  subEmbedding_of_stage GlobalTheory.T.product_irreducible_append_equiv
+
+end GlobalTheory.CompanionTheory.SubEmb

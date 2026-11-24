@@ -1,0 +1,22 @@
+module
+
+public import Mathlib
+public import Development.AbelianVarietyTheory.Statements.PrincipalLattices.ExistsPrincipalLattice
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmPointObjectExistsOfLaws
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCmEllipticCurveWithPeriod
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CmPointClosed
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SemiAbelianHomExtensionDvr
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaUniformisationComplexAbelianVariety
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.KernelFiniteFlatHolds
+
+@[expose] public section
+
+namespace GlobalTheory.CM
+
+theorem cmExists_holds : GlobalTheory.CM.CMExistsSt :=
+  GlobalTheory.CM.ExObj.cmExists GlobalTheory.cmCurve_closed GlobalTheory.cmPoint_closed GlobalTheory.thetaUnifAV_all
+    GlobalTheory.firstFiveLaws.1 GlobalTheory.firstFiveLaws.2.1 GlobalTheory.homExtension_semiAbelian_dvr_unconditional
+    GlobalTheory.kernelFiniteFlat_holds
+
+end GlobalTheory.CM

@@ -1,0 +1,29 @@
+module
+
+public import Formalism.GaussJetBounds.GaussJetProofs.SubstitutionWeightBound
+public import Formalism.GaussJetBounds.GaussJetProofs.LogarithmWeightComparison
+public import Formalism.GaussJetBounds.GaussJetProofs.NormNatCastEqPowPadicValNat
+public import Formalism.GaussJetBounds.GaussJetProofs.OneLetterRadiusIdentity
+public import Formalism.GaussJetBounds.GaussJetProofs.PureCrossTermWeight
+public import Formalism.GaussJetBounds.GaussJetProofs.LogStep
+public import Formalism.GaussJetBounds.GaussJetProofs.SwappedParitySeriesBinomialForm
+public import Formalism.GaussJetBounds.GaussJetProofs.ExistsNeZeroOfFinsumNeZero
+public import Formalism.GaussJetBounds.GaussJetProofs.ConstantCoeffEvenDerivativeEqZero
+public import Formalism.GaussJetBounds.GaussJetProofs.AsmRDotAddRight
+public import Formalism.GaussJetBounds.GaussJetProofs.AsmOne
+
+@[expose] public section
+
+universe u v
+
+namespace Formalism.DworkPowerSeriesWeights
+
+theorem lemmaS : LemmaS.{u} :=
+  lemmaS_of generalized_log_weight generalized_log_inverse logarithm_weight_comparison substitution_weight_bound exponential_derivative_inverse
+    weightQuantization logarithm_weight_induction binomial_coefficient_extraction
+
+theorem oneLetterR : OneLetterR.{u, v} :=
+  oneLetterR_of lemmaS generalized_log_weight logarithm_weight_comparison substitution_weight_bound substitution_weight_bound radical_weight_monotone
+    multiplicative_weight_le exponential_weight_le factorial_valuation_bound oneLetterRadiusIdentity
+
+end Formalism.DworkPowerSeriesWeights

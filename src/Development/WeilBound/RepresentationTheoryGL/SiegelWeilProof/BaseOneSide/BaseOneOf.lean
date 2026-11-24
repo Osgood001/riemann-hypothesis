@@ -1,0 +1,36 @@
+module
+
+public import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BaseOneSide.PsiSide
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EquidistributionStatement
+public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.MassOneBase.MassOne
+public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.SiegelDensities.PlugInf
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TateIntegralFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CharacterSideEquidistributionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalDensityRatioFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianExistencePrincipleStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalarFibrationFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalDensityOfMassOneStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFormulaOfTotalMassOneStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimilitudeOfScalarFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HassePrincipleHermitianStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistenceTestFunctionsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalDensityFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LFunctionSideEquidistributionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaIdentityOfLocalDensitiesStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CountingFormulaOfComponentsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelWeilRankOneBaseCaseStatement
+
+@[expose] public section
+
+namespace PositivityTheory.Rg.Base1
+
+theorem baseOne_of (hM : PositivityTheory.SiegelWeilFormula.Densx.MassOne) : PositivityTheory.SiegelWeilFormula.Densx.BaseOne :=
+  GlobalTheory.T.siegel_weil_rank_one_base_case (GlobalTheory.T.length_formula_of_total_mass_one hM) (GlobalTheory.T.similitude_of_scalar_formula GlobalTheory.T.scalar_fibration_formula) GlobalTheory.T.hasse_principle_hermitian
+    (GlobalTheory.T.counting_formula_of_components GlobalTheory.T.tate_integral_formula (GlobalTheory.T.character_side_equidistribution GlobalTheory.T.equidistribution) GlobalTheory.T.local_density_ratio_formula GlobalTheory.T.hermitian_existence_principle GlobalTheory.T.existence_test_functions GlobalTheory.T.local_density_formula
+      (GlobalTheory.T.l_function_side_equidistribution GlobalTheory.T.equidistribution) (GlobalTheory.T.theta_identity_of_local_densities GlobalTheory.T.scalar_fibration_formula (GlobalTheory.T.local_density_of_mass_one GlobalTheory.T.scalar_fibration_formula hM)))
+
+theorem baseOne : PositivityTheory.SiegelWeilFormula.Densx.BaseOne := baseOne_of PositivityTheory.SiegelWeilFormula.BaseOne.massOne
+
+theorem densEq : PositivityTheory.SiegelWeilFormula.Gen.DensEq := PositivityTheory.SiegelWeilFormula.Densx.densEq_of_one baseOne PositivityTheory.SiegelWeilFormula.BaseOne.massOne
+
+end PositivityTheory.Rg.Base1

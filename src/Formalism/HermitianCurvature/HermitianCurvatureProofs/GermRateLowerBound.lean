@@ -1,0 +1,21 @@
+module
+
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.SliceAtApply
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.PbGermRateLowBOfParts
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.GermConstant
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BetaCongrRight
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.SliceIntegralCutoff
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.SliceGermPoints
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.SliceOrbitalBlock
+
+@[expose] public section
+
+namespace Formalism.FourierDecayAlt.P
+
+theorem germ_at_place : FormNormSumIdentities.GermPlace :=
+  FormNormSumIdentities.germPlace_of slice_integral_cutoff slice_germ_points form_model
+
+theorem germ_rate_lower_bound : GermRateSplit.GermRateLowB :=
+  FormNormSumIdentities.germRateLowB_of germ_at_place germ_null_set_compact germ_constant
+
+end Formalism.FourierDecayAlt.P

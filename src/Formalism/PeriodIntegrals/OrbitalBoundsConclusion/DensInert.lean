@@ -1,0 +1,16 @@
+module
+
+public import Mathlib
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.SiegelMassRatios.DensExact
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertDensity.DensExactInertOf
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertDensity.DensityProductAddTwoSuccSucc
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertDensity.RepCountCongruenceInvariant
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertDensity.HermitianDiagonalization
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertDensity.AnisoPeel
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertDensity.IsoPeel
+
+@[expose] public section
+
+theorem density_exact_inert : Formalism.L2.SG.DensExact.DensExactInert :=
+  DensInertW.densExactInert_of DensInertW.hermitianDiagonalization DensInertW.repCountCongruenceInvariant
+    DensInertW.anisotropic_valuation_peel DensInertW.isotropic_valuation_peel DensInertW.quadraticDifferenceArith

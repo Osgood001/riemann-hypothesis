@@ -1,0 +1,57 @@
+module
+
+public import Mathlib
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.Objects
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.Examples
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.DualModel
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.Reading
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PChartLatSection
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PConeTrdeg
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.WeightedHomogeneousComponentMap
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.Imports
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PFibreCompDimZ
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.DetGramLeProdNormSq
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PIdealIndexPlaces
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PIntDomainDim
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.StatementsPointHeight
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PLineDegreeBundle
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PLineIdealDual
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.StatementsGrassHeight
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.POneBlockPoints
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PPointHeightDegree
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.IsAlgebraicAdjoinRangeIff
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.LiftOldChartMonomialMemPrimeCompl
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.StatementsIntDim
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.StatementsConeTrdeg
+public import GroundTheory.HeightsAndTheta.Heights.HeightComparison.IsMultiHomogIdealIff
+public import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.ContractRelevant
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.VarsSubsetRangeBlockIncl
+public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals.MemMCoordIdealOfAevalEqZero
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
+public import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.Points
+public import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.Slopes
+public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Objects
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.ExistsOneBlockLinMonomial
+public import GroundTheory.HeightsAndTheta.Heights.HeightsOfSets.MemMCoordIdealIffOfIsWeightedHomogeneous
+
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights
+
+theorem IntDomainDim.full : IntDomainDim.Statement :=
+  IntDomainDim.proof
+
+theorem ConeTrdeg.full : ConeTrdeg.Statement :=
+  ConeTrdeg.proof
+
+theorem FibreCompDimZ.full : FibreCompDimZ.Statement :=
+  FibreCompDimZ.proof
+
+end GroundTheory.Heights₂.Heights
+
+namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close
+
+end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close

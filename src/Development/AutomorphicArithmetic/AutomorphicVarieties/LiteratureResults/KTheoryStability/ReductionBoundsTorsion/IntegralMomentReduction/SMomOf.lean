@@ -1,0 +1,17 @@
+module
+
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.KTheoryStability.ReductionBoundsTorsion.MomentEntryBounds.SetLIntegralPreimageMulLeft
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.KTheoryStability.ReductionBoundsTorsion.MomentEntryBounds.DiscreteSpecialLinearGroupRingOfIntegers
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.KTheoryStability.ReductionBoundsTorsion.MomentEntryBounds.UnitaryConeEstimates.PhMemUnitary
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.KTheoryStability.ReductionBoundsTorsion.IntegralMomentReduction.SIntB
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.KTheoryStability.ReductionBoundsTorsion.IntegralMomentReduction.SRedOf
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.KTheoryStability.ReductionBoundsTorsion.IntegralMomentReduction.PrimalY
+
+@[expose] public section
+
+namespace PositivityTheory.KB.TwSMInt2
+
+theorem sMom_of (h : SHt) : SMom :=
+  sMom_of_parts discrete_specialLinearGroup_ringOfIntegers sHtB sIntB (sRed_of sRedGL2) h
+
+end PositivityTheory.KB.TwSMInt2

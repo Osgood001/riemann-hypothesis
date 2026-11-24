@@ -1,0 +1,13 @@
+module
+
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointSeparationPairOfPrincipalisation
+public import Development.WeilBound.CoreStatements.ResolutionCharZero.PrincipalisationClosed
+
+@[expose] public section
+
+namespace NadelVanishingSeparation.NSI
+
+theorem pointSeparationPair : GlobalTheory.Published.PointSeparationPair :=
+  GlobalTheory.pointSeparationPair_of_principalisation PositivityTheory.ResPlug.WeightsCompactStabilizer.principalisation_closed
+
+end NadelVanishingSeparation.NSI

@@ -1,0 +1,18 @@
+module
+
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.RealLeviDescent.MultForOf
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommutantReductionRealStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ScalarActionFifthRealStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InvariantPickRealStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviStabilityRealStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRelationsRealStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemisimpleClassificationRealStatement
+
+@[expose] public section
+
+namespace PositivityTheory.RgBcC.RealD
+
+theorem multFor_of_capCls (hCC : CapCls) : MultFor :=
+  multFor_of GlobalTheory.T.invariant_pick_real GlobalTheory.T.levi_stability_real GlobalTheory.T.levi_relations_real GlobalTheory.T.semisimple_classification_real hCC GlobalTheory.T.commutant_reduction_real GlobalTheory.T.scalar_action_fifth_real
+
+end PositivityTheory.RgBcC.RealD

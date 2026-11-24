@@ -1,0 +1,17 @@
+module
+
+public import Mathlib
+public import Formalism.PeriodIntegrals.SSAscent
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.TraceNilStep
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.RangeMapRep
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.SemisimpleOfTraceFormNondegenerate
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.TraceNilpotentAscent
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.TraceFormNondegenerateBaseChange
+
+@[expose] public section
+
+theorem ssAscent : PI.SSAscent :=
+  PI.SSAscent.UnitaryGroupMassFormula.ssAscent_of
+    (PI.SSAscent.UnitaryGroupMassFormula.downStep_of PI.SSAscent.UnitaryGroupMassFormula.trace_nilpotent_ascent)
+    PI.SSAscent.UnitaryGroupMassFormula.traceFormNondegenerate_baseChange
+    PI.SSAscent.UnitaryGroupMassFormula.semisimpleOfTraceFormNondegenerate

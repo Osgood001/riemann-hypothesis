@@ -1,0 +1,686 @@
+module
+
+public import Mathlib
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Characterised
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.MahlerSectionBasic
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PChowFormDimLe
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeAreaFormula
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeBallFinite
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeFibreAverage
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeFibreDegree
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeFsLogIntegrable
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeHyperplaneNull
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeLocalMass
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeMassOfFibre
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeRadialIntegral
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeSlabBound
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeTangentAverage
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PLeadBlockGaussTail
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PLeadPlaneJac
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PProjChowNonzero
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PProjDegreeChow
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PProjSecDegree
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PProjSecDomain
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PSecDegreeGe
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PSecDegreeLe
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PSecFiniteUnit
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PSecRankSpecialize
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PTangentGaussMoment
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PZeroLocusDimH
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Statements
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.ConeBall
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsChowFormDim
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsChowFormSectionAlgClosed
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeFibre
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeFibreAverage
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeFiniteFibreDim
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeGraphCover
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeJacMeasurable
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeLocalMass
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeMass
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeSlab
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeTangentAverage
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsConeTangentDim
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsGraphAreaFibre
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsLeadBlockGaussTail
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsLeadPlaneJac
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsProjChowNonzero
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsProjDegreeChow
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsProjSecDegree
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsProjSecDomain
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsSecDegreeGe
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsSecDegreeLe
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsSecFiniteUnit
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsSecRankSpecialize
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsTangentGaussInvariant
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsZeroLocusDimH
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.Assembly
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PAffineChartTrdeg
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartChoice
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartDehomog
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartFinite
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartFirstGroupDvd
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartFirstGroupPrime
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartHomogenise
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartIncDomain
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartIncOrd
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartKernel
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartLength
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartLocDomain
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartLocalOrder
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartMaxIdeals
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartNorm
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartResidueDegree
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChowFormExists
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChowFormSection
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PComponentOfIncIdeal
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PConeDimOfChowForm
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PDehomogOrd
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PEmultiplicityOrd
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PIncIdealBelow
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PIncIdealDim
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PLengthFiniteAlgebra
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PLinearFormPrime
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PLocalMultOrd
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PLocalizationPrimeDVR
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PMapDvdDescent
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PNormFormDvd
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PNormFormEmbeddings
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PNormFormEval
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PNormOfDividedForm
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PPrimeMapFractionRing
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PSectionOrder
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PSpecFirstMemIncIdeal
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PSpecFirstNe
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.Statements
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.Imports
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.ImportsAlt
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.StatementsChartFirstGroup
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.StatementsChartFirstGroupDvd
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.StatementsChartIncOrd
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.StatementsChartMax
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.StatementsDehomogOrd
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.StatementsLocalMultOrd
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.StatementsNormForm
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.StatementsNormOfDividedForm
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.StatementsSectionOrder
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.ImportsBis
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraph
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraphBound
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraphPartition
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaGraphPiece
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsArea
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PAreaMultiplicity
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PBadSetSmaller
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCauchyBinetMinors
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PChartMassCompact
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PChartMassCompare
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeAvoidsExists
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeAvoidsFinite
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeAvoidsOpen
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeChartGram
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConePolar
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PConeScaling
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeSheetGramLintegral
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.LogIntegrableOnOfLogIntegrable
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeSheetArea
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsCurrent
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeIntegralMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.EqZeroOfMemZeroLocusLineOriginIdeal
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCriticalImageNull
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOff
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOffBoundaryBound
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOffDominated
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOffGradient
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOffLimit
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOffShape
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PCutOffTube
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PDiscriminantCover
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PEnergyDensNonneg
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFibreBound
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFibreSectionsCovering
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteCoverPuncturedPolydisc
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteMapOpen
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteProjHomInjective
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteProjectionsContainOpen
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFiniteProjectionsGeneric
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeLogBound
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PFsLogSmul
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PDivCyclePrime
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFormIntPos
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PFrameJacobianSum
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.Statements
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGeneralProjection
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGenericPrimitive
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGenericProjectionFinite
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGradDensSheetBound
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGraphAreaHolomorphic
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PGraphJacContinuous
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PProperSymm
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PHessCCompPluri
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PHomogDimZeroPow
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PImplicitCurve
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PIntegralIndependent
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLeadIdealDim
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLelongLimit
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLelongLimitOffZero
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLelongRegularise
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLinearFormCut
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLocalGraphMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLocalGraphProjectionMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLogIntegrable
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PLogLogCutHess
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PMaDensLeibniz
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PMassFinite
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PNullSmaller
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVanishNearPoint
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPlaneSliceMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLelongRegularise
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLelongLimit
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PPointLine
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsMahler
+public import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PPointIntegral
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPolySublevel
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPosPartIndependent
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPosPartLocal
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPosPartSplit
+public import ReciprocityTheory.AnalyticForms.AnalyticCharts.Osgood
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPrimitiveElementFibres
+public import GroundTheory.ArithmeticGeometry.AbelianVarieties.JacobianSmoothness.RingKrullDimLeRingKrullDimQuotientAddOne
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PProjectionFormula
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PPuncturedCoverCycles
+public import GroundTheory.HeightsAndTheta.Heights.Regularisation.PRiemannExtensionSlices
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.OsgoodSeparate
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LowerBoundConditional
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetAreaCompare
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetComass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetImageArea
+public import GroundTheory.HeightsAndTheta.Heights.Intersections.PTorusInvLevi
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
+public import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetOnlyNull
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSheetSumMeasurable
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSimpleRootBranch
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.AffineOfCone
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PMinimalPrimeHomog
+public import GroundTheory.HeightsAndTheta.Heights.ChowForms.POrdPolynomialLocalization
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceDim
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceMassFinite
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceImmersiveGeneral
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceIdeal
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceMatricesOpen
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PStokesOffDiscriminant
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PStokesOnVariety
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PTubeFormCompare
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PUnitaryZariskiDense
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PVanishNearPoint
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PVarIntAdd
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PVarSlabMeasure
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PVarietyProjectionMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PVarietySlabMeasure
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PZeroSetOpenMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StAreaGraphBound
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StAreaGraphPartition
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StAreaGraphPiece
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StAreaMultiplicity
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StChartMassCompact
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StChartMassCompare
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeAvoidsExists
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeAvoidsFinite
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StConeAvoidsOpen
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsChartGram
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCriticalImageNull
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCutOffBoundaryBound
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCutOffBoundaryParts
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCutOffDominated
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCutOffGradient
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCutOffLimit
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StCutOffTube
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFibreSectionsCovering
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFiniteCoverPuncturedPolydisc
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFiniteMapOpen
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFiniteProjHomInjective
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFiniteProjectionsGeneric
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StFrameJacobianSum
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StGeneralProjection
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StGenericPrimitive
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StGraphAreaHolomorphic
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StGraphJacContinuous
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StHessCCompPluri
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StHomogDimZeroPow
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StImplicitCurve
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLeadIdealDim
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLelongLimitOffZero
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLelongLimitOnZero
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLinearFormCut
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLinearNoetherNormalization
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLocalGraphMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLocalGraphProjectionMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLogLogCut
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StLogLogCutHess
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPosPartIndependent
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPosPartLocal
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPosPartSplit
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPrimitiveElementFibres
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StPuncturedCoverCycles
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetAreaCompare
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetComass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetImageArea
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetImageAreaSet
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSheetOnlyNull
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSimpleRootBranch
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceDim
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceImmersiveGeneral
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSliceMatricesOpen
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StStokesOffDiscriminant
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StTubeEuclMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StTubeFormCompare
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StUnitaryZariskiDense
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVarIntAdd
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVarSlabMeasure
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVarietyProjectionMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StVarietySlabMeasure
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StZeroSetOpenMass
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StatementsSheetMeasurable
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.RingKrullDimQuotBotOne
+
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights
+
+theorem AffineChartTrdeg.full : GroundTheory.Heights₂.Heights.AffineChartTrdeg.Statement :=
+  GroundTheory.Heights₂.Heights.AffineChartTrdeg.proof
+
+theorem AreaGraphPiece.full : GroundTheory.Heights₂.Heights.AreaGraphPiece.Statement :=
+  GroundTheory.Heights₂.Heights.AreaGraphPiece.proof
+
+theorem AreaGraphPartition.full : GroundTheory.Heights₂.Heights.AreaGraphPartition.Statement :=
+  GroundTheory.Heights₂.Heights.AreaGraphPartition.proof
+
+theorem GraphJacContinuous.full : GroundTheory.Heights₂.Heights.GraphJacContinuous.Statement :=
+  GroundTheory.Heights₂.Heights.GraphJacContinuous.proof
+
+theorem AreaGraphBound.full : GroundTheory.Heights₂.Heights.AreaGraphBound.Statement :=
+  GroundTheory.Heights₂.Heights.AreaGraphBound.proof GroundTheory.Heights₂.Heights.AreaGraphPiece.full GroundTheory.Heights₂.Heights.AreaGraphPartition.full GroundTheory.Heights₂.Heights.GraphJacContinuous.full
+
+theorem AreaGraph.full : GroundTheory.Heights₂.Heights.AreaGraph.Statement :=
+  GroundTheory.Heights₂.Heights.AreaGraph.proof GroundTheory.Heights₂.Heights.AreaGraphBound.full
+
+theorem AreaMultiplicity.full : GroundTheory.Heights₂.Heights.AreaMultiplicity.Statement :=
+  GroundTheory.Heights₂.Heights.AreaMultiplicity.proof
+
+theorem ChartChoice.full : GroundTheory.Heights₂.Heights.ChartChoice.Statement :=
+  GroundTheory.Heights₂.Heights.ChartChoice.proof GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full
+
+theorem ChartDehomog.full : GroundTheory.Heights₂.Heights.ChartDehomog.Statement :=
+  GroundTheory.Heights₂.Heights.ChartDehomog.proof
+
+theorem ChartFinite.full : GroundTheory.Heights₂.Heights.ChartFinite.Statement :=
+  GroundTheory.Heights₂.Heights.ChartFinite.proof
+
+theorem ChartFirstGroupDvd.full : GroundTheory.Heights₂.Heights.ChartFirstGroupDvd.Statement :=
+  GroundTheory.Heights₂.Heights.ChartFirstGroupDvd.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full
+
+theorem IncIdealBelow.full : GroundTheory.Heights₂.Heights.IncIdealBelow.Statement :=
+  GroundTheory.Heights₂.Heights.IncIdealBelow.proof GroundTheory.Heights₂.Heights.ChowFormMultiHomog.full
+
+theorem ChartFirstGroupPrime.full : GroundTheory.Heights₂.Heights.ChartFirstGroupPrime.Statement :=
+  GroundTheory.Heights₂.Heights.ChartFirstGroupPrime.proof GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.IncIdealBelow.full
+
+theorem ChartHomogenise.full : GroundTheory.Heights₂.Heights.ChartHomogenise.Statement :=
+  GroundTheory.Heights₂.Heights.ChartHomogenise.proof
+
+theorem ChartIncDomain.full : GroundTheory.Heights₂.Heights.ChartIncDomain.Statement :=
+  GroundTheory.Heights₂.Heights.ChartIncDomain.proof
+
+theorem ChartIncOrd.full : GroundTheory.Heights₂.Heights.ChartIncOrd.Statement :=
+  GroundTheory.Heights₂.Heights.ChartIncOrd.proof GroundTheory.Heights₂.Heights.OrdPolynomialLocalization.full
+
+theorem ChartKernel.full : GroundTheory.Heights₂.Heights.ChartKernel.Statement :=
+  GroundTheory.Heights₂.Heights.ChartKernel.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full GroundTheory.Heights₂.Heights.ChartIncDomain.full
+
+theorem SpecFirstMemIncIdeal.full : GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.Statement :=
+  GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.proof
+
+theorem LengthFiniteAlgebra.full : GroundTheory.Heights₂.Heights.LengthFiniteAlgebra.Statement :=
+  GroundTheory.Heights₂.Heights.LengthFiniteAlgebra.proof
+
+theorem IncIdealDim.full : GroundTheory.Heights₂.Heights.IncIdealDim.Statement :=
+  GroundTheory.Heights₂.Heights.IncIdealDim.proof GroundTheory.Heights₂.Heights.IncidenceGeneric.full GroundTheory.Heights₂.Heights.GenericLinearTrdeg.full GroundTheory.Heights₂.Heights.AffineChartTrdeg.full
+
+theorem ConeDimOfChowForm.full : GroundTheory.Heights₂.Heights.ConeDimOfChowForm.Statement :=
+  GroundTheory.Heights₂.Heights.ConeDimOfChowForm.proof GroundTheory.Heights₂.Heights.IncIdealDim.full GroundTheory.Heights₂.Heights.IncIdealPrime.full
+
+theorem ComponentOfIncIdeal.full : GroundTheory.Heights₂.Heights.ComponentOfIncIdeal.Statement :=
+  GroundTheory.Heights₂.Heights.ComponentOfIncIdeal.proof GroundTheory.Heights₂.Heights.IncIdealDim.full GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.ConeDimComponent.full
+
+theorem ChartMaxIdeals.full : GroundTheory.Heights₂.Heights.ChartMaxIdeals.Statement :=
+  GroundTheory.Heights₂.Heights.ChartMaxIdeals.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.ChartIncDomain.full GroundTheory.Heights₂.Heights.ChartKernel.full GroundTheory.Heights₂.Heights.ChartHomogenise.full GroundTheory.Heights₂.Heights.ChartDehomog.full GroundTheory.Heights₂.Heights.ComponentOfIncIdeal.full
+
+theorem ChowFormExists.full : GroundTheory.Heights₂.Heights.ChowFormExists.Statement :=
+  GroundTheory.Heights₂.Heights.ChowFormExists.proof GroundTheory.Heights₂.Heights.IncIdealDim.full GroundTheory.Heights₂.Heights.IncIdealPrime.full
+
+theorem DehomogOrd.full : GroundTheory.Heights₂.Heights.DehomogOrd.Statement :=
+  GroundTheory.Heights₂.Heights.DehomogOrd.proof GroundTheory.Heights₂.Heights.OrdPolynomialLocalization.full
+
+theorem LocalMultOrd.full : GroundTheory.Heights₂.Heights.LocalMultOrd.Statement :=
+  GroundTheory.Heights₂.Heights.LocalMultOrd.proof
+
+theorem ChartLocalOrder.full : GroundTheory.Heights₂.Heights.ChartLocalOrder.Statement :=
+  GroundTheory.Heights₂.Heights.ChartLocalOrder.proof GroundTheory.Heights₂.Heights.ChartIncDomain.full GroundTheory.Heights₂.Heights.ChartKernel.full GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.ChowFormExists.full GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.ChartIncOrd.full GroundTheory.Heights₂.Heights.DehomogOrd.full GroundTheory.Heights₂.Heights.LocalMultOrd.full
+
+theorem ChartResidueDegree.full : GroundTheory.Heights₂.Heights.ChartResidueDegree.Statement :=
+  GroundTheory.Heights₂.Heights.ChartResidueDegree.proof GroundTheory.Heights₂.Heights.ChowFormBirational.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.ChartKernel.full GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.ChowFormExists.full GroundTheory.Heights₂.Heights.IncidenceGeneric.full GroundTheory.Heights₂.Heights.ChartLocalOrder.full
+
+theorem ChartLength.full : GroundTheory.Heights₂.Heights.ChartLength.Statement :=
+  GroundTheory.Heights₂.Heights.ChartLength.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.LengthFiniteAlgebra.full GroundTheory.Heights₂.Heights.ChartMaxIdeals.full GroundTheory.Heights₂.Heights.ChartLocalOrder.full GroundTheory.Heights₂.Heights.ChartResidueDegree.full
+
+theorem ChartLocDomain.full : GroundTheory.Heights₂.Heights.ChartLocDomain.Statement :=
+  GroundTheory.Heights₂.Heights.ChartLocDomain.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.ChartIncDomain.full GroundTheory.Heights₂.Heights.ChartKernel.full
+
+theorem SheetComass.full : GroundTheory.Heights₂.Heights.SheetComass.Statement :=
+  GroundTheory.Heights₂.Heights.SheetComass.proof
+
+theorem SheetImageArea.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
+    GroundTheory.Heights₂.Heights.SheetImageArea.Statement :=
+  GroundTheory.Heights₂.Heights.SheetImageArea.proof hSheetImageAreaSet
+
+theorem SheetAreaCompare.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
+    GroundTheory.Heights₂.Heights.SheetAreaCompare.Statement :=
+  GroundTheory.Heights₂.Heights.SheetAreaCompare.proof (GroundTheory.Heights₂.Heights.SheetImageArea.of_open hSheetImageAreaSet)
+
+theorem ChartMassCompare.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
+    GroundTheory.Heights₂.Heights.ChartMassCompare.Statement :=
+  GroundTheory.Heights₂.Heights.ChartMassCompare.proof GroundTheory.Heights₂.Heights.SheetComass.full (GroundTheory.Heights₂.Heights.SheetAreaCompare.of_open hSheetImageAreaSet)
+
+theorem ComplexSets.ConeAvoidsFinite.full : GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsFinite.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsFinite.proof
+
+theorem ComplexSets.FiniteProjHomInjective.full : GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjHomInjective.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjHomInjective.proof
+
+theorem ComplexSets.ConeAvoidsOpen.full : GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsOpen.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsOpen.proof
+
+theorem ComplexSets.LeadIdealDim.full : GroundTheory.Heights₂.Heights.ComplexSets.LeadIdealDim.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.LeadIdealDim.proof
+
+theorem ComplexSets.LinearFormCut.full : GroundTheory.Heights₂.Heights.ComplexSets.LinearFormCut.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.LinearFormCut.proof
+
+theorem ComplexSets.HomogDimZeroPow.full : GroundTheory.Heights₂.Heights.ComplexSets.HomogDimZeroPow.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.HomogDimZeroPow.proof
+
+theorem ComplexSets.ConeAvoidsExists.full : GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsExists.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsExists.proof GroundTheory.Heights₂.Heights.ComplexSets.LeadIdealDim.full GroundTheory.Heights₂.Heights.ComplexSets.LinearFormCut.full GroundTheory.Heights₂.Heights.ComplexSets.HomogDimZeroPow.full
+
+theorem ComplexSets.FiniteProjectionsContainOpen.full : GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.proof GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsFinite.full GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjHomInjective.full GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsOpen.full GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsExists.full
+
+theorem ComplexSets.UnitaryZariskiDense.full : GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.proof
+
+theorem ComplexSets.GenericProjectionFinite.full : GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.full GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.full
+
+theorem ComplexSets.FibreBound.full : GroundTheory.Heights₂.Heights.ComplexSets.FibreBound.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.FibreBound.proof
+
+theorem ComplexSets.PrimitiveElementFibres.full : GroundTheory.Heights₂.Heights.ComplexSets.PrimitiveElementFibres.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.PrimitiveElementFibres.proof
+
+theorem ComplexSets.DiscriminantCover.full : GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.proof GroundTheory.Heights₂.Heights.ComplexSets.PrimitiveElementFibres.full
+
+theorem NullSmaller.full : GroundTheory.Heights₂.Heights.NullSmaller.Statement :=
+  GroundTheory.Heights₂.Heights.NullSmaller.proof
+
+theorem FrameJacobianSum.full : GroundTheory.Heights₂.Heights.FrameJacobianSum.Statement :=
+  GroundTheory.Heights₂.Heights.FrameJacobianSum.proof
+
+theorem GraphAreaHolomorphic.full : GroundTheory.Heights₂.Heights.GraphAreaHolomorphic.Statement :=
+  GroundTheory.Heights₂.Heights.GraphAreaHolomorphic.proof GroundTheory.Heights₂.Heights.AreaGraph.full
+
+theorem ProjectionFormula.full : GroundTheory.Heights₂.Heights.ProjectionFormula.Statement :=
+  GroundTheory.Heights₂.Heights.ProjectionFormula.proof GroundTheory.Heights₂.Heights.AreaMultiplicity.full GroundTheory.Heights₂.Heights.FrameJacobianSum.full GroundTheory.Heights₂.Heights.GraphAreaHolomorphic.full
+
+theorem LocalGraphMass.full : GroundTheory.Heights₂.Heights.LocalGraphMass.Statement :=
+  GroundTheory.Heights₂.Heights.LocalGraphMass.proof GroundTheory.Heights₂.Heights.ProjectionFormula.full
+
+theorem MassFinite.full : GroundTheory.Heights₂.Heights.MassFinite.Statement :=
+  GroundTheory.Heights₂.Heights.MassFinite.proof GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.FibreBound.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.NullSmaller.full GroundTheory.Heights₂.Heights.LocalGraphMass.full
+
+theorem ChartMassCompact.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
+    GroundTheory.Heights₂.Heights.ChartMassCompact.Statement :=
+  GroundTheory.Heights₂.Heights.ChartMassCompact.proof (GroundTheory.Heights₂.Heights.ChartMassCompare.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.MassFinite.full
+
+theorem LocalizationPrimeDVR.full : GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.Statement :=
+  GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.proof
+
+theorem NormFormEval.full : GroundTheory.Heights₂.Heights.NormFormEval.Statement :=
+  GroundTheory.Heights₂.Heights.NormFormEval.proof
+
+theorem NormFormEmbeddings.full : GroundTheory.Heights₂.Heights.NormFormEmbeddings.Statement :=
+  GroundTheory.Heights₂.Heights.NormFormEmbeddings.proof GroundTheory.Heights₂.Heights.NormFormEval.full
+
+theorem LinearFormPrime.full : GroundTheory.Heights₂.Heights.LinearFormPrime.Statement :=
+  GroundTheory.Heights₂.Heights.LinearFormPrime.proof
+
+theorem MapDvdDescent.full : GroundTheory.Heights₂.Heights.MapDvdDescent.Statement :=
+  GroundTheory.Heights₂.Heights.MapDvdDescent.proof
+
+theorem NormFormDvd.full : GroundTheory.Heights₂.Heights.NormFormDvd.Statement :=
+  GroundTheory.Heights₂.Heights.NormFormDvd.proof GroundTheory.Heights₂.Heights.NormFormEmbeddings.full GroundTheory.Heights₂.Heights.LinearFormPrime.full GroundTheory.Heights₂.Heights.MapDvdDescent.full
+
+theorem PrimeMapFractionRing.full : GroundTheory.Heights₂.Heights.PrimeMapFractionRing.Statement :=
+  GroundTheory.Heights₂.Heights.PrimeMapFractionRing.proof
+
+theorem NormOfDividedForm.full : GroundTheory.Heights₂.Heights.NormOfDividedForm.Statement :=
+  GroundTheory.Heights₂.Heights.NormOfDividedForm.proof GroundTheory.Heights₂.Heights.NormFormEval.full GroundTheory.Heights₂.Heights.NormFormDvd.full GroundTheory.Heights₂.Heights.PrimeMapFractionRing.full
+
+theorem ChartNorm.full : GroundTheory.Heights₂.Heights.ChartNorm.Statement :=
+  GroundTheory.Heights₂.Heights.ChartNorm.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.ChartLocDomain.full GroundTheory.Heights₂.Heights.ChartFirstGroupPrime.full GroundTheory.Heights₂.Heights.ChartFirstGroupDvd.full GroundTheory.Heights₂.Heights.NormOfDividedForm.full
+
+theorem ChowFormDimLe.full : GroundTheory.Heights₂.Heights.ChowFormDimLe.Statement :=
+  GroundTheory.Heights₂.Heights.ChowFormDimLe.proof
+
+theorem SpecFirstNe.full : GroundTheory.Heights₂.Heights.SpecFirstNe.Statement :=
+  GroundTheory.Heights₂.Heights.SpecFirstNe.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartLocDomain.full GroundTheory.Heights₂.Heights.ChartNorm.full
+
+theorem EmultiplicityOrd.full : GroundTheory.Heights₂.Heights.EmultiplicityOrd.Statement :=
+  GroundTheory.Heights₂.Heights.EmultiplicityOrd.proof GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.full
+
+theorem SectionOrder.full : GroundTheory.Heights₂.Heights.SectionOrder.Statement :=
+  GroundTheory.Heights₂.Heights.SectionOrder.proof GroundTheory.Heights₂.Heights.IncIdealBelow.full GroundTheory.Heights₂.Heights.SpecFirstMemIncIdeal.full GroundTheory.Heights₂.Heights.ChartChoice.full GroundTheory.Heights₂.Heights.SpecFirstNe.full GroundTheory.Heights₂.Heights.LocalizationPrimeDVR.full GroundTheory.Heights₂.Heights.EmultiplicityOrd.full GroundTheory.Heights₂.Heights.ChartFinite.full GroundTheory.Heights₂.Heights.ChartLocDomain.full GroundTheory.Heights₂.Heights.ChartNorm.full GroundTheory.Heights₂.Heights.ChartLength.full GroundTheory.Heights₂.Heights.LengthQuotientDet.full
+
+theorem ChowFormSection.full : GroundTheory.Heights₂.Heights.ChowFormSection.Statement :=
+  GroundTheory.Heights₂.Heights.ChowFormSection.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ConeDimComponent.full GroundTheory.Heights₂.Heights.ChowFormExists.full GroundTheory.Heights₂.Heights.IncIdealPrime.full GroundTheory.Heights₂.Heights.SectionOrder.full
+
+theorem ComplexSets.FiniteProjectionsGeneric.full : GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsGeneric.Statement :=
+  GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsGeneric.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.full GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.full
+
+theorem IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.Statement :=
+  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.proof
+
+theorem IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.Statement :=
+  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.proof
+
+theorem SheetOnlyNull.full : GroundTheory.Heights₂.Heights.SheetOnlyNull.Statement :=
+  GroundTheory.Heights₂.Heights.SheetOnlyNull.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.full
+
+theorem PosPartLocal.full : GroundTheory.Heights₂.Heights.PosPartLocal.Statement :=
+  GroundTheory.Heights₂.Heights.PosPartLocal.proof
+
+theorem PosPartSplit.full : GroundTheory.Heights₂.Heights.PosPartSplit.Statement :=
+  GroundTheory.Heights₂.Heights.PosPartSplit.proof
+
+theorem PosPartIndep.full : GroundTheory.Heights₂.Heights.PosPartIndep.Statement :=
+  GroundTheory.Heights₂.Heights.PosPartIndep.proof GroundTheory.Heights₂.Heights.SheetOnlyNull.full GroundTheory.Heights₂.Heights.PosPartLocal.full GroundTheory.Heights₂.Heights.PosPartSplit.full
+
+theorem IntegralIndep.full : GroundTheory.Heights₂.Heights.IntegralIndep.Statement :=
+  GroundTheory.Heights₂.Heights.IntegralIndep.proof GroundTheory.Heights₂.Heights.PosPartIndep.full
+
+theorem StokesOffDiscriminant.full : GroundTheory.Heights₂.Heights.StokesOffDiscriminant.Statement :=
+  GroundTheory.Heights₂.Heights.StokesOffDiscriminant.proof
+
+theorem CutOffShape.full : GroundTheory.Heights₂.Heights.CutOffShape.Statement :=
+  GroundTheory.Heights₂.Heights.CutOffShape.proof
+
+theorem TubeFormCompare.full : GroundTheory.Heights₂.Heights.TubeFormCompare.Statement :=
+  GroundTheory.Heights₂.Heights.TubeFormCompare.proof
+
+theorem CutOffTube.of_open (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
+    GroundTheory.Heights₂.Heights.CutOffTube.Statement :=
+  GroundTheory.Heights₂.Heights.CutOffTube.proof GroundTheory.Heights₂.Heights.TubeFormCompare.full hTubeEuclMass
+
+theorem HessCCompPluri.full : GroundTheory.Heights₂.Heights.HessCCompPluri.Statement :=
+  GroundTheory.Heights₂.Heights.HessCCompPluri.proof
+
+theorem LogLogCutHess.full : GroundTheory.Heights₂.Heights.LogLogCutHess.Statement :=
+  GroundTheory.Heights₂.Heights.LogLogCutHess.proof GroundTheory.Heights₂.Heights.HessCCompPluri.full
+
+theorem CutOffGradient.full : GroundTheory.Heights₂.Heights.CutOffGradient.Statement :=
+  GroundTheory.Heights₂.Heights.CutOffGradient.proof GroundTheory.Heights₂.Heights.LogLogCutHess.full
+
+theorem CutOff.of_open (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
+    GroundTheory.Heights₂.Heights.CutOff.Statement :=
+  GroundTheory.Heights₂.Heights.CutOff.proof GroundTheory.Heights₂.Heights.CutOffShape.full (GroundTheory.Heights₂.Heights.CutOffTube.of_open hTubeEuclMass) GroundTheory.Heights₂.Heights.CutOffGradient.full
+
+theorem CutOffDominated.full : GroundTheory.Heights₂.Heights.CutOffDominated.Statement :=
+  GroundTheory.Heights₂.Heights.CutOffDominated.proof
+
+theorem MaDensLeibniz.full : GroundTheory.Heights₂.Heights.MaDensLeibniz.Statement :=
+  GroundTheory.Heights₂.Heights.MaDensLeibniz.proof
+
+theorem EnergyDensNonneg.full : GroundTheory.Heights₂.Heights.EnergyDensNonneg.Statement :=
+  GroundTheory.Heights₂.Heights.EnergyDensNonneg.proof
+
+theorem GradDensSheetBound.full : GroundTheory.Heights₂.Heights.GradDensSheetBound.Statement :=
+  GroundTheory.Heights₂.Heights.GradDensSheetBound.proof
+
+theorem CutOffBoundaryBound.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) :
+    GroundTheory.Heights₂.Heights.CutOffBoundaryBound.Statement :=
+  GroundTheory.Heights₂.Heights.CutOffBoundaryBound.proof (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.MaDensLeibniz.full GroundTheory.Heights₂.Heights.EnergyDensNonneg.full GroundTheory.Heights₂.Heights.GradDensSheetBound.full
+
+theorem CutOffLimit.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
+    GroundTheory.Heights₂.Heights.CutOffLimit.Statement :=
+  GroundTheory.Heights₂.Heights.CutOffLimit.proof (GroundTheory.Heights₂.Heights.CutOff.of_open hTubeEuclMass) (GroundTheory.Heights₂.Heights.ChartMassCompact.of_open hSheetImageAreaSet) GroundTheory.Heights₂.Heights.CutOffDominated.full (GroundTheory.Heights₂.Heights.CutOffBoundaryBound.of_open hSheetImageAreaSet)
+
+theorem StokesOnVariety.of_open (hSheetImageAreaSet : GroundTheory.Heights₂.Heights.SheetImageAreaSet.Statement) (hTubeEuclMass : GroundTheory.Heights₂.Heights.TubeEuclMass.Statement) :
+    GroundTheory.Heights₂.Heights.StokesOnVariety.Statement :=
+  GroundTheory.Heights₂.Heights.StokesOnVariety.proof GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.StokesOffDiscriminant.full (GroundTheory.Heights₂.Heights.CutOffLimit.of_open hSheetImageAreaSet hTubeEuclMass)
+
+theorem SheetSumMeasurable.full : GroundTheory.Heights₂.Heights.SheetSumMeasurable.Statement :=
+  GroundTheory.Heights₂.Heights.SheetSumMeasurable.proof
+
+theorem LocalGraphProjectionMass.full : GroundTheory.Heights₂.Heights.LocalGraphProjectionMass.Statement :=
+  GroundTheory.Heights₂.Heights.LocalGraphProjectionMass.proof GroundTheory.Heights₂.Heights.ProjectionFormula.full
+
+theorem VarietyProjectionMass.full : GroundTheory.Heights₂.Heights.VarietyProjectionMass.Statement :=
+  GroundTheory.Heights₂.Heights.VarietyProjectionMass.proof GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.LocalGraphProjectionMass.full
+
+theorem IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.Statement :=
+  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.proof
+
+theorem VarietySlabMeasure.full : GroundTheory.Heights₂.Heights.VarietySlabMeasure.Statement :=
+  GroundTheory.Heights₂.Heights.VarietySlabMeasure.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsGeneric.full GroundTheory.Heights₂.Heights.VarietyProjectionMass.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PolySublevel.full
+
+theorem VarSlabMeasure.full : GroundTheory.Heights₂.Heights.VarSlabMeasure.Statement :=
+  GroundTheory.Heights₂.Heights.VarSlabMeasure.proof GroundTheory.Heights₂.Heights.VarietySlabMeasure.full
+
+theorem ConeSlabBound.full : GroundTheory.Heights₂.Heights.ConeSlabBound.Statement :=
+  GroundTheory.Heights₂.Heights.ConeSlabBound.proof GroundTheory.Heights₂.Heights.VarietySlabMeasure.full
+
+theorem ZeroLocusDimH.full : GroundTheory.Heights₂.Heights.ZeroLocusDimH.Statement :=
+  GroundTheory.Heights₂.Heights.ZeroLocusDimH.proof
+
+theorem ConeHyperplaneNull.full : GroundTheory.Heights₂.Heights.ConeHyperplaneNull.Statement :=
+  GroundTheory.Heights₂.Heights.ConeHyperplaneNull.proof GroundTheory.Heights₂.Heights.ZeroLocusDimH.full GroundTheory.Heights₂.Heights.ChowFormDimLe.full
+
+theorem ImplicitCurve.full : GroundTheory.Heights₂.Heights.ImplicitCurve.Statement :=
+  GroundTheory.Heights₂.Heights.ImplicitCurve.proof
+
+theorem SliceMatricesOpen.full : GroundTheory.Heights₂.Heights.SliceMatricesOpen.Statement :=
+  GroundTheory.Heights₂.Heights.SliceMatricesOpen.proof
+
+theorem IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.Statement :=
+  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.proof
+
+theorem IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.Statement :=
+  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.proof
+
+theorem IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.Statement :=
+  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full
+
+theorem IndefiniteRowSideFullHecke.ComplexSets.PuncturedCoverCycles.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PuncturedCoverCycles.Statement :=
+  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.PuncturedCoverCycles.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FibreSectionsCovering.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteCoverPuncturedPolydisc.full
+
+theorem IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.Statement :=
+  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.proof GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full
+
+theorem IndefiniteRowSideFullHecke.ComplexSets.SliceImmersiveGeneral.full : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SliceImmersiveGeneral.Statement :=
+  GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SliceImmersiveGeneral.proof GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.full GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ZeroSetOpenMass.full
+
+theorem ConeAreaFormula.of_open (hConeGraphCover : GroundTheory.Heights₂.Heights.ConeGraphCover.Statement) (hGraphAreaFibre : GroundTheory.Heights₂.Heights.GraphAreaFibre.Statement) :
+    GroundTheory.Heights₂.Heights.ConeAreaFormula.Statement :=
+  GroundTheory.Heights₂.Heights.ConeAreaFormula.proof hConeGraphCover hGraphAreaFibre
+
+theorem ConeLocalMass.of_open (hConeFiniteFibreDim : GroundTheory.Heights₂.Heights.ConeFiniteFibreDim.Statement) :
+    GroundTheory.Heights₂.Heights.ConeLocalMass.Statement :=
+  GroundTheory.Heights₂.Heights.ConeLocalMass.proof hConeFiniteFibreDim GroundTheory.Heights₂.Heights.MassFinite.full GroundTheory.Heights₂.Heights.NullSmaller.full
+
+theorem ConeTangentAverage.of_open (hConeFiniteFibreDim : GroundTheory.Heights₂.Heights.ConeFiniteFibreDim.Statement) (hConeJacMeasurable : GroundTheory.Heights₂.Heights.ConeJacMeasurable.Statement) (hConeTangentDim : GroundTheory.Heights₂.Heights.ConeTangentDim.Statement) (hTangentGaussInvariant : GroundTheory.Heights₂.Heights.TangentGaussInvariant.Statement) :
+    GroundTheory.Heights₂.Heights.ConeTangentAverage.Statement :=
+  GroundTheory.Heights₂.Heights.ConeTangentAverage.proof (GroundTheory.Heights₂.Heights.ConeLocalMass.of_open hConeFiniteFibreDim) hConeJacMeasurable hConeTangentDim hTangentGaussInvariant
+
+theorem ConeRadialIntegral.full : GroundTheory.Heights₂.Heights.ConeRadialIntegral.Statement :=
+  GroundTheory.Heights₂.Heights.ConeRadialIntegral.proof
+
+theorem LeadPlaneJac.full : GroundTheory.Heights₂.Heights.LeadPlaneJac.Statement :=
+  GroundTheory.Heights₂.Heights.LeadPlaneJac.proof
+
+theorem LeadBlockGaussTail.full : GroundTheory.Heights₂.Heights.LeadBlockGaussTail.Statement :=
+  GroundTheory.Heights₂.Heights.LeadBlockGaussTail.proof
+
+theorem TangentGaussMoment.full : GroundTheory.Heights₂.Heights.TangentGaussMoment.Statement :=
+  GroundTheory.Heights₂.Heights.TangentGaussMoment.proof GroundTheory.Heights₂.Heights.LeadPlaneJac.full GroundTheory.Heights₂.Heights.LeadBlockGaussTail.full
+
+theorem ConeFibreAverage.of_open (hConeFiniteFibreDim : GroundTheory.Heights₂.Heights.ConeFiniteFibreDim.Statement) (hConeGraphCover : GroundTheory.Heights₂.Heights.ConeGraphCover.Statement) (hConeJacMeasurable : GroundTheory.Heights₂.Heights.ConeJacMeasurable.Statement) (hConeTangentDim : GroundTheory.Heights₂.Heights.ConeTangentDim.Statement) (hGraphAreaFibre : GroundTheory.Heights₂.Heights.GraphAreaFibre.Statement) (hTangentGaussInvariant : GroundTheory.Heights₂.Heights.TangentGaussInvariant.Statement) :
+    GroundTheory.Heights₂.Heights.ConeFibreAverage.Statement :=
+  GroundTheory.Heights₂.Heights.ConeFibreAverage.proof (GroundTheory.Heights₂.Heights.ConeAreaFormula.of_open hConeGraphCover hGraphAreaFibre) (GroundTheory.Heights₂.Heights.ConeTangentAverage.of_open hConeFiniteFibreDim hConeJacMeasurable hConeTangentDim hTangentGaussInvariant) GroundTheory.Heights₂.Heights.ConeRadialIntegral.full GroundTheory.Heights₂.Heights.TangentGaussMoment.full
+
+theorem ProjSecDegree.full : GroundTheory.Heights₂.Heights.ProjSecDegree.Statement :=
+  GroundTheory.Heights₂.Heights.ProjSecDegree.proof
+
+theorem ProjSecDomain.full : GroundTheory.Heights₂.Heights.ProjSecDomain.Statement :=
+  GroundTheory.Heights₂.Heights.ProjSecDomain.proof
+
+theorem ProjChowNonzero.full : GroundTheory.Heights₂.Heights.ProjChowNonzero.Statement :=
+  GroundTheory.Heights₂.Heights.ProjChowNonzero.proof
+
+theorem SecDegreeLe.full : GroundTheory.Heights₂.Heights.SecDegreeLe.Statement :=
+  GroundTheory.Heights₂.Heights.SecDegreeLe.proof
+
+theorem SecFiniteUnit.full : GroundTheory.Heights₂.Heights.SecFiniteUnit.Statement :=
+  GroundTheory.Heights₂.Heights.SecFiniteUnit.proof
+
+theorem SecRankSpecialize.full : GroundTheory.Heights₂.Heights.SecRankSpecialize.Statement :=
+  GroundTheory.Heights₂.Heights.SecRankSpecialize.proof
+
+theorem SecDegreeGe.full : GroundTheory.Heights₂.Heights.SecDegreeGe.Statement :=
+  GroundTheory.Heights₂.Heights.SecDegreeGe.proof GroundTheory.Heights₂.Heights.SecFiniteUnit.full GroundTheory.Heights₂.Heights.SecRankSpecialize.full
+
+theorem ProjDegreeChow.full : GroundTheory.Heights₂.Heights.ProjDegreeChow.Statement :=
+  GroundTheory.Heights₂.Heights.ProjDegreeChow.proof GroundTheory.Heights₂.Heights.ProjSecDegree.full GroundTheory.Heights₂.Heights.ProjSecDomain.full GroundTheory.Heights₂.Heights.ProjChowNonzero.full GroundTheory.Heights₂.Heights.SecDegreeLe.full GroundTheory.Heights₂.Heights.SecDegreeGe.full
+
+theorem ConeFibreDegree.full : GroundTheory.Heights₂.Heights.ConeFibreDegree.Statement :=
+  GroundTheory.Heights₂.Heights.ConeFibreDegree.proof GroundTheory.Heights₂.Heights.ConeDimOfChowForm.full GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.full GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full GroundTheory.Heights₂.Heights.ProjDegreeChow.full
+
+theorem ConeMassOfFibre.of_open (hConeFiniteFibreDim : GroundTheory.Heights₂.Heights.ConeFiniteFibreDim.Statement) (hConeGraphCover : GroundTheory.Heights₂.Heights.ConeGraphCover.Statement) (hConeJacMeasurable : GroundTheory.Heights₂.Heights.ConeJacMeasurable.Statement) (hConeTangentDim : GroundTheory.Heights₂.Heights.ConeTangentDim.Statement) (hGraphAreaFibre : GroundTheory.Heights₂.Heights.GraphAreaFibre.Statement) (hTangentGaussInvariant : GroundTheory.Heights₂.Heights.TangentGaussInvariant.Statement) :
+    GroundTheory.Heights₂.Heights.ConeMassOfFibre.Statement :=
+  GroundTheory.Heights₂.Heights.ConeMassOfFibre.proof (GroundTheory.Heights₂.Heights.ConeFibreAverage.of_open hConeFiniteFibreDim hConeGraphCover hConeJacMeasurable hConeTangentDim hGraphAreaFibre hTangentGaussInvariant)
+
+end GroundTheory.Heights₂.Heights

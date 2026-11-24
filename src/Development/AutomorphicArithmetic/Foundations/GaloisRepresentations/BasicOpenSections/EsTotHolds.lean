@@ -1,0 +1,21 @@
+module
+
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.PFrobTors
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.PFrobQ
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.PBaseFacts
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.PDenseGen
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.FrEx
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.PCorrPull
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.PCorrComm
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.PEsGen
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.PCorrOpEq
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.BasicOpenSections.CycAllHolds
+
+@[expose] public section
+
+namespace UpperTheory.Gal.Mod
+
+theorem esGen_holds (h : GlobalTheory.EtC.SpecGood) : ESGen :=
+  esGen h esPt_holds nwtOne (frobQ frobTors) baseFacts denseGen frEx @corrPull @corrComm
+
+end UpperTheory.Gal.Mod

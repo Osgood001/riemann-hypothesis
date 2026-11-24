@@ -1,0 +1,36 @@
+module
+
+public import Mathlib
+public import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PFibreNormDehomRoots
+public import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PCharpolyRootLift
+public import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.PFibreNormPullbackX
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullRatiosAlgebraic
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullConeNull
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullConeDegree
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullGradedAlgebraic
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullFormsGeneric
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullSectionIntegral
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PFibreNormDehomCharpoly
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PDehomCharpolyForms
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PFibreNormDehomIntegral
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PFibreNormBadPrimesFinite
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PFibreNormGoodPrimeIntegral
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PFibreNormPrimeBound
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullConeDegreeInt
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullSectionIntegralInt
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PDehomNormPIntegral
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PChartPrimePowerInverse
+
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.HilbertSamuel
+
+theorem FibreNormDehomRoots.full : FibreNormDehomRoots.Statement :=
+  FibreNormDehomRoots.proof
+    (PullFormsGeneric.proof
+      (PullRatiosAlgebraic.proof PullConeNull.proof PullConeDegree.proof PullGradedAlgebraic.proof))
+    PullSectionIntegral.proof CharpolyRootLift.proof
+
+end GroundTheory.Heights₂.Heights.HilbertSamuel

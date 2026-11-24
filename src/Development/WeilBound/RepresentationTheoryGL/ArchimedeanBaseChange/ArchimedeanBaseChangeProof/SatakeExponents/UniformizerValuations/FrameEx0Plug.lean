@@ -1,0 +1,33 @@
+module
+
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameEx0Of
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.SatakeRigidity.FullThetaHolds
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.SatakeRigidity.LWeightEx
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.QuadraticCharacterNorms.QuadCharNorm
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.GlobalCharacterOfFiniteInputs
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.QuadraticCharacterNorms.BadEx2Of
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.HyperbolicEntryBounds.ArchFinal
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.HyperbolicEntryBounds.ChainFinal
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.HyperbolicEntryBounds.WExFinal
+public import Development.WeilBound.CoreStatements.HodgeTatePoints.CongruenceInertMatching
+public import Development.WeilBound.CoreStatements.HodgeTatePoints.SplitMuMatching
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionExistsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MuCharacterExistsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UniformizerExistsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SplitPlaceExistsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactLevelExistsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LevelExistsBisStatement
+
+@[expose] public section
+
+namespace PositivityTheory.Rg.BcB.F.Ex0
+
+open PositivityTheory.Rg.BcB.F
+
+theorem frameEx0_plug (h2 : PositivityTheory.Rg.Bc.ArchbcB.B.M2) (h3 : PositivityTheory.Rg.Bc.ArchbcB.B.M3) : FrameEx0 :=
+  frameEx0_of Rig.weightEx Rig.unrAE_holds (GlobalTheory.T.mu_character_exists Fok.Mu3.muExists) GlobalTheory.T.sec_ex GlobalTheory.T.uniformizer_exists GlobalTheory.T.level_exists_bis
+    GlobalTheory.T.split_place_exists (badEx2_of h2 h3) GlobalTheory.T.compact_level_exists PositivityTheory.Rg.BcB.G8.translation_existence_holds F0.chainEx_holds F0.archEx_holds F0.wEx_holds
+
+theorem frameEx0 : FrameEx0 := frameEx0_plug PositivityTheory.HtPt.Bc.CongruenceInertMatching.matchCongInert PositivityTheory.HtPt.Bc.SplitMuMatching.matchCtMuSplit
+
+end PositivityTheory.Rg.BcB.F.Ex0

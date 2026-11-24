@@ -1,0 +1,20 @@
+module
+
+public import Mathlib
+public import Development.EtaleCohomology.EtaleSheaves.GeoProof
+public import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.NeighbourhoodCohomologyObstructionExact
+public import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.AffineGeometricCaseOfObstructionExactNatural
+public import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.NeighbourhoodShrinkingOfObstructionExactNatural
+public import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomologyClassKilledOnNbhdPair
+public import Development.AutomorphicArithmetic.CommutativeAlgebra.RelativeCohomologyConnectingNaturality
+public import Development.AutomorphicArithmetic.CommutativeAlgebra.RelativeCohomologyColimitOfExactOfNaturality
+
+@[expose] public section
+
+theorem UpperTheory.Cb.etale_cohomology_class_killed_on_neighborhood :
+    LateralTheory.E.SecondDegreeKilling.Nbhd.LeafKillNbhd :=
+  LateralTheory.E.NeighbourhoodKilling.goal_of UpperTheory.etaleCohomology_class_killed_on_nbhd_pair UpperTheory.Cb.neighbourhood_cohomology_obstruction_exact UpperTheory.relativeCohomology_connecting_naturality
+    (LateralTheory.E.Bridge_yfiPf.Bridge_of_geo_pack
+      (LateralTheory.E.GeoProof.Geo_of (UpperTheory.Cb.affineGeometricCase_of_obstructionExact_natural UpperTheory.Cb.neighbourhood_cohomology_obstruction_exact UpperTheory.relativeCohomology_connecting_naturality)
+        (UpperTheory.Cb.neighbourhoodShrinking_of_obstructionExact_natural UpperTheory.Cb.neighbourhood_cohomology_obstruction_exact UpperTheory.relativeCohomology_connecting_naturality))
+      (UpperTheory.relativeCohomology_colimit_of_exact_of_naturality UpperTheory.Cb.neighbourhood_cohomology_obstruction_exact UpperTheory.relativeCohomology_connecting_naturality))

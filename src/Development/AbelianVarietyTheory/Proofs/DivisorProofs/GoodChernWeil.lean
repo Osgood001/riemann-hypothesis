@@ -1,0 +1,17 @@
+module
+
+public import Mathlib
+public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordProportionality
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GoodChernWeilOfGoodTopChernForm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernNumbersEqIntegralChernFormsSmoothMetricStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FullFlagBundlePushForwardFormulaStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodMetricTopChernFormIntegralEqSmoothStatement
+
+@[expose] public section
+
+namespace GlobalTheory.GoodMetric
+
+theorem goodChernWeil : GlobalTheory.Published.GoodChernWeil :=
+  goodChernWeil_of_goodTopChernForm GlobalTheory.T.goodMetric_topChernForm_integral_eq_smooth GlobalTheory.T.chernNumbers_eq_integral_chernForms_smoothMetric GlobalTheory.T.fullFlagBundle_pushForward_formula
+
+end GlobalTheory.GoodMetric

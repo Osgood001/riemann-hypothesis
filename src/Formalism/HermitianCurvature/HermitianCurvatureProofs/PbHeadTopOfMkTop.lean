@@ -1,0 +1,33 @@
+module
+
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEXAsm
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEXHeadFam
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEXMkCpt
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEXPbEquiv2
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEXPbRight2
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEXPbSmooth
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEXPbSupp2
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEXRadSliceTop
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEXSliceTop
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEXTopPt
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutEX_UwTop
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.TopUnipotentIntegralPositive
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.HeadGermSmoothExtension
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.FirstBasisVectorIsRadialSlice
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.FrameParameterRegularity
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.PbHeadTopOf
+
+@[expose] public section
+
+namespace Formalism.FourierDecayAlt.P
+
+theorem pb_exhPic_of_mkTop (hMk : CutEX.MkTop) : PBI.ExhPic :=
+  CutEX.exhPic_of_leaves CutEX.exceptional_assumption_holds unipotent_weight_top slice_top_exhaustion pullback_smooth
+    pullback_right_action pullback_support pullback_equivalence hMk compact_truncation_construction top_point_existence
+    determinant_exceptional_holds head_family_exhaustion radial_slice_top radial_of_function_exceptional radial_extension_exceptional
+    residue_top_exceptional_level frame_parameter_regularity (pb_radWordSliceOfHeadPic head_picture) level_zero_picture_of_slice
+
+theorem pb_headTop_of_mkTop (hMk : CutEX.MkTop) : KB.HeadTop :=
+  pb_headTop_of top_unipotent_integral (pb_exhPic_of_mkTop hMk)
+
+end Formalism.FourierDecayAlt.P

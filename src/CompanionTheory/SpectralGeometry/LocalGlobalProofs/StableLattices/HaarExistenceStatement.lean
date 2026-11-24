@@ -1,0 +1,3 @@
+module
+
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.HaarExistence

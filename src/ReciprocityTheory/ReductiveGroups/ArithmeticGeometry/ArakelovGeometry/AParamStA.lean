@@ -1,0 +1,16 @@
+module
+
+public import Mathlib
+public import ReciprocityTheory.AnalyticForms.RegularLocalRings.JacChart
+public import ReciprocityTheory.AnalyticForms.RegularLocalRings.BaseChangeC
+public import ReciprocityTheory.AnalyticForms.RegularLocalRings.IntToRat
+public import ReciprocityTheory.CommutativeAlgebra.PolynomialHeights.HeightAddRingKrullDimQuotientMvPolynomialField
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.IsSemipositiveOn
+
+@[expose] public section
+
+namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
+
+open MvPolynomial Module ReciprocityTheory.AnForm.R
+
+end ReciprocityTheory.ChartRestriction.G.ArakelovGeometry

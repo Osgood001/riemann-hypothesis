@@ -1,0 +1,18 @@
+module
+
+public import Formalism.LocalToGlobal.CharacterGerms.RankMaximalSelfOfProjection
+public import Formalism.LocalToGlobal.CharacterGerms.LinearPartUnitFrobenius
+public import Formalism.LocalToGlobal.CharacterGerms.ConstantZeroMultiplicationPair
+public import Formalism.LocalToGlobal.CharacterGerms.FunEqCoreHolds
+public import Formalism.LocalToGlobal.CharacterGerms.RowTiePKeyEig2
+
+@[expose] public section
+
+set_option autoImplicit false
+
+namespace Formalism.L2.FormalSeriesBounds
+
+theorem rank_maximal_self_unconditional : RankMaximalSelfOfNondegenerate :=
+  rank_maximal_self_of_eigen first_vanishing_core funEqCore_holds curve_linear_term_unconditional aLinAdj_holds RowTiePKey.keyEig_holds
+
+end Formalism.L2.FormalSeriesBounds

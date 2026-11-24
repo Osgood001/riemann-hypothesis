@@ -1,0 +1,39 @@
+module
+
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.LocalZeroExpansionWithMultiplicity
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.LGrowth
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.LRight
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.Positivity
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.TrivLogDeriv
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.TrivReal
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.LocalZerosOf
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.NoZeroComplexOf
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.RealLargeTOf
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.RealSmallTOf
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.TwoRealOf
+public import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.ZFRDirichletOf
+public import Formalism.ZeroFreeRegion.FinalZFR
+
+@[expose] public section
+
+namespace Formalism.ZeroFreeDirichlet
+
+theorem localZeros : LocalZeros :=
+  localZeroSumBoundOfBounds localZeroExpansionWithMultiplicity lfunction_polynomial_growth inverseBound
+
+theorem noZeroComplex : NoZeroComplex :=
+  zeroFreeNonRealCharOfBounds localZeros l_log_deriv_right negLogDerivPositivity
+
+theorem realLargeT : RealLargeT :=
+  realCharZeroFreeLargeHeightOfBounds localZeros l_log_deriv_right negLogDerivPositivity trivial_log_deriv_bound
+
+theorem realSmallT : RealSmallT :=
+  realCharZeroSmallHeightOfBounds localZeros l_log_deriv_right negLogDerivPositivity realCharConj
+
+theorem twoReal : TwoReal :=
+  twoRealCharNoCommonZeroOfBounds localZeros l_log_deriv_right negLogDerivPositivity
+
+theorem zFRDirichlet : ZFRDirichlet :=
+  zeroFreeRegionExceptionalZeroOfBounds Formalism.ZF.zeroFreeRegion trivialCharZerosOfZeta noZeroComplex realLargeT realSmallT twoReal
+
+end Formalism.ZeroFreeDirichlet

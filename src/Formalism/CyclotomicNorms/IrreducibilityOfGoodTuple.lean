@@ -1,0 +1,23 @@
+module
+
+public import Mathlib
+public import Formalism.TameInertiaTowers.CentralOrderTwo.OrderOfThreeUnitsTwoPow
+public import Formalism.TameInertiaTowers.CentralOrderTwo.TwoAdic
+public import Formalism.TameInertiaTowers.CentralOrderTwo.MemDecompositionSubgroupIff
+public import Formalism.TameInertiaTowers.CentralOrderTwo.NegOneNeOneUnitsZmodFour
+public import Formalism.TameInertiaTowers.CentralOrderTwo.Groups
+public import Formalism.TameInertiaTowers.CentralOrderTwo.NormalOrderTwoCentral
+public import Formalism.CyclotomicNorms.NonsquarefreeBounds.Jordan
+public import Formalism.CyclotomicNorms.NonsquarefreeBounds.RestrictionOfBlocksAndJordan
+public import Formalism.CyclotomicNorms.NonsquarefreeBounds.NonsquarefreeMonicBoundHolds
+public import Formalism.CyclotomicNorms.NonsquarefreeBounds.IrreducibilityOfRestriction
+
+@[expose] public section
+
+namespace Formalism.CyclotomicNorms
+
+theorem restriction : Restriction := restriction_of_blocks_and_jordan blocks_form_cycle jordan_transitivity
+
+theorem irreducibility_of_good_tuple : IrreducibilityCriterion := irreducibility_of_restriction restriction
+
+end Formalism.CyclotomicNorms

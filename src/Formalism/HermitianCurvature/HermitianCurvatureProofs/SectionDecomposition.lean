@@ -1,0 +1,17 @@
+module
+
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.SectionDecompositionOfParts
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.InverseSplitting
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.ZhatSectionExists
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.StabilizerSplit
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.StabilizerPairs
+
+@[expose] public section
+
+namespace Formalism.FourierDecayAlt.P
+
+theorem c2_section_decomp : Formalism.FourierDecayAlt.C2.SectionDecomp :=
+  c2_section_decomp_of_pieces stabilizer_split stabilizer_pairs unipotent_radical_image upper_splitting standard_flag_property
+    unipotent_map_frame zhat_equivalence c2_tau_mem
+
+end Formalism.FourierDecayAlt.P

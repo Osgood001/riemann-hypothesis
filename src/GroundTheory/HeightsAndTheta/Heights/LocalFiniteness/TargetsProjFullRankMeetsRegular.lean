@@ -1,0 +1,52 @@
+module
+
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Assembly
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PChartFracSeparable
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PChowDegreePos
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeAverage
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PConeMapAreaOne
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PFsLogMeasurable
+public import Mathlib
+public import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.Statements
+public import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.UniformIntegrabilityProportionalityHolds
+public import GroundTheory.HeightsAndTheta.Heights.LocalFiniteness.ObjectsChowIntChowFormExists
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PChartIbpSymm
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PDualEnergyCharts
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PGaussDetFactor
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PGaussDualMin
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PGaussPoissonDual
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PGaussSqrt
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PRestCutCaseCompare
+public import GroundTheory.HeightsAndTheta.Heights.KernelsRest
+public import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Statements
+public import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Inhabitants
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PSectionIndexNorm
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PSectionQuotLocal
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PVertPointChart
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PVertPointResidue
+public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PVertPointSurj
+public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.CechDMemLocPart
+public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.LineBundleTwistVanish
+public import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Imports
+public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PChartDivisorLength
+public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PChartSectionNotMem
+public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PComponentsGenericCount
+public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PCurveVertPointMultChart
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivPushA
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffFubiniStudyRatioCompChart0
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegrableOnTargetOfTsupport
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.KerEqBotOfCoord
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialOfFun
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeH
+public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PPtsGenericCount
+public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSheetLift
+
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+theorem GroundTheory.Heights₂.Heights.AutoClose.Targets_ChartDivisorLength : GroundTheory.Heights₂.Heights.Targets.ChartDivisorLength.Statement :=
+  @GroundTheory.Heights₂.Heights.Targets.ChartDivisorLength.proof GroundTheory.Heights₂.Heights.Targets.ChartSectionNotMem.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_ChartDivisorComponents GroundTheory.Heights₂.Heights.AutoClose.Targets_ChartSectionLength
+
+theorem GroundTheory.Heights₂.Heights.AutoClose.ConeAverage : GroundTheory.Heights₂.Heights.ConeAverage.Statement :=
+  @GroundTheory.Heights₂.Heights.ConeAverage.proof GroundTheory.Heights₂.Heights.ConeIntegralMass.full GroundTheory.Heights₂.Heights.ChowDegreePos.proof GroundTheory.Heights₂.Heights.AutoClose.ConeFubini GroundTheory.Heights₂.Heights.AutoClose.FsLogAverage GroundTheory.Heights₂.Heights.FsLogMeasurable.proof

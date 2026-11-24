@@ -1,0 +1,18 @@
+module
+
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJA
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRhoAssembly
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRhoFrameLoc
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRhoCapSmooth
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRhoEigOrth
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRhoLagrange
+
+@[expose] public section
+
+namespace Formalism.FourierDecayAlt.P.CutMP.JA
+
+theorem rho_projection_existence : PRho.PRhoExists :=
+  PRhoCut.pRhoExists_of_cut PRhoCut.rho_projection_assembly PRhoCut.frame_locality_holds PRhoCut.capacity_smoothness_holds
+    PRhoCut.eigenvector_orthogonality_holds PRhoCut.lagrange_annihilation
+
+end Formalism.FourierDecayAlt.P.CutMP.JA

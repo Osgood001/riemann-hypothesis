@@ -1,0 +1,20 @@
+module
+
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.RealLeviDescent.InjectiveDecompositionAction
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoundarySquareLeviRealStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VanishingKernelLeviRealStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InjectiveRestrictionOfBdsqVanishStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InjectiveUnipotentOfRestrictionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HarishChandraDecompositionLeviStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ActionUnipotentRadicalRealStatement
+
+@[expose] public section
+
+namespace PositivityTheory.RgBcC.RealD
+
+theorem injective_decomposition_action_holds : InjectiveDecompositionAction :=
+  injective_decomposition_action_of GlobalTheory.T.boundary_square_levi_real GlobalTheory.T.vanishing_kernel_levi_real GlobalTheory.T.injective_restriction_of_bdsq_vanish GlobalTheory.T.injective_unipotent_of_restriction (hcdecL_of GlobalTheory.T.harish_chandra_decomposition_levi) GlobalTheory.T.action_unipotent_radical_real
+
+theorem hc_decomposition_levi_holds : HCdecLv := GlobalTheory.T.harish_chandra_decomposition_levi
+
+end PositivityTheory.RgBcC.RealD

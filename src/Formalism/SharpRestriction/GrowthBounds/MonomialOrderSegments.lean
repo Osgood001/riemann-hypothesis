@@ -1,0 +1,29 @@
+module
+
+public import Formalism.SharpRestriction.GrowthBounds.MonomialOrderSegments.PlaneGramTheoremOfLemmas
+public import Formalism.SharpRestriction.GrowthBounds.MonomialOrderSegments.BrData
+public import Formalism.SharpRestriction.GrowthBounds.MonomialOrderSegments.SecondValuationOfAdmitted
+public import Formalism.SharpRestriction.GrowthBounds.MonomialOrderSegments.BrRenExpandMonomial
+public import Formalism.SharpRestriction.GrowthBounds.MonomialOrderSegments.UnitLevelOne
+public import Formalism.SharpRestriction.GrowthBounds.MonomialOrderSegments.BrSpan
+
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.PlaneGram
+
+open Formalism.MainNotions.G
+
+theorem stmt (D : Formalism.BasicNotions.D7) {CH : ℝ} (hCH : 26 ≤ CH) : Formalism.MainNotions.PlaneGramData.Stmt D CH 2 24 60 := by
+  intro p O _ _ _ _ hSet hAdm
+  obtain ⟨⟨S⟩, n', hG⟩ := hSet
+  obtain ⟨-, h2, h3, h4, h5, h6⟩ := hAdm
+  exact Br.plane_gram_of_theorem_at S hG
+    (plane_gram_theorem_of_five_lemmas le_rfl (second_valuation_of_admitted h2) (brSPAN S h3) (brPROJ S h4) (brDIG D S hG h5)
+      (brDER S h6)) hCH
+
+theorem stmtE (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.PlaneGramData.ClosedFormOfAdmitted D :=
+  ⟨26, 2, 24, 60, by norm_num, by norm_num, by norm_num, by norm_num, fun _ hCH => stmt D hCH⟩
+
+end Formalism.MainNotions.PlaneGram

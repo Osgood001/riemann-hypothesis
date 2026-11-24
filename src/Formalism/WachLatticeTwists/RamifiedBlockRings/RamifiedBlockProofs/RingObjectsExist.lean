@@ -1,0 +1,18 @@
+module
+
+public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RingObjectsOfMatrixData
+public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.IdemFactor
+public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.SplitPts
+public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.IdemKO
+public import Formalism.WachLatticeTwists.RamifiedBlockRings.LocalToDisplayFree
+public import Formalism.WachLatticeTwists.CoprimeLiftBounds.StatBridgeChiOne
+public import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.Bridge
+public import Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelsOfBlockChiCOfBlockChiOne
+
+@[expose] public section
+
+namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
+
+theorem ring_objects_exist : RingObjectsExist := ring_objects_of_matrix_data eMat splitPts idemKO
+
+end Formalism.RepresentationBoundsCohomology.ringDataObjects

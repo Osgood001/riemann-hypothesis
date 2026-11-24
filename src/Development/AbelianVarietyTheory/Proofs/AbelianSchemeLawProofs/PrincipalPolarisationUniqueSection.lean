@@ -1,0 +1,14 @@
+module
+
+public import Mathlib
+public import Development.AbelianVarietyTheory.PublishedTheorems.AbelianLaws.PrincipalPolarisationOneSection
+public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.FinrankSectionsPrincipalPolarisationEqOne
+
+@[expose] public section
+
+namespace GlobalTheory.AbLaw
+
+theorem principalPolarisation_unique_section : GlobalTheory.Published.principalPolarisationOneSection :=
+  finrank_sections_principal_polarisation_eq_one
+
+end GlobalTheory.AbLaw
