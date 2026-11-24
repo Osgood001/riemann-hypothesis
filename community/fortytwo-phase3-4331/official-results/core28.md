@@ -1,6 +1,6 @@
 # Core 28 · Fundamental-domain point bound
 
-Playground confirmed **59.123959** for submission **#102624** at 00:31 UTC on 2026-11-24. At that check it ranked first, 0.185757 points ahead of #102602. [Official submission](https://play.bohrium.com/submission/102624) · [Core 28 leaderboard](https://play.bohrium.com/api/challenges/lean-4-verification-rh-fast-sub-pillar-28-fundamen-7b3737ce/attempts?sort=score&limit=20&page=1)
+Playground confirmed **59.248132** for submission **#102700** at 00:53 UTC on 2026-11-24. At that check it ranked first, 0.076842 points ahead of #102646. [Official submission](https://play.bohrium.com/submission/102700) · [Core 28 leaderboard](https://play.bohrium.com/api/challenges/lean-4-verification-rh-fast-sub-pillar-28-fundamen-7b3737ce/attempts?sort=score&limit=20&page=1)
 
 Each submission preserves Levent Alpöge’s statement that the Fundamental-domain point bound have finite length. Each revision links to the source that received its score. The token counts come from the pinned verification environment.
 
@@ -16,6 +16,8 @@ Each submission preserves Levent Alpöge’s statement that the Fundamental-doma
 | [#102588](https://play.bohrium.com/submission/102588) | 58.703503 | First | 348,678 | 165 | [`ba388c7babe7`](https://github.com/vlarin/riemann-hypothesis/tree/ba388c7babe7980c4217d5200bcea695f6f3841f/community/fortytwo-phase3-4331/core28) |
 | [#102602](https://play.bohrium.com/submission/102602) | 58.938202 | First | 337,741 | 161 | [`253beb7c689b`](https://github.com/vlarin/riemann-hypothesis/tree/253beb7c689b546b921c51afa4df3e7f49e71a9b/community/fortytwo-phase3-4331/core28) |
 | [#102624](https://play.bohrium.com/submission/102624) | 59.123959 | First | 329,243 | 154 | [`57b69d131e16`](https://github.com/vlarin/riemann-hypothesis/tree/57b69d131e16c92677b8b8dfa9d2f73fedad832b/community/fortytwo-phase3-4331/core28) |
+| [#102646](https://play.bohrium.com/submission/102646) | 59.171290 | First | 327,100 | 154 | [`39b89d5afbc3`](https://github.com/vlarin/riemann-hypothesis/tree/39b89d5afbc30ce9f566befee18c0f5a264295ab/community/fortytwo-phase3-4331/core28) |
+| [#102700](https://play.bohrium.com/submission/102700) | 59.248132 | First | 323,640 | 154 | [`ea53dc631381`](https://github.com/vlarin/riemann-hypothesis/tree/ea53dc631381a2c0e3e745af74f80d7ea0e9cee0/community/fortytwo-phase3-4331/core28) |
 
 ## Changes in the scored proofs
 
@@ -40,3 +42,7 @@ Levent Alpöge authored the Fourier sign, contour-independence and coefficient-b
 - **#102602** Codex proved index nonnegativity on an admissible imaginary ray using Alpöge’s complexified flow-character identity. A negative index would grow exponentially along that ray, contradicting the polynomial bound from the flow norm ratio. This removed four support modules and saved 10,937 tokens against #102588. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/253beb7c689b546b921c51afa4df3e7f49e71a9b/community/fortytwo-phase3-4331/core28/changes.patch)
 
 - **#102624** Codex kept the five unipotent-majorant conclusions needed for the frame move and reused Alpöge’s orthonormal-majorant comparison. A localization-span result supplies a single denominator for the entire lattice vector, eliminating a second span induction. This removed seven files and 8,498 normalized tokens from #102602. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/57b69d131e16c92677b8b8dfa9d2f73fedad832b/community/fortytwo-phase3-4331/core28/changes.patch)
+
+- **#102646** Codex proved one Fourier-character estimate along admissible isotropic rays and applied it to both embedded directions and unipotent vector coefficients. Together with a shared discrete-flow variation argument, this saved 2,143 normalized tokens over #102624. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/39b89d5afbc30ce9f566befee18c0f5a264295ab/community/fortytwo-phase3-4331/core28/changes.patch)
+
+- **#102700** Codex descended the periodic cube integrand to the unit torus and used translation invariance of its normalized Haar measure. It also bounded an off-diagonal entry using positivity of the two-by-two determinant and the arithmetic–geometric mean inequality. These and accompanying height and decay reductions saved 3,460 normalized tokens over #102646. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/ea53dc631381a2c0e3e745af74f80d7ea0e9cee0/community/fortytwo-phase3-4331/core28/changes.patch)
