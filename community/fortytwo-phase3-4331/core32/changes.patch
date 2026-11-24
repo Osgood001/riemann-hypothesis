@@ -1592,25 +1592,22 @@
    let D : R →ₗ[O] ResidueField O := φ ∘ₗ N.mkQ
    have hD : ∀ y ∈ N, D y = 0 := fun y hy => by
      show φ (N.mkQ y) = 0
---- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/Graded.lean
-+++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/Graded.lean
-@@ -9,16 +9,6 @@
- instance gradedAlgebra : GradedAlgebra W.gr :=
-   { (inferInstance : SetLike.GradedMonoid W.gr), (UpperTheory.V.Alg.gr_internal O X R W).chooseDecomposition with }
- 
--def originA (h : W.HasOrigin) : W.A →ₐ[O] O := (W.origin h).comp W.A.val
- 
--omit [DecidableEq X] in
--
--def quot {R' : Type} [CommRing R'] [Algebra O R'] (p : R →ₐ[O] R') (hp : Function.Surjective p)
--    (h : IsHomog O W.wt (RingHom.ker (p.comp W.π))) : WPres O X R' where
--  σ := W.σ
--  wt := W.wt
--  π := p.comp W.π
--  surj := hp.comp W.surj
--  homog := h
- 
- end UpperTheory.V.Alg.WPres
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/GrNoeth.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/GrNoeth.lean
+@@ -1,4 +1,4 @@
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.Graded
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.GrInternal
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.PartSpan
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.WPresGrZeroIsCOOfMemMaximalIdeal
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.GrGen
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/WPresGrZeroIsCOOfMemMaximalIdeal.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/WPresGrZeroIsCOOfMemMaximalIdeal.lean
+@@ -1,4 +1,4 @@
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.Graded
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.GrInternal
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.Gordan
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoMvps
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoQuot
 --- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ChEltOne.lean
 +++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ChEltOne.lean
 @@ -7,7 +7,7 @@
@@ -1723,16 +1720,15 @@
  
  private def chkK (B : Type) [CommRing B] [Algebra A B] (w : B ⊗[A] E) : Prop :=
    ∀ (S : Type) [CommRing S] [Algebra A S] (f : B →ₐ[A] S) (h : S ⊗[A] E),
---- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/FinDefs.lean
-+++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/FinDefs.lean
-@@ -19,7 +19,6 @@
-   inj : Function.Injective χ
-   fin : ∀ i j, i ≠ j → Module.Finite k (Z1 (χ i) (χ j)) ∧ Module.finrank k (Z1 (χ i) (χ j)) ≤ h
- 
--def finBound (n h : ℕ) : ℕ := n + ∑ p ∈ Finset.range n, (n ^ 2 * h) ^ p
- 
- structure IsGMA {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (e : Fin n → E) : Prop where
-   ch : D.IsCH
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ExistsAdjoinCoeffCharacterSubMemMaximalIdealPow.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ExistsAdjoinCoeffCharacterSubMemMaximalIdealPow.lean
+@@ -1,4 +1,5 @@
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.FinDefs
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.OfDetToDet
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.IsLocalHom
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.UniversalOrdinaryDeterminantRing
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.UGenApprox
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.DGext
 --- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/IsLocalHom.lean
 +++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/IsLocalHom.lean
 @@ -32,8 +32,6 @@
@@ -1837,14 +1833,35 @@
  
  end GDet
  
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/PairMap.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/PairMap.lean
+@@ -1,4 +1,5 @@
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.FinDefs
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.OfDetToDet
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.IsLocalHom
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.UniversalOrdinaryDeterminantRing
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.DGmap
+ 
+--- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/StableField.lean
++++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/StableField.lean
+@@ -1,4 +1,5 @@
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.FinDefs
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.OfDetToDet
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.IsLocalHom
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.UniversalOrdinaryDeterminantRing
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.GroupDetExistsSemisimpleRepresentation
+ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.DeterminantRepresentations.IrrOpenDet
 --- a/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/UGenApprox.lean
 +++ b/Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/UGenApprox.lean
-@@ -1,3 +1,4 @@
+@@ -1,4 +1,6 @@
+-import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.FinDefs
 +import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoSpan
- import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.FinDefs
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.OfDetToDet
++import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.IsLocalHom
  import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoRes
  import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LayerApproximation
-@@ -13,12 +14,7 @@
+ 
+@@ -13,12 +15,7 @@
  private theorem u_gen_dual (O : Type) [CommRing O] [IsLocalRing O] (M : Type) [AddCommGroup M] [Module O M]
      (h : Module.IsTorsionBySet O M (maximalIdeal O)) (x : M) (hx : x ≠ 0) :
      ∃ D : M →ₗ[O] ResidueField O, D x ≠ 0 := by

@@ -1,14 +1,14 @@
 {
   "core": 32,
-  "candidate": "core32-fastcurve093f682945b5",
+  "candidate": "core32-fastcurved7fc4886638f",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 372,
-  "local_normalized_tokens": 555796,
+  "submitted_files": 370,
+  "local_normalized_tokens": 555077,
   "published_baseline_tokens": 607551,
-  "proof_tree_sha256": "1ab192b3c3a48e24d12af088f6a4b49a13d73aca74a86f963948f4880de79459",
+  "proof_tree_sha256": "517c41a106954eff3c71beb7f488b635b52a47a002351984caa98508bed00d26",
   "modified_files": {
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/PredMulSumPadicValNatFactorialAddCardLe.lean": {
       "before": "b7ea91e9b2ac52f229e062a3167f675acc85a42ac838bf741e27cab54baab87a",
@@ -74,9 +74,13 @@
       "before": "16aebe293db23fe735c65996a2fcc337816c239c54b5523ca22296f536d3294e",
       "after": "03d838c059174489090e0c5d401ae0445d69bfcbc3021f6216113d29ce973863"
     },
-    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/Graded.lean": {
-      "before": "204660c30fe09be8874fb49dcaa9bd5fdf8c1d9f7669d889727d5435466fb8f2",
-      "after": "399f2f5cbdd2e99087db5b17243d358430c2b832be4738c555d988768863e9fe"
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/GrNoeth.lean": {
+      "before": "e3155bf4d9d5d9355a65530440ac8a4aae8dd5c64c19e9544e84aa0e8fdf1f0a",
+      "after": "e53bdfc96647d880160afe023676c16ef4f9e712be80805f8af9cb1a879f9171"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/WPresGrZeroIsCOOfMemMaximalIdeal.lean": {
+      "before": "c40a84b42122be9bd63b5f296bfe2495ba9ca5230d9350e2aff6c32ede9c9c2c",
+      "after": "ef1debf66d7f951282a8f0827e90943caca139502ac5d7bef7133d82ca9f34cc"
     },
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ChEltOne.lean": {
       "before": "5f47e4712a0eb2edbd5ab0cc441e26db5f4d861a1d795d969e9ae22863f9943a",
@@ -90,9 +94,9 @@
       "before": "cba1fff34c6039c765407bef42c9250c44060ecfb436e2a64ffc814c01f76dee",
       "after": "08971514d3174aae9473996a8cb8c54377a8ab0b1c0f529c039c9b85a229c422"
     },
-    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/FinDefs.lean": {
-      "before": "638653f99bf90fe169ab09dc3519f2f669f0fef2cd4fb2f924a6a0faae094993",
-      "after": "44fe8c3cfd88b851abadfa023a64c857337d017710bdfc55b7010bf761807317"
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ExistsAdjoinCoeffCharacterSubMemMaximalIdealPow.lean": {
+      "before": "66fd3ccc662fbf8709b781a225dea3dad586f7a416430c83b7e108e5bd55b6ac",
+      "after": "e9888094622781b4c99ffd9d05b2bbfa003f30ccf9d24b74de1df346e6101820"
     },
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/IsLocalHom.lean": {
       "before": "e30f96768cfbea7b12a05b0dce9c678e930e4e94dcdbe49568a9dd7c377f9625",
@@ -102,9 +106,17 @@
       "before": "d43af07eaef2fd79c414f687fadc9d310ec1cd149e731216f4078354d42a35a9",
       "after": "6b969eb08f82cdcdf9e12d9dde2e7ce53d077edfeec0276f4c7169543e109a68"
     },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/PairMap.lean": {
+      "before": "2071f45b1503d09d5eeb6d4eb040682dcc260af48ad2d566b62ec9ea630e85b3",
+      "after": "c2160c1921f17c13f986e4fee125e328f03fe429ff02d77902f951f85bdab3ab"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/StableField.lean": {
+      "before": "401c7ce710a551a25d3b6c99ac362b5a0a474f87a97912261528dda28d899c1c",
+      "after": "bbb486afdc9794c8adc5932dd5da859b889a86f109205806e386536c1f0e2de0"
+    },
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/UGenApprox.lean": {
       "before": "9b99eb78c311e14a60d92d0a490a8b585218cacba91b5e4332c2e1adc75f66d2",
-      "after": "e8cb4033842dbba973d45fb5d40475b4c59b7bc867e10e6acb837a344abc0a0e"
+      "after": "02d46419ce3ca404b512d1128c918c4cf7e194c206fbebbb8fe21605f62d9466"
     },
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/FullEx.lean": {
       "before": "b64e1ec84ce64bb162b52c16ce7babff1e763e8e524410ea4477d1c55f847fd7",
@@ -278,7 +290,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T08:45:14.143787+00:00",
+    "completed_utc": "2026-11-24T09:05:17.762962+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -363,7 +375,6 @@
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/GrGen.lean": "7ca630ba97af19152f3088d8b89a7b95797ccf60a4e9f0b73bc1bf8dbf479e2d",
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/GrInternal.lean": "fb8671ebfb06287326fad01d65fc0d8f32371088412510ea343839c964df1b9a",
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/GrNoeth.lean": "e3155bf4d9d5d9355a65530440ac8a4aae8dd5c64c19e9544e84aa0e8fdf1f0a",
-    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/Graded.lean": "204660c30fe09be8874fb49dcaa9bd5fdf8c1d9f7669d889727d5435466fb8f2",
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/HomogOfStable.lean": "805c586b7ae8b24efa606db9690cfab8ea9d34462dd64b72db4186117c177cea",
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/ObsPres.lean": "104b5b70254fd457906a86b6caa7d72edbe10f0f8762d421357a6c5a55796cb8",
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/PartClosed.lean": "25d60215cacd9f83e88cdce1f13f16b58d5f5fd9e8f5eb14c39dadaff9906a18",
@@ -407,7 +418,6 @@
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DkerOfKills.lean": "04e6b25d5724007c861fac84484a6566bbf58ac1d7752dd5d52b66fe792dc262",
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ExistsAdjoinCoeffCharacterSubMemMaximalIdealPow.lean": "66fd3ccc662fbf8709b781a225dea3dad586f7a416430c83b7e108e5bd55b6ac",
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ExistsSemisimpleRepOfDetLawOfIsAlgClosed.lean": "2a30e9d8c4b924be5d4a2971c629d3c768db6d482dd49ef8c93c987d09b3ada1",
-    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/FinDefs.lean": "638653f99bf90fe169ab09dc3519f2f669f0fef2cd4fb2f924a6a0faae094993",
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GDetps.lean": "e3f96434d412f229e42bc177b7f1574154305ce5990b3dbb1681613f7a45f542",
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GDetrad.lean": "147f3a809713d423063a79f24cb1c9db8b9d29382cbf123ac8b710982d132bc1",
     "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GDimform.lean": "4f228ce15c61b2a0129ce6fd7da9fe12eebc97ce6c6767b1c88dfda9147e1f00",
