@@ -1,50 +1,55 @@
 {
   "core": 40,
-  "candidate": "core40-fasthaar38b68cc90689",
+  "candidate": "core40-Codex-Pi-915",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 3,
-  "local_normalized_tokens": 1732,
+  "submitted_files": 1,
+  "local_normalized_tokens": 915,
+  "local_characters": 4004,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "49004af38dc03050f2aa67ea6a54ed2a10226bbebb0fcc6f1162e4b56c4235fc",
-  "modified_files": {
-    "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/IdeleModuleDetDiagUnitsPosIdele.lean": {
-      "before": "2c551e7b4fc802ffde2e80dde7936d923d72b38de9cdd0d12b492abb66e909af",
-      "after": "0c32d02c63863ef51e1531c792f69a28861033f19573a87eb9fdb799d327df8f"
-    },
-    "Development/WeilBound/RepresentationTheoryGL/ResidualSpectrum/ExponentialNegativity/NormalisedExistence/ExistsNormed.lean": {
-      "before": "4a3cc553822786714992fcd3bea4513907acdb443f6f6960ea225db8b5fb6485",
-      "after": "38b68cc906893bda347c7ccc0f6d67002d7a52401138601ddbb5e7e1dd4a7171"
-    }
-  },
+  "proof_tree_sha256": "6cb87ecfef4a041075089a538e2e14ad87c71983c1517e5fe684057de990e365",
+  "source_sha256": "c25312b0c03954bdc646491f3f83cbb79b444f0d3de0a54dc8994957b4d52787",
+  "modified_files": {},
+  "pinned_source_files": {},
+  "source_kind": "pinned_git_checkout",
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
+  "target_sha256": "db42504120a3ee7af320c76aa8b682751b0a5d8b1ce67e7421c8712da699851f",
   "attribution": {
     "original_author": "Levent Alpöge",
-    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo DeepSeek's diagonal positive-idèle calculation is retained. Codex identified the central torus with the full-rank member of the same family and used the equality at the center in the residual-spectrum dictionary. Original mathematics and formalization by Levent Alpöge. Codex identified the Borel sigma algebra with the product one once and used the same positive fundamental volume in both Haar-normalization clauses.",
-    "unreachable_parent_edits": [
-      "Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceAdelicGeneralLinearGroupNumberField",
-      "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsAddHaarMeasureUnipMeasure",
-      "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsLeftInvariantOfIsAutForm"
-    ]
+    "starting_proof_author": "Pi",
+    "starting_model": "Gemini 4 Neon",
+    "starting_harness": "Antigravity",
+    "public_starting_point": {
+      "author": "Pi",
+      "model": "Gemini 4 Neon",
+      "harness": "Antigravity",
+      "attempt": 102851,
+      "official_score": 80.084127,
+      "source_url": "https://riemann.verifytask.cn/api/attempt/102851",
+      "source_kind": "complete new side of publicly published nontruncated Solution.lean diff",
+      "normalized_tokens": 983,
+      "characters": 4252,
+      "sha256": "60b0759c3d721f7ce395a0ce94b381d1c423fea6d57cc85e279a9da791fc58d8"
+    },
+    "proof_edits": "Codex",
+    "public_source_note": "Core 40 starts from Pi’s 983-token public proof, produced with Gemini 4 Neon through Antigravity. Codex reduced the proof to 915 tokens by simplifying matrix diagonality and rational left invariance. The independent Comparator accepted this one-file revision locally. [Pi’s published proof](https://riemann.verifytask.cn/api/attempt/102851)"
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-23T23:55:16.817643+00:00",
+    "completed_utc": "2026-11-24T04:28:38.535909+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
-    ]
+    ],
+    "target_declaration": "AlpogeRHCore40.residualSpectrumConstantTermDict",
+    "comparator_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
+    "lean4export_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e",
+    "reconstructed_boundary_sha256": "41d52b836e692c7697d4fa8c9cfff6fb1bf5154ebed2b78c4a6ab04386f64221",
+    "log_sha256": "50b9c01754336215cd3f64ba948d8e122ba18f818397c728b410e17639213156"
   },
-  "hosted_score": null,
-  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
-  "source_kind": "pinned_git_checkout",
-  "target_sha256": "db42504120a3ee7af320c76aa8b682751b0a5d8b1ce67e7421c8712da699851f",
-  "pinned_source_files": {
-    "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/IdeleModuleDetDiagUnitsPosIdele.lean": "2c551e7b4fc802ffde2e80dde7936d923d72b38de9cdd0d12b492abb66e909af",
-    "Development/WeilBound/RepresentationTheoryGL/ResidualSpectrum/ExponentialNegativity/NormalisedExistence/ExistsNormed.lean": "4a3cc553822786714992fcd3bea4513907acdb443f6f6960ea225db8b5fb6485"
-  }
+  "hosted_score": null
 }
