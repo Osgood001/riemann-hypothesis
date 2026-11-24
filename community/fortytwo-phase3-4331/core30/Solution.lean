@@ -1,0 +1,9 @@
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaUniformisationComplexAbelianVariety
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+
+namespace AlpogeRHCore30
+
+theorem thetaUniformisationComplexAbelianVariety :
+    _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ThetaUnifAV := by exact GlobalTheory.thetaUnifAV_all
+
+end AlpogeRHCore30

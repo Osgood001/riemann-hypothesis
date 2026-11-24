@@ -1,0 +1,10 @@
+--- a/Development/AbelianVarietyTheory/Proofs/UniformizationProofs/CyclicIdeal.lean
++++ b/Development/AbelianVarietyTheory/Proofs/UniformizationProofs/CyclicIdeal.lean
+@@ -1,7 +1,6 @@
+ import Mathlib
+ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsKernelVector
+ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+-import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+ import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsInKNeOne
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
