@@ -550,6 +550,15 @@
  
  theorem norm_finprod_eq_one {ι : Type} (g : ι → ℂ) (hg : (Function.mulSupport g).Finite)
      (h1 : ∀ p, ‖g p‖ = 1) : ‖∏ᶠ p, g p‖ = 1 := by
+@@ -70,7 +61,7 @@
+ theorem amp_sum_defect_sets : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), 4 * r + 7 ≤ k → ∀ d : G.Dat, (∃ Λ₀, G.IsTerm d Λ₀) → ∀ S1 : Finset (HeightOneSpectrum (𝓞 F)), G.Om ⊆ S1 → ∃ κ : ℂ, ‖κ‖ = 1 ∧ ∀ Q : Prop → Prop, G.amp d (fun Λ => Q (¬ G.Gen d Λ)) = κ * ∑ B ∈ S1.powerset.filter (fun B => Q B.Nonempty), ∏ p ∈ S1, (if p ∈ B then (G.S p).amp (d p) (fun Λ => ¬ (G.S p).BBzero (d p) Λ) else (G.S p).amp (d p) ((G.S p).BBzero (d p))) := by
+   intro F E _ _ _ _ _ sig A r k G hk d hex S1 hS1
+   obtain ⟨Λ₀, hΛ₀⟩ := hex
+-  obtain ⟨-, -, -, -, hgood⟩ := GlobalTheory.HL.BadPlaces.bad_places A r k G hk d Λ₀ hΛ₀
++  have hgood := GlobalTheory.HL.BadPlaces.good_outside A r k G hk d Λ₀ hΛ₀
+   have hinv : ∀ p, ∀ h ∈ (G.S p).St, ∀ Λ, (G.S p).IsTerm (d p) Λ →
+       ((G.S p).BBzero (d p) (h • Λ) ↔ (G.S p).BBzero (d p) Λ) := by
+     intro p h hh Λ hΛ
 @@ -98,8 +89,7 @@
        have hpB : p ∉ B := fun h => hp (hB h)
        rw [cond_neg G d hpB] at hP
@@ -560,6 +569,15 @@
    have hT := (hprod ∅ (Finset.empty_subset _)).2.2
    set g : HeightOneSpectrum (𝓞 F) → ℂ := fun p => (G.S p).amp (d p) ((G.S p).BBzero (d p)) with hg
    set c : ℂ := ∏ᶠ p, (if p ∈ S1 then 1 else g p) with hc
+@@ -127,7 +117,7 @@
+     · by_cases h : p ∈ S1
+       · simp [h]
+       · simp only [h, if_false, hg]
+-        exact ((hgood p fun hp => h (hS1 hp)).2 (d p) ⟨A.lat p Λ₀, hΛ₀.2 p⟩).1
++        exact (hgood p fun hp => h (hS1 hp)).2 (d p) ⟨A.lat p Λ₀, hΛ₀.2 p⟩
+   refine ⟨c, hc1, fun Q => ?_⟩
+   have hsum : G.amp d (fun Λ => Q (¬ G.Gen d Λ)) = ∑ B ∈ S1.powerset.filter (fun B => Q B.Nonempty),
+       G.amp d (fun Λ => ∀ p, cond G d B p (A.lat p Λ)) := by
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeExpansionOverFinitePlacesStatement.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeExpansionOverFinitePlacesStatement.lean
 @@ -1,10 +1,7 @@
@@ -924,7 +942,7 @@
  set_option maxHeartbeats 1000000 in
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/CoordinateLatticeUniqueTermAlmostAllPlaces.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/CoordinateLatticeUniqueTermAlmostAllPlaces.lean
-@@ -1,28 +1,24 @@
+@@ -1,28 +1,23 @@
  import Mathlib
 -import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 -import Formalism.SharpRestriction.CuspSpanNormBounds.PsiEDef
@@ -933,7 +951,6 @@
  import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
 -import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsEqZpowMulUnit
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasisOfIsCompl
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Equality
  import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsEquivOfRetractions
 -import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasisOfIsCompl
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalSameIntegralSpanUnimodularStatement
@@ -967,6 +984,27 @@
  
  open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
  open scoped Pointwise ENNReal Classical
+@@ -133,6 +128,11 @@
+   obtain ⟨hvG, hvD⟩ := GlobalTheory.T.goodPlace_gramInvariant_minors_valuation_zero L r k S hG
+   have hvth : S.vth = 0 := by simp [Frames.vth, hG.gg]
+   have ha : S.a = 0 := by simp [Frames.a, hvth, hvG]
++  have hVD : S.vD = 0 := Finset.sum_eq_zero fun l _ => by
++    split_ifs with h
++    · exact hvD l h.2
++    · rfl
++  have hp : S.Hp = 1 := by simp [Frames.Hp, hvth, ha, hVD]
+   obtain ⟨d₀, hd₀⟩ := GlobalTheory.T.framesCoordinateLattice_isTerm_trivialWitnesses L r k S hG
+   have hT₀ : S.IsTerm d₀ (coordLat S) := ⟨(1, 1), hd₀⟩
+   obtain ⟨hom, hM₀, hFr₀, -, -⟩ := GlobalTheory.HL.WitIndep.witness_independence L r k S d₀ _ _ _ hd₀
+@@ -146,7 +146,7 @@
+   have hact := GlobalTheory.FrameAct.stabiliser_acts_on_terms L r k S
+   have hcom := GlobalTheory.HL.ComplAct.main L r k S
+   have hcls := GlobalTheory.HL.FrameClass.frame_classes L r k S
+-  refine ⟨(GlobalTheory.HL.GoodPlace.equality L r k S hk hG.gg hvG hvD).2.1, GlobalTheory.T.stabilizer_framesCoordinateLattice_goodPlace L r k S hG ha d₀ hd₀, d₀, hd₀, ?_, ?_, ?_, ?_, ?_⟩
++  refine ⟨hp, GlobalTheory.T.stabilizer_framesCoordinateLattice_goodPlace L r k S hG ha d₀ hd₀, d₀, hd₀, ?_, ?_, ?_, ?_, ?_⟩
+   · rw [hom]
+     have h1 : ∀ (g : Fin (r + 1) → S.V) (gs : Fin r → S.V),
+         (∀ a j, hf L S.Hm (g a) (gs j) = if a = j.castSucc then 1 else 0) → S.psiOf g gs 1 = 1 := by
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/CoordinateLatticeUniqueTermAlmostAllPlacesStatement.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/CoordinateLatticeUniqueTermAlmostAllPlacesStatement.lean
 @@ -1,10 +1,7 @@
@@ -1084,35 +1122,6 @@
 +  apply GlobalTheory.HL.LatDet.resQ_ne_zero <;> assumption
  
  end GlobalTheory.HL.UniCount
- 
---- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/Equality.lean
-+++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/Equality.lean
-@@ -1,17 +1,17 @@
- import Mathlib
--import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
--import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
--import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
-+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasisOfIsCompl
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolume
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsEqZpowMulUnit
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasisOfIsCompl
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTerms
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianMassEqSumFrameClasses
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralOfMulVec
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnesses
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolume
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTerms
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianMassEqSumFrameClasses
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitEntries
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralOfMulVec
-+
- open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
- open scoped Pointwise ENNReal Classical
  
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsBasisFgMaximalOrderSpanningFree.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsBasisFgMaximalOrderSpanningFree.lean
@@ -2282,7 +2291,7 @@
  set_option maxHeartbeats 1000000 in
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/GoodOfHpEqOne.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/GoodOfHpEqOne.lean
-@@ -1,12 +1,20 @@
+@@ -1,12 +1,18 @@
  import Mathlib
 -import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 -import Formalism.SharpRestriction.CuspSpanNormBounds.PsiEDef
@@ -2292,8 +2301,6 @@
 +import Development.AbelianVarietyTheory.Definitions.Foundations.IsIntegralIff
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasisOfIsCompl
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolume
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordinateLatticeUniqueTermAlmostAllPlaces
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Equality
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsEqZpowMulUnit
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFourInverseMul
@@ -2309,6 +2316,166 @@
  open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
  open scoped Pointwise ENNReal Classical
  
+@@ -30,28 +36,6 @@
+     S.ϖ_irr]
+   show 2 ≤ Nat.card (IsLocalRing.ResidueField (ValuativeRel.valuation F).integer)
+   exact Finite.one_lt_card_iff_nontrivial.2 inferInstance
+-
+-open ValuativeRel NumberField IsDedekindDomain in
+-open scoped Pointwise ENNReal Classical in
+-variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
+-  [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] {L : _root_.Formalism.MainNotions.S.Loc.LocE F E}
+-  {r k : ℕ} (S : _root_.GlobalTheory.HL.Frames L r k) in
+-private lemma q_le_Hp_of_Hp_ne_one {d : S.Datum} {Λ : Submodule L.O S.V}
+-    (h : S.IsTerm d Λ) (hne : S.Hp ≠ 1) :
+-    (S.q : ℝ) ≤ S.Hp := by
+-  have hq : (2 : ℝ) ≤ S.q := by
+-    exact_mod_cast two_le_q' S
+-  have h1 : 1 ≤ S.Hp :=
+-    (_root_.GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ h).2.2.2.2.1
+-  have hH : S.Hp = (S.q : ℝ) ^
+-      (S.vth + S.a + S.vD) := rfl
+-  rcases le_or_gt (S.vth + S.a + S.vD) 0
+-    with hn | hn
+-  · exact absurd (le_antisymm (hH ▸ zpow_le_one_of_nonpos₀ (by linarith) hn) h1) hne
+-  · rw [hH]
+-    calc (S.q : ℝ)
+-        = (S.q : ℝ) ^ (1 : ℤ) := (zpow_one _).symm
+-      _ ≤ _ := zpow_le_zpow_right₀ (by linarith) (by omega)
+ 
+ open ValuativeRel NumberField IsDedekindDomain in
+ open scoped Pointwise ENNReal Classical in
+@@ -152,13 +136,11 @@
+ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
+   [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] {L : _root_.Formalism.MainNotions.S.Loc.LocE F E}
+   {r k : ℕ} (S : _root_.GlobalTheory.HL.Frames L r k) in
+-private lemma norm_amp_BBzero_eq_one_and_mass_eq_one_of_Hp_eq_one (hk : 4 * r + 7 ≤ k) {d : S.Datum}
++private lemma norm_amp_good {d : S.Datum}
+     {Λ : Submodule L.O S.V} (h : S.IsTerm d Λ) (h1 : S.Hp = 1) (d' : S.Datum)
+     (hd' : ∃ Λ', S.IsTerm d' Λ') :
+-    ‖S.amp d' (S.BBzero d')‖ = 1 ∧
+-      S.mass d' (fun _ => True) = 1 := by
++    ‖S.amp d' (S.BBzero d')‖ = 1 := by
+   obtain ⟨hgg, hG, hDl⟩ := gg_false_and_vE_eq_zero_of_Hp_eq_one S h h1
+-  obtain ⟨hBB, -, -, hmass01⟩ := _root_.GlobalTheory.HL.GoodPlace.equality L r k S hk hgg hG hDl
+   have ha : S.a = 0 := by
+     simp [_root_.GlobalTheory.HL.Frames.a, _root_.GlobalTheory.HL.Frames.vth,
+       hgg, hG]
+@@ -168,10 +150,7 @@
+     ⟨hDO l, exists_inv_mem_O_of_vE_mul_cj_eq_zero S.ϖ
+       S.ϖ_irr (hDO l)
+       ((_root_.GlobalTheory.FrameBasic.main L r k S).2.2.2.2.1 l hl) (hDl l hl)⟩
+-  have hcls : ∃ C0, ∀ C, S.IsIntCls C →
+-      ∃ g ∈ S.St, C = g • C0 :=
+-    ⟨_, (_root_.GlobalTheory.HL.GoodClass.one_class L r k S hgg hunit).2.2⟩
+-  obtain ⟨C0, hcls⟩ := hcls
++  obtain ⟨hC0, hw0, hcls⟩ := _root_.GlobalTheory.HL.GoodClass.one_class L r k S hgg hunit
+   obtain ⟨Λ', hΛ'⟩ := hd'
+   have hexists : ∀ C, S.IsIntCls C → ∃ Λ0, S.IsTerm d' Λ0 ∧
+       S.Fr d' Λ0 = C ∧ ∃ g ∈ S.St, Λ0 = g • Λ' := by
+@@ -201,76 +180,48 @@
+   obtain ⟨m, hm⟩ := Quotient.exact (Quotient.out_eq o0)
+   have hT2 : S.IsTerm d' (Quotient.out o0) := by
+     rw [← hm]; exact (_root_.GlobalTheory.FrameAct.stabiliser_acts_on_terms L r k S d' Λ' hΛ' _ m.2).1
+-  have hmass : S.mass d' (fun _ => True) =
+-      ENNReal.ofReal (S.mu (Quotient.out o0)) := by
+-    unfold _root_.GlobalTheory.HL.Frames.mass
+-    rw [tsum_eq_single o0]
+-    · rw [if_pos ⟨hT2, trivial⟩]
+-    · intro o ho
+-      rw [if_neg]
+-      exact fun hc => hne o ho hc.1
+-  have hpos : 0 < S.mu (Quotient.out o0) := by
+-    obtain ⟨hA, hB, -⟩ := (_root_.GlobalTheory.HL.volSt L r k S).1 _
+-      (_root_.GlobalTheory.HL.TermBasic.term_basic L r k S d' _ hT2).1.1
+-    unfold _root_.GlobalTheory.HL.Frames.mu _root_.GlobalTheory.HL.invVol
+-    exact div_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero hB)) (Nat.cast_pos.2 (Nat.pos_of_ne_zero hA))
+-  have hmass1 : S.mass d' (fun _ => True) = 1 := by
+-    rcases hmass01 d' with h0 | h0
+-    · rw [hmass, ENNReal.ofReal_eq_zero] at h0
+-      exact absurd h0 (not_le.2 hpos)
+-    · exact h0
+-  have hmu : S.mu (Quotient.out o0) = 1 := by
+-    rw [hmass1, eq_comm, ENNReal.ofReal_eq_one] at hmass
+-    exact hmass
+-  refine ⟨?_, hmass1⟩
++  let X := Quotient.out o0
++  have same : S.St ⊓ MulAction.stabilizer S.GLV X = S.St ⊓ MulAction.stabilizer S.GLV (S.Fr d' X) := by
++    ext g
++    simp only [Subgroup.mem_inf, MulAction.mem_stabilizer_iff]
++    refine and_congr_right fun hg => ?_
++    have act := _root_.GlobalTheory.FrameAct.stabiliser_acts_on_terms L r k S d' X hT2 g hg
++    constructor
++    · intro he
++      rw [← act.2.2.2.2.1, he]
++    · intro he
++      exact (_root_.GlobalTheory.HL.UnimodTerm.term_unique L r k S d' X hT2 ha).2 _ act.1 (act.2.2.2.2.1.trans he)
++  have hmu : S.mu X = 1 := by
++    have e : S.mu X = S.wC (S.Fr d' X) := congrArg (_root_.GlobalTheory.HL.invVol S.K0) same
++    obtain ⟨g,hg,eg⟩ := hcls _ (_root_.GlobalTheory.HL.TermBasic.term_basic L r k S d' X hT2).2.2.2.2.2.2.1
++    rw [e, eg, ((_root_.GlobalTheory.HL.volSt L r k S).2 _ hC0.1).2.2.2 g hg, hw0]
++  have hBB := (_root_.GlobalTheory.HL.UnimodTerm.term_unique L r k S d' X hT2 ha).1
+   unfold _root_.GlobalTheory.HL.Frames.amp
+   rw [tsum_eq_single o0]
+   swap
+   · intro o ho
+     rw [if_neg]
+     exact fun hc => hne o ho hc.1
+-  rw [if_pos ⟨hT2, hBB _ _ hT2⟩, hmu]
++  rw [if_pos ⟨hT2, hBB⟩, hmu]
+   obtain ⟨-, hW, -⟩ := _root_.GlobalTheory.HL.TermBasic.term_basic L r k S d' _ hT2
+   simpa using (_root_.GlobalTheory.HL.WitIndep.witness_independence L r k S d' _ _ _ hW).2.2.2.2
+ 
+ open ValuativeRel NumberField IsDedekindDomain in
+ open scoped Pointwise ENNReal Classical in
+ 
+-theorem _root_.GlobalTheory.HL.BadPlaces.bad_places : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : _root_.GlobalTheory.HL.Places F E sig), ∀ (r k : ℕ) (G : _root_.GlobalTheory.HL.GFrames A r k), 4 * r + 7 ≤ k → ∀ d Λ, G.IsTerm d Λ → G.Om.Finite ∧ (∀ p, 1 ≤ (G.S p).Hp) ∧ (∀ p ∈ G.Om, 2 ≤ (G.S p).q ∧ ((G.S p).q : ℝ) ≤ (G.S p).Hp) ∧ (2 : ℝ) ^ G.Om.ncard ≤ G.Ht ∧ ∀ p ∉ G.Om, (∀ d' Λ', (G.S p).IsTerm d' Λ' → (G.S p).BBzero d' Λ') ∧ ∀ d', (∃ Λ', (G.S p).IsTerm d' Λ') → ‖(G.S p).amp d' ((G.S p).BBzero d')‖ = 1 ∧ (G.S p).mass d' (fun _ => True) = 1 := by
++theorem _root_.GlobalTheory.HL.BadPlaces.good_outside : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : _root_.GlobalTheory.HL.Places F E sig), ∀ (r k : ℕ) (G : _root_.GlobalTheory.HL.GFrames A r k), 4 * r + 7 ≤ k → ∀ d Λ, G.IsTerm d Λ → ∀ p ∉ G.Om, (∀ d' Λ', (G.S p).IsTerm d' Λ' → (G.S p).BBzero d' Λ') ∧ ∀ d', (∃ Λ', (G.S p).IsTerm d' Λ') → ‖(G.S p).amp d' ((G.S p).BBzero d')‖ = 1 := by
+   intro F E _ _ _ _ _ sig A r k G hk d Λ hT
+   have hlf : ∀ p, IsNonarchimedeanLocalField (A.loc p).Fp := fun p => (A.loc p).lf
+   have hch : ∀ p, CharZero (A.loc p).Fp := fun p => (A.loc p).char0
+   have hloc : ∀ p, (G.S p).IsTerm (d p) (A.lat p Λ) := hT.2
+   have hmemOm : ∀ p, p ∈ G.Om ↔ (G.S p).Hp ≠ 1 := fun p => Iff.rfl
+-  have h1 : ∀ p, 1 ≤ (G.S p).Hp := fun p =>
+-    haveI := hlf p; haveI := hch p
+-    (_root_.GlobalTheory.HL.Defect.exponents_and_defect _ r k (G.S p) _ _ (hloc p)).2.2.2.2.1
+-  have hfin : G.Om.Finite :=
+-    (_root_.GlobalTheory.HL.StdPlace.coordinate_lattice_standard A r k G hk).subset
+-      fun p hp hgood => (hmemOm p).1 hp hgood.2.1
+-  have hbad : ∀ p ∈ G.Om, 2 ≤ (G.S p).q ∧
+-      ((G.S p).q : ℝ) ≤ (G.S p).Hp := fun p hp =>
+-    haveI := hlf p; haveI := hch p
+-    ⟨two_le_q' _, q_le_Hp_of_Hp_ne_one _ (hloc p) ((hmemOm p).1 hp)⟩
+-  refine ⟨hfin, h1, hbad, ?_, ?_⟩
+-  · have hHt : G.Ht = ∏ p ∈ hfin.toFinset, (G.S p).Hp := by
+-      unfold _root_.GlobalTheory.HL.GFrames.Ht
+-      apply finprod_eq_prod_of_mulSupport_subset
+-      intro p hp
+-      simpa [hmemOm] using hp
+-    rw [hHt, Set.ncard_eq_toFinset_card _ hfin, ← Finset.prod_const]
+-    apply Finset.prod_le_prod (fun _ _ => by norm_num)
+-    intro p hp
+-    have hb := hbad p (hfin.mem_toFinset.1 hp)
+-    calc (2 : ℝ) ≤ (G.S p).q := by exact_mod_cast hb.1
+-      _ ≤ _ := hb.2
+-  · intro p hp
+-    haveI := hlf p; haveI := hch p
+-    have hH : (G.S p).Hp = 1 := by
+-      by_contra hne; exact hp ((hmemOm p).2 hne)
+-    obtain ⟨hgg, hG, hDl⟩ := gg_false_and_vE_eq_zero_of_Hp_eq_one _ (hloc p) hH
+-    refine ⟨(_root_.GlobalTheory.HL.GoodPlace.equality _ r k (G.S p) hk hgg hG hDl).1, ?_⟩
+-    intro d' hd'
+-    exact norm_amp_BBzero_eq_one_and_mass_eq_one_of_Hp_eq_one _ hk (hloc p) hH d' hd'
++  intro p hp
++  haveI := hlf p; haveI := hch p
++  have hH : (G.S p).Hp = 1 := by
++    by_contra hne; exact hp ((hmemOm p).2 hne)
++  obtain ⟨hgg, hG, hDl⟩ := gg_false_and_vE_eq_zero_of_Hp_eq_one _ (hloc p) hH
++  have ha : (G.S p).a = 0 := by simp [_root_.GlobalTheory.HL.Frames.a, _root_.GlobalTheory.HL.Frames.vth, hgg, hG]
++  exact ⟨fun d' Λ' ht => (_root_.GlobalTheory.HL.UnimodTerm.term_unique _ r k (G.S p) d' Λ' ht ha).1,
++    norm_amp_good _ (hloc p) hH⟩
+ 
+ end GlobalTheory.HL.BadPlaces
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/GoodPlaceGramInvariantMinorsValuationZero.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/GoodPlaceGramInvariantMinorsValuationZero.lean
 @@ -1,26 +1,10 @@
@@ -3575,23 +3742,6 @@
  open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
  open scoped Pointwise ENNReal Classical
  set_option maxHeartbeats 1000000 in
---- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClasses.lean
-+++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClasses.lean
-@@ -1,11 +1,9 @@
- import Mathlib
--import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
--import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
--import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassOrbitsEqTsumFiber
-+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTermsStatement
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassOrbitsEqTsumFiber
- 
- open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
- open scoped Pointwise ENNReal Classical
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairs.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairs.lean
 @@ -1,12 +1,11 @@
@@ -4369,18 +4519,6 @@
  open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
  open scoped Pointwise ENNReal Classical
  set_option maxHeartbeats 1000000 in
---- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/MassOrbitsEqTsumFiber.lean
-+++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/MassOrbitsEqTsumFiber.lean
-@@ -1,7 +1,7 @@
- import Mathlib
--import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
--import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
-+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvVolMulPosLeConj
-+
- open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
- open scoped Pointwise ENNReal Classical
- 
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/MemMaximalCompactOfIntegral.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/MemMaximalCompactOfIntegral.lean
 @@ -1,14 +1,6 @@
