@@ -1,14 +1,14 @@
 {
   "core": 29,
-  "candidate": "core29-fastrayclass541e2d05105e",
+  "candidate": "core29-fastrayclass272982d9f0e2",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 63,
-  "local_normalized_tokens": 98241,
+  "local_normalized_tokens": 97118,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "3d50afbb89a4df3fe1726d56194113dd12cf73b72b6e1554c514774ce22a7905",
+  "proof_tree_sha256": "734290c14dbee04a8d42234fca8489328c7fe209bc8b98505e5e95aab70021f9",
   "modified_files": {
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ConductorEqTopOfStandardOpen.lean": {
       "before": "32a326aa893cd7346d768a4d4e302cda98d7ccbcdd5d61d038ddec4b8b1577f1",
@@ -16,15 +16,15 @@
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/DiscrNormConductorEqDFOfUnramified.lean": {
       "before": "febdc4e3d01fde69e31c43c0e3bfc3a509da7680095a0ff812593a326870d3ec",
-      "after": "249b7540adeb60ceec5ba59a4f3eaa70f8c23c7556cac21aebcb8ecb57dc4325"
+      "after": "aa870252a85177195cdd999da7203e9a5810323553472d5147b3a60189383e38"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ExistsHeckeCharacterOfClassGroup.lean": {
       "before": "4df8c562ee5594e2996f0097d1f3140354e07b98c908b5ca0d5128f9691be0c0",
-      "after": "0b6904d096d5d5a183576a84b79c4f79ed0b07229976e33fce558c4850401141"
+      "after": "ef88ed7084d4a937409b32ee919b17df854362ac88b34e475d04c8218e9fc8ee"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean": {
       "before": "38bea0a8be8b648482565fd3ec40ccfe299c495a45e06a005176683d2d7e8309",
-      "after": "6a5a2a0b779e6f711dac15e24d5df90fe083d08d8183edf98343b5045d0ce12c"
+      "after": "964ce35491abf041927b045eb0b95db076c3453f8856640fdf60002ff3cf446b"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/InfiniteEmbeddingMemStandardOpenSubgroup.lean": {
       "before": "936d4971e99f7d748ddd32de4b683d62472a5155ecbb057d5c68e60c4216920b",
@@ -32,11 +32,11 @@
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ModuleSectionMemStandardOpenSubgroup.lean": {
       "before": "20b79750bc37a9fbcdeb61cb5cc374e75693780a476bf9bc2ca6d66711690cf5",
-      "after": "0d3fca5c4f394253743bfface1f5b48a4defcd48c6543a57b522e293d7a35b8d"
+      "after": "f880f2fb34dc9439f89d2c698ec2dfce1cdfdad4f228f4a3d266da0b8e266261"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean": {
       "before": "909345232b14c949b84d270ae1ae8e8d7fdafd59af5b2154dc060755e45977e5",
-      "after": "c40d47f26b65d19ae39e74f4da0f9ed566f60fcc36cb10f59a8b378306f0e72f"
+      "after": "f5dcfef176d3c6d3dacfcf90bcf1248f534a0a0b32c82f7bc4d4799991c1ed03"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/SumAddCharOfMulMulOfMulInv.lean": {
       "before": "917ad92505e98ef7d2c68651adc5a09298385b1718a628d20821b942cd1c4adf",
@@ -44,11 +44,11 @@
     },
     "Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean": {
       "before": "5e3bf1687e825702c08ae63e4c451fc6f897eab82e6b2b8ee1249f4f7776fed1",
-      "after": "a5891026309ae2f8c55bf4793155e43c045f7046fb4ecb6d003cb5229698730b"
+      "after": "01149901809f797c6055f96f3ac91e8daf215870c498c20cb2a1b71810353ba0"
     },
     "GroundTheory/GlobalFields/AnalyticClassNumber/HeckeContinued.lean": {
       "before": "76aede10518bf5faf3ced25bc7d3f97357c9d69865874ba3a24bf68d882b2d29",
-      "after": "a7d5e65b3e6b6cb8103f7e4b3697848c7b47a71f20427a5d4442d79ac823b002"
+      "after": "bcd6630139b4bd85d86582cec61e7218dc8ec46be6ea73744b7dae114f3e62cd"
     },
     "GroundTheory/GlobalFields/IdeleGroups/IdeleNorms.lean": {
       "before": "c3c4299496b4db89261c42bf2a602a08973563247bb87a76e20724d6977a9b38",
@@ -84,7 +84,7 @@
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactors.lean": {
       "before": "6221123d5f2b20524545d17b1647a4de847f0c655b4af7cc7d9bd5b47fc724ee",
-      "after": "14e2a5d4b7b8ffc13a2b0d4c677229ee05a89c266b139ee97e97f8495f17b397"
+      "after": "146c0466730af01a0604d18bbf003f0851c5387f7bc88de86728db08cf149f84"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsArch.lean": {
       "before": "74f42b8629bacf7e2e571fcff04d238afaa17dda3679ab9a21f3309f0f6db9f1",
@@ -92,11 +92,11 @@
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFinite.lean": {
       "before": "7d0a33060c115a699675529b1ac8ea1930694ff85e122a8ef24c63712b5e13a9",
-      "after": "010a31260c3e9f4545c1333c3747e47cc06991b2f879a461d0bb9e176b87cf0b"
+      "after": "972210a2eb6e5b8477927bf887eae6d0a49ae62dea9d8521e5036ecefe8b2df7"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourier.lean": {
       "before": "c4535e5cc8f2e495c2498ea88aaf409305ede95af74fe60161f5d590ed2bbd2a",
-      "after": "68ab0ab430e49ba5b104d5fde5483c688cb0bce8a12c0e332c900ca0ec0d24c2"
+      "after": "180f1c72e4500376e3d3a3de21f841396b3f0439ca0125143cc937fd2231c601"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierInfinite.lean": {
       "before": "0f1b634d67760eb31ad4b4fa0b565f67c5b9d5e1e4409b3c89dede373ecbc10f",
@@ -128,11 +128,11 @@
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeLFunction.lean": {
       "before": "e551c3d57e1e8ca1541d17838261b1b14452b86d13a55b3e62b4cf458cca9c8e",
-      "after": "c1ad163061e11794a7392cfbbca77f92dba0b4ac03267005b5dce177b2093a87"
+      "after": "92cefe8a11f7155b8a8180c3e9ac38b8ba77aae080f7dff56ffccdd501547a3b"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheorem.lean": {
       "before": "72b1a93c64cc307d070454699dc5ad9821fd762c0cd3220e8c8fa5b85ed6066a",
-      "after": "8bce979ca59566e672524cd3c56f018f95209401bd627fa0b20cbefdf7a68c53"
+      "after": "5f3f972bd27257dbd37992bb85d8dacba5595369ebc64d2bdc36c6017f7fcd80"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremConj.lean": {
       "before": "6fcf98c6e60a6d49f23ddddde6abfb2b8c93bbf9d086283e57ca73dead974262",
@@ -140,11 +140,11 @@
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremFE.lean": {
       "before": "2aa01187e9524961a88ca6edf68919521efeec96b44ba3e2b4d0e0679208a269",
-      "after": "a15abbf8ef611379db98d08be536d7194dcbd3009ba86e976acca62c8b6c65ae"
+      "after": "7be9673ec31ada15c44fee2a8532189ff319f21ba958ae936d4d2472e8559a67"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremScaling.lean": {
       "before": "323e561e14c1df2a6ee4f4c5b93f41e8dace8c020ba5d24bc6a7cc40f894c237",
-      "after": "55b9a25f331e4139acb383e8aba167b1faacf26d87a18a29cdb569e4b8740193"
+      "after": "097e0f9b206815381ac4c58120253a7e2a80774d863582dbae23fdc44713c39d"
     },
     "GroundTheory/GlobalFields/TateThesis/IdeleMeasure.lean": {
       "before": "fd4cd07ef8b0e26e1b3df263bd91632aa88b62cd04100def5c6cdaad3c05d366",
@@ -190,16 +190,16 @@
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
-    "new_contribution": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex expressed the L-series as an absolutely convergent sum over integral ideals.",
+    "new_contribution": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex expressed the L-series as an absolutely convergent sum over integral ideals. Codex proved that any idele above a nonzero ideal gives the same coefficient, since the character is trivial on the kernel of the fractional ideal map.",
     "native_proof_module": "GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass",
     "native_contribution_draft_sha256": "9753b9fc94a132ad81ba5b7110bd1668203337c310ac04b74bb246401ba155ec",
     "native_contribution_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass.",
-    "public_source_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex expressed the L-series as an absolutely convergent sum over integral ideals."
+    "public_source_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex expressed the L-series as an absolutely convergent sum over integral ideals. Codex proved that any idele above a nonzero ideal gives the same coefficient, since the character is trivial on the kernel of the fractional ideal map."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T06:58:25.749143+00:00",
+    "completed_utc": "2026-11-24T07:06:26.921587+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
