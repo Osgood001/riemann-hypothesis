@@ -1,15 +1,15 @@
 {
   "core": 29,
-  "candidate": "core29-independent-fourier6b5977977304",
+  "candidate": "core29-independent-fourier524e3eb083ad",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 67,
-  "local_normalized_tokens": 122462,
-  "local_characters": 507381,
+  "submitted_files": 65,
+  "local_normalized_tokens": 117164,
+  "local_characters": 487700,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "2f0280aeda27944cb3ea1bcdf24b79cde3625a6342d97ebbc0fe537ee9a103a1",
+  "proof_tree_sha256": "d6297d067eee046bceeb3e25c57ffa9a0fc1f58045bf47e30783d8eada83c647",
   "modified_files": {
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ConductorEqTopOfStandardOpen.lean": {
       "before": "32a326aa893cd7346d768a4d4e302cda98d7ccbcdd5d61d038ddec4b8b1577f1",
@@ -45,11 +45,11 @@
     },
     "Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean": {
       "before": "5e3bf1687e825702c08ae63e4c451fc6f897eab82e6b2b8ee1249f4f7776fed1",
-      "after": "d2b1fed8b473aff47bd69fd866dfbd097c88fadb090decfa6bd772b909b2f966"
+      "after": "dc2184e9d777f6aa55d11faa43a3dc7d3de947b617d555a2a00690113f9ac858"
     },
     "GroundTheory/GlobalFields/AnalyticClassNumber/HeckeContinued.lean": {
       "before": "76aede10518bf5faf3ced25bc7d3f97357c9d69865874ba3a24bf68d882b2d29",
-      "after": "583d71ab48fffe136fea626a8a28ef870e6a6f22affd5fd8ae615392473c0f17"
+      "after": "749430ec57fa9aac7aaaa24685826217fff0722a93fdee424a8cf37a4ee72f29"
     },
     "GroundTheory/GlobalFields/IdeleGroups/IdeleNorms.lean": {
       "before": "c3c4299496b4db89261c42bf2a602a08973563247bb87a76e20724d6977a9b38",
@@ -83,13 +83,29 @@
       "before": "e4e37c6b919e3624eb773a2e868896ef34c1edf4228a2c9f2fa3d2f463aff4ad",
       "after": "7ccd9a689fcc0e380b6f3f3294d3adaf30645835a3f3182a33c3e49aa5454f60"
     },
+    "GroundTheory/GlobalFields/TateThesis/EulerFactors.lean": {
+      "before": "6221123d5f2b20524545d17b1647a4de847f0c655b4af7cc7d9bd5b47fc724ee",
+      "after": "988b312008bf1120da9001c7f161b58c7f09e606cc06a0a57a371b74b181b914"
+    },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsArch.lean": {
       "before": "74f42b8629bacf7e2e571fcff04d238afaa17dda3679ab9a21f3309f0f6db9f1",
-      "after": "0d38ce0e4f682e525e37a88d5867c161507aa170d3dd617aea4c5988fa9712e2"
+      "after": "f11d38f8b7cd20709428e3594924c4767d12940df0bf1cddee1d671c3c15909a"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourier.lean": {
       "before": "c4535e5cc8f2e495c2498ea88aaf409305ede95af74fe60161f5d590ed2bbd2a",
-      "after": "92ee02e895e48236c476a8c02312583e675bb244a65a08d18846c34456dd8951"
+      "after": "85d650ba0d2e3d59ec964e9f695f701d325e3f2b6792e735589c48568cd1d151"
+    },
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierInfinite.lean": {
+      "before": "0f1b634d67760eb31ad4b4fa0b565f67c5b9d5e1e4409b3c89dede373ecbc10f",
+      "after": "1f541d59fa8707f11778c0788743060de605d7cfd24e9a3cafe81694addce2ad"
+    },
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsInfinite.lean": {
+      "before": "7b76eaa86e387dc72e7d995ae371edc52859e648359f5ce2fce71dd43f99f6f6",
+      "after": "24b4eac9e8c9fc9142d0e11ca6b0673c727ff803ea33a78e71f3a2e1e8e7a886"
+    },
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean": {
+      "before": "3c39a97a34767d9e5a47d976081fa4a4e3e8b5659db95c54d4b632296fcdd93c",
+      "after": "1affcb5f33671ff1327b77b114c370efa19fd0c8f649b268f861c881b601325f"
     },
     "GroundTheory/GlobalFields/TateThesis/GlobalZeta.lean": {
       "before": "a2c21ea0f36d35705df95cba0bd0659e37556690fe94192eb05f40b8ef7c3528",
@@ -109,7 +125,7 @@
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheorem.lean": {
       "before": "72b1a93c64cc307d070454699dc5ad9821fd762c0cd3220e8c8fa5b85ed6066a",
-      "after": "cdb9b0ce2caea4e204d726a45156129ca4efe375edff8b88aff5148b0dad0ad2"
+      "after": "1e5e03b30d9b6363e13fb3e691ceda0759842c5cc27b02d1305301c592dfe6a0"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremConj.lean": {
       "before": "6fcf98c6e60a6d49f23ddddde6abfb2b8c93bbf9d086283e57ca73dead974262",
@@ -117,11 +133,11 @@
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremFE.lean": {
       "before": "2aa01187e9524961a88ca6edf68919521efeec96b44ba3e2b4d0e0679208a269",
-      "after": "a0fad6de64437050f53539b1930af58560dcc86092d24854add5976fafb91f02"
+      "after": "e05eb5732907289745a0375f07bb05e4619b4e5abd064f155c5e39567e72c52a"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremScaling.lean": {
       "before": "323e561e14c1df2a6ee4f4c5b93f41e8dace8c020ba5d24bc6a7cc40f894c237",
-      "after": "60b892cbca7c2cbd8ebba46e82b5985785145202ec7966c8005e5e0ab6e6aed9"
+      "after": "9a0b62a4d1a8c8f9177d9d7818a7b69407a417b14d29ced465dec15bf0befe43"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremTrivial.lean": {
       "before": "19bf564b401e43c938e7fb50677bd1b9c2f259ada6b4878e1e4a5873cd71b939",
@@ -129,7 +145,7 @@
     },
     "GroundTheory/GlobalFields/TateThesis/IdeleMeasure.lean": {
       "before": "fd4cd07ef8b0e26e1b3df263bd91632aa88b62cd04100def5c6cdaad3c05d366",
-      "after": "4979805d0883ddadaba8e05a79639537f68307b3777b1a138c2c3b14b58664dc"
+      "after": "d154d472205ef3d6a32411d7a2a7c8b53dbbafd4cc46a6a3818853f7f25c1483"
     },
     "GroundTheory/GlobalFields/TateThesis/IdeleMeasureNormOne.lean": {
       "before": "0272d9a8eebb7dba271e5a9566a7b6fd907e71651e5ea303f6fbde6d2077098f",
@@ -198,8 +214,6 @@
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean": "3c39a97a34767d9e5a47d976081fa4a4e3e8b5659db95c54d4b632296fcdd93c",
     "GroundTheory/GlobalFields/TateThesis/FiniteAdeleScaling.lean": "a52dfc3aaa9b30bb93f0f4de1f6517dbbeb63f7a4fcdd0800ac99686826712f2",
     "GroundTheory/GlobalFields/TateThesis/Gaussian.lean": "7dcc685d847bb445ea07010d26c3a3cf2674da8f021c05000b4dbf2f4d789db1",
-    "GroundTheory/GlobalFields/TateThesis/GaussianComplex.lean": "0f245577f1a6b32eb698f1783e5644b43459fd097e2cde57ca50ddcdcd557919",
-    "GroundTheory/GlobalFields/TateThesis/GaussianComplexFourier.lean": "90e1c0c465813fde99b8d05d68e10b6f88bbc956a105b2ebbc39e8536faffffa",
     "GroundTheory/GlobalFields/TateThesis/GaussianSchwartz.lean": "638d42b95ac828ec1f1dd4d42f87e8dc1162a57b685b6a7ce7b0b82b4f94b0de",
     "GroundTheory/GlobalFields/TateThesis/GlobalZeta.lean": "a2c21ea0f36d35705df95cba0bd0659e37556690fe94192eb05f40b8ef7c3528",
     "GroundTheory/GlobalFields/TateThesis/GlobalZetaFinite.lean": "ac57aafd37859fd268fee346dde99fb3ad676979dec02c34c33e4f3eb7a1118c",
@@ -238,20 +252,20 @@
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Codex",
-    "public_source_note": "Levent Alpöge authored the original Core 29 formalization. Codex derived the required unramified character identities using finite Fourier inversion and reduced the idèle integrals. This 67-file proof retains the scale-one theta decay estimate. Codex specialized the functional equation directly to unramified characters."
+    "public_source_note": "Levent Alpöge authored the original Core 29 formalization. Codex derived the required unramified character identities using finite Fourier inversion and reduced the idèle integrals. This 65-file proof retains the scale-one theta decay estimate. Codex specialized the functional equation directly to unramified characters. The Archimedean factor specializes to the totally real case. Codex also traced the declaration dependencies of the unramified coset calculation and removed unused supporting declarations."
   },
   "hosted_score": null,
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T05:33:47.452575+00:00",
+    "completed_utc": "2026-11-24T05:44:39.524207+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
     ],
     "target_declaration": "AlpogeRHCore29.partialZetaFunctionalEquation",
-    "log_sha256": "8ba16fe924f5bf7be753e5dda8c679723d0d006ba5d2710c629015dd450568a1",
+    "log_sha256": "41abc9b6d1a0cc0198a0b0af09b4bc9ef95b4830077e5bbf677a9caea0130a2f",
     "comparator_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf"
   }
 }
