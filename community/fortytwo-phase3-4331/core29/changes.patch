@@ -1,41 +1,3 @@
---- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ConductorEqTopOfStandardOpen.lean
-+++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ConductorEqTopOfStandardOpen.lean
-@@ -1,6 +1,5 @@
- import Mathlib
- import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
--import GroundTheory.GlobalFields.TateThesis.RootNumberLocalFinite
- import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
- import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
- import GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass
-@@ -18,28 +17,4 @@
-   rw [← Ideal.one_eq_top] at h1
-   exact Ideal.isUnit_iff.1 (isUnit_of_dvd_one h1)
- 
--theorem toIdele_inv_apply {F : Type} [Field F] [NumberField F]
--    (χ : HeckeCharacter F) (x : IdeleGroup F) : (χ⁻¹).toIdele x = (χ.toIdele x)⁻¹ :=
--  rfl
--
--theorem coeff_inv_mul_coeff : ∀ (F : Type) [Field F] [NumberField F] (χ : HeckeCharacter F),
--    standardOpenSubgroup F ≤ χ.toIdele.ker → ∀ J : Ideal (𝓞 F), J ≠ ⊥ →
--      (χ⁻¹).coeff J * χ.coeff J = 1 := by
--  intro F _ _ χ hχ J hJ
--  have hc : χ.conductor = ⊤ := conductor_eq_top_of_standardOpen χ hχ
--  have hc' : (χ⁻¹).conductor = ⊤ := by
--    refine conductor_eq_top_of_standardOpen _ fun x hx ↦ ?_
--    have h1 : χ.toIdele x = 1 := hχ hx
--    rw [MonoidHom.mem_ker, toIdele_inv_apply, h1, inv_one]
--  have h1 : J ≠ ⊥ ∧ IsCoprime J χ.conductor :=
--    ⟨hJ, by rw [hc, ← Ideal.one_eq_top]; exact isCoprime_one_right⟩
--  have h2 : J ≠ ⊥ ∧ IsCoprime J (χ⁻¹).conductor :=
--    ⟨hJ, by rw [hc', ← Ideal.one_eq_top]; exact isCoprime_one_right⟩
--  obtain ⟨x, hx, hxJ⟩ := exists_mem_primeToLevel (idealUnit_mem_idealsPrimeTo h1.1 h1.2)
--  have hx' : x ∈ primeToLevel (χ⁻¹).conductor := by rw [hc', ← hc]; exact hx
--  rw [HeckeCharacter.coeff_of_mem _ h1, HeckeCharacter.coeff_of_mem _ h2,
--    HeckeCharacter.idealCharacter_apply _ hx _ hxJ,
--    HeckeCharacter.idealCharacter_apply _ hx' _ hxJ, toIdele_inv_apply, ← Circle.coe_mul,
--    inv_mul_cancel, Circle.coe_one]
--
- end GlobalTheory.CompanionTheory.PartialZeta
 --- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/DiscrNormConductorEqDFOfUnramified.lean
 +++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/DiscrNormConductorEqDFOfUnramified.lean
 @@ -1,6 +1,5 @@
@@ -65,7 +27,7 @@
 --- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ExistsHeckeCharacterOfClassGroup.lean
 +++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ExistsHeckeCharacterOfClassGroup.lean
 @@ -1,6 +1,6 @@
-+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConductorEqTopOfStandardOpen
++import GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass
  import Mathlib
  import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
 -import GroundTheory.GlobalFields.TateThesis.RootNumberLocalFinite
@@ -259,7 +221,7 @@
 +++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ModuleSectionMemStandardOpenSubgroup.lean
 @@ -1,6 +1,8 @@
 +import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteEmbeddingMemStandardOpenSubgroup
-+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConductorEqTopOfStandardOpen
++import GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass
 +import GroundTheory.GlobalFields.IdeleGroups.LocalConditionIndex
  import Mathlib
  import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
@@ -314,7 +276,7 @@
 +++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean
 @@ -1,6 +1,7 @@
 +import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteEmbeddingMemStandardOpenSubgroup
-+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConductorEqTopOfStandardOpen
++import GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass
  import Mathlib
  import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
 -import GroundTheory.GlobalFields.TateThesis.RootNumberLocalFinite
@@ -427,15 +389,19 @@
  open NumberField GroundTheory.Global GroundTheory.Global.IdeleGroup
 --- a/Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean
 +++ b/Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean
-@@ -1,7 +1,6 @@
+@@ -1,8 +1,9 @@
  import Mathlib
  import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
  import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHeckeCharacterOfClassGroup
 -import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardOpenSubgroupLeKerInv
- import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConductorEqTopOfStandardOpen
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConductorEqTopOfStandardOpen
++import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
++import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
++import GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass
  import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteEmbeddingMemStandardOpenSubgroup
  import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiscrNormConductorEqDFOfUnramified
-@@ -19,41 +18,39 @@
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RootNumberEqDifferentCoeff
+@@ -19,41 +20,39 @@
  
  variable {F : Type} [Field F] [NumberField F]
  
@@ -494,7 +460,7 @@
        rw [Finset.sum_mul]
        exact Finset.sum_congr rfl fun i _ => (mul_assoc _ _ _).symm
      let g : {J : (Ideal (𝓞 F))⁰ // ClassGroup.mk0 J = C} → Ideal (𝓞 F) :=
-@@ -61,7 +58,7 @@
+@@ -61,7 +60,7 @@
      have hg : Function.Injective g := fun a b hab =>
        Subtype.ext (Subtype.ext hab)
      have hsupp : ∀ I ∉ Set.range g,
@@ -503,7 +469,7 @@
        intro I hI
        by_cases hbot : I = ⊥
        · subst hbot
-@@ -71,7 +68,7 @@
+@@ -71,7 +70,7 @@
          rw [hfac, show I = (J : Ideal (𝓞 F)) from rfl, (horth J).2 hJ, zero_mul]
      have h2 := (hg.hasSum_iff hsupp).2 h1
      have h3 : (fun I : Ideal (𝓞 F) =>
@@ -512,7 +478,7 @@
          fun J : {J : (Ideal (𝓞 F))⁰ // ClassGroup.mk0 J = C} =>
            ((Ideal.absNorm (J.1 : Ideal (𝓞 F)) : ℕ) : ℂ) ^ (-s) := funext fun J => by
        simp only [Function.comp_apply]
-@@ -82,13 +79,13 @@
+@@ -82,13 +81,13 @@
  theorem card_classGroup_ne_zero : (Fintype.card (ClassGroup (𝓞 F)) : ℂ) ≠ 0 :=
    Nat.cast_ne_zero.2 Fintype.card_ne_zero
  
@@ -528,7 +494,7 @@
        (Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * (if ClassGroup.mk0 J = C then (Fintype.card (ClassGroup (𝓞 F)) : ℂ) else 0) := by
      rw [← sum_addChar_ofMul_mul_ofMul_inv, Finset.mul_sum]
      refine Finset.sum_congr rfl fun ψ _ => ?_
-@@ -101,34 +98,26 @@
+@@ -101,34 +100,26 @@
    · intro h
      rw [if_neg h, mul_zero]
  
@@ -575,7 +541,7 @@
      (rootNumber_eq_coeff_different F _ hU) s h1 h2
    rw [← hD, coeff_classHecke ψ _ (nonZeroDivisors.coe_ne_zero D)] at h
    exact h
-@@ -146,7 +135,7 @@
+@@ -146,7 +137,7 @@
      rw [← AddChar.map_add_eq_mul, ← ofMul_mul, ← hC, inv_mul_cancel_left]
    calc _ = ((Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * ψ (Additive.ofMul C⁻¹)) *
          ((GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F : ℂ) ^ (s / 2) * Complex.Gammaℝ s ^ Module.finrank ℚ F *
@@ -1399,20 +1365,60 @@
 +end GroundTheory.Global.HeckeCharacter
 --- a/GroundTheory/GlobalFields/TateThesis/Conductor.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/Conductor.lean
-@@ -25,9 +25,6 @@
-       (x : FiniteAdeleRing (𝓞 K) K) v :=
-   rfl
+@@ -19,35 +19,6 @@
+   Units.map (_root_.RestrictedProduct.evalMonoidHom
+     (fun w : HeightOneSpectrum (𝓞 K) ↦ w.adicCompletion K) v)
  
+-@[simp]
+-theorem coe_finiteComponent (v : HeightOneSpectrum (𝓞 K)) (x : (FiniteAdeleRing (𝓞 K) K)ˣ) :
+-    ((finiteComponent v x : (v.adicCompletion K)ˣ) : v.adicCompletion K) =
+-      (x : FiniteAdeleRing (𝓞 K) K) v :=
+-  rfl
+-
 -theorem continuous_finiteComponent (v : HeightOneSpectrum (𝓞 K)) :
 -    Continuous (finiteComponent (K := K) v) :=
 -  Units.continuous_map (_root_.RestrictedProduct.continuous_eval v)
+-
+-def finiteUnitsSingle (v : HeightOneSpectrum (𝓞 K)) :
+-    (v.adicCompletion K)ˣ →* (FiniteAdeleRing (𝓞 K) K)ˣ :=
+-  Units.map (finiteAdeleSingle v)
+-
+-theorem continuous_finiteUnitsSingle (v : HeightOneSpectrum (𝓞 K)) :
+-    Continuous (finiteUnitsSingle (K := K) v) :=
+-  Units.continuous_map (continuous_finiteAdeleSingle v)
+-
+-@[simp]
+-theorem finiteComponent_finiteUnitsSingle (v : HeightOneSpectrum (𝓞 K))
+-    (x : (v.adicCompletion K)ˣ) : finiteComponent v (finiteUnitsSingle v x) = x := by
+-  ext
+-  simp [finiteUnitsSingle]
+-
+-theorem finiteComponent_finiteUnitsSingle_of_ne {v w : HeightOneSpectrum (𝓞 K)} (h : w ≠ v)
+-    (x : (v.adicCompletion K)ˣ) : finiteComponent w (finiteUnitsSingle v x) = 1 := by
+-  ext
+-  simp [finiteUnitsSingle, finiteAdeleSingle_apply_of_ne h]
+-
+ def finiteLevel (n : HeightOneSpectrum (𝓞 K) → ℕ) : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ :=
+   ⨅ v, (unitsLevel v (n v)).comap (finiteComponent v)
  
- def finiteUnitsSingle (v : HeightOneSpectrum (𝓞 K)) :
-     (v.adicCompletion K)ˣ →* (FiniteAdeleRing (𝓞 K) K)ˣ :=
-@@ -77,36 +74,7 @@
-     finiteUnitsEquiv K x v = finiteComponent v x :=
-   Units.ext rfl
+@@ -63,177 +34,6 @@
+     finiteLevel n ≤ finiteLevel 0 :=
+   finiteLevel_antitone fun v ↦ Nat.zero_le (n v)
  
+-theorem finiteUnitsSingle_mem_finiteLevel {n : HeightOneSpectrum (𝓞 K) → ℕ}
+-    {v : HeightOneSpectrum (𝓞 K)} {x : (v.adicCompletion K)ˣ} (hx : x ∈ unitsLevel v (n v)) :
+-    finiteUnitsSingle v x ∈ finiteLevel n := by
+-  refine mem_finiteLevel.2 fun w ↦ ?_
+-  by_cases h : w = v
+-  · subst h
+-    simpa using hx
+-  · rw [finiteComponent_finiteUnitsSingle_of_ne h]
+-    exact one_mem _
+-
+-theorem finiteUnitsEquiv_apply_eq (x : (FiniteAdeleRing (𝓞 K) K)ˣ) (v : HeightOneSpectrum (𝓞 K)) :
+-    finiteUnitsEquiv K x v = finiteComponent v x :=
+-  Units.ext rfl
+-
 -theorem isOpen_finiteLevel_zero :
 -    IsOpen (finiteLevel (K := K) 0 : Set (FiniteAdeleRing (𝓞 K) K)ˣ) := by
 -  have h := (_root_.RestrictedProduct.isOpen_forall_mem
@@ -1425,7 +1431,7 @@
 -  simp only [SetLike.mem_coe, mem_finiteLevel, Pi.zero_apply, unitsLevel_zero, Set.mem_preimage,
 -    Set.mem_ofPred_eq]
 -  exact forall_congr' fun v ↦ by rw [← finiteUnitsEquiv_apply_eq]; rfl
- 
+-
 -theorem isOpen_finiteLevel {n : HeightOneSpectrum (𝓞 K) → ℕ} (hn : (support n).Finite) :
 -    IsOpen (finiteLevel n : Set (FiniteAdeleRing (𝓞 K) K)ˣ) := by
 -  have : (finiteLevel n : Set (FiniteAdeleRing (𝓞 K) K)ˣ) =
@@ -1443,34 +1449,199 @@
 -  rw [this]
 -  exact isOpen_finiteLevel_zero.inter (isOpen_biInter_finset fun v _ ↦
 -    (isOpen_unitsLevel v (n v)).preimage (continuous_finiteComponent v))
- 
- theorem exists_finiteLevel_subset {W : Set (FiniteAdeleRing (𝓞 K) K)ˣ} (hW : W ∈ 𝓝 1) :
-     ∃ S : Finset (HeightOneSpectrum (𝓞 K)), ∃ n : HeightOneSpectrum (𝓞 K) → ℕ,
-@@ -163,18 +131,7 @@
-       exact ⟨_, ⟨S, n, h1, h0, rfl⟩, h⟩) hH χ hχ
-   exact ⟨S, n, h1, h0, hL⟩
- 
+-
+-theorem exists_finiteLevel_subset {W : Set (FiniteAdeleRing (𝓞 K) K)ˣ} (hW : W ∈ 𝓝 1) :
+-    ∃ S : Finset (HeightOneSpectrum (𝓞 K)), ∃ n : HeightOneSpectrum (𝓞 K) → ℕ,
+-      (∀ v ∈ S, 1 ≤ n v) ∧ (∀ v ∉ S, n v = 0) ∧
+-        (finiteLevel n : Set (FiniteAdeleRing (𝓞 K) K)ˣ) ⊆ W := by
+-  classical
+-  let e := finiteUnitsEquiv K
+-  let es := ContinuousMulEquiv.symm e
+-  have hS : (cofinite : Filter (HeightOneSpectrum (𝓞 K))) ≤ 𝓟 Set.univ := by simp
+-  have hW1 : es ⁻¹' W ∈ 𝓝 (1 : Πʳ v : HeightOneSpectrum (𝓞 K),
+-      [(v.adicCompletion K)ˣ, (Submonoid.ofClass (v.adicCompletionIntegers K)).units]) :=
+-    es.continuous.continuousAt.preimage_mem_nhds (by change W ∈ 𝓝 (es 1); rwa [map_one es])
+-  have hW2 := (_root_.RestrictedProduct.continuous_inclusion
+-    (R := fun v : HeightOneSpectrum (𝓞 K) ↦ (v.adicCompletion K)ˣ)
+-    (A := fun v ↦ ((Submonoid.ofClass (v.adicCompletionIntegers K)).units :
+-      Set (v.adicCompletion K)ˣ)) hS).continuousAt.preimage_mem_nhds (x := 1) hW1
+-  rw [_root_.RestrictedProduct.isEmbedding_coe_of_principal.nhds_eq_comap, mem_comap] at hW2
+-  obtain ⟨t, ht, htW⟩ := hW2
+-  rw [nhds_pi, Filter.mem_pi'] at ht
+-  obtain ⟨I, u, hu, hIu⟩ := ht
+-  choose N hN hNu using fun v ↦ exists_unitsLevel_subset v (hu v)
+-  refine ⟨I, fun v ↦ if v ∈ I then N v else 0, fun v hv ↦ by simp [hv, hN v],
+-    fun v hv ↦ by simp [hv], ?_⟩
+-  intro x hx
+-  rw [SetLike.mem_coe, mem_finiteLevel] at hx
+-  have hx0 : ∀ v, e x v ∈ (Submonoid.ofClass (v.adicCompletionIntegers K)).units := fun v ↦ by
+-    rw [finiteUnitsEquiv_apply_eq, ← unitsLevel_zero]
+-    exact unitsLevel_antitone v (Nat.zero_le _) (hx v)
+-  let z : Πʳ v : HeightOneSpectrum (𝓞 K),
+-      [(v.adicCompletion K)ˣ, (Submonoid.ofClass (v.adicCompletionIntegers K)).units]_[𝓟 Set.univ] :=
+-    ⟨fun v ↦ e x v, Filter.eventually_principal.2 fun v _ ↦ hx0 v⟩
+-  have hz := htW (show (z : Π v : HeightOneSpectrum (𝓞 K), (v.adicCompletion K)ˣ) ∈ t from
+-    hIu fun v hv ↦ by
+-      have := hx v
+-      simp only [Finset.mem_coe.1 hv, if_true] at this
+-      exact hNu v (by rw [← finiteUnitsEquiv_apply_eq] at this; exact this))
+-  have hzx : _root_.RestrictedProduct.inclusion _ _ hS z = e x := rfl
+-  rw [Set.mem_preimage, Set.mem_preimage, hzx] at hz
+-  rwa [show es (e x) = x from ContinuousMulEquiv.symm_apply_apply e x] at hz
+-
+-section Character
+-
+-variable {H : Type*} [Group H] [TopologicalSpace H]
+-
+-theorem exists_finiteLevel_le_ker (hH : NoSmallSubgroups H)
+-    (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H) (hχ : Continuous χ) :
+-    ∃ S : Finset (HeightOneSpectrum (𝓞 K)), ∃ n : HeightOneSpectrum (𝓞 K) → ℕ,
+-      (∀ v ∈ S, 1 ≤ n v) ∧ (∀ v ∉ S, n v = 0) ∧ finiteLevel n ≤ χ.ker := by
+-  obtain ⟨L, ⟨S, n, h1, h0, rfl⟩, hL⟩ := exists_le_ker_of_noSmallSubgroups
+-    (P := fun L ↦ ∃ S : Finset (HeightOneSpectrum (𝓞 K)), ∃ n : HeightOneSpectrum (𝓞 K) → ℕ,
+-      (∀ v ∈ S, 1 ≤ n v) ∧ (∀ v ∉ S, n v = 0) ∧ L = finiteLevel n)
+-    (fun W hW ↦ by
+-      obtain ⟨S, n, h1, h0, h⟩ := exists_finiteLevel_subset hW
+-      exact ⟨_, ⟨S, n, h1, h0, rfl⟩, h⟩) hH χ hχ
+-  exact ⟨S, n, h1, h0, hL⟩
+-
 -theorem exists_finiteLevel_le_ker_circle (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* Circle)
 -    (hχ : Continuous χ) :
 -    ∃ S : Finset (HeightOneSpectrum (𝓞 K)), ∃ n : HeightOneSpectrum (𝓞 K) → ℕ,
 -      (∀ v ∈ S, 1 ≤ n v) ∧ (∀ v ∉ S, n v = 0) ∧ finiteLevel n ≤ χ.ker :=
 -  exists_finiteLevel_le_ker Circle.noSmallSubgroups χ hχ
- 
+-
 -theorem isOpen_ker_of_continuous (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H)
 -    (hχ : Continuous χ) : IsOpen (χ.ker : Set (FiniteAdeleRing (𝓞 K) K)ˣ) := by
 -  obtain ⟨S, n, -, h0, hn⟩ := exists_finiteLevel_le_ker hH χ hχ
 -  refine Subgroup.isOpen_mono hn (isOpen_finiteLevel (S.finite_toSet.subset fun v hv ↦ ?_))
 -  by_contra hvS
 -  exact hv (h0 v hvS)
+-
+-def conductorExponentAt (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H) (v : HeightOneSpectrum (𝓞 K)) : ℕ :=
+-  conductorExponent v (χ.comp (finiteUnitsSingle v))
+-
+-theorem finiteLevel_le_ker_iff (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H)
+-    (hχ : Continuous χ) (n : HeightOneSpectrum (𝓞 K) → ℕ) :
+-    finiteLevel n ≤ χ.ker ↔ ∀ v, conductorExponentAt χ v ≤ n v := by
+-  have hloc : ∀ v, Continuous (χ.comp (finiteUnitsSingle v)) := fun v ↦
+-    hχ.comp (continuous_finiteUnitsSingle v)
+-  constructor
+-  · intro h v
+-    rw [conductorExponentAt, ← unitsLevel_le_ker_iff v hH _ (hloc v)]
+-    intro x hx
+-    exact h (finiteUnitsSingle_mem_finiteLevel hx)
+-  · intro h x hx
+-    classical
+-    obtain ⟨S, n₀, -, h0, hker⟩ := exists_finiteLevel_le_ker hH χ hχ
+-    set p := ∏ v ∈ S, finiteUnitsSingle v (finiteComponent v x) with hp
+-    have hcomp : ∀ w, finiteComponent w p = if w ∈ S then finiteComponent w x else 1 := by
+-      intro w
+-      rw [hp, map_prod]
+-      split_ifs with hw
+-      · rw [Finset.prod_eq_single_of_mem w hw fun v _ hv ↦
+-          finiteComponent_finiteUnitsSingle_of_ne (Ne.symm hv) _,
+-          finiteComponent_finiteUnitsSingle]
+-      · exact Finset.prod_eq_one fun v hv ↦
+-          finiteComponent_finiteUnitsSingle_of_ne (fun h ↦ hw (by rw [h]; exact hv)) _
+-    have hy : x * p⁻¹ ∈ finiteLevel n₀ := by
+-      refine mem_finiteLevel.2 fun w ↦ ?_
+-      rw [map_mul, map_inv, hcomp]
+-      split_ifs with hw
+-      · rw [mul_inv_cancel]
+-        exact one_mem _
+-      · rw [inv_one, mul_one, h0 w hw]
+-        exact unitsLevel_antitone w (Nat.zero_le _) (mem_finiteLevel.1 hx w)
+-    have hpk : p ∈ χ.ker := Subgroup.prod_mem _ fun v _ ↦
+-      (unitsLevel_le_ker_iff v hH _ (hloc v)).2 (h v) (mem_finiteLevel.1 hx v)
+-    have hxp : x = x * p⁻¹ * p := by rw [inv_mul_cancel_right]
+-    rw [hxp]
+-    exact mul_mem (hker hy) hpk
+-
+-theorem finite_support_conductorExponentAt (hH : NoSmallSubgroups H)
+-    (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H) (hχ : Continuous χ) :
+-    (support (conductorExponentAt χ)).Finite := by
+-  obtain ⟨S, n, -, h0, hker⟩ := exists_finiteLevel_le_ker hH χ hχ
+-  have h := (finiteLevel_le_ker_iff hH χ hχ n).1 hker
+-  refine S.finite_toSet.subset fun v hv ↦ ?_
+-  by_contra hvS
+-  exact hv (Nat.eq_zero_of_le_zero ((h v).trans (h0 v hvS).le))
+-
+-theorem conductorExponentAt_eq_zero_iff (hH : NoSmallSubgroups H)
+-    (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H) (hχ : Continuous χ) (v : HeightOneSpectrum (𝓞 K)) :
+-    conductorExponentAt χ v = 0 ↔
+-      (Submonoid.ofClass (v.adicCompletionIntegers K)).units ≤
+-        (χ.comp (finiteUnitsSingle v)).ker :=
+-  conductorExponent_eq_zero_iff v hH _ (hχ.comp (continuous_finiteUnitsSingle v))
+-
+-end Character
+-
+ end IdeleGroup
  
- def conductorExponentAt (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H) (v : HeightOneSpectrum (𝓞 K)) : ℕ :=
-   conductorExponent v (χ.comp (finiteUnitsSingle v))
+ end
 --- a/GroundTheory/GlobalFields/TateThesis/ConductorIdeal.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/ConductorIdeal.lean
-@@ -65,26 +65,6 @@
-     rw [hsplit, finprod_mul_distrib hfa hmb]
-     exact dvd_mul_right _ _
+@@ -8,127 +8,15 @@
  
+ noncomputable section
+ 
+-section Ideals
+-
+-variable {R : Type*} [CommRing R] [IsDedekindDomain R]
+-
+-omit [IsDedekindDomain R] in
+-
+-theorem asIdeal_pow_eq_one_iff (v : HeightOneSpectrum R) {k : ℕ} : v.asIdeal ^ k = 1 ↔ k = 0 := by
+-  constructor
+-  · intro h
+-    by_contra hk
+-    have hle : v.asIdeal ^ k ≤ v.asIdeal := Ideal.pow_le_self hk
+-    rw [h, Ideal.one_eq_top, top_le_iff] at hle
+-    exact v.isPrime.ne_top hle
+-  · rintro rfl
+-    exact pow_zero _
+-
+-omit [IsDedekindDomain R] in
+-theorem mulSupport_asIdeal_pow (a : HeightOneSpectrum R → ℕ) :
+-    mulSupport (fun v : HeightOneSpectrum R ↦ v.asIdeal ^ a v) = support a := by
+-  ext v
+-  simp only [mem_mulSupport, mem_support, ne_eq, asIdeal_pow_eq_one_iff]
+-
+-theorem finprod_asIdeal_pow_ne_bot (a : HeightOneSpectrum R → ℕ) :
+-    (∏ᶠ v : HeightOneSpectrum R, v.asIdeal ^ a v) ≠ ⊥ :=
+-  finprod_induction (fun I : Ideal R ↦ I ≠ ⊥) one_ne_zero (fun _ _ hx hy ↦ mul_ne_zero hx hy)
+-    fun v ↦ pow_ne_zero _ v.ne_bot
+-
+-theorem finprod_asIdeal_pow_dvd_iff {a : HeightOneSpectrum R → ℕ} (ha : (support a).Finite)
+-    {I : Ideal R} (hI : I ≠ ⊥) :
+-    (∏ᶠ v : HeightOneSpectrum R, v.asIdeal ^ a v) ∣ I ↔
+-      ∀ v : HeightOneSpectrum R, a v ≤ multiplicity v.asIdeal I := by
+-  have hfa : HasFiniteMulSupport fun v : HeightOneSpectrum R ↦ v.asIdeal ^ a v := by
+-    rw [HasFiniteMulSupport, mulSupport_asIdeal_pow]
+-    exact ha
+-  constructor
+-  · intro h v
+-    have h1 : v.asIdeal ^ a v ∣ I := (finprod_mem_dvd v hfa).trans h
+-    have h2 := HeightOneSpectrum.multiplicity_le_of_ideal_ge v (Ideal.le_of_dvd h1) hI
+-    rwa [multiplicity_pow_self_of_prime (HeightOneSpectrum.prime v)] at h2
+-  · intro h
+-    have hm : HasFiniteMulSupport fun v : HeightOneSpectrum R ↦
+-        v.asIdeal ^ multiplicity v.asIdeal I := by
+-      simpa only [HeightOneSpectrum.maxPowDividing_eq_pow_multiplicity hI] using
+-        Ideal.hasFiniteMulSupport hI
+-    have hmb : HasFiniteMulSupport fun v : HeightOneSpectrum R ↦
+-        v.asIdeal ^ (multiplicity v.asIdeal I - a v) := by
+-      rw [HasFiniteMulSupport, mulSupport_asIdeal_pow] at hm ⊢
+-      refine hm.subset fun v hv ↦ ?_
+-      simp only [mem_support, ne_eq] at hv ⊢
+-      omega
+-    have hsplit : (fun v : HeightOneSpectrum R ↦ v.asIdeal ^ multiplicity v.asIdeal I) =
+-        fun v ↦ v.asIdeal ^ a v * v.asIdeal ^ (multiplicity v.asIdeal I - a v) :=
+-      funext fun v ↦ by rw [← pow_add, Nat.add_sub_cancel' (h v)]
+-    conv_rhs => rw [← Ideal.finprod_heightOneSpectrum_pow_multiplicity hI]
+-    rw [hsplit, finprod_mul_distrib hfa hmb]
+-    exact dvd_mul_right _ _
+-
 -theorem asIdeal_dvd_finprod_iff {a : HeightOneSpectrum R → ℕ} (ha : (support a).Finite)
 -    (v : HeightOneSpectrum R) :
 -    v.asIdeal ∣ ∏ᶠ w : HeightOneSpectrum R, w.asIdeal ^ a w ↔ 1 ≤ a v := by
@@ -1491,18 +1662,34 @@
 -    omega
 -  · intro h
 -    exact (dvd_pow_self _ (by omega)).trans (finprod_mem_dvd v hfa)
+-
+-end Ideals
+-
+ namespace IdeleGroup
  
- end Ideals
+ variable {K : Type*} [Field K] [NumberField K] {H : Type*} [Group H] [TopologicalSpace H]
  
-@@ -108,18 +88,7 @@
-   rw [idealLevel, finiteLevel_le_ker_iff hH χ hχ, conductor,
-     finprod_asIdeal_pow_dvd_iff (finite_support_conductorExponentAt hH χ hχ) h𝔪]
+-def conductor (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H) : Ideal (𝓞 K) :=
+-  ∏ᶠ v : HeightOneSpectrum (𝓞 K), v.asIdeal ^ conductorExponentAt χ v
+-
+-omit [TopologicalSpace H] in
+-theorem conductor_ne_bot (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H) : conductor χ ≠ ⊥ :=
+-  finprod_asIdeal_pow_ne_bot _
+-
+ def idealLevel (𝔪 : Ideal (𝓞 K)) : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ :=
+   finiteLevel fun v ↦ multiplicity v.asIdeal 𝔪
  
+-theorem idealLevel_le_ker_iff (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H)
+-    (hχ : Continuous χ) {𝔪 : Ideal (𝓞 K)} (h𝔪 : 𝔪 ≠ ⊥) :
+-    idealLevel 𝔪 ≤ χ.ker ↔ conductor χ ∣ 𝔪 := by
+-  rw [idealLevel, finiteLevel_le_ker_iff hH χ hχ, conductor,
+-    finprod_asIdeal_pow_dvd_iff (finite_support_conductorExponentAt hH χ hχ) h𝔪]
+-
 -theorem dvd_conductor_iff (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H)
 -    (hχ : Continuous χ) (v : HeightOneSpectrum (𝓞 K)) :
 -    v.asIdeal ∣ conductor χ ↔ 1 ≤ conductorExponentAt χ v :=
 -  asIdeal_dvd_finprod_iff (finite_support_conductorExponentAt hH χ hχ) v
- 
+-
 -theorem not_dvd_conductor_iff (hH : NoSmallSubgroups H) (χ : (FiniteAdeleRing (𝓞 K) K)ˣ →* H)
 -    (hχ : Continuous χ) (v : HeightOneSpectrum (𝓞 K)) :
 -    ¬ v.asIdeal ∣ conductor χ ↔
@@ -1510,9 +1697,31 @@
 -        (χ.comp (finiteUnitsSingle v)).ker := by
 -  rw [dvd_conductor_iff hH χ hχ, ← conductorExponentAt_eq_zero_iff hH χ hχ,
 -    Nat.one_le_iff_ne_zero, not_not]
- 
+-
  def ofFinite : (FiniteAdeleRing (𝓞 K) K)ˣ →* IdeleGroup K :=
    (ContinuousMulEquiv.symm (prodEquiv K)).toMulEquiv.toMonoidHom.comp (MonoidHom.inr _ _)
+-
+-theorem continuous_ofFinite : Continuous (ofFinite (K := K)) := by
+-  have : Continuous fun x : (FiniteAdeleRing (𝓞 K) K)ˣ ↦
+-      ContinuousMulEquiv.symm (prodEquiv K) ((1 : (InfiniteAdeleRing K)ˣ), x) :=
+-    (ContinuousMulEquiv.symm (prodEquiv K)).continuous.comp (continuous_const.prodMk continuous_id)
+-  exact this
+ 
+ @[simp]
+ theorem toFinite_ofFinite (x : (FiniteAdeleRing (𝓞 K) K)ˣ) : toFinite K (ofFinite x) = x := by
+@@ -147,12 +35,6 @@
+   rw [Pi.zero_apply, unitsLevel_zero, Submonoid.mem_units_iff]
+   rfl
+ 
+-theorem map_idealLevel_le_ker_iff (hH : NoSmallSubgroups H) (χ : IdeleGroup K →* H)
+-    (hχ : Continuous χ) {𝔪 : Ideal (𝓞 K)} (h𝔪 : 𝔪 ≠ ⊥) :
+-    (idealLevel 𝔪).map ofFinite ≤ χ.ker ↔ conductor (χ.comp ofFinite) ∣ 𝔪 := by
+-  rw [Subgroup.map_le_iff_le_comap, MonoidHom.comap_ker]
+-  exact idealLevel_le_ker_iff hH _ (hχ.comp continuous_ofFinite) h𝔪
+-
+ end IdeleGroup
+ 
+ end
 --- a/GroundTheory/GlobalFields/TateThesis/EulerFactors.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/EulerFactors.lean
 @@ -19,7 +19,7 @@
@@ -2748,7 +2957,7 @@
  
 --- a/GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean
-@@ -11,132 +11,12 @@
+@@ -11,183 +11,12 @@
  
  variable {K : Type*} [Field K] [NumberField K]
  
@@ -2878,13 +3087,19 @@
 -
 -theorem infiniteComponent_inv (w : InfinitePlace K) (a : (w.Completion)ˣ) :
 -    (χ⁻¹).infiniteComponent w a = (χ.infiniteComponent w a)⁻¹ := rfl
- 
- theorem conductor_inv : χ⁻¹.conductor = χ.conductor := by
-   have hker : (χ⁻¹).toIdele.ker = χ.toIdele.ker := by
-@@ -150,45 +30,6 @@
-     exact (χ⁻¹).map_idealLevel_conductor_le_ker
-   exact le_antisymm (Ideal.le_of_dvd h2) (Ideal.le_of_dvd h1)
- 
+-
+-theorem conductor_inv : χ⁻¹.conductor = χ.conductor := by
+-  have hker : (χ⁻¹).toIdele.ker = χ.toIdele.ker := by
+-    ext x
+-    simp only [MonoidHom.mem_ker, inv_toIdele, inv_eq_one]
+-  have h1 : χ⁻¹.conductor ∣ χ.conductor := by
+-    rw [← (χ⁻¹).map_idealLevel_le_ker_iff χ.conductor_ne_bot, hker]
+-    exact χ.map_idealLevel_conductor_le_ker
+-  have h2 : χ.conductor ∣ χ⁻¹.conductor := by
+-    rw [← χ.map_idealLevel_le_ker_iff (χ⁻¹).conductor_ne_bot, ← hker]
+-    exact (χ⁻¹).map_idealLevel_conductor_le_ker
+-  exact le_antisymm (Ideal.le_of_dvd h2) (Ideal.le_of_dvd h1)
+-
 -open Classical in
 -
 -theorem infiniteParams_inv (w : InfinitePlace K) :
@@ -2923,10 +3138,9 @@
 -theorem infiniteWeight_inv_of_isComplex {w : InfinitePlace K} (hw : w.IsComplex) :
 -    (χ⁻¹).infiniteWeight w = -χ.infiniteWeight w := by
 -  rw [infiniteWeight, infiniteParams_inv, if_neg (not_isReal_iff_isComplex.2 hw)]
--
+ 
  end HeckeCharacter
  
- end
 --- a/GroundTheory/GlobalFields/TateThesis/Gaussian.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/Gaussian.lean
 @@ -21,8 +21,6 @@
@@ -3063,42 +3277,176 @@
  
 --- a/GroundTheory/GlobalFields/TateThesis/HeckeChar.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/HeckeChar.lean
-@@ -33,9 +33,6 @@
-   rintro rfl
-   exact hv hw
+@@ -15,136 +15,6 @@
+ abbrev HeckeCharacter : Type _ := IdeleClassGroup K →ₜ* Circle
  
+ variable {K}
+-
+-def idealsPrimeTo (𝔪 : Ideal (𝓞 K)) : Subgroup (FractionalIdeal (𝓞 K)⁰ K)ˣ where
+-  carrier := {I | ∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔪 →
+-    count K v (I : FractionalIdeal (𝓞 K)⁰ K) = 0}
+-  one_mem' := fun v _ ↦ by rw [Units.val_one, count_one]
+-  mul_mem' {I J} hI hJ v hv := by
+-    rw [Units.val_mul, count_mul K v I.ne_zero J.ne_zero, hI v hv, hJ v hv, add_zero]
+-  inv_mem' {I} hI v hv := by
+-    rw [Units.val_inv_eq_inv_val, count_inv, hI v hv, neg_zero]
+-
+-theorem primeIdealUnit_mem_idealsPrimeTo {𝔪 : Ideal (𝓞 K)} {v : HeightOneSpectrum (𝓞 K)}
+-    (hv : ¬ v.asIdeal ∣ 𝔪) : primeIdealUnit v ∈ idealsPrimeTo 𝔪 := by
+-  classical
+-  intro w hw
+-  rw [count_primeIdealUnit, if_neg]
+-  rintro rfl
+-  exact hv hw
+-
 -theorem idealsPrimeTo_top : idealsPrimeTo (⊤ : Ideal (𝓞 K)) = ⊤ := by
 -  exact eq_top_iff.2 fun I _ v hv ↦
 -    absurd (top_le_iff.1 (Ideal.le_of_dvd hv)) v.isPrime.ne_top
- 
- namespace IdeleGroup
- 
-@@ -106,11 +103,6 @@
-   rw [finiteProj_finiteEmbedding_of_ne hwv]
-   exact one_mem _
- 
+-
+-namespace IdeleGroup
+-
+-theorem exists_uniformizer (v : HeightOneSpectrum (𝓞 K)) :
+-    ∃ π : (v.adicCompletion K)ˣ, Valued.v (π : v.adicCompletion K) = exp (-1 : ℤ) := by
+-  obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer K
+-  have hne : ((π : K) : v.adicCompletion K) ≠ 0 := by
+-    intro h
+-    have h' := congrArg Valued.v h
+-    rw [valuedAdicCompletion_eq_valuation', hπ, map_zero] at h'
+-    exact exp_ne_zero h'
+-  exact ⟨Units.mk0 _ hne, by rw [Units.val_mk0, valuedAdicCompletion_eq_valuation', hπ]⟩
+-
+-@[simp]
+-theorem toInfinite_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) (a : (v.adicCompletion K)ˣ) :
+-    toInfinite K (finiteEmbedding v a) = 1 :=
+-  Units.ext rfl
+-
+-theorem finiteComponent_toFinite (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
+-    finiteComponent v (toFinite K x) = finiteProj v x :=
+-  Units.ext rfl
+-
+-@[simp]
+-theorem ofFinite_finiteUnitsSingle (v : HeightOneSpectrum (𝓞 K)) (a : (v.adicCompletion K)ˣ) :
+-    ofFinite (finiteUnitsSingle v a) = finiteEmbedding v a :=
+-  Units.ext rfl
+-
+-theorem ofFinite_toFinite_of_toInfinite_eq_one {x : IdeleGroup K} (hx : toInfinite K x = 1) :
+-    ofFinite (toFinite K x) = x := by
+-  apply (prodEquiv K).injective
+-  refine Prod.ext ?_ ?_
+-  · change toInfinite K (ofFinite (toFinite K x)) = toInfinite K x
+-    rw [toInfinite_ofFinite, hx]
+-  · change toFinite K (ofFinite (toFinite K x)) = toFinite K x
+-    rw [toFinite_ofFinite]
+-
+-theorem ord_eq_zero_of_mem_unitsLevel {v : HeightOneSpectrum (𝓞 K)} {x : IdeleGroup K} {n : ℕ}
+-    (h : finiteProj v x ∈ unitsLevel v n) : ord v x = 0 := by
+-  rw [ord, ← coe_finiteProj, (mem_unitsLevel.1 h).1, log_one, neg_zero]
+-
+-theorem toFractionalIdeal_finiteEmbedding_of_uniformizer {v : HeightOneSpectrum (𝓞 K)}
+-    {π : (v.adicCompletion K)ˣ} (hπ : Valued.v (π : v.adicCompletion K) = exp (-1 : ℤ)) :
+-    toFractionalIdeal (finiteEmbedding v π) = primeIdealUnit v := by
+-  classical
+-  refine toFractionalIdeal_eq_iff.2 fun w ↦ ?_
+-  rw [count_primeIdealUnit]
+-  split_ifs with h
+-  · subst h
+-    rw [ord_finiteEmbedding_self, hπ, log_exp, neg_neg]
+-  · exact ord_finiteEmbedding_of_ne h _
+-
+-def primeToLevel (𝔪 : Ideal (𝓞 K)) : Subgroup (IdeleGroup K) :=
+-  (toInfinite K).ker ⊓ ⨅ v : HeightOneSpectrum (𝓞 K), ⨅ (_ : v.asIdeal ∣ 𝔪),
+-    (unitsLevel v (multiplicity v.asIdeal 𝔪)).comap (finiteProj v)
+-
+-theorem mem_primeToLevel {𝔪 : Ideal (𝓞 K)} {x : IdeleGroup K} :
+-    x ∈ primeToLevel 𝔪 ↔ toInfinite K x = 1 ∧ ∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔪 →
+-      finiteProj v x ∈ unitsLevel v (multiplicity v.asIdeal 𝔪) := by
+-  simp only [primeToLevel, Subgroup.mem_inf, MonoidHom.mem_ker, Subgroup.mem_iInf,
+-    Subgroup.mem_comap]
+-
+-theorem finiteEmbedding_mem_primeToLevel {𝔪 : Ideal (𝓞 K)} {v : HeightOneSpectrum (𝓞 K)}
+-    (hv : ¬ v.asIdeal ∣ 𝔪) (a : (v.adicCompletion K)ˣ) : finiteEmbedding v a ∈ primeToLevel 𝔪 := by
+-  refine mem_primeToLevel.2 ⟨toInfinite_finiteEmbedding v a, fun w hw ↦ ?_⟩
+-  have hwv : w ≠ v := by
+-    rintro rfl
+-    exact hv hw
+-  rw [finiteProj_finiteEmbedding_of_ne hwv]
+-  exact one_mem _
+-
 -theorem toFractionalIdeal_mem_idealsPrimeTo {𝔪 : Ideal (𝓞 K)} {x : IdeleGroup K}
 -    (hx : x ∈ primeToLevel 𝔪) : toFractionalIdeal x ∈ idealsPrimeTo 𝔪 := by
 -  intro v hv
 -  rw [count_toFractionalIdeal]
 -  exact ord_eq_zero_of_mem_unitsLevel ((mem_primeToLevel.1 hx).2 v hv)
+-
+-theorem exists_mem_primeToLevel {𝔪 : Ideal (𝓞 K)} {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ}
+-    (hI : I ∈ idealsPrimeTo 𝔪) : ∃ x ∈ primeToLevel 𝔪, toFractionalIdeal x = I := by
+-  have key : ∀ v : HeightOneSpectrum (𝓞 K), primeIdealUnit v ^ count K v
+-      (I : FractionalIdeal (𝓞 K)⁰ K) ∈ (primeToLevel 𝔪).map toFractionalIdeal := by
+-    intro v
+-    by_cases hv : v.asIdeal ∣ 𝔪
+-    · rw [hI v hv, zpow_zero]
+-      exact one_mem _
+-    · obtain ⟨π, hπ⟩ := exists_uniformizer v
+-      exact zpow_mem (Subgroup.mem_map.2 ⟨finiteEmbedding v π, finiteEmbedding_mem_primeToLevel hv π,
+-        toFractionalIdeal_finiteEmbedding_of_uniformizer hπ⟩) _
+-  have h : I ∈ (primeToLevel 𝔪).map toFractionalIdeal := by
+-    rw [← finprod_primeIdealUnit_zpow_count I]
+-    exact finprod_induction (· ∈ (primeToLevel 𝔪).map toFractionalIdeal) (one_mem _)
+-      (fun _ _ ↦ mul_mem) key
+-  obtain ⟨x, hx, hxI⟩ := h
+-  exact ⟨x, hx, hxI⟩
+-
+-theorem mem_map_idealLevel_of_mem_primeToLevel {𝔪 : Ideal (𝓞 K)} {x : IdeleGroup K}
+-    (hx : x ∈ primeToLevel 𝔪) (h1 : toFractionalIdeal x = 1) :
+-    x ∈ (idealLevel 𝔪).map ofFinite := by
+-  obtain ⟨hinf, hfin⟩ := mem_primeToLevel.1 hx
+-  refine ⟨toFinite K x, mem_finiteLevel.2 fun v ↦ ?_, ofFinite_toFinite_of_toInfinite_eq_one hinf⟩
+-  rw [finiteComponent_toFinite]
+-  by_cases hv : v.asIdeal ∣ 𝔪
+-  · exact hfin v hv
+-  · have hord : ord v x = 0 := by
+-      rw [← count_toFractionalIdeal, h1, Units.val_one, count_one]
+-    change finiteProj v x ∈ unitsLevel v (multiplicity v.asIdeal 𝔪)
+-    rw [multiplicity_eq_zero.2 hv, unitsLevel_zero, Submonoid.mem_units_iff]
+-    exact (ord_eq_zero_iff v x).1 hord
+-
+-end IdeleGroup
  
- theorem exists_mem_primeToLevel {𝔪 : Ideal (𝓞 K)} {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ}
-     (hI : I ∈ idealsPrimeTo 𝔪) : ∃ x ∈ primeToLevel 𝔪, toFractionalIdeal x = I := by
-@@ -169,9 +161,6 @@
-   toMonoidHom := χ.toIdele.comp (finiteEmbedding v)
-   continuous_toFun := χ.continuous_toIdele.comp (continuous_finiteEmbedding v)
+ namespace HeckeCharacter
  
+@@ -165,106 +35,9 @@
+ theorem toIdele_diagonal (a : Kˣ) : χ.toIdele (diagonal K a) = 1 := by
+   rw [toIdele_apply, IdeleClassGroup.mk_diagonal, map_one]
+ 
+-def localComponent (v : HeightOneSpectrum (𝓞 K)) : (v.adicCompletion K)ˣ →ₜ* Circle where
+-  toMonoidHom := χ.toIdele.comp (finiteEmbedding v)
+-  continuous_toFun := χ.continuous_toIdele.comp (continuous_finiteEmbedding v)
+-
 -theorem localComponent_apply (v : HeightOneSpectrum (𝓞 K)) (a : (v.adicCompletion K)ˣ) :
 -    χ.localComponent v a = χ.toIdele (finiteEmbedding v a) :=
 -  rfl
- 
+-
  def infiniteComponent (w : InfinitePlace K) : (w.Completion)ˣ →ₜ* Circle where
    toMonoidHom := χ.toIdele.comp (infiniteEmbedding w)
-@@ -194,40 +183,8 @@
- theorem map_idealLevel_conductor_le_ker : (idealLevel χ.conductor).map ofFinite ≤ χ.toIdele.ker :=
-   (χ.map_idealLevel_le_ker_iff χ.conductor_ne_bot).2 dvd_rfl
- 
+   continuous_toFun := χ.continuous_toIdele.comp (continuous_infiniteEmbedding w)
+-
+-theorem infiniteComponent_apply (w : InfinitePlace K) (a : (w.Completion)ˣ) :
+-    χ.infiniteComponent w a = χ.toIdele (infiniteEmbedding w a) :=
+-  rfl
+-
+-def conductor : Ideal (𝓞 K) :=
+-  IdeleGroup.conductor (χ.toIdele.comp ofFinite)
+-
+-theorem conductor_ne_bot : χ.conductor ≠ ⊥ :=
+-  IdeleGroup.conductor_ne_bot _
+-
+-theorem map_idealLevel_le_ker_iff {𝔪 : Ideal (𝓞 K)} (h𝔪 : 𝔪 ≠ ⊥) :
+-    (idealLevel 𝔪).map ofFinite ≤ χ.toIdele.ker ↔ χ.conductor ∣ 𝔪 :=
+-  IdeleGroup.map_idealLevel_le_ker_iff Circle.noSmallSubgroups χ.toIdele χ.continuous_toIdele h𝔪
+-
+-theorem map_idealLevel_conductor_le_ker : (idealLevel χ.conductor).map ofFinite ≤ χ.toIdele.ker :=
+-  (χ.map_idealLevel_le_ker_iff χ.conductor_ne_bot).2 dvd_rfl
+-
 -theorem not_dvd_conductor_iff (v : HeightOneSpectrum (𝓞 K)) :
 -    ¬ v.asIdeal ∣ χ.conductor ↔
 -      (Submonoid.ofClass (v.adicCompletionIntegers K)).units ≤
@@ -3133,15 +3481,36 @@
 -    exact Valuation.map_sub_le _ h1.le (by simp)
 -  have h := χ.localComponent_eq_one_of_not_dvd hv hu
 -  rwa [map_mul, map_inv, mul_inv_eq_one] at h
-+
-+
- 
- theorem toIdele_eq_of_toFractionalIdeal_eq {x y : IdeleGroup K}
-     (hx : x ∈ primeToLevel χ.conductor) (hy : y ∈ primeToLevel χ.conductor)
-@@ -258,13 +215,6 @@
-   obtain ⟨hy, hyI⟩ := (exists_mem_primeToLevel I.2).choose_spec
-   exact χ.toIdele_eq_of_toFractionalIdeal_eq hy hx (hyI.trans h.symm)
- 
+-
+-theorem toIdele_eq_of_toFractionalIdeal_eq {x y : IdeleGroup K}
+-    (hx : x ∈ primeToLevel χ.conductor) (hy : y ∈ primeToLevel χ.conductor)
+-    (h : toFractionalIdeal x = toFractionalIdeal y) : χ.toIdele x = χ.toIdele y := by
+-  have hmem : x * y⁻¹ ∈ (idealLevel χ.conductor).map ofFinite :=
+-    mem_map_idealLevel_of_mem_primeToLevel (mul_mem hx (inv_mem hy))
+-      (by rw [map_mul, map_inv, h, mul_inv_cancel])
+-  have h' := χ.map_idealLevel_conductor_le_ker hmem
+-  rwa [MonoidHom.mem_ker, map_mul, map_inv, mul_inv_eq_one] at h'
+-
+-def idealCharacter : idealsPrimeTo χ.conductor →* Circle where
+-  toFun I := χ.toIdele (exists_mem_primeToLevel I.2).choose
+-  map_one' := by
+-    obtain ⟨hx, hx1⟩ := (exists_mem_primeToLevel (1 : idealsPrimeTo χ.conductor).2).choose_spec
+-    rw [← map_one χ.toIdele]
+-    exact χ.toIdele_eq_of_toFractionalIdeal_eq hx (one_mem _) (by rw [hx1, map_one]; rfl)
+-  map_mul' I J := by
+-    obtain ⟨hx, hxI⟩ := (exists_mem_primeToLevel I.2).choose_spec
+-    obtain ⟨hy, hyJ⟩ := (exists_mem_primeToLevel J.2).choose_spec
+-    obtain ⟨hz, hzIJ⟩ := (exists_mem_primeToLevel (I * J).2).choose_spec
+-    rw [← map_mul]
+-    exact χ.toIdele_eq_of_toFractionalIdeal_eq hz (mul_mem hx hy)
+-      (by rw [hzIJ, map_mul, hxI, hyJ]; rfl)
+-
+-theorem idealCharacter_apply {x : IdeleGroup K} (hx : x ∈ primeToLevel χ.conductor)
+-    (I : idealsPrimeTo χ.conductor) (h : toFractionalIdeal x = I) :
+-    χ.idealCharacter I = χ.toIdele x := by
+-  obtain ⟨hy, hyI⟩ := (exists_mem_primeToLevel I.2).choose_spec
+-  exact χ.toIdele_eq_of_toFractionalIdeal_eq hy hx (hyI.trans h.symm)
+-
 -theorem idealCharacter_primeIdealUnit {v : HeightOneSpectrum (𝓞 K)}
 -    (hv : ¬ v.asIdeal ∣ χ.conductor) {π : (v.adicCompletion K)ˣ}
 -    (hπ : Valued.v (π : v.adicCompletion K) = exp (-1 : ℤ)) :
@@ -4749,7 +5118,46 @@
  
 --- a/GroundTheory/GlobalFields/TateThesis/LocalConductor.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/LocalConductor.lean
-@@ -89,28 +89,6 @@
+@@ -6,19 +6,6 @@
+ open Topology Filter IsDedekindDomain WithZero
+ 
+ noncomputable section
+-
+-theorem exists_le_ker_of_noSmallSubgroups {G H : Type*} [Group G] [TopologicalSpace G] [Group H]
+-    [TopologicalSpace H] {P : Subgroup G → Prop}
+-    (hP : ∀ W ∈ 𝓝 (1 : G), ∃ L : Subgroup G, P L ∧ (L : Set G) ⊆ W) (hH : NoSmallSubgroups H)
+-    (χ : G →* H) (hχ : Continuous χ) : ∃ L : Subgroup G, P L ∧ L ≤ χ.ker := by
+-  obtain ⟨U, hU, hsmall⟩ := hH
+-  have hW : χ ⁻¹' U ∈ 𝓝 (1 : G) := hχ.continuousAt.preimage_mem_nhds (by rwa [map_one])
+-  obtain ⟨L, hL, hLW⟩ := hP _ hW
+-  refine ⟨L, hL, ?_⟩
+-  rw [← Subgroup.map_eq_bot_iff]
+-  refine hsmall _ ?_
+-  rintro _ ⟨x, hx, rfl⟩
+-  exact hLW hx
+ 
+ variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Algebra R K]
+   [IsFractionRing R K] (v : HeightOneSpectrum R)
+@@ -52,18 +39,6 @@
+       Valued.v ((x : v.adicCompletion K) - 1) ≤ exp (-(n : ℤ)) :=
+   Iff.rfl
+ 
+-variable {v} in
+-
+-theorem mem_unitsLevel_of_one_le {n : ℕ} (hn : 1 ≤ n) {x : (v.adicCompletion K)ˣ} :
+-    x ∈ unitsLevel v n ↔ Valued.v ((x : v.adicCompletion K) - 1) ≤ exp (-(n : ℤ)) := by
+-  refine ⟨And.right, fun h ↦ ⟨?_, h⟩⟩
+-  have hlt : Valued.v ((x : v.adicCompletion K) - 1) < Valued.v (1 : v.adicCompletion K) := by
+-    rw [map_one]
+-    refine h.trans_lt ?_
+-    rw [← exp_zero, exp_lt_exp]
+-    omega
+-  simpa using Valuation.map_eq_of_sub_lt _ hlt
+-
+ theorem unitsLevel_zero :
+     unitsLevel (K := K) v 0 = (Submonoid.ofClass (v.adicCompletionIntegers K)).units := by
+   ext x
+@@ -89,77 +64,7 @@
    rw [exp_le_exp]
    omega
  
@@ -4776,19 +5184,57 @@
 -    (by rw [Units.val_one]; exact Filter.inter_mem h1 h2)
 -  exact Filter.mem_of_superset h3 fun x hx ↦ hx
  
- theorem exists_unitsLevel_subset {t : Set (v.adicCompletion K)ˣ} (ht : t ∈ 𝓝 1) :
-     ∃ n : ℕ, 1 ≤ n ∧ (unitsLevel (K := K) v n : Set (v.adicCompletion K)ˣ) ⊆ t := by
-@@ -140,10 +118,6 @@
-       exact ⟨_, ⟨n, hn, rfl⟩, h⟩) hH χ hχ
-   exact ⟨n, hn, hL⟩
- 
+-theorem exists_unitsLevel_subset {t : Set (v.adicCompletion K)ˣ} (ht : t ∈ 𝓝 1) :
+-    ∃ n : ℕ, 1 ≤ n ∧ (unitsLevel (K := K) v n : Set (v.adicCompletion K)ˣ) ⊆ t := by
+-  rw [Units.isEmbedding_val₀.nhds_eq_comap, Units.val_one, mem_comap] at ht
+-  obtain ⟨t', ht', hsub⟩ := ht
+-  obtain ⟨γ, hγ⟩ := Valued.mem_nhds.1 ht'
+-  set c := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hc
+-  have hc0 : c ≠ 0 := fun h ↦ γ.ne_zero
+-    (MonoidWithZeroHom.ValueGroup₀.embedding_injective (h.trans (map_zero _).symm))
+-  refine ⟨(-(log c)).toNat + 1, by omega, fun x hx ↦ hsub (hγ ?_)⟩
+-  change Valued.v.restrict ((x : v.adicCompletion K) - 1) < γ.1
+-  rw [Valuation.restrict_lt_iff_lt_embedding, ← hc]
+-  refine hx.2.trans_lt (lt_of_lt_of_eq ?_ (exp_log hc0))
+-  rw [exp_lt_exp]
+-  omega
+-
+-section Character
+-
+-variable {H : Type*} [Group H] [TopologicalSpace H]
+-
+-theorem exists_unitsLevel_le_ker (hH : NoSmallSubgroups H) (χ : (v.adicCompletion K)ˣ →* H)
+-    (hχ : Continuous χ) : ∃ n : ℕ, 1 ≤ n ∧ unitsLevel v n ≤ χ.ker := by
+-  obtain ⟨L, ⟨n, hn, rfl⟩, hL⟩ := exists_le_ker_of_noSmallSubgroups
+-    (P := fun L ↦ ∃ n : ℕ, 1 ≤ n ∧ L = unitsLevel v n)
+-    (fun W hW ↦ by
+-      obtain ⟨n, hn, h⟩ := exists_unitsLevel_subset v hW
+-      exact ⟨_, ⟨n, hn, rfl⟩, h⟩) hH χ hχ
+-  exact ⟨n, hn, hL⟩
+-
 -theorem isOpen_ker_of_continuous (hH : NoSmallSubgroups H) (χ : (v.adicCompletion K)ˣ →* H)
 -    (hχ : Continuous χ) : IsOpen (χ.ker : Set (v.adicCompletion K)ˣ) := by
 -  obtain ⟨n, -, hn⟩ := exists_unitsLevel_le_ker v hH χ hχ
 -  exact Subgroup.isOpen_mono hn (isOpen_unitsLevel v n)
+-
+-def conductorExponent (χ : (v.adicCompletion K)ˣ →* H) : ℕ :=
+-  sInf {n : ℕ | unitsLevel v n ≤ χ.ker}
+-
+-theorem unitsLevel_le_ker_iff (hH : NoSmallSubgroups H) (χ : (v.adicCompletion K)ˣ →* H)
+-    (hχ : Continuous χ) {n : ℕ} : unitsLevel v n ≤ χ.ker ↔ conductorExponent v χ ≤ n := by
+-  have hne : {n : ℕ | unitsLevel v n ≤ χ.ker}.Nonempty :=
+-    (exists_unitsLevel_le_ker v hH χ hχ).imp fun _ h ↦ h.2
+-  refine ⟨fun h ↦ Nat.sInf_le h, fun h ↦ (unitsLevel_antitone v h).trans (Nat.sInf_mem hne)⟩
+-
+-theorem conductorExponent_eq_zero_iff (hH : NoSmallSubgroups H) (χ : (v.adicCompletion K)ˣ →* H)
+-    (hχ : Continuous χ) :
+-    conductorExponent v χ = 0 ↔ (Submonoid.ofClass (v.adicCompletionIntegers K)).units ≤ χ.ker := by
+-  rw [← unitsLevel_zero, unitsLevel_le_ker_iff v hH χ hχ, Nat.le_zero]
+-
+-end Character
  
- def conductorExponent (χ : (v.adicCompletion K)ˣ →* H) : ℕ :=
-   sInf {n : ℕ | unitsLevel v n ≤ χ.ker}
+ end
+ 
 --- a/GroundTheory/GlobalFields/TateThesis/SchwartzBruhatDual.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/SchwartzBruhatDual.lean
 @@ -166,10 +166,6 @@
