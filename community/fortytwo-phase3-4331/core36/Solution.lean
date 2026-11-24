@@ -18,8 +18,8 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
 
   have := disjoint_def.mp $ disjoint_lat hP (show H.rt0 ≠ -H.rt0 by grind [H.sqrt_neg_disc_sq, H.d_mod, Nat.cast_eq_zero])
 
-  simp_rw [range_eq, span_union, mem_sup] at hn
+  simp_rw [range_eq, span_union, mem_sup, mem_span, range_subset_iff] at hn ⊢
 
-  refine ⟨?_, ?_, ?_⟩ <;> intro y <;> obtain ⟨a, h, b, k, e⟩ := hn y
+  and_intros <;> intro y <;> obtain ⟨a, h, b, k, e⟩ := hn y
   all_goals try intro hy; have := nsmul_mem hy n
-  all_goals grind [sgnRt, span_le.2 (range_subset_iff.2 hx.1) h, span_le.2 (range_subset_iff.2 hx.2) k, Submodule.add_mem_iff_left, add_comm]
+  all_goals grind [sgnRt, h _ hx.1, k _ hx.2, Submodule.add_mem_iff_left, add_comm]
