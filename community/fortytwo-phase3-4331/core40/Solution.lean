@@ -16,7 +16,7 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
     funext w
     have hc := IsTotallyComplex.isComplex w
     have hw := InfinitePlace.not_isReal_iff_isComplex.2 hc
-    change ((posIdele _ _ : IdeleGroup E) : AdeleRing (𝓞 E) E).1 w = _
+    change (posIdele (K := E) _ _).val.1 w = _
     rw [← coe_infiniteProj, infiniteProj_posIdele]
     change posRealElem w _ = (InfinitePlace.Completion.ringEquivComplexOfIsComplex hc).symm _
     simp [posRealElem, hw, InfinitePlace.mult, Real.sqrt_sq (Real.exp_pos u).le, expU, Complex.ofReal_exp]
@@ -25,7 +25,7 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
     exact FiniteAdeleRing.ext _ $ posIdele_finite _ _
   have hdiag (f : Fin N → ℝ) (M : GL (Fin N) (Cinf E))
       (hM : M.1 = diagonal fun i _ => Complex.exp (f i)) : infGL E N M = An.tor E f := by
-    have entry (A : Matrix (Fin N) (Fin N) (Cinf E)) i j :
+    have entry A i j :
         matN N (sInf E) A i j = sInf E (A i j) := rfl
     refine Units.ext (Matrix.ext fun i j => ?_)
     simp only [An.tor, coe_diagUnits, pExp]
@@ -51,7 +51,6 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
   have hunip {a r : ℕ} (X : UPos a r → Ad E) : AutomorphicForm.unipGL X = unip X := by
     apply Units.ext
     rfl
-  have hL : IsLeftInvariant φ.1 := hφ.left
   unfold IsCT
   generalize borel (BlockIx N r → Ad E) = m at hpi ⊢
   subst hpi
@@ -68,5 +67,5 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
   refine ⟨(s : ℂ) * a.toReal, mul_ne_zero (by exact_mod_cast hc.ne') hv, funext fun g => ?_⟩
   simp only [ct, e, restrict_smul, integral_smul_nnreal_measure, ← hunip, NNReal.smul_def,
     Complex.real_smul, An.ctn, Measure.real]
-  rw [← constantTerm_eq_setIntegral hL (h𝓕.mono $ e ▸ absolutelyContinuous_smul $ by exact_mod_cast hc.ne') g,
+  rw [← constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ e ▸ absolutelyContinuous_smul $ by exact_mod_cast hc.ne') g,
     ← mul_assoc, mul_inv_cancel_right₀ hv]
