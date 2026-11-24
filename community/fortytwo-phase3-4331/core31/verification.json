@@ -1117,8 +1117,11 @@
   },
   "attribution": {
     "original_author": "Levent Alpöge",
-    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "The Fortytwo proof reduction from core31-fastrestored2ed99cf817 is retained. Codex traced the target declarations, restored their pinned upstream dependencies, and combined shared lemma proofs. Original mathematics and formalization by Levent Alpöge."
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
+    "new_contribution": "The Fortytwo proof reduction from core31-fastrestored2ed99cf817 is retained. Codex traced the target declarations, restored their pinned upstream dependencies, and combined shared lemma proofs. Original mathematics and formalization by Levent Alpöge.",
+    "native_contribution_draft_sha256": "06a2b8257e229adaa64d22b373e3921e95a961ead63eebcbe2b6250c45b330df",
+    "adapted_cup_leib_sha256": "15a50ee2cf09b701dcdcd1689ad2c82b274a698b3dcdb9250ac4488d054066a9",
+    "credit_detail": "Fortytwo removed the aggregate Čech pairings import in CupLeib. Codex restored the direct total-complex pairing provider, traced the remaining declarations to their pinned dependencies, and combined shared proofs."
   },
   "local_replay": {
     "comparator_exit": 0,
