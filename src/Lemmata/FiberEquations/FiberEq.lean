@@ -14,17 +14,9 @@ private lemma fiber_eq {E : Type} [Field E] (w : InfinitePlace E) [DecidableEq (
     ({φ | InfinitePlace.mk φ = w} : Finset (E →+* ℂ)) =
       {w.embedding, ComplexEmbedding.conjugate w.embedding} := by
   ext φ
-  simp only [mem_filter, mem_univ, true_and, mem_insert, mem_singleton]
-  conv_lhs => rw [← InfinitePlace.mk_embedding w, InfinitePlace.mk_eq_iff]
-  constructor
-  · rintro (h | h)
-    · exact Or.inl h
-    · right
-      rw [← h, ComplexEmbedding.involutive_conjugate E φ]
-  · rintro (h | h)
-    · exact Or.inl h
-    · right
-      rw [h, ComplexEmbedding.involutive_conjugate E]
+  simpa only [mem_filter, mem_univ, true_and, mem_insert, mem_singleton,
+    InfinitePlace.mk_embedding, eq_comm] using
+    (InfinitePlace.mk_eq_iff (φ := w.embedding) (ψ := φ))
 
 theorem goal1 (E : Type) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] (x : E) :
     ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ w : InfinitePlace E, 2 * (w.embedding x).re := by
