@@ -11,28 +11,15 @@ namespace Bl.ComplementLifts
 private lemma compl_lift {R : Type*} {M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     (N N' : Submodule R M) (hN : IsCompl N N') (A B : Submodule R N) (hAB : IsCompl A B) :
     IsCompl (A.map N.subtype) (B.map N.subtype ⊔ N') := by
-  constructor
-  · rw [Submodule.disjoint_def]
-    intro x hxA hxB
-    obtain ⟨y, hy, n', hn', rfl⟩ := Submodule.mem_sup.1 hxB
-    obtain ⟨a, ha, hax⟩ := Submodule.mem_map.1 hxA
-    obtain ⟨b, hb, rfl⟩ := Submodule.mem_map.1 hy
-    simp only [Submodule.subtype_apply] at hax ⊢
-    have hn'N : n' ∈ N := by
-      have : n' = (a : M) - (b : M) := by
-        rw [hax]; abel
-      rw [this]; exact N.sub_mem a.2 b.2
-    have hn0 : n' = 0 := (Submodule.disjoint_def.1 hN.disjoint) n' hn'N hn'
-    rw [hn0, add_zero] at hax ⊢
-    have hab : a = b := Subtype.ext hax
-    have h0 : b = 0 := (Submodule.disjoint_def.1 hAB.disjoint) b (hab ▸ ha) hb
-    simp [h0]
-  · rw [codisjoint_iff, ← sup_assoc, ← Submodule.map_sup, hAB.sup_eq_top, Submodule.map_top,
-      Submodule.range_subtype, hN.sup_eq_top]
+  have hsum : A.map N.subtype ⊔ B.map N.subtype = N := by
+    rw [← Submodule.map_sup, hAB.sup_eq_top, Submodule.map_top, Submodule.range_subtype]
+  have hdisj := Submodule.disjoint_map N.subtype_injective hAB.disjoint
+  exact hdisj.isCompl_sup_right_of_isCompl_sup_left (hsum.symm ▸ hN)
 
 theorem goal1 :
   ∀ {R : Type u_1} {M : Type u_2} [inst : CommRing.{u_1} R] [IsDomain.{u_1} R] [IsPrincipalIdealRing.{u_1} R]
-  [inst_3 : AddCommGroup.{u_2} M] [inst_4 : Module.{u_1, u_2} R M] (N N' S : Submodule.{u_1, u_2} R M),
+  [inst_3 : AddCommGroup.{u_2} M] [inst_4 : Module.{u_1, u_2} R M]
+  (N N' S : @Submodule.{u_1, u_2} R M inst.toCommSemiring.toSemiring inst_3.toAddCommMonoid inst_4),
   IsCompl.{u_2} N N' →
     ∀ [Module.Finite.{u_1, u_2} R (Subtype.{u_2 + 1} fun (x : M) ↦ Membership.mem.{u_2, u_2} N x)],
       LE.le.{u_2} S N →
@@ -56,20 +43,11 @@ theorem goal1 :
   obtain ⟨h, hh⟩ := LinearMap.exists_rightInverse_of_surjective S'.mkQ (Submodule.range_mkQ S')
   have hidem : IsIdempotentElem (h ∘ₗ S'.mkQ) :=
     LinearMap.ext fun x => congrArg h (LinearMap.congr_fun hh (S'.mkQ x))
+  have hinj := LinearMap.injective_of_comp_eq_id h S'.mkQ hh
   have hker : LinearMap.ker (h ∘ₗ S'.mkQ) = S' := by
-    ext x
-    simp only [LinearMap.mem_ker, LinearMap.comp_apply]
-    constructor
-    · intro hx
-      have := congrArg S'.mkQ hx
-      rw [← LinearMap.comp_apply S'.mkQ h, hh, LinearMap.id_apply, map_zero] at this
-      rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at this
-    · intro hx
-      rw [Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero S').2 hx, map_zero]
+    rw [LinearMap.ker_comp_of_ker_eq_bot _ (LinearMap.ker_eq_bot_of_injective hinj), S'.ker_mkQ]
   have hc : IsCompl S' (LinearMap.range (h ∘ₗ S'.mkQ)) := by
-    have := LinearMap.IsIdempotentElem.isCompl hidem
-    rw [hker] at this
-    exact this.symm
+    simpa only [hker] using (LinearMap.IsIdempotentElem.isCompl hidem).symm
   have hS : S'.map N.subtype = S := by
     simp only [S', Submodule.map_comap_subtype]
     exact inf_eq_right.2 hSN
