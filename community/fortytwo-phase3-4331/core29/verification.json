@@ -1,14 +1,14 @@
 {
   "core": 29,
-  "candidate": "core29-fastrayclass37cadaf57d72",
+  "candidate": "core29-fastrayclassc2dad6da3fe0",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 62,
-  "local_normalized_tokens": 90924,
+  "local_normalized_tokens": 90373,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "177f5b840092cae2df9d9b491836613facc0d09a7fc01a1f4fbc6dd158f70982",
+  "proof_tree_sha256": "d61c8327141c07293c9c756f266ed4d5a6c8351811a602dbc2b36bf2d8495345",
   "modified_files": {
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/DiscrNormConductorEqDFOfUnramified.lean": {
       "before": "febdc4e3d01fde69e31c43c0e3bfc3a509da7680095a0ff812593a326870d3ec",
@@ -20,15 +20,15 @@
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean": {
       "before": "38bea0a8be8b648482565fd3ec40ccfe299c495a45e06a005176683d2d7e8309",
-      "after": "3c1374a84c2dd97ef9fb1791642c14cca3644e58013b226eef22a012762affda"
+      "after": "26f8e791e3c5a337e5ff6185a9828a853d1ea5a51051b3c3248e3adc7b2a94da"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/InfiniteEmbeddingMemStandardOpenSubgroup.lean": {
       "before": "936d4971e99f7d748ddd32de4b683d62472a5155ecbb057d5c68e60c4216920b",
-      "after": "ea005a630a500ae9894e7accc78ee345db2ae443b4b7564444ad359caf4c2136"
+      "after": "255481684b74f0e92d703139e1035b925c8150e94e8aee8fab0beb7ddfe0bf8d"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ModuleSectionMemStandardOpenSubgroup.lean": {
       "before": "20b79750bc37a9fbcdeb61cb5cc374e75693780a476bf9bc2ca6d66711690cf5",
-      "after": "df3cfc236f35447f596b482ff9053b6cfc0c0988e63dac31b4f0ce83a0d58205"
+      "after": "a766811cba9f3ed49972f483f00845f4d5afdb08e16b1771c0d4824ee3771a0e"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean": {
       "before": "909345232b14c949b84d270ae1ae8e8d7fdafd59af5b2154dc060755e45977e5",
@@ -40,11 +40,11 @@
     },
     "Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean": {
       "before": "5e3bf1687e825702c08ae63e4c451fc6f897eab82e6b2b8ee1249f4f7776fed1",
-      "after": "6406009c56f38a16349212d8d29cbeaa87378bb009a86a49706642370a4447fb"
+      "after": "02d8b399ecde9280971a9f21ee92c4791eedfef9aeedaac82e8fc3432c99fee5"
     },
     "GroundTheory/GlobalFields/AnalyticClassNumber/HeckeContinued.lean": {
       "before": "76aede10518bf5faf3ced25bc7d3f97357c9d69865874ba3a24bf68d882b2d29",
-      "after": "a578faa469810d65da25ae9462837bd39295e9e7fb8283f38d68850a7423173a"
+      "after": "ec6cc6f9092abde847c4747f11fab2a6f307103052044310f6ad7db5fa08aa9b"
     },
     "GroundTheory/GlobalFields/IdeleGroups/IdeleNorms.lean": {
       "before": "c3c4299496b4db89261c42bf2a602a08973563247bb87a76e20724d6977a9b38",
@@ -80,11 +80,11 @@
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactors.lean": {
       "before": "6221123d5f2b20524545d17b1647a4de847f0c655b4af7cc7d9bd5b47fc724ee",
-      "after": "8bf0c1778095776771bdd20ee92fd0a717ef899c342e03518e63bc5683d85abb"
+      "after": "8d91bc1ae827aae423a1a7ef370333e24afe4cb6053757d9646401f53002c713"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsArch.lean": {
       "before": "74f42b8629bacf7e2e571fcff04d238afaa17dda3679ab9a21f3309f0f6db9f1",
-      "after": "afbc8bccf05d8b332e9b9a3fbf583234334df573aba2896a5aa8c3462af1934a"
+      "after": "48f769efb9e84e23dc66d74955ac94671ace1a8c52d3807cca75b86a604fdd67"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFinite.lean": {
       "before": "7d0a33060c115a699675529b1ac8ea1930694ff85e122a8ef24c63712b5e13a9",
@@ -100,7 +100,7 @@
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsInfinite.lean": {
       "before": "7b76eaa86e387dc72e7d995ae371edc52859e648359f5ce2fce71dd43f99f6f6",
-      "after": "01ec711706c1ff6921ffc94615e5b81e26a013876a216ed43700f6d3031d2bdb"
+      "after": "d4f7c1cbdd4ca1d912701292c5ae5824ad9cad74d74890fa113d9f08d3ebeab6"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean": {
       "before": "3c39a97a34767d9e5a47d976081fa4a4e3e8b5659db95c54d4b632296fcdd93c",
@@ -128,15 +128,15 @@
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheorem.lean": {
       "before": "72b1a93c64cc307d070454699dc5ad9821fd762c0cd3220e8c8fa5b85ed6066a",
-      "after": "ed8ce619df1099f3197a22e0a7ae0f6e4734808fda5c3159b1fdb53d3665ae01"
+      "after": "d358d280b2a49e89278625d1fb2aadcffbf1eb32e6496ff54e4c4bf3c903ad99"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremConj.lean": {
       "before": "6fcf98c6e60a6d49f23ddddde6abfb2b8c93bbf9d086283e57ca73dead974262",
-      "after": "3a310f2fd8bade8343f566b4b9c7ab8e68bc64ec49ea66f4b6eb6808ffd50769"
+      "after": "41d261f42bb080e500b9297d099dc68402d176321be6fe21d7d62f37fefd303d"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremFE.lean": {
       "before": "2aa01187e9524961a88ca6edf68919521efeec96b44ba3e2b4d0e0679208a269",
-      "after": "ae2d01f062e1ed20b9f2c494dbe2e83667ee3f7f976dad1d7ba35e9c1f42745a"
+      "after": "98bff42b5f3de5c5aeb7700aebdf1f8567b0b3075a94232734a5bd4bce1cbe0e"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremScaling.lean": {
       "before": "323e561e14c1df2a6ee4f4c5b93f41e8dace8c020ba5d24bc6a7cc40f894c237",
@@ -195,7 +195,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T07:30:54.923120+00:00",
+    "completed_utc": "2026-11-24T07:40:37.760623+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
