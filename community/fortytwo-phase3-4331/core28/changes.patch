@@ -2213,17 +2213,22 @@
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.KatoClassHeckeEulerFactorRelation
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LowBlock
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LminorSubmatrixCastSucc
-@@ -20,32 +22,20 @@
- lemma en_sq {n : ℕ} (v : Fin n → ℂ) : en v ^ 2 = nsq v := by
-   have e : en v = Real.sqrt (nsq v) := by
-     unfold en nsq
+@@ -14,46 +16,23 @@
+ lemma en_nonneg {n : ℕ} (v : Fin n → ℂ) : 0 ≤ en v := by
+   exact norm_nonneg _
+ 
+-private lemma nsq_nonneg_unipotent_moves {n : ℕ} (v : Fin n → ℂ) : 0 ≤ nsq v :=
+-  Finset.sum_nonneg fun j _ => sq_nonneg _
+-
+-lemma en_sq {n : ℕ} (v : Fin n → ℂ) : en v ^ 2 = nsq v := by
+-  have e : en v = Real.sqrt (nsq v) := by
+-    unfold en nsq
 -    first
 -      | (rw [EuclideanSpace.norm_eq]; rfl)
 -      | (rw [EuclideanSpace.norm_eq]; simp)
 -      | simp [EuclideanSpace.norm_eq]
-+    simp [EuclideanSpace.norm_eq]
-   rw [e, Real.sq_sqrt (nsq_nonneg_unipotent_moves v)]
- 
+-  rw [e, Real.sq_sqrt (nsq_nonneg_unipotent_moves v)]
+-
  lemma en_eq_sqrt {n : ℕ} (v : Fin n → ℂ) : en v = Real.sqrt (nsq v) := by
    unfold en nsq
 -  first
@@ -2231,6 +2236,9 @@
 -    | (rw [EuclideanSpace.norm_eq]; simp)
 -    | simp [EuclideanSpace.norm_eq]
 +  simp [EuclideanSpace.norm_eq]
++
++lemma en_sq {n : ℕ} (v : Fin n → ℂ) : en v ^ 2 = nsq v := by
++  rw [en_eq_sqrt, Real.sq_sqrt (OrthonormalChartBounds.nsq_nonneg v)]
  
  lemma en_add_le {n : ℕ} (u v : Fin n → ℂ) : en (u + v) ≤ en u + en v := by
    unfold en
@@ -2246,11 +2254,22 @@
 -    | (rw [WithLp.toLp_sub]; exact norm_sub_le _ _)
 -    | exact norm_sub_le _ _
 -    | simpa using norm_sub_le (WithLp.toLp 2 u : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)
+-
+-lemma eq_zero_of_en {n : ℕ} (d : Fin n → ℂ) (h : en d = 0) : d = 0 := by
+-  rw [en_eq_sqrt, Real.sqrt_eq_zero (nsq_nonneg_unipotent_moves d)] at h
+-  have hs : ∀ j ∈ Finset.univ, ‖d j‖ ^ 2 = 0 :=
+-    (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg ‖d j‖)).mp h
+-  funext j
+-  have := hs j (Finset.mem_univ j)
+-  simpa using this
 +  (rw [WithLp.toLp_sub]; exact norm_sub_le _ _)
++
++lemma eq_zero_of_en {n : ℕ} (d : Fin n → ℂ) (h : en d = 0) : d = 0 :=
++  congrArg WithLp.ofLp (norm_eq_zero.mp h)
  
- lemma eq_zero_of_en {n : ℕ} (d : Fin n → ℂ) (h : en d = 0) : d = 0 := by
-   rw [en_eq_sqrt, Real.sqrt_eq_zero (nsq_nonneg_unipotent_moves d)] at h
-@@ -81,22 +71,14 @@
+ lemma en_pos {n : ℕ} {v : Fin n → ℂ} (hv : v ≠ 0) : 0 < en v := by
+   exact lt_of_le_of_ne (en_nonneg v) (fun h => hv (eq_zero_of_en v h.symm))
+@@ -81,22 +60,11 @@
  lemma re_conj_mul (w : ℂ) (s : ℝ) : (conj w * (w * (s : ℂ))).re = s * ‖w‖ ^ 2 := by
    simp only [Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im,
      Complex.ofReal_re, Complex.ofReal_im]
@@ -2263,19 +2282,38 @@
  section Blocks
  
  variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
- 
- lemma sum_splitR (f : Fin r → ℝ) :
+-
+-lemma sum_splitR (f : Fin r → ℝ) :
 -    ∑ j, f j = ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) + ∑ m : Fin (r - X.p0), f (nI X m) := by
 -  have h : X.p0 + (r - X.p0) = r := by have := X.p0_le; omega
 -  have e : ∑ j, f j = ∑ i : Fin (X.p0 + (r - X.p0)), f (Fin.cast h i) :=
 -    (Fintype.sum_equiv (finCongr h) (fun i => f (Fin.cast h i)) f (fun _ => rfl)).symm
 -  rw [e, Fin.sum_univ_add]
 -  rfl
-+    ∑ j, f j = ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) + ∑ m : Fin (r - X.p0), f (nI X m) := PositiveSpanMatrices.sum_split X.p0_le f
  
  def top (w : Fin r → ℂ) : Fin X.p0 → ℂ := fun a => w (Fin.castLE X.p0_le a)
  
-@@ -129,28 +111,9 @@
+@@ -112,45 +80,26 @@
+ 
+ lemma nsq_split (w : Fin r → ℂ) : nsq w = nsq (top X w) + nsq (bot X w) := by
+   unfold nsq
+-  exact sum_splitR X (fun j => ‖w j‖ ^ 2)
++  exact PositiveSpanMatrices.sum_split X.p0_le (fun j => ‖w j‖ ^ 2)
+ 
+ lemma en_top_le (w : Fin r → ℂ) : en (top X w) ≤ en w := by
+   rw [en_eq_sqrt, en_eq_sqrt]
+   apply Real.sqrt_le_sqrt
+-  have h0 := nsq_nonneg_unipotent_moves (bot X w)
++  have h0 := OrthonormalChartBounds.nsq_nonneg (bot X w)
+   rw [nsq_split X w]
+   linarith
+ 
+ lemma en_bot_le (w : Fin r → ℂ) : en (bot X w) ≤ en w := by
+   rw [en_eq_sqrt, en_eq_sqrt]
+   apply Real.sqrt_le_sqrt
+-  have h0 := nsq_nonneg_unipotent_moves (top X w)
++  have h0 := OrthonormalChartBounds.nsq_nonneg (top X w)
+   rw [nsq_split X w]
    linarith
  
  lemma sum_mul_ext (f : Fin r → ℂ) (d : Fin X.p0 → ℂ) :
@@ -2307,7 +2345,7 @@
  
  lemma top_mulVec_ext (K : Matrix (Fin r) (Fin r) ℂ) (d : Fin X.p0 → ℂ) :
      top X (K *ᵥ ext X d) = blkA X K *ᵥ d := by
-@@ -173,10 +136,7 @@
+@@ -173,10 +122,7 @@
    ext m b
    have hb := b.isLt
    have hne : X.p0 + (m : ℕ) ≠ (b : ℕ) := by omega
@@ -2319,7 +2357,7 @@
  
  end Blocks
  
-@@ -185,100 +145,25 @@
+@@ -185,100 +131,25 @@
  variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
  
  lemma fin_split (i : Fin r) :
@@ -2427,7 +2465,7 @@
    have hpos : X.posPart x τ (mat x τ *ᵥ c) = ∑ a : Fin X.p0, ‖c (Fin.castLE X.p0_le a)‖ ^ 2 := by
      unfold Data.posPart
      rw [hgp, inv_one]
-@@ -293,10 +178,9 @@
+@@ -293,65 +164,20 @@
            simp [mul_comm], re_conj_mul, one_mul]
    have hh : (hermC τ.1 X.Gm (mat x τ *ᵥ c) (mat x τ *ᵥ c)).re =
        ∑ j : Fin r, sgn X.p0 j * ‖c j‖ ^ 2 := by
@@ -2439,10 +2477,20 @@
 +    exact Finset.sum_congr rfl fun j _ => by
 +      simp [Complex.mul_conj, Complex.normSq_eq_norm_sq, ← Complex.ofReal_pow, mul_comm]
    unfold Data.maj
-   rw [hpos, hh, sum_splitR X (fun j => sgn X.p0 j * ‖c j‖ ^ 2)]
+-  rw [hpos, hh, sum_splitR X (fun j => sgn X.p0 j * ‖c j‖ ^ 2)]
++  rw [hpos, hh, PositiveSpanMatrices.sum_split X.p0_le (fun j => sgn X.p0 j * ‖c j‖ ^ 2)]
    unfold nsq
-@@ -310,48 +194,9 @@
-   simp only [h1, h2, one_mul, neg_one_mul, Finset.sum_neg_distrib]
+-  rw [sum_splitR X (fun j => ‖c j‖ ^ 2)]
+-  have h1 : ∀ a : Fin X.p0, sgn X.p0 (Fin.castLE X.p0_le a : ℕ) = 1 := fun a => by simp [sgn]
+-  have h2 : ∀ m : Fin (r - X.p0), sgn X.p0 (nI X m : ℕ) = -1 := fun m => by
+-    unfold sgn
+-    rw [if_neg]
+-    show ¬ (X.p0 + (m : ℕ) < X.p0)
+-    omega
+-  simp only [h1, h2, one_mul, neg_one_mul, Finset.sum_neg_distrib]
++  rw [PositiveSpanMatrices.sum_split X.p0_le (fun j => ‖c j‖ ^ 2)]
++  have hs (m : Fin (r - X.p0)) : sgn X.p0 (PositiveSpanMatrices.kap X.p0_le m : ℕ) = -1 := sgn_n X m
++  simp only [sgn_p X, hs, one_mul, neg_one_mul, Finset.sum_neg_distrib]
    ring
  
 -private lemma nsq_mulVec_le_sum_norm_sq_mul_nsq {m n : ℕ} (W : Matrix (Fin m) (Fin n) ℂ) (v : Fin n → ℂ) :
@@ -2492,7 +2540,7 @@
  
  lemma graph_tau {x0 : Frame X.Ψ r} (hx0 : x0 ∈ X.dom) (ho : X.IsOrtho x0) (τ : X.Ψ)
      (nτ : Matrix (Fin r) (Fin r) ℂ) (Z1 : X.Coord) {η z : ℝ} (hη : 0 ≤ η) (hz : 0 ≤ z)
-@@ -364,16 +209,7 @@
+@@ -364,16 +190,7 @@
              col (nτ * (mat x0 τ * X.lowBlock Z1 τ)) (Fin.castLE X.p0_le a)) =
            Submodule.span ℂ (Set.range fun a : Fin X.p0 =>
              col (mat x0 τ * X.lowBlock Z τ) (Fin.castLE X.p0_le a)) := by
@@ -2664,7 +2712,7 @@
    rw [hp, hC_add_left, hC_add_right hG, hC_add_right hG, h0, h1]
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HCSumRight.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HCSumRight.lean
-@@ -13,23 +13,6 @@
+@@ -13,52 +13,18 @@
  
  variable {r : ℕ} (X : Data E r)
  
@@ -2688,9 +2736,11 @@
  
  theorem hC_sum_right' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Type*} (s : Finset ι)
      (u : Fin r → ℂ) (f : ι → Fin r → ℂ) : hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) := by
-@@ -39,14 +22,6 @@
-         Finset.sum_congr rfl fun a _ => Finset.sum_comm
-     _ = ∑ i ∈ s, ∑ a, ∑ b, u a * τ (G a b) * conj (f i b) := Finset.sum_comm
+-  simp only [hermC, Finset.sum_apply, map_sum, Finset.mul_sum]
+-  calc (∑ a, ∑ b, ∑ i ∈ s, u a * τ (G a b) * conj (f i b))
+-      = ∑ a, ∑ i ∈ s, ∑ b, u a * τ (G a b) * conj (f i b) :=
+-        Finset.sum_congr rfl fun a _ => Finset.sum_comm
+-    _ = ∑ i ∈ s, ∑ a, ∑ b, u a * τ (G a b) * conj (f i b) := Finset.sum_comm
  
 -private theorem hermC_add_left_eq_add (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u u' w : Fin r → ℂ) :
 -    hermC τ G (u + u') w = hermC τ G u w + hermC τ G u' w := by
@@ -2700,19 +2750,26 @@
 -    (u w : Fin r → ℂ) : hermC τ G (c • u) w = c * hermC τ G u w := by
 -  simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 -
- private theorem hermC_finset_sum_smul_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Type*}
-     (s : Finset ι) (c : ι → ℂ) (v : ι → Fin r → ℂ) (w : Fin r → ℂ) :
-     hermC τ G (∑ k ∈ s, c k • v k) w = ∑ k ∈ s, c k * hermC τ G (v k) w := by
-@@ -54,7 +29,7 @@
-   induction s using Finset.induction_on
-   · simp [hermC]
-   · rename_i a s ha ih
+-private theorem hermC_finset_sum_smul_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Type*}
+-    (s : Finset ι) (c : ι → ℂ) (v : ι → Fin r → ℂ) (w : Fin r → ℂ) :
+-    hermC τ G (∑ k ∈ s, c k • v k) w = ∑ k ∈ s, c k * hermC τ G (v k) w := by
+   classical
+-  induction s using Finset.induction_on
+-  · simp [hermC]
+-  · rename_i a s ha ih
 -    rw [Finset.sum_insert ha, Finset.sum_insert ha, hermC_add_left_eq_add, hermC_smul_left_eq_smul_mul, ih]
-+    rw [Finset.sum_insert ha, Finset.sum_insert ha, hermC_add_left, hermC_smul_left, ih]
++  induction s using Finset.induction_on with
++  | empty => simp [hermC]
++  | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hermC_add_right, ih]
  
  theorem comb_col {x0 : Frame X.Ψ r} (ho : X.IsOrtho x0) (τ : X.Ψ) (c : Fin r → ℂ) (b : Fin r) :
      hermC τ.1 X.Gm (∑ a, c a • col (mat x0 τ) a) (col (mat x0 τ) b) = c b * ((sgn X.p0 (b : ℕ) : ℝ) : ℂ) := by
-@@ -67,22 +42,14 @@
+-  rw [hermC_finset_sum_smul_left]
++  rw [GramDeterminantReal.hC_sum_left]
+   have hab : ∀ a, hermC τ.1 X.Gm (col (mat x0 τ) a) (col (mat x0 τ) b) =
+       if a = b then ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) else 0 := by
+     intro a
+@@ -67,22 +33,14 @@
      exact h
    simp [hab, mul_ite]
  
@@ -2992,7 +3049,23 @@
  
  theorem gram_isHermitian (τ : E →+* ℂ) {G : Matrix (Fin r) (Fin r) E}
      (hG : ∀ a b, cc (G a b) = G b a) (M : Matrix (Fin r) (Fin r) ℂ) : (gram τ G M).IsHermitian := by
-@@ -255,10 +221,6 @@
+@@ -227,14 +193,10 @@
+ theorem ppos_eq (x : Frame X.Ψ r) (τ : X.Ψ) (u : Fin r → ℂ) : X.ppos x τ u =
+     ∑ a, (∑ b, hermC τ.1 X.Gm u (X.colP x τ b) * (X.gramPos x τ)⁻¹ b a) • X.colP x τ a := rfl
+ 
+-private theorem isUnit_det_of_posDef_fundamental_domains {n : Type} [Fintype n] [DecidableEq n]
+-    {A : Matrix n n ℂ} (h : A.PosDef) : IsUnit A.det :=
+-  isUnit_iff_ne_zero.2 ((Matrix.PosSemidef.posDef_iff_det_ne_zero h.posSemidef).1 h)
+-
+ theorem hermC_ppos_colP {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u : Fin r → ℂ) (d : Fin X.p0) :
+     hermC τ.1 X.Gm (X.ppos x τ u) (X.colP x τ d) = hermC τ.1 X.Gm u (X.colP x τ d) := by
+   have hA : (X.gramPos x τ)⁻¹ * X.gramPos x τ = 1 :=
+-    Matrix.nonsing_inv_mul _ (isUnit_det_of_posDef_fundamental_domains (X.gramPos_posDef hx τ))
++    Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (X.gramPos_posDef hx τ).isUnit)
+   rw [X.ppos_eq x τ u, hermC_sum_left]
+   simp_rw [hermC_smul_left, ← X.gramPos_apply x τ, Finset.sum_mul, mul_assoc]
+   rw [Finset.sum_comm]
+@@ -255,10 +217,6 @@
    show hermC τ.1 X.Gm ((2 : ℂ) • X.ppos x τ u - u) w = _
    rw [hermC_sub_left, hermC_smul_left]
  
@@ -3003,7 +3076,7 @@
  
  private theorem hermC_sum_smul_col_negative_block {p0 : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
      (P : Matrix (Fin r) (Fin r) ℂ)
-@@ -388,12 +350,7 @@
+@@ -388,12 +346,7 @@
  
  theorem ppos_smul_eq (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u : Fin r → ℂ) :
      X.ppos x τ (k • u) = k • X.ppos x τ u := by
@@ -4453,10 +4526,11 @@
  
  lemma continuousAt_nfac (la : Wt X.Ψ r) {x0 : Frame X.Ψ r} (hx0 : x0 ∈ X.dom) :
      ContinuousAt (X.nfac la) x0 := by
-@@ -182,17 +86,7 @@
+@@ -181,19 +85,6 @@
+   unfold Data.nfac
    exact tendsto_finset_prod _ fun τ _ => tendsto_finset_prod _ fun i _ => h τ i
  
- private theorem isOpen_dom_upper_bounds : IsOpen X.dom := by
+-private theorem isOpen_dom_upper_bounds : IsOpen X.dom := by
 -  have hset : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩
 -      ⋂ i : Fin (r + 1), {x | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re}) := by
 -    ext x
@@ -4468,24 +4542,35 @@
 -      continuous_const
 -  · exact isOpen_lt continuous_const
 -      (continuous_const.mul (Complex.continuous_re.comp (cont_dmin X τ i)))
-+  apply _root_.ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom <;> assumption
- 
+-
  lemma fj_hbd (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P) {ξ : Fin r → E}
      (hξ : X.IsIso ξ) : ∀ x0 ∈ X.dom, ∃ ρ > 0, ∃ C, closedBall x0 ρ ⊆ X.dom ∧
-@@ -237,9 +131,7 @@
+       ∀ t : X.Ψ → ℝ, ∀ z ∈ closedBall x0 ρ, ‖P (flowL X ξ t z)‖ ≤ C := by
+@@ -203,7 +94,7 @@
+   have hcont := continuousAt_nfac X la hx0
+   have hev : ∀ᶠ z in 𝓝 x0, X.nfac la x0 / 2 < X.nfac la z ∧ z ∈ X.dom :=
+     (hcont.eventually (lt_mem_nhds (by linarith : X.nfac la x0 / 2 < X.nfac la x0))).and
+-      ((isOpen_dom_upper_bounds X).mem_nhds hx0)
++      ((FourierCoefficientDomain.isOpen_dom X).mem_nhds hx0)
+   obtain ⟨ρ, hρ, hball⟩ := Metric.mem_nhds_iff.mp hev
+   refine ⟨ρ / 2, by positivity, 2 * C / X.nfac la x0, ?_, ?_⟩
+   · intro z hz
+@@ -237,10 +128,8 @@
          ring
        rw [hre, Complex.norm_exp_ofReal_mul_I]
      have hec : Continuous fun s : X.Ψ → ℝ => cexp (-(4 * (Real.pi : ℂ) * I) * ∑ τ, (ν τ : ℂ) * (s τ : ℂ)) := by
 -      first
 -      | fun_prop
 -      | continuity
+-    exact diffOn_param_bdd h2.choose_spec.2.2.2 (flowL X ξ) (cont_flowL X ξ) (isOpen_dom_upper_bounds X)
 +      fun_prop
-     exact diffOn_param_bdd h2.choose_spec.2.2.2 (flowL X ξ) (cont_flowL X ξ) (isOpen_dom_upper_bounds X)
++    exact diffOn_param_bdd h2.choose_spec.2.2.2 (flowL X ξ) (cont_flowL X ξ) (FourierCoefficientDomain.isOpen_dom X)
        (fun t x hx => (FlowCoefficientBounds.flow_real X hξ hx t la).1) P hP.1.1 _ hec he1 (fj_hbd X la P hP hξ)
+   · exact differentiableOn_const 0
    · exact differentiableOn_const 0
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BlockIdentityExpansion.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BlockIdentityExpansion.lean
-@@ -8,104 +8,23 @@
+@@ -8,104 +8,18 @@
  noncomputable section
  
  variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
@@ -4502,10 +4587,10 @@
 -        refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ =>
 -          Finset.sum_congr rfl fun b _ => ?_
 -        ring
- 
- private lemma hermC_sum_right_lemma_2 (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {m : ℕ} (u : Fin r → ℂ)
-     (d : Fin m → ℂ) (q : Fin m → Fin r → ℂ) :
-     hermC τ G u (∑ l, d l • q l) = ∑ l, conj (d l) * hermC τ G u (q l) := by
+-
+-private lemma hermC_sum_right_lemma_2 (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {m : ℕ} (u : Fin r → ℂ)
+-    (d : Fin m → ℂ) (q : Fin m → Fin r → ℂ) :
+-    hermC τ G u (∑ l, d l • q l) = ∑ l, conj (d l) * hermC τ G u (q l) := by
 -  unfold hermC
 -  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]
 -  calc _ = ∑ a, ∑ l, ∑ b, u a * τ (G a b) * (conj (d l) * conj (q l b)) :=
@@ -4515,7 +4600,6 @@
 -        refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ =>
 -          Finset.sum_congr rfl fun b _ => ?_
 -        ring
-+  simp only [hermC_sum_right, hermC_smul_right]
  
  lemma f_gram_re (X : Data E r) (ξ : Fin r → E) (z0 : Frame X.Ψ r) (f : X.Ψ → Fin (r - 2) → Fin r → ℂ)
      (hf : X.UBasis z0 ξ f) (τ : X.Ψ) (a : Fin (r - 2) → ℂ) :
@@ -4523,8 +4607,9 @@
        ∑ k : Fin (r - 2), if (k : ℕ) < X.p0 - 1 then ‖a k‖ ^ 2 else -‖a k‖ ^ 2 := by
    obtain ⟨-, -, hgr, -, -⟩ := hf τ
 -  rw [hermC_sum_left_lemma]
+-  simp only [hermC_sum_right_lemma_2, hgr, mul_ite, mul_zero, mul_one, Finset.sum_ite_eq, Finset.sum_ite_eq',
 +  rw [GramDeterminantReal.hC_sum_left]
-   simp only [hermC_sum_right_lemma_2, hgr, mul_ite, mul_zero, mul_one, Finset.sum_ite_eq, Finset.sum_ite_eq',
++  simp only [hermC_sum_right, hermC_smul_right, hgr, mul_ite, mul_zero, mul_one, Finset.sum_ite_eq, Finset.sum_ite_eq',
      Finset.mem_univ, if_true, Complex.re_sum]
    refine Finset.sum_congr rfl fun k _ => ?_
    split_ifs <;> simp [Complex.mul_conj, Complex.normSq_eq_norm_sq] <;>
@@ -4592,7 +4677,7 @@
  
  theorem key (X : DataX E r) (ξ : Fin r → E) (z0 x0 : Frame X.Ψ r)
      (f : X.Ψ → Fin (r - 2) → Fin r → ℂ) (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (δ : ℝ)
-@@ -150,7 +69,7 @@
+@@ -150,7 +64,7 @@
    have hvP : X.ppos z0 τ v = v := ppos_of_mem (X := X.toData) hz τ v hv
    have hvneg : ∀ k : Fin (r - 2), ¬ (k : ℕ) < X.p0 - 1 → hermC τ.1 X.Gm v (f τ k) = 0 := by
      intro k hk
@@ -4601,8 +4686,14 @@
  
    obtain ⟨a, ha⟩ : ∃ a : Fin (r - 2) → ℂ,
        a = fun k : Fin (r - 2) => if (k : ℕ) < X.p0 - 1 then hermC τ.1 X.Gm v (f τ k) else 0 := ⟨_, rfl⟩
-@@ -174,7 +93,7 @@
-     simp only [hgr, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+@@ -170,11 +84,11 @@
+   have hfw : ∀ k, hermC τ.1 X.Gm (f τ k) w =
+       conj (a k) * (if (k : ℕ) < X.p0 - 1 then 1 else -1) := by
+     intro k
+-    rw [hw, hermC_sum_right_lemma_2]
+-    simp only [hgr, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
++    rw [hw]
++    simp only [hermC_sum_right, hermC_smul_right, hgr, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
    have hfp : ∀ k, hermC τ.1 X.Gm (f τ k) (v - w) = 0 := by
      intro k
 -    rw [hermC_sub_right', hfw]
@@ -4610,7 +4701,7 @@
      by_cases hk : (k : ℕ) < X.p0 - 1
      · rw [if_pos hk, mul_one, ha]
        simp only [if_pos hk]
-@@ -184,16 +103,13 @@
+@@ -184,16 +98,13 @@
        rw [← hermC_conj τ.1 X.Gm_herm, hvneg k hk, map_zero]
    have hskew : ∀ u q, hermC τ.1 X.Gm (X.Jt z0 τ u) q = -hermC τ.1 X.Gm u (X.Jt z0 τ q) := by
      intro u q
@@ -4630,7 +4721,7 @@
    have hK : ⨅ i, LinearMap.ker (![Lq (Data.emb τ.1 ξ), Lq (X.Jt z0 τ (Data.emb τ.1 ξ))] i) ≤
        LinearMap.ker (Lq (v - w)) := by
      intro u hu
-@@ -203,7 +119,7 @@
+@@ -203,7 +114,7 @@
      have hJu : hermC τ.1 X.Gm (X.Jt z0 τ u) (Data.emb τ.1 ξ) = 0 := by rw [hskew, h1', neg_zero]
      obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).mp (hspan u h0 hJu)
      show hermC τ.1 X.Gm u (v - w) = 0
@@ -4639,7 +4730,7 @@
      exact Finset.sum_eq_zero fun k _ => by rw [hfp k, mul_zero]
    obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).mp (mem_span_of_iInf_ker_le_ker hK)
    have hc' : ∀ u, hermC τ.1 X.Gm u (v - w) =
-@@ -212,7 +128,7 @@
+@@ -212,7 +123,7 @@
      have h := LinearMap.congr_fun hc u
      simp only [Fin.sum_univ_two, LinearMap.add_apply, LinearMap.smul_apply, Matrix.cons_val_zero,
        Matrix.cons_val_one, Matrix.head_cons, smul_eq_mul] at h
@@ -4648,7 +4739,7 @@
        Complex.conj_conj]
      exact h.symm
    have hnd : ∀ z : Fin r → ℂ, (∀ u, hermC τ.1 X.Gm u z = 0) → z = 0 := by
-@@ -222,14 +138,14 @@
+@@ -222,14 +133,14 @@
      rw [← hermC_conj τ.1 X.Gm_herm, hz', map_zero, mul_zero, zero_smul]
    have hpq : v - w = conj (c 0) • Data.emb τ.1 ξ + conj (c 1) • X.Jt z0 τ (Data.emb τ.1 ξ) := by
      refine sub_eq_zero.mp (hnd _ fun u => ?_)
@@ -4665,7 +4756,7 @@
        first
          | module
          | (simp only [smul_sub, smul_smul]; ring_nf)
-@@ -239,11 +155,11 @@
+@@ -239,11 +150,11 @@
        | simpa using h
  
    have hwe : hermC τ.1 X.Gm w (Data.emb τ.1 ξ) = 0 := by
@@ -4679,7 +4770,7 @@
    have hU : (fun τ' => if τ' = τ then w else 0) ∈ X.Uz z0 ξ := by
      refine ⟨fun τ' => ?_, fun τ' => ?_⟩
      · by_cases h : τ' = τ
-@@ -251,13 +167,13 @@
+@@ -251,13 +162,13 @@
          rw [h]
          exact hwe
        · simp only [if_neg h]
@@ -4696,7 +4787,7 @@
    have hA := hUz _ hU
    have hA1 : hermC τ.1 X.Gm (h1 τ *ᵥ w) (Data.emb τ.1 ξ) = 0 := by
      have h := hA.1 τ
-@@ -280,8 +196,8 @@
+@@ -280,8 +191,8 @@
        PositiveSpanMatrices.Neg X.toData x0 τ (∑ k, b k • f τ k) := by
      unfold PositiveSpanMatrices.Neg
      refine Finset.sum_congr rfl fun a' _ => ?_
@@ -4707,7 +4798,7 @@
      congr 2
      refine Finset.sum_congr rfl fun k _ => ?_
      rw [hb]
-@@ -292,7 +208,7 @@
+@@ -292,7 +203,7 @@
    have hnegperp : ∀ b' : Fin X.p0,
        hermC τ.1 X.Gm (∑ k, b k • f τ k) (col (mat x0 τ) (Fin.castLE X.p0_le b')) = 0 := by
      intro b'
@@ -4716,17 +4807,19 @@
      refine Finset.sum_eq_zero fun k _ => ?_
      rw [hb]
      by_cases hk : (k : ℕ) < X.p0 - 1
-@@ -320,8 +236,8 @@
+@@ -320,9 +231,9 @@
    have hexp : (hermC τ.1 X.Gm ((v - w) + ∑ k, cc k • f τ k) ((v - w) + ∑ k, cc k • f τ k)).re =
        (hermC τ.1 X.Gm (v - w) (v - w)).re +
          (hermC τ.1 X.Gm (∑ k, cc k • f τ k) (∑ k, cc k • f τ k)).re := by
 -    rw [hermC_add_left_fundamental_domains, hermC_add_right_fundamental_domains, hermC_add_right_fundamental_domains,
 -      hermC_sum_right_lemma_2 τ.1 X.Gm (v - w), hermC_sum_left_lemma τ.1 X.Gm cc (f τ) (v - w)]
+-    simp only [hpf, hfp, mul_zero, Finset.sum_const_zero, add_zero, zero_add, Complex.add_re]
 +    rw [hermC_add_left, hermC_add_right, hermC_add_right,
-+      hermC_sum_right_lemma_2 τ.1 X.Gm (v - w), GramDeterminantReal.hC_sum_left τ.1 X.Gm (f τ) cc (v - w)]
-     simp only [hpf, hfp, mul_zero, Finset.sum_const_zero, add_zero, zero_add, Complex.add_re]
++      GramDeterminantReal.hC_sum_left τ.1 X.Gm (f τ) cc (v - w)]
++    simp only [hermC_sum_right, hermC_smul_right, hpf, hfp, mul_zero, Finset.sum_const_zero, add_zero, zero_add, Complex.add_re]
    have hSS := f_gram_re X.toData ξ z0 f hf τ cc
    have hPp := re_self_of_mem (X := X.toData) hortho τ hdet0 _ hpS0
+   have hP0 := Pos_nonneg (X := X.toData) x0 τ (v - w)
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscriminantTraceBounds.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscriminantTraceBounds.lean
 @@ -13,9 +13,7 @@
@@ -4932,7 +5025,7 @@
      rw [map_mul, map_pow, map_natCast, norm_mul, norm_pow, Complex.norm_natCast]
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicIndexSums.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicIndexSums.lean
-@@ -15,48 +15,21 @@
+@@ -15,48 +15,18 @@
  
  variable (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
  
@@ -4957,10 +5050,10 @@
 -  ring
 -
  lemma hC_sum_right {ι : Type*} (s : Finset ι) (f : ι → Fin r → ℂ) (u : Fin r → ℂ) :
-     hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) := by
-   classical
-   induction s using Finset.induction_on with
-   | empty => simp [hermC]
+-    hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) := by
+-  classical
+-  induction s using Finset.induction_on with
+-  | empty => simp [hermC]
 -  | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_right_eq_add, ih]
 -
 -private lemma hermC_finset_sum_left_eq_sum {ι : Type*} (s : Finset ι) (f : ι → Fin r → ℂ) (w : Fin r → ℂ) :
@@ -4969,7 +5062,8 @@
 -  induction s using Finset.induction_on with
 -  | empty => simp [hermC]
 -  | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_left_eq_add, ih]
-+  | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_right, ih]
++    hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) :=
++  OrthonormalPerpBasis.hC_sum_right' τ G s u f
  
  lemma hC_comb {n : ℕ} (c : Fin n → ℂ) (v : Fin n → Fin r → ℂ) :
      hermC τ G (∑ k, c k • v k) (∑ l, c l • v l) =
@@ -4985,7 +5079,7 @@
    ring
  
  lemma hC_comb_ortho {n p : ℕ} (f : Fin n → Fin r → ℂ)
-@@ -74,8 +47,8 @@
+@@ -74,8 +44,8 @@
    have key : ∀ (d : Fin n → ℂ) (m : Fin n),
        hermC τ G (∑ k, d k • f k) (f m) = d m * (if (m : ℕ) < p then 1 else -1) := by
      intro d m
@@ -4996,7 +5090,7 @@
    funext m
    have e := congrArg (fun w => hermC τ G w (f m)) h
    simp only [key] at e
-@@ -173,17 +146,6 @@
+@@ -173,17 +143,6 @@
      X.ucomp x ξ U τ = U τ - (X.Hf x τ (U τ) (Data.emb τ.1 ξ) /
        X.Hf x τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ)) • Data.emb τ.1 ξ := rfl
  
@@ -5014,7 +5108,7 @@
  lemma ucomp_drop {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hne : ξ ≠ 0)
      (v : Fin r → E) (e : E) (τ : X.Ψ) :
      X.ucomp x ξ (X.embV (v + e • ξ)) τ = X.ucomp x ξ (X.embV v) τ := by
-@@ -194,10 +156,10 @@
+@@ -194,10 +153,10 @@
    have hlin : ∀ (u w : Fin r → ℂ) (c : ℂ), X.Hf x τ (u + c • w) (Data.emb τ.1 ξ) =
        X.Hf x τ u (Data.emb τ.1 ξ) + c * X.Hf x τ w (Data.emb τ.1 ξ) := by
      intro u w c
@@ -5230,10 +5324,14 @@
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalFlagTranslateHolds
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NsqMulVecLeOpN
  
-@@ -12,23 +13,7 @@
+@@ -10,84 +11,35 @@
  
+ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
+ 
++def nI (m : Fin (r - X.p0)) : Fin r := ⟨X.p0 + m, by have := m.isLt; have := X.p0_le; omega⟩
++
  lemma sum_split (f : Fin r → ℂ) :
-     ∑ j, f j = ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) +
+-    ∑ j, f j = ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) +
 -      ∑ m : Fin (r - X.p0), f ⟨X.p0 + m, by have := m.isLt; have := X.p0_le; omega⟩ := by
 -  set g : ℕ → ℂ := fun i => if h : i < r then f ⟨i, h⟩ else 0 with hg
 -  have e1 : ∑ j, f j = ∑ i ∈ Finset.range r, g i := by
@@ -5251,11 +5349,12 @@
 -  · refine Finset.sum_congr rfl fun m _ => ?_
 -    have hm : X.p0 + (m : ℕ) < r := by have := m.isLt; have := X.p0_le; omega
 -    simp only [hg, dif_pos hm]
-+      ∑ m : Fin (r - X.p0), f ⟨X.p0 + m, by have := m.isLt; have := X.p0_le; omega⟩ := PositiveSpanMatrices.sum_split X.p0_le f
+-
+-def nI (m : Fin (r - X.p0)) : Fin r := ⟨X.p0 + m, by have := m.isLt; have := X.p0_le; omega⟩
++    ∑ j, f j = ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) + ∑ m : Fin (r - X.p0), f (nI X m) :=
++  PositiveSpanMatrices.sum_split X.p0_le f
  
- def nI (m : Fin (r - X.p0)) : Fin r := ⟨X.p0 + m, by have := m.isLt; have := X.p0_le; omega⟩
- 
-@@ -36,58 +21,25 @@
+ private lemma nI_val_eq_p0_add (m : Fin (r - X.p0)) : ((nI X m : Fin r) : ℕ) = X.p0 + m := rfl
  
  lemma L_pp (Z : X.Coord) (τ : X.Ψ) (a c : Fin X.p0) :
      X.lowBlock Z τ (Fin.castLE X.p0_le a) (Fin.castLE X.p0_le c) = if a = c then 1 else 0 := by
@@ -5346,6 +5445,45 @@
    simp only [Matrix.mul_assoc]
  
  lemma Gp_apply (Z : X.Coord) (τ : X.Ψ) (a c : Fin r) :
+@@ -120,14 +65,10 @@
+   rw [Gp, Matrix.mul_apply]
+   simp only [Matrix.mul_diagonal, Matrix.transpose_apply, Matrix.map_apply]
+ 
+-private lemma sum_eq_sum_castLE_add_sum_nI (f : Fin r → ℂ) :
+-    ∑ j, f j = ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) + ∑ m : Fin (r - X.p0), f (nI X m) :=
+-  sum_split X f
+-
+ lemma Gp_pp (Z : X.Coord) (τ : X.Ψ) (a c : Fin X.p0) :
+     Gp X Z τ (Fin.castLE X.p0_le a) (Fin.castLE X.p0_le c) =
+       (if a = c then 1 else 0) - ∑ m, Z τ m a * conj (Z τ m c) := by
+-  rw [Gp_apply X, sum_eq_sum_castLE_add_sum_nI X]
++  rw [Gp_apply X, sum_split X]
+   simp only [L_pp X, L_np X, sgn_p X, sgn_n X]
+   by_cases hac : a = c
+   · subst hac
+@@ -136,19 +77,19 @@
+ 
+ lemma Gp_np (Z : X.Coord) (τ : X.Ψ) (m : Fin (r - X.p0)) (c : Fin X.p0) :
+     Gp X Z τ (nI X m) (Fin.castLE X.p0_le c) = -conj (Z τ m c) := by
+-  rw [Gp_apply X, sum_eq_sum_castLE_add_sum_nI X]
++  rw [Gp_apply X, sum_split X]
+   simp only [L_pn X, L_np X, L_nn X, sgn_p X, sgn_n X]
+   simp
+ 
+ lemma Gp_pn (Z : X.Coord) (τ : X.Ψ) (a : Fin X.p0) (m : Fin (r - X.p0)) :
+     Gp X Z τ (Fin.castLE X.p0_le a) (nI X m) = -Z τ m a := by
+-  rw [Gp_apply X, sum_eq_sum_castLE_add_sum_nI X]
++  rw [Gp_apply X, sum_split X]
+   simp only [L_pp X, L_pn X, L_np X, L_nn X, sgn_p X, sgn_n X]
+   simp
+ 
+ lemma Gp_nn (Z : X.Coord) (τ : X.Ψ) (m m' : Fin (r - X.p0)) :
+     Gp X Z τ (nI X m) (nI X m') = -(if m = m' then 1 else 0) := by
+-  rw [Gp_apply X, sum_eq_sum_castLE_add_sum_nI X]
++  rw [Gp_apply X, sum_split X]
+   simp only [L_pn X, L_nn X, sgn_p X, sgn_n X]
+   by_cases h : m = m'
+   · subst h
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpLatticeTransfer.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpLatticeTransfer.lean
 @@ -98,38 +98,10 @@
@@ -5464,11 +5602,10 @@
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnipotentCoefficientShift
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthogonalLatticeDecomposition
  
-@@ -9,28 +10,6 @@
- open scoped ComplexConjugate
+@@ -10,38 +11,12 @@
  
  variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data E r}
--
+ 
 -private theorem hermC_smul_left_embedding (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (k : ℂ) (u v : Fin r → ℂ) :
 -    hermC τ G (k • u) v = k * hermC τ G u v := by
 -  simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
@@ -5490,10 +5627,13 @@
 -  simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
 -  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
 -  ring
- 
- private theorem hermC_emb_emb_eq_tau_herm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
-     hermC τ G (Data.emb τ x) (Data.emb τ y) = τ (herm G x y) := by
-@@ -41,7 +20,7 @@
+-
+-private theorem hermC_emb_emb_eq_tau_herm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
+-    hermC τ G (Data.emb τ x) (Data.emb τ y) = τ (herm G x y) := by
+-  simp only [hermC, herm, Data.emb, map_sum, map_mul, emb_cc]
+-
+ theorem Hf_zero_right (z : Frame X.Ψ r) (τ : X.Ψ) (u : Fin r → ℂ) : X.Hf z τ u 0 = 0 := by
+   simp [Data.Hf, hermC]
  
  theorem Hf_sub_right (z : Frame X.Ψ r) (τ : X.Ψ) (u v w : Fin r → ℂ) :
      X.Hf z τ u (v - w) = X.Hf z τ u v - X.Hf z τ u w := by
@@ -5502,7 +5642,7 @@
  
  theorem maj_zero {z : Frame X.Ψ r} (hz : z ∈ X.dom) (τ : X.Ψ) : X.maj z τ 0 = 0 := by
    have h := X.Hf_self hz τ 0
-@@ -78,7 +57,7 @@
+@@ -78,7 +53,7 @@
  theorem mem_Uz_iff (z : Frame X.Ψ r) (ξ : Fin r → E) (u : X.Ψ → Fin r → ℂ) :
      u ∈ X.Uz z ξ ↔ ∀ τ : X.Ψ, hermC τ.1 X.Gm (u τ) (Data.emb τ.1 ξ) = 0 ∧
        hermC τ.1 X.Gm (X.jp z τ (u τ)) (Data.emb τ.1 ξ) = 0 := by
@@ -5511,7 +5651,7 @@
      Complex.I_ne_zero, false_or]
    exact ⟨fun h τ => ⟨h.1 τ, h.2 τ⟩, fun h => ⟨fun τ => (h τ).1, fun τ => (h τ).2⟩⟩
  
-@@ -86,7 +65,7 @@
+@@ -86,7 +61,7 @@
      (hu : u ∈ X.Uz z ξ) : (fun τ => s τ • u τ) ∈ X.Uz z ξ := by
    rw [mem_Uz_iff] at hu ⊢
    intro τ
@@ -5520,7 +5660,7 @@
  
  theorem jp_fam_mem {z : Frame X.Ψ r} (hz : z ∈ X.dom) {ξ : Fin r → E} {u : X.Ψ → Fin r → ℂ}
      (hu : u ∈ X.Uz z ξ) : (fun τ => X.jp z τ (u τ)) ∈ X.Uz z ξ := by
-@@ -98,7 +77,7 @@
+@@ -98,7 +73,7 @@
      (hu : u ∈ X.Uz z ξ) (hv : v ∈ X.Uz z ξ) : u + v ∈ X.Uz z ξ := by
    rw [mem_Uz_iff] at hu hv ⊢
    intro τ
@@ -5529,7 +5669,7 @@
      add_zero, and_self]
  
  theorem zero_mem (z : Frame X.Ψ r) (ξ : Fin r → E) : (0 : X.Ψ → Fin r → ℂ) ∈ X.Uz z ξ := by
-@@ -147,14 +126,14 @@
+@@ -147,14 +122,14 @@
      gI z (Bop z u) v = ∑ τ, (2 * τ.1 (-X.ξ0) * hermC τ.1 X.Gm (u τ) (v τ)).re := by
    unfold gI
    refine Finset.sum_congr rfl fun τ _ => ?_
@@ -5546,7 +5686,7 @@
      conj_purely_imaginary_generator, neg_neg, map_ofNat]
    simp [neg_mul, mul_neg, Complex.neg_re]
  
-@@ -182,36 +161,8 @@
+@@ -182,50 +157,22 @@
  
  theorem trace_eq_sum (a : E) :
      ((Algebra.trace ℚ E a : ℚ) : ℝ) = ∑ τ : X.Ψ, 2 * (τ.1 a).re := by
@@ -5585,16 +5725,26 @@
  
  private theorem hermC_ucomp_ucomp_of_herm_eq_zero {z : Frame X.Ψ r} {ξ : Fin r → E} (hξξ : herm X.Gm ξ ξ = 0)
      {μ ν : Fin r → E} (hμ : herm X.Gm μ ξ = 0) (hν : herm X.Gm ν ξ = 0) (τ : X.Ψ) :
-@@ -223,7 +174,7 @@
-     rw [← hermC_conj τ.1 X.Gm_herm, hermC_emb_emb_eq_tau_herm, hν, map_zero, map_zero]
+     hermC τ.1 X.Gm (X.ucomp z ξ (X.embV μ) τ) (X.ucomp z ξ (X.embV ν) τ) = τ.1 (herm X.Gm μ ν) := by
+   simp only [Data.ucomp, Data.aproj, Data.lineV, Data.embV, Pi.sub_apply]
+   have e1 : hermC τ.1 X.Gm (Data.emb τ.1 μ) (Data.emb τ.1 ξ) = 0 := by
+-    rw [hermC_emb_emb_eq_tau_herm, hμ, map_zero]
++    rw [hermC_emb, hμ, map_zero]
+   have e2 : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ν) = 0 := by
+-    rw [← hermC_conj τ.1 X.Gm_herm, hermC_emb_emb_eq_tau_herm, hν, map_zero, map_zero]
++    rw [← hermC_conj τ.1 X.Gm_herm, hermC_emb, hν, map_zero, map_zero]
    have e3 : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0 := by
-     rw [hermC_emb_emb_eq_tau_herm, hξξ, map_zero]
+-    rw [hermC_emb_emb_eq_tau_herm, hξξ, map_zero]
 -  simp only [hermC_sub_left_of_natDim, hermC_sub_right_of_conj_symm, hermC_smul_left_embedding, hermC_smul_right_embedding, e1, e2, e3,
++    rw [hermC_emb, hξξ, map_zero]
 +  simp only [hermC_sub_left, hermC_sub_right, hermC_smul_left, hermC_smul_right, e1, e2, e3,
      mul_zero, sub_zero]
-   exact hermC_emb_emb_eq_tau_herm _ _ _ _
+-  exact hermC_emb_emb_eq_tau_herm _ _ _ _
++  exact hermC_emb _ _ _ _
  
-@@ -266,7 +217,7 @@
+ theorem EF_eq {z : Frame X.Ψ r} (hz : z ∈ X.dom) {ξ : Fin r → E} (hξξ : herm X.Gm ξ ξ = 0)
+     {μ ν : Fin r → E} (hμ : herm X.Gm μ ξ = 0) (hν : herm X.Gm ν ξ = 0) :
+@@ -266,7 +213,7 @@
    unfold gI
    rw [Finset.mul_sum]
    refine Finset.sum_congr rfl fun τ _ => ?_
@@ -8040,10 +8190,11 @@
  
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramMatrixExistence.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramMatrixExistence.lean
-@@ -21,36 +21,10 @@
+@@ -20,41 +20,6 @@
+   refine Finset.sum_congr rfl fun j _ => ?_
    simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
    ring
- 
+-
 -private lemma hermC_smul_left_mul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
 -    (u v : Fin r → ℂ) (a : ℂ) :
 -    hermC τ G (a • u) v = a * hermC τ G u v := by
@@ -8063,9 +8214,9 @@
 -  refine Finset.sum_congr rfl fun j _ => ?_
 -  ring
 -
- private lemma hermC_sum_smul_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {n : ℕ}
-     (u : Fin r → ℂ) (b : Fin n → ℂ) (g : Fin n → Fin r → ℂ) :
-     hermC τ G u (∑ l, b l • g l) = ∑ l, conj (b l) * hermC τ G u (g l) := by
+-private lemma hermC_sum_smul_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {n : ℕ}
+-    (u : Fin r → ℂ) (b : Fin n → ℂ) (g : Fin n → Fin r → ℂ) :
+-    hermC τ G u (∑ l, b l • g l) = ∑ l, conj (b l) * hermC τ G u (g l) := by
 -  unfold hermC
 -  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]
 -  conv_rhs => rw [Finset.sum_comm]
@@ -8074,11 +8225,23 @@
 -  refine Finset.sum_congr rfl fun j _ => ?_
 -  refine Finset.sum_congr rfl fun l _ => ?_
 -  ring
-+  simp only [hermC_sum_right, hermC_smul_right]
+-
+-private lemma herm_eq_hermC_emb_emb (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
+-    τ (herm G x y) = hermC τ G (Data.emb τ x) (Data.emb τ y) := by
+-  simp only [herm, hermC, map_sum, map_mul, Data.emb, cc, IsCMField.complexEmbedding_complexConj]
  
- private lemma herm_eq_hermC_emb_emb (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
-     τ (herm G x y) = hermC τ G (Data.emb τ x) (Data.emb τ y) := by
-@@ -119,7 +93,7 @@
+ private lemma emb_sum_smul' (τ : E →+* ℂ) {n : ℕ} (c : Fin n → E) (β : Fin n → Fin r → E) :
+     Data.emb τ (∑ k, c k • β k) = ∑ k, τ (c k) • Data.emb τ (β k) := by
+@@ -90,7 +55,7 @@
+   have hperp : ∀ (τ : X.Ψ) (y : Fin r → E), herm X.Gm y ξ = 0 →
+       hermC τ.1 X.Gm (Data.emb τ.1 y) (Data.emb τ.1 ξ) = 0 := by
+     intro τ y hy
+-    rw [← herm_eq_hermC_emb_emb, hy, map_zero]
++    rw [hermC_emb, hy, map_zero]
+   have hee : ∀ τ : X.Ψ, hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0 :=
+     fun τ => hperp τ ξ hξξ
+   have huc : ∀ (τ : X.Ψ) (v : Fin r → E),
+@@ -119,7 +84,7 @@
      have h3 : hermC τ.1 X.Gm (X.Jt z0 τ (uc X.toData z0 ξ τ v)) e = 0 := by
        show hermC τ.1 X.Gm (I • ((2 : ℂ) • X.ppos z0 τ (uc X.toData z0 ξ τ v) -
          uc X.toData z0 ξ τ v)) e = 0
@@ -8087,7 +8250,7 @@
        change I * X.Hf z0 τ (uc X.toData z0 ξ τ v) e = 0
        rw [h2, mul_zero]
      exact (hf τ).2.2.2.2 _ h1 h3
-@@ -129,7 +103,7 @@
+@@ -129,7 +94,7 @@
      obtain ⟨a, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1 hw
      refine Finset.sum_congr rfl fun j _ => ?_
      congr 1
@@ -8096,7 +8259,7 @@
      simp_rw [(hf τ).2.2.1]
      simp only [mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
      split_ifs <;> ring
-@@ -153,7 +127,7 @@
+@@ -153,16 +118,16 @@
    have hp : ∀ (τ : X.Ψ) (c : Fin (r - 2) → E),
        hermC τ.1 X.Gm (Data.emb τ.1 (∑ k, c k • β k)) (Data.emb τ.1 ξ) = 0 := by
      intro τ c
@@ -8105,15 +8268,18 @@
      simp [hperp τ _ (hβξ _)]
    have hSQ : ∀ τ (c c' : Fin (r - 2) → E), τ.1 ((Sform X β).h c c') =
        ReciprocityTheory.MultiplicativeHeights.jForm (X.p0 - 1) (Q τ *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec τ.1 c)
-@@ -161,7 +135,7 @@
+         (Q τ *ᵥ ReciprocityTheory.MultiplicativeHeights.embVec τ.1 c') := by
      intro τ c c'
-     rw [Sform_h, herm_eq_hermC_emb_emb, ← uc_perp (X := X.toData) (z0 := z0) (ξ := ξ) (τ := τ) (hee τ)
+-    rw [Sform_h, herm_eq_hermC_emb_emb, ← uc_perp (X := X.toData) (z0 := z0) (ξ := ξ) (τ := τ) (hee τ)
++    rw [Sform_h, ← hermC_emb, ← uc_perp (X := X.toData) (z0 := z0) (ξ := ξ) (τ := τ) (hee τ)
        (Data.emb τ.1 (∑ k, c k • β k)) (Data.emb τ.1 (∑ k, c' k • β k)) (hp τ c) (hp τ c'),
 -      ← huc, ← huc, hQf, hQf, hermC_sum_smul_left]
+-    simp_rw [hermC_sum_smul_right, (hf τ).2.2.1]
 +      ← huc, ← huc, hQf, hQf, GramDeterminantReal.hC_sum_left]
-     simp_rw [hermC_sum_smul_right, (hf τ).2.2.1]
++    simp_rw [hermC_sum_right, hermC_smul_right, (hf τ).2.2.1]
      simp only [mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
      unfold ReciprocityTheory.MultiplicativeHeights.jForm ReciprocityTheory.MultiplicativeHeights.sgn
+     refine Finset.sum_congr rfl fun j _ => ?_
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermCOrthonormalCoordinates.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermCOrthonormalCoordinates.lean
 @@ -1,3 +1,4 @@
@@ -8121,7 +8287,7 @@
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LowBlock
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajPos
  
-@@ -48,43 +49,23 @@
+@@ -48,43 +49,10 @@
  lemma nsq_zero' {n : ℕ} : nsq (0 : Fin n → ℂ) = 0 := by
    simp [nsq]
  
@@ -8145,30 +8311,52 @@
 -  refine Finset.sum_congr rfl fun a _ => ?_
 -  rw [Finset.sum_comm]
 -  exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun b _ => by ring
-+  simp only [hermC_sum_right, hermC_smul_right, mul_comm]
- 
- lemma hermC_bilin (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {n : ℕ} (p q : Fin n → ℂ)
-     (f : Fin n → Fin r → ℂ) :
-     hermC τ G (∑ i, p i • f i) (∑ j, q j • f j) =
-       ∑ i, ∑ j, p i * hermC τ G (f i) (f j) * conj (q j) := by
+-
+-lemma hermC_bilin (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {n : ℕ} (p q : Fin n → ℂ)
+-    (f : Fin n → Fin r → ℂ) :
+-    hermC τ G (∑ i, p i • f i) (∑ j, q j • f j) =
+-      ∑ i, ∑ j, p i * hermC τ G (f i) (f j) * conj (q j) := by
 -  rw [hermC_fin_sum_smul_left]
-+  rw [GramDeterminantReal.hC_sum_left]
-   refine Finset.sum_congr rfl fun i _ => ?_
-   rw [hermC_fin_sum_smul_right_mul_conj, Finset.mul_sum]
-   exact Finset.sum_congr rfl fun j _ => by ring
- 
- private lemma sum_fin_eq_sum_castLE_add_sum_shift {M : Type} [AddCommMonoid M] {p0 n : ℕ} (h : p0 ≤ n) (f : Fin n → M) :
-     ∑ i, f i = ∑ a : Fin p0, f (Fin.castLE h a) +
+-  refine Finset.sum_congr rfl fun i _ => ?_
+-  rw [hermC_fin_sum_smul_right_mul_conj, Finset.mul_sum]
+-  exact Finset.sum_congr rfl fun j _ => by ring
+-
+-private lemma sum_fin_eq_sum_castLE_add_sum_shift {M : Type} [AddCommMonoid M] {p0 n : ℕ} (h : p0 ≤ n) (f : Fin n → M) :
+-    ∑ i, f i = ∑ a : Fin p0, f (Fin.castLE h a) +
 -      ∑ m : Fin (n - p0), f ⟨p0 + m, by have := m.isLt; omega⟩ := by
 -  let e : Fin p0 ⊕ Fin (n - p0) ≃ Fin n := finSumFinEquiv.trans (finCongr (Nat.add_sub_cancel' h))
 -  rw [← e.sum_comp f, Fintype.sum_sum_type]
 -  congr 1
 -  all_goals exact Finset.sum_congr rfl fun i _ => congrArg f (Fin.ext (by simp [e]))
-+      ∑ m : Fin (n - p0), f ⟨p0 + m, by have := m.isLt; omega⟩ := PositiveSpanMatrices.sum_split h f
++  simp only [hermC_sum_right, hermC_smul_right, mul_comm]
  
  lemma hermC_orthonormal_coordinates {x : Frame X.Ψ r} (ho : X.IsOrtho x) (τ : X.Ψ) (p q : Fin r → ℂ) :
      hermC τ.1 X.Gm (mat x τ *ᵥ p) (mat x τ *ᵥ q) =
-@@ -160,7 +141,7 @@
+@@ -93,20 +61,14 @@
+     intro u
+     ext k
+     simp [Matrix.mulVec, dotProduct, col, Finset.sum_apply, mul_comm]
+-  have hij : ∀ i j, hermC τ.1 X.Gm (col (mat x τ) i) (col (mat x τ) j) =
+-      if i = j then ((sgn X.p0 (i : ℕ) : ℝ) : ℂ) else 0 := by
+-    intro i j
+-    have := congrFun (congrFun (ho τ) i) j
+-    simpa [gram, Matrix.diagonal_apply] using this
+-  rw [hM p, hM q, hermC_bilin]
+-  simp only [hij, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+-  rw [sum_fin_eq_sum_castLE_add_sum_shift X.p0_le]
++  rw [hM p, hM q, OrthonormalPerpBasis.comb_comb X ho τ]
++  rw [PositiveSpanMatrices.sum_split X.p0_le]
+   simp only [mjip, mjpa, mjpb, sub_eq_add_neg, ← Finset.sum_neg_distrib]
+   congr 1
+   · refine Finset.sum_congr rfl fun a _ => ?_
+     simp [sgn, mjpa, a.isLt]
+   · refine Finset.sum_congr rfl fun m _ => ?_
+-    simp [sgn, mjpb, nI]
++    simp [sgn, mjpb, nI, PositiveSpanMatrices.kap]
+ 
+ lemma mj_colP (x : Frame X.Ψ r) (Z : X.Coord) (τ : X.Ψ) (c : Fin X.p0) :
+     X.colP (X.xZ x Z) τ c = mat x τ *ᵥ col (X.lowBlock Z τ) (Fin.castLE X.p0_le c) := by
+@@ -160,7 +122,7 @@
      ⟨_, fun _ => rfl⟩
    have K : ∀ c, hermC τ.1 X.Gm (∑ a, γ a • X.colP (X.xZ x Z) τ a) (X.colP (X.xZ x Z) τ c) = β c := by
      intro c
@@ -8179,7 +8367,7 @@
            simp only [← X.gramPos_apply, hγ, Finset.sum_mul, Matrix.mul_apply, Finset.mul_sum]
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatUnitary.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatUnitary.lean
-@@ -32,46 +32,16 @@
+@@ -32,46 +32,12 @@
    refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun m _ => ?_
    ring
  
@@ -8205,8 +8393,8 @@
 -          Finset.sum_congr rfl fun b _ => ?_
 -        ring
 -
- private lemma hermC_sum_smul_right {m : ℕ} (u : Fin r → ℂ) (d : Fin m → ℂ) (q : Fin m → Fin r → ℂ) :
-     hermC τ G u (∑ l, d l • q l) = ∑ l, conj (d l) * hermC τ G u (q l) := by
+-private lemma hermC_sum_smul_right {m : ℕ} (u : Fin r → ℂ) (d : Fin m → ℂ) (q : Fin m → Fin r → ℂ) :
+-    hermC τ G u (∑ l, d l • q l) = ∑ l, conj (d l) * hermC τ G u (q l) := by
 -  unfold hermC
 -  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]
 -  calc _ = ∑ a, ∑ l, ∑ b, u a * τ (G a b) * (conj (d l) * conj (q l b)) :=
@@ -8216,8 +8404,7 @@
 -        refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ =>
 -          Finset.sum_congr rfl fun b _ => ?_
 -        ring
-+  simp only [hermC_sum_right, hermC_smul_right]
- 
+-
  theorem expand (q : Fin n → Fin r → ℂ) (x y : Fin r → ℂ) (c d : Fin n → ℂ)
      (hx : ∀ l, hermC τ G x (q l) = 0) (hy : ∀ k, hermC τ G (q k) y = 0) :
      hermC τ G (x + ∑ k, c k • q k) (y + ∑ l, d l • q l) =
@@ -8225,11 +8412,11 @@
 -  rw [hermC_add_left', hermC_add_right_fundamental_domains', hermC_add_right_fundamental_domains']
 -  simp only [hermC_sum_smul_right, hermC_sum_smul_left, hx, hy, mul_zero, Finset.sum_const_zero, add_zero,
 +  rw [hermC_add_left, hermC_add_right, hermC_add_right]
-+  simp only [hermC_sum_smul_right, GramDeterminantReal.hC_sum_left, hx, hy, mul_zero, Finset.sum_const_zero, add_zero,
++  simp only [hermC_sum_right, hermC_smul_right, GramDeterminantReal.hC_sum_left, hx, hy, mul_zero, Finset.sum_const_zero, add_zero,
      Finset.mul_sum]
    rw [zero_add, Finset.sum_comm]
    congr 1
-@@ -122,7 +92,7 @@
+@@ -122,14 +88,15 @@
        fun l => ?_⟩
      · simp only [neg_smul, Finset.sum_neg_distrib]
        abel
@@ -8238,9 +8425,18 @@
        simp only [hf_eps τ G p f hG hf, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq',
          Finset.mem_univ, if_true]
        linear_combination (-hermC τ G u (f l)) * eps_sq p l
+   have hperp : ∀ x : Fin r → ℂ, (∀ l, hermC τ G x (f l) = 0) → ∀ k, hermC τ G x (g k) = 0 := by
+     intro x hx k
+     obtain ⟨a, ha⟩ := (Submodule.mem_span_range_iff_exists_fun (R := ℂ)).mp (hgf k)
+-    rw [← ha, hermC_sum_smul_right]
++    rw [← ha]
++    simp only [hermC_sum_right, hermC_smul_right]
+     simp [hx]
+   obtain ⟨xv, cv, hv, hxv⟩ := hdec v
+   obtain ⟨xw, cw, hw, hxw⟩ := hdec w
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/AprojEqZeroOfUz.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/AprojEqZeroOfUz.lean
-@@ -14,14 +14,6 @@
+@@ -14,33 +14,21 @@
  
  variable {r : ℕ} (X : Data E r) (ξ : Fin r → E)
  
@@ -8252,15 +8448,15 @@
 -    (u w v : Fin n → ℂ) : hermC τ G (u - w) v = hermC τ G u v - hermC τ G w v := by
 -  simp only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 -
- private lemma hermC_emb_emb_eq_herm {n : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin n) (Fin n) E)
-     (x y : Fin n → E) : hermC τ G (Data.emb τ x) (Data.emb τ y) = τ (herm G x y) := by
-   simp only [hermC, herm, Data.emb, map_sum, map_mul, cc, IsCMField.complexEmbedding_complexConj]
-@@ -29,18 +21,18 @@
+-private lemma hermC_emb_emb_eq_herm {n : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin n) (Fin n) E)
+-    (x y : Fin n → E) : hermC τ G (Data.emb τ x) (Data.emb τ y) = τ (herm G x y) := by
+-  simp only [hermC, herm, Data.emb, map_sum, map_mul, cc, IsCMField.complexEmbedding_complexConj]
+-
  lemma lineV_mem_Iperp (hξ : herm X.Gm ξ ξ = 0) (s : X.Ψ → ℂ) : X.lineV ξ s ∈ X.Iperp ξ := by
    simp only [Data.Iperp, Set.mem_setOf_eq]
    intro τ
 -  simp only [Data.lineV, hermC_smul_left_dim, hermC_emb_emb_eq_herm, hξ, map_zero, mul_zero]
-+  simp only [Data.lineV, hermC_smul_left, hermC_emb_emb_eq_herm, hξ, map_zero, mul_zero]
++  simp only [Data.lineV, hermC_smul_left, hermC_emb, hξ, map_zero, mul_zero]
  
  lemma Iperp_sub {u w : X.Ψ → Fin r → ℂ} (hu : u ∈ X.Iperp ξ) (hw : w ∈ X.Iperp ξ) :
      u - w ∈ X.Iperp ξ := by
@@ -8277,7 +8473,7 @@
  
  lemma aproj_eq_zero_of_Uz {x : Frame X.Ψ r} {u : X.Ψ → Fin r → ℂ} (hu : u ∈ X.Uz x ξ) :
      X.aproj x ξ u = 0 := by
-@@ -49,19 +41,15 @@
+@@ -49,19 +37,15 @@
    funext τ
    have hH : X.Hf x τ (u τ) (Data.emb τ.1 ξ) = 0 := by
      have h3 := h2 τ
@@ -8299,6 +8495,15 @@
  
  lemma aproj_smul (x : Frame X.Ψ r) (c : ℂ) (u : X.Ψ → Fin r → ℂ) :
      X.aproj x ξ (c • u) = c • X.aproj x ξ u := by
+@@ -115,7 +99,7 @@
+   have hv : ∀ j, X.embV (lam j) ∈ X.Iperp ξ := fun j => by
+     simp only [Data.Iperp, Set.mem_setOf_eq]
+     intro τ
+-    simp only [Data.embV, AffineProjectionSplitting.hermC_emb_emb_eq_herm, (hA j).2, map_zero]
++    simp only [Data.embV, hermC_emb, (hA j).2, map_zero]
+   refine ⟨hA, hB, hC, fun j hj => ⟨(hD j hj).1, ?_⟩, fun j hj => ⟨(hF j hj).1, ?_⟩, hG⟩
+   · exact split_key hξ hap hJ (hv j) I (hD j hj).2
+   · have h2 := split_key hξ hap hJ (hv j) (-I) (by rw [(hF j hj).2, neg_smul])
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramSchmidtEigenframe.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramSchmidtEigenframe.lean
 @@ -10,49 +10,11 @@
@@ -8398,19 +8603,49 @@
  
  lemma mulVec_eq_sum_col (M : Matrix (Fin r) (Fin r) ℂ) (w : Fin r → ℂ) : M *ᵥ w = ∑ c, w c • col M c := by
    funext k
-@@ -37,11 +35,7 @@
- private lemma hermC_sum_smul_left' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {m : ℕ}
-     (c : Fin m → ℂ) (y : Fin m → Fin r → ℂ) (v : Fin r → ℂ) :
-     hermC τ G (∑ b, c b • y b) v = ∑ b, c b * hermC τ G (y b) v := by
+@@ -34,15 +32,6 @@
+       h1 τ *ᵥ ∑ b, u b • col (mat z0 τ) (Fin.castLE X.p0_le b) := by
+   simp only [col_mul', Matrix.mulVec_sum, Matrix.mulVec_smul]
+ 
+-private lemma hermC_sum_smul_left' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {m : ℕ}
+-    (c : Fin m → ℂ) (y : Fin m → Fin r → ℂ) (v : Fin r → ℂ) :
+-    hermC τ G (∑ b, c b • y b) v = ∑ b, c b * hermC τ G (y b) v := by
 -  simp only [hermC, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]
 -  conv_rhs => rw [Finset.sum_comm]
 -  refine Finset.sum_congr rfl fun a _ ↦ ?_
 -  conv_rhs => rw [Finset.sum_comm]
 -  exact Finset.sum_congr rfl fun b' _ ↦ Finset.sum_congr rfl fun b _ ↦ by ring
-+  simp only [hermC_sum_left, hermC_smul_left]
- 
+-
  lemma Pos_eq (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 x0 : Frame X.Ψ r) (τ : X.Ψ) (u : Fin X.p0 → ℂ) :
      Pos X x0 τ (∑ b, u b • col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b)) =
+       ∑ b', ‖(Amat X h1 z0 x0 τ *ᵥ u) b'‖ ^ 2 := by
+@@ -52,7 +41,7 @@
+       (col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b)) (col (mat x0 τ) (Fin.castLE X.p0_le b')) := by
+     simp only [Matrix.mulVec, dotProduct, Amat, Matrix.of_apply]
+     exact Finset.sum_congr rfl fun b _ ↦ mul_comm _ _
+-  rw [hermC_sum_smul_left', h]
++  rw [GramDeterminantReal.hC_sum_left, h]
+ 
+ lemma Neg_eq (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 x0 : Frame X.Ψ r) (τ : X.Ψ) (u : Fin X.p0 → ℂ) :
+     Neg X x0 τ (∑ b, u b • col (h1 τ * mat z0 τ) (Fin.castLE X.p0_le b)) =
+@@ -64,7 +53,7 @@
+     simp only [Matrix.mulVec, dotProduct, Bmat, Matrix.of_apply, neg_mul, Finset.sum_neg_distrib]
+     congr 1
+     exact Finset.sum_congr rfl fun b _ ↦ mul_comm _ _
+-  rw [hermC_sum_smul_left', h, norm_neg]
++  rw [GramDeterminantReal.hC_sum_left, h, norm_neg]
+ 
+ lemma colW_expand (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (z0 : Frame X.Ψ r) {x0 : Frame X.Ψ r}
+     (hortho : X.IsOrtho x0) (τ : X.Ψ) (hdet0 : (mat x0 τ).det ≠ 0) (b : Fin X.p0) :
+@@ -84,7 +73,7 @@
+     simpa [gram, Matrix.diagonal_apply] using this
+   have hh : ∀ d, hermC τ.1 X.Gm y (col (mat x0 τ) d) = α d * ((sgn X.p0 (d : ℕ) : ℝ) : ℂ) := by
+     intro d
+-    rw [hyα, hermC_sum_smul_left']
++    rw [hyα, GramDeterminantReal.hC_sum_left]
+     simp only [hcd, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ,
+       if_true]
+   rw [hyα, sum_split X.p0_le]
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PosCoordNe.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PosCoordNe.lean
 @@ -33,23 +33,13 @@
@@ -8440,7 +8675,7 @@
    refine Finset.sum_congr rfl fun a _ => ?_
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentVectorGroup.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentVectorGroup.lean
-@@ -3,222 +3,48 @@
+@@ -3,222 +3,45 @@
  
  namespace ReciprocityTheory.ChartRestriction.G.FD
  
@@ -8606,9 +8841,7 @@
 -  congr 1
 -  refine Finset.sum_congr rfl fun l _ => ?_
 -  ring
-+private theorem col_mul_to_mulVec {r : ℕ} (M N : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
-+    col (M * N) a = M *ᵥ col N a := rfl
- 
+-
  theorem unipotent_vector_group : UnipotentVectorGroup (E := E) := by
 -  unfold UnipotentVectorGroup
    intro r X u hiso
@@ -8681,7 +8914,7 @@
 +    have hg : gram τ.1 X.Gm (X.zmat u b τ * mat x τ) = gram τ.1 X.Gm (mat x τ) :=
 +      X.gram_Zb u hiso.1 b hb x τ
 +    simp only [Data.maj, Data.posPart, Data.gramPos, hg,
-+      X.mat_Zb, col_mul_to_mulVec, hv0]
++      X.mat_Zb, Data.col_mul, hv0]
 +  refine ⟨X.zmat_unitary u hiso.1 b hb, hfix, X.zmat_det u hiso.1 b,
 +    fun _ hx => X.Zb_dom u hiso.1 b hb hx, ?_, fun la x _ => X.nfac_Zb u hiso.1 b hb la x,
 +    fun x τ _ => hmaj x τ, ?_, ?_, ?_⟩
@@ -11080,7 +11313,7 @@
        | zero => simpa using hint0 j
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BfSubRight.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BfSubRight.lean
-@@ -16,81 +16,47 @@
+@@ -16,81 +16,41 @@
  
  def Pv (v : Fin r → ℂ) (a : Fin X.p0) : ℂ := v (Fin.castLE X.p0_le a)
  
@@ -11117,8 +11350,6 @@
 -    rw [dif_neg (fun hh => absurd hh.1 (not_le.mpr (by simp))), add_zero]
 -  simp only [hL, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 +  rw [sum_split X]
-+  change (∑ c : Fin X.p0, X.lowBlock Z τ _ (Fin.castLE X.p0_le c) * _) +
-+    (∑ m : Fin (r - X.p0), X.lowBlock Z τ _ (nI X m) * _) = _
 +  simp [L_pp X, L_pn X, ite_mul]
  
  lemma Lv_n (Z : X.Coord) (τ : X.Ψ) (v : Fin r → ℂ) (m : Fin (r - X.p0)) :
@@ -11143,8 +11374,6 @@
 -  · intro j hj
 -    rw [dif_neg (not_lt.mpr hj), zero_mul]
 +  rw [sum_split X]
-+  change (∑ c : Fin X.p0, X.lowBlock Z τ _ (Fin.castLE X.p0_le c) * _) +
-+    (∑ k : Fin (r - X.p0), X.lowBlock Z τ _ (nI X k) * _) = _
 +  simp only [L_np X, L_nn X, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Nv]
 +  exact add_comm _ _
  
@@ -11185,13 +11414,11 @@
 +    simp only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]
 +    ring
 +  rw [h1, sum_split X]
-+  change (∑ c : Fin X.p0, _) + (∑ k : Fin (r - X.p0), ((sgn X.p0 ((nI X k : Fin r) : ℕ) : ℝ):ℂ) *
-+    (∑ a, X.lowBlock Z τ (nI X k) a * v a) * conj (∑ b, X.lowBlock Z τ (nI X k) b * w b)) = _
 +  rw [sub_eq_add_neg, ← Finset.sum_neg_distrib]
    congr 1
    · refine Finset.sum_congr rfl fun a _ => ?_
      rw [Lv_p X, Lv_p X]
-@@ -114,25 +80,8 @@
+@@ -114,25 +74,8 @@
  
  private lemma sum_eq_add_sum_castLE_of_vanish_above {n : ℕ} (k : Fin n) (f : Fin n → ℂ) (hf : ∀ j : Fin n, k < j → f j = 0) :
      ∑ j, f j = f k + ∑ c : Fin k, f (Fin.castLE k.isLt.le c) := by
@@ -11344,6 +11571,24 @@
  
  lemma hermC_pair (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (hG : ∀ a b, cc (G a b) = G b a)
      (e u v : Fin r → ℂ) (he : hermC τ G e e = 0) (α : ℂ) :
+@@ -51,16 +45,12 @@
+     (-(I * (c : ℂ) * s)) + conj (-(I * (c : ℂ) * s)) = ((2 * c * s.im : ℝ) : ℂ) := by
+   apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring
+ 
+-private lemma hermC_emb_emb_eq_herm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
+-    hermC τ G (Data.emb τ x) (Data.emb τ y) = τ (herm G x y) := by
+-  simp [hermC, herm, Data.emb, map_sum, map_mul, emb_cc']
+-
+ lemma gram_flowMat {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (τ : X.Ψ) (s : ℂ)
+     (M : Matrix (Fin r) (Fin r) ℂ) :
+     gram τ.1 X.Gm (X.flowMat ξ τ s * M) =
+       gram τ.1 X.Gm M + ((2 * X.c τ * s.im : ℝ) : ℂ) • rk1 X ξ τ M := by
+   have he : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0 := by
+-    rw [hermC_emb_emb_eq_herm, hξ, map_zero]
++    rw [hermC_emb, hξ, map_zero]
+   ext a b
+   simp only [gram, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, rk1, hv,
+     vecMulVec_apply]
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermEqZeroOfTraceFormVanish.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermEqZeroOfTraceFormVanish.lean
 @@ -10,9 +10,7 @@
@@ -11431,3 +11676,24 @@
    obtain ⟨n, hn⟩ := IsIntegrallyClosed.isIntegral_iff.1 hI
    have hN : Algebra.norm ℚ γ ≠ 0 := Algebra.norm_ne_zero_iff.2 hγ
    rw [← hn] at hN ⊢
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SpanColsMul.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SpanColsMul.lean
+@@ -98,17 +98,12 @@
+   show X.zmat u b τ * mat (X.Zb u b' x) τ = X.zmat u (b + b') τ * mat x τ
+   rw [X.mat_Zb, ← Matrix.mul_assoc, X.zmat_mul u hu]
+ 
+-private lemma col_mul_eq_mulVec_col (M N : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
+-    col (M * N) a = M *ᵥ col N a := by
+-  funext k
+-  simp [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]
+-
+ theorem gram_Zb (u : Fin 2 → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
+     (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (hb : IsHermFam b) (x : Frame X.Ψ r) (τ : X.Ψ) :
+     gram τ.1 X.Gm (mat (X.Zb u b x) τ) = gram τ.1 X.Gm (mat x τ) := by
+   rw [X.mat_Zb]
+   ext a a'
+-  simp only [gram, Matrix.of_apply, col_mul_eq_mulVec_col]
++  simp only [gram, Matrix.of_apply, Data.col_mul]
+   exact X.zmat_unitary u hu b hb τ _ _
+ 
+ theorem dmin_Zb (u : Fin 2 → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
