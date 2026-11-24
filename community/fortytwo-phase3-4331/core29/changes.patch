@@ -1,29 +1,3 @@
---- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/DiscrNormConductorEqDFOfUnramified.lean
-+++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/DiscrNormConductorEqDFOfUnramified.lean
-@@ -1,6 +1,5 @@
- import Mathlib
- import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
--import GroundTheory.GlobalFields.TateThesis.RootNumberLocalFinite
- import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
- import GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass
- import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
-@@ -11,14 +10,8 @@
- 
- theorem discrNormConductor_eq_dF_of_unramified :
-     ∀ (F : Type) [Field F] [NumberField F] (χ : HeckeCharacter F),
--      standardOpenSubgroup F ≤ χ.toIdele.ker → χ.discrNormConductor = GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F := by
-+      standardOpenSubgroup F ≤ χ.toIdele.ker → χ.unramifiedDiscriminant = GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F := by
-   intro F _ _ χ hχ
--  have htop : χ.conductor = ⊤ := by
--    have h := (χ.map_idealLevel_le_ker_iff (𝔪 := ⊤) top_ne_bot).1
--      ((map_idealLevel_le_standardOpenSubgroup ⊤).trans hχ)
--    rw [Ideal.dvd_iff_le, top_le_iff] at h
--    exact h
--  rw [HeckeCharacter.discrNormConductor, htop, Ideal.absNorm_top, GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF]
--  simp
-+  simp [HeckeCharacter.unramifiedDiscriminant, GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF]
- 
- end GlobalTheory.CompanionTheory.PartialZeta
 --- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ExistsHeckeCharacterOfClassGroup.lean
 +++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ExistsHeckeCharacterOfClassGroup.lean
 @@ -1,6 +1,6 @@
@@ -114,7 +88,7 @@
  end GlobalTheory.CompanionTheory.PartialZeta
 --- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean
 +++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean
-@@ -1,45 +1,31 @@
+@@ -1,45 +1,30 @@
 +import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModuleSectionMemStandardOpenSubgroup
  import Mathlib
  import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
@@ -122,9 +96,10 @@
  import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
  import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
 -import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardOpenSubgroupLeKerInv
- import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteEmbeddingMemStandardOpenSubgroup
- import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiscrNormConductorEqDFOfUnramified
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteEmbeddingMemStandardOpenSubgroup
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiscrNormConductorEqDFOfUnramified
 -import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RootNumberEqDifferentCoeffStatement
++import GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass
  open NumberField GroundTheory.Global GroundTheory.Global.IdeleGroup
  open scoped nonZeroDivisors
  
@@ -136,7 +111,6 @@
 -    (hG' : ∀ s : ℂ, (χ⁻¹).gammaFactor s = Complex.Gammaℝ s ^ Module.finrank ℚ F)
 -    (hR : χ.rootNumber = χ.coeff (differentIdeal ℤ (𝓞 F)))
 +theorem fe_of_parts (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (χ : HeckeCharacter F) (hcond : χ.TrivialOnStandardOpen)
-+    (hD : χ.unramifiedDiscriminant = GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F)
 +    (hR : χ.unramifiedRootNumber = χ.classCoeff (differentIdeal ℤ (𝓞 F)))
      (s : ℂ) (h1 : ∀ n : ℕ, s ≠ -2 * n) (h2 : ∀ n : ℕ, 1 - s ≠ -2 * n) :
 -    (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F : ℂ) ^ (s / 2) * Complex.Gammaℝ s ^ Module.finrank ℚ F * χ.continuedLFunction s =
@@ -156,7 +130,8 @@
 +  have key := χ.continuedLFunction_functional_equation hcond (s := s) (by simpa using h1 0) (by simpa using h2 0)
 +    (pow_ne_zero _ (nz s h1))
 +    (pow_ne_zero _ (nz _ h2))
-+  rw [hD, hR] at key
++  rw [hR] at key
++  simp only [HeckeCharacter.unramifiedDiscriminant, GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF] at key ⊢
    exact key
  
 -theorem functional_equation_of_unramified :
@@ -171,62 +146,9 @@
 -    (gammaFactor_eq_of_unramified F χ⁻¹ (standardOpenSubgroup_le_ker_inv F χ hχ)) (GlobalTheory.T.root_number_eq_different_coeff F χ hχ) s h1 h2
  
  end GlobalTheory.CompanionTheory.PartialZeta
---- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/InfiniteEmbeddingMemStandardOpenSubgroup.lean
-+++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/InfiniteEmbeddingMemStandardOpenSubgroup.lean
-@@ -1,6 +1,5 @@
- import Mathlib
- import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
--import GroundTheory.GlobalFields.TateThesis.RootNumberLocalFinite
- import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
- import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
- open NumberField GroundTheory.Global GroundTheory.Global.IdeleGroup
-@@ -8,42 +7,4 @@
- 
- namespace GlobalTheory.CompanionTheory.PartialZeta
- 
--theorem infiniteEmbedding_mem_standardOpenSubgroup {F : Type*} [Field F] [NumberField F]
--    (w : InfinitePlace F) (a : (w.Completion)ˣ) :
--    infiniteEmbedding w a ∈ standardOpenSubgroup F := by
--  refine (mem_standardOpenSubgroup F).2 fun v ↦ ?_
--  have h1 : ((infiniteEmbedding w a : IdeleGroup F) : AdeleRing (𝓞 F) F).2 v = 1 := by
--    rw [coe_infiniteEmbedding]
--    rfl
--  have h2 : (((infiniteEmbedding w a)⁻¹ : IdeleGroup F) : AdeleRing (𝓞 F) F).2 v = 1 := by
--    rw [← map_inv, coe_infiniteEmbedding]
--    rfl
--  rw [h1, h2]
--  exact ⟨one_mem _, one_mem _⟩
--
--theorem infiniteParams_eq_zero {F : Type*} [Field F] [NumberField F] (χ : HeckeCharacter F)
--    (hχ : standardOpenSubgroup F ≤ χ.toIdele.ker) (w : InfinitePlace F) :
--    χ.infiniteParams w = (0, 0) := by
--  refine (χ.infiniteParams_unique w (p := (0, 0)) (fun _ ↦ ⟨le_rfl, by norm_num⟩) fun a ↦ ?_).symm
--  have h : χ.toIdele (infiniteEmbedding w a) = 1 :=
--    hχ (infiniteEmbedding_mem_standardOpenSubgroup w a)
--  simp [HeckeCharacter.infiniteComponent_apply, h]
--
--theorem gammaFactor_eq_of_unramified : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
--    (χ : HeckeCharacter F), standardOpenSubgroup F ≤ χ.toIdele.ker →
--    ∀ s : ℂ, χ.gammaFactor s = Complex.Gammaℝ s ^ Module.finrank ℚ F := by
--  intro F _ _ _ χ hχ s
--  have hw : ∀ w : InfinitePlace F, χ.infiniteGamma w s = Complex.Gammaℝ s := fun w ↦ by
--    have hr : w.IsReal := IsTotallyReal.isReal w
--    have hp := infiniteParams_eq_zero χ hχ w
--    simp [HeckeCharacter.infiniteGamma, hr, HeckeCharacter.infiniteTau,
--      HeckeCharacter.infiniteWeight, hp]
--  have hcard : Fintype.card (InfinitePlace F) = Module.finrank ℚ F := by
--    have h1 := InfinitePlace.card_add_two_mul_card_eq_rank F
--    have h2 := InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces F
--    have h3 := IsTotallyReal.nrComplexPlaces_eq_zero F
--    omega
--  rw [HeckeCharacter.gammaFactor, Finset.prod_congr rfl fun w _ ↦ hw w, Finset.prod_const,
--    Finset.card_univ, hcard]
--
- end GlobalTheory.CompanionTheory.PartialZeta
 --- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ModuleSectionMemStandardOpenSubgroup.lean
 +++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ModuleSectionMemStandardOpenSubgroup.lean
-@@ -1,6 +1,8 @@
-+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteEmbeddingMemStandardOpenSubgroup
+@@ -1,6 +1,7 @@
 +import GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass
 +import GroundTheory.GlobalFields.IdeleGroups.LocalConditionIndex
  import Mathlib
@@ -235,7 +157,7 @@
  import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
  import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
  open NumberField GroundTheory.Global GroundTheory.Global.IdeleGroup
-@@ -8,35 +10,13 @@
+@@ -8,35 +9,13 @@
  
  namespace GlobalTheory.CompanionTheory.PartialZeta
  
@@ -279,8 +201,7 @@
  end GlobalTheory.CompanionTheory.PartialZeta
 --- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean
 +++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean
-@@ -1,6 +1,7 @@
-+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteEmbeddingMemStandardOpenSubgroup
+@@ -1,6 +1,6 @@
 +import GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass
  import Mathlib
  import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
@@ -288,7 +209,7 @@
  import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
  import GroundTheory.GlobalFields.IdeleGroups.LocalConditionIndex
  import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
-@@ -16,52 +17,19 @@
+@@ -16,52 +16,19 @@
  
  variable {F : Type} [Field F] [NumberField F] {χ : HeckeCharacter F}
  
@@ -353,7 +274,7 @@
    have hpos : 0 < |(discr F : ℝ)| := abs_pos.2 (Int.cast_ne_zero.2 (discr_ne_zero F))
    have hs : ((NNReal.sqrt ‖discr F‖₊ : ℝ≥0) : ℝ) = Real.sqrt |(discr F : ℝ)| := by
      rw [Real.coe_sqrt, coe_nnnorm, Int.norm_eq_abs]
-@@ -77,26 +45,11 @@
+@@ -77,26 +44,11 @@
  
  theorem rootNumber_eq_coeff_different (F : Type) [Field F] [NumberField F] (χ : HeckeCharacter F)
      (h : standardOpenSubgroup F ≤ χ.toIdele.ker) :
@@ -394,19 +315,21 @@
  open NumberField GroundTheory.Global GroundTheory.Global.IdeleGroup
 --- a/Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean
 +++ b/Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean
-@@ -1,8 +1,9 @@
+@@ -1,10 +1,9 @@
  import Mathlib
  import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
  import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsHeckeCharacterOfClassGroup
 -import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardOpenSubgroupLeKerInv
 -import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConductorEqTopOfStandardOpen
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteEmbeddingMemStandardOpenSubgroup
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiscrNormConductorEqDFOfUnramified
 +import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
 +import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
 +import GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass
- import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteEmbeddingMemStandardOpenSubgroup
- import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DiscrNormConductorEqDFOfUnramified
  import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RootNumberEqDifferentCoeff
-@@ -19,41 +20,39 @@
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModuleSectionMemStandardOpenSubgroup
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SumAddCharOfMulMulOfMulInv
+@@ -19,41 +18,39 @@
  
  variable {F : Type} [Field F] [NumberField F]
  
@@ -465,7 +388,7 @@
        rw [Finset.sum_mul]
        exact Finset.sum_congr rfl fun i _ => (mul_assoc _ _ _).symm
      let g : {J : (Ideal (𝓞 F))⁰ // ClassGroup.mk0 J = C} → Ideal (𝓞 F) :=
-@@ -61,7 +60,7 @@
+@@ -61,7 +58,7 @@
      have hg : Function.Injective g := fun a b hab =>
        Subtype.ext (Subtype.ext hab)
      have hsupp : ∀ I ∉ Set.range g,
@@ -474,7 +397,7 @@
        intro I hI
        by_cases hbot : I = ⊥
        · subst hbot
-@@ -71,7 +70,7 @@
+@@ -71,7 +68,7 @@
          rw [hfac, show I = (J : Ideal (𝓞 F)) from rfl, (horth J).2 hJ, zero_mul]
      have h2 := (hg.hasSum_iff hsupp).2 h1
      have h3 : (fun I : Ideal (𝓞 F) =>
@@ -483,7 +406,7 @@
          fun J : {J : (Ideal (𝓞 F))⁰ // ClassGroup.mk0 J = C} =>
            ((Ideal.absNorm (J.1 : Ideal (𝓞 F)) : ℕ) : ℂ) ^ (-s) := funext fun J => by
        simp only [Function.comp_apply]
-@@ -82,13 +81,13 @@
+@@ -82,13 +79,13 @@
  theorem card_classGroup_ne_zero : (Fintype.card (ClassGroup (𝓞 F)) : ℂ) ≠ 0 :=
    Nat.cast_ne_zero.2 Fintype.card_ne_zero
  
@@ -499,7 +422,7 @@
        (Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * (if ClassGroup.mk0 J = C then (Fintype.card (ClassGroup (𝓞 F)) : ℂ) else 0) := by
      rw [← sum_addChar_ofMul_mul_ofMul_inv, Finset.mul_sum]
      refine Finset.sum_congr rfl fun ψ _ => ?_
-@@ -101,34 +100,24 @@
+@@ -101,34 +98,24 @@
    · intro h
      rw [if_neg h, mul_zero]
  
@@ -541,11 +464,11 @@
 -  have h := fe_of_parts F (classHecke ψ) (discrNormConductor_eq_dF_of_unramified F _ hU)
 -    (gammaFactor_eq_of_unramified F _ hU)
 -    (gammaFactor_eq_of_unramified F _ (standardOpenSubgroup_le_ker_inv F _ hU))
-+  have h := fe_of_parts F (classHecke ψ) hU (discrNormConductor_eq_dF_of_unramified F _ hU)
++  have h := fe_of_parts F (classHecke ψ) hU
      (rootNumber_eq_coeff_different F _ hU) s h1 h2
    rw [← hD, coeff_classHecke ψ _ (nonZeroDivisors.coe_ne_zero D)] at h
    exact h
-@@ -146,7 +135,7 @@
+@@ -146,7 +133,7 @@
      rw [← AddChar.map_add_eq_mul, ← ofMul_mul, ← hC, inv_mul_cancel_left]
    calc _ = ((Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * ψ (Additive.ofMul C⁻¹)) *
          ((GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F : ℂ) ^ (s / 2) * Complex.Gammaℝ s ^ Module.finrank ℚ F *
@@ -1726,7 +1649,7 @@
  end
 --- a/GroundTheory/GlobalFields/TateThesis/EulerFactors.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/EulerFactors.lean
-@@ -19,33 +19,23 @@
+@@ -19,33 +19,20 @@
  
  variable (χ : HeckeCharacter K)
  
@@ -1742,13 +1665,13 @@
 -  have h2 : ∀ w : {w : InfinitePlace K // IsComplex w}, infiniteConst w.1 = π := fun w ↦ by
 -    rw [infiniteConst, if_neg (not_isReal_iff_isComplex.2 w.2)]
 -  simp only [h1, h2, Finset.prod_const_one, one_mul, Finset.prod_const, Finset.card_univ]
--
--def testFunction : 𝔸[K] → ℂ := schwartzBruhatTensor χ.infiniteSchwartz χ.finiteTestFun
 +def unramifiedTestFunction : 𝔸[K] → ℂ := schwartzBruhatTensor χ.unramifiedGaussian χ.unramifiedFiniteTest
  
- theorem pi_pow_nrComplexPlaces_ne_zero : (π : ℂ) ^ nrComplexPlaces K ≠ 0 :=
-   pow_ne_zero _ (ofReal_ne_zero.2 Real.pi_ne_zero)
- 
+-def testFunction : 𝔸[K] → ℂ := schwartzBruhatTensor χ.infiniteSchwartz χ.finiteTestFun
+-
+-theorem pi_pow_nrComplexPlaces_ne_zero : (π : ℂ) ^ nrComplexPlaces K ≠ 0 :=
+-  pow_ne_zero _ (ofReal_ne_zero.2 Real.pi_ne_zero)
+-
 -theorem testFunction_mem : χ.testFunction ∈ schwartzBruhat K :=
 -  schwartzBruhatTensor_mem _ χ.finiteTestFun_mem
 +theorem testFunction_mem : χ.unramifiedTestFunction ∈ schwartzBruhat K :=
@@ -1767,7 +1690,7 @@
            ((finiteModule (ofFinite (toFinite K x)) : ℝ) : ℂ) ^ s) := by
    have hchi : (χ.toIdele x : ℂ) = (χ.toIdele (ofFinite (toFinite K x)) : ℂ) *
        (χ.toIdele (ofInfinite (toInfinite K x)) : ℂ) := by
-@@ -57,7 +47,7 @@
+@@ -57,7 +44,7 @@
        (finiteModule_pos x).le]
      rfl
    rw [hchi, hmod]
@@ -1776,14 +1699,14 @@
      _ * _ = _
    have e1 : (x : 𝔸[K]).1 = ((toInfinite K x : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K) :=
      rfl
-@@ -66,24 +56,24 @@
+@@ -66,24 +53,24 @@
    rw [e1, e2]
    ring
  
 -theorem globalZeta_testFunction {s : ℂ} (hs : 1 < s.re) :
 -    globalZeta χ.testFunction χ s = (π : ℂ) ^ nrComplexPlaces K * χ.gammaFactor s * χ.LFunction s := by
 +theorem globalZeta_testFunction [IsTotallyReal K] (hc : χ.TrivialOnStandardOpen) {s : ℂ} (hs : 1 < s.re) :
-+    globalZeta χ.unramifiedTestFunction χ s = (π : ℂ) ^ nrComplexPlaces K * χ.realGammaPower s * χ.idealLFunction s := by
++    globalZeta χ.unramifiedTestFunction χ s = χ.realGammaPower s * χ.idealLFunction s := by
    have hs0 : 0 < s.re := by linarith
 -  set A : (InfiniteAdeleRing K)ˣ → ℂ := fun a ↦ χ.infiniteSchwartz (homeomorphMixedSpace K a) *
 +  set A : (InfiniteAdeleRing K)ˣ → ℂ := fun a ↦ χ.unramifiedGaussian (homeomorphMixedSpace K a) *
@@ -1809,7 +1732,7 @@
      intro x w hw
      rw [hF, hF, map_mul, map_mul]
      have h1 : toInfinite K ((prodEquiv K).symm (1, w)) = 1 := by
-@@ -94,12 +84,12 @@
+@@ -94,12 +81,12 @@
        rw [ContinuousMulEquiv.apply_symm_apply]
      rw [h1, h2, mul_one, hBinv _ w hw]
    have h := hasSum_integral_ideleMeasure_of_invariant_finiteIntegralUnits
@@ -1826,7 +1749,7 @@
      intro c
      have hsymm : ∀ a, toInfinite K ((prodEquiv K).symm (a, c.out)) = a ∧
          toFinite K ((prodEquiv K).symm (a, c.out)) = c.out := fun a ↦ by
-@@ -109,10 +99,16 @@
+@@ -109,10 +96,15 @@
        · change ((prodEquiv K) ((prodEquiv K).symm (a, c.out))).2 = c.out
          rw [ContinuousMulEquiv.apply_symm_apply]
      simp only [hF, (hsymm _).1, (hsymm _).2]
@@ -1842,8 +1765,7 @@
 +    have h2 := InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces K
 +    have h3 := IsTotallyReal.nrComplexPlaces_eq_zero K
 +    omega
-+  rw [globalZeta, h.unique h2, Finset.prod_const, Finset.card_univ, hcard, realGammaPower,
-+    IsTotallyReal.nrComplexPlaces_eq_zero K, pow_zero, one_mul]
++  rw [globalZeta, h.unique h2, Finset.prod_const, Finset.card_univ, hcard, realGammaPower]
  
  end HeckeCharacter
  
@@ -2684,15 +2606,17 @@
  end HeckeCharacter
 --- a/GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierInfinite.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierInfinite.lean
-@@ -1,7 +1,6 @@
+@@ -1,7 +1,7 @@
  import Mathlib
  import GroundTheory.GlobalFields.TateThesis.EulerFactorsInfinite
- import GroundTheory.GlobalFields.TateThesis.EulerFactorsInverse
+-import GroundTheory.GlobalFields.TateThesis.EulerFactorsInverse
 -import GroundTheory.GlobalFields.TateThesis.GaussianComplexFourier
++import GroundTheory.GlobalFields.TateThesis.EulerFactorsArch
++import GroundTheory.GlobalFields.TateThesis.EulerFactorsFinite
  import GroundTheory.GlobalFields.TateThesis.AdelicCharLocal
  
  open NumberField InfinitePlace MeasureTheory Complex ComplexConjugate NumberField.mixedEmbedding
-@@ -11,51 +10,20 @@
+@@ -11,51 +11,20 @@
  
  noncomputable section
  
@@ -2752,7 +2676,7 @@
  
  theorem fourierChar_neg_mixedTraceForm (x y : mixedSpace K) :
      ((𝐞 (-mixedTraceForm K x y) : Circle) : ℂ) =
-@@ -65,52 +33,28 @@
+@@ -65,52 +34,28 @@
      ← Finset.sum_neg_distrib, addChar_map_finsetSum, addChar_map_finsetSum, Circle.coe_mul]
    congr 1 <;> exact map_prod Circle.coeHom _ _
  
@@ -2979,192 +2903,6 @@
 +    (fun w (u : (w.Completion)ˣ) ↦ χ.unramifiedLocalGaussian w u *
        ((‖(u : w.Completion)‖ ^ w.mult : ℝ) : ℂ) ^ s)
    exact hfub.trans (Finset.prod_congr rfl fun w _ ↦ χ.integral_infiniteTest w hs)
- 
---- a/GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean
-+++ b/GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean
-@@ -11,183 +11,12 @@
- 
- variable {K : Type*} [Field K] [NumberField K]
- 
--theorem eq_of_forall_exp_mul_I {a b : ℝ}
--    (h : ∀ t : ℝ, Complex.exp (a * t * I) = Complex.exp (b * t * I)) : a = b := by
--  by_contra hab
--  have hne : a - b ≠ 0 := sub_ne_zero.2 hab
--  set t : ℝ := π / (a - b)
--  have ht : (a - b) * t = π := by simp only [t]; field_simp
--  have h1 : Complex.exp ((((a - b) * t : ℝ) : ℂ) * I) = 1 := by
--    have e : ((((a - b) * t : ℝ) : ℂ) * I) = (a : ℂ) * t * I - (b : ℂ) * t * I := by
--      push_cast; ring
--    rw [e, Complex.exp_sub, h t, div_self (Complex.exp_ne_zero _)]
--  rw [ht, Complex.exp_eq_one_iff] at h1
--  obtain ⟨n, hn⟩ := h1
--  have h2 : (π : ℂ) = ((n * (2 * π) : ℝ) : ℂ) := by
--    refine mul_right_cancel₀ I_ne_zero (hn.trans ?_)
--    push_cast; ring
--  have h3 : π = n * (2 * π) := by exact_mod_cast h2
--  have h4 : (1 : ℝ) = 2 * n := by
--    have hπ : π ≠ 0 := Real.pi_ne_zero
--    field_simp at h3
--    linarith
--  have h5 : (1 : ℤ) = 2 * n := by exact_mod_cast h4
--  omega
--
--omit [NumberField K] in
--
--theorem exists_extensionEmbedding_eq_ofReal (w : InfinitePlace K) (r : ℝ) :
--    ∃ a : w.Completion, extensionEmbedding w a = r := by
--  by_cases hw : w.IsReal
--  · obtain ⟨a, ha⟩ := surjective_extensionEmbeddingOfIsReal hw r
--    exact ⟨a, by rw [← extensionEmbeddingOfIsReal_apply hw, ha]⟩
--  · exact surjective_extensionEmbedding_of_isComplex (not_isReal_iff_isComplex.1 hw) (r : ℂ)
--
--omit [NumberField K] in
--theorem norm_extensionEmbedding' (w : InfinitePlace K) (a : w.Completion) :
--    ‖extensionEmbedding w a‖ = ‖a‖ :=
--  (isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) a
--
--theorem ofReal_exp_cpow (t : ℝ) (c : ℂ) : ((Real.exp t : ℝ) : ℂ) ^ c = Complex.exp (t * c) := by
--  rw [cpow_def_of_ne_zero (by exact_mod_cast (Real.exp_pos t).ne'), ← ofReal_log
--    (Real.exp_pos t).le, Real.log_exp]
--
- namespace HeckeCharacter
- 
- variable (χ : HeckeCharacter K)
- 
--theorem infiniteParams_unique (w : InfinitePlace K) {p : ℤ × ℝ}
--    (hp1 : w.IsReal → 0 ≤ p.1 ∧ p.1 < 2)
--    (hp2 : ∀ a : (w.Completion)ˣ, (χ.infiniteComponent w a : ℂ) =
--      (extensionEmbedding w (a : w.Completion) / (‖(a : w.Completion)‖ : ℂ)) ^ p.1 *
--        ((‖(a : w.Completion)‖ ^ w.mult : ℝ) : ℂ) ^ ((p.2 : ℂ) * I)) :
--    p = χ.infiniteParams w := by
--  set q := χ.infiniteParams w
--  have hq1 : w.IsReal → 0 ≤ q.1 ∧ q.1 < 2 := (χ.exists_infiniteParams w).choose_spec.1
--  have hq2 := (χ.exists_infiniteParams w).choose_spec.2
--  have heq : ∀ a : (w.Completion)ˣ,
--      (extensionEmbedding w (a : w.Completion) / (‖(a : w.Completion)‖ : ℂ)) ^ p.1 *
--        ((‖(a : w.Completion)‖ ^ w.mult : ℝ) : ℂ) ^ ((p.2 : ℂ) * I) =
--      (extensionEmbedding w (a : w.Completion) / (‖(a : w.Completion)‖ : ℂ)) ^ q.1 *
--        ((‖(a : w.Completion)‖ ^ w.mult : ℝ) : ℂ) ^ ((q.2 : ℂ) * I) :=
--    fun a ↦ (hp2 a).symm.trans (hq2 a)
--  have hM : (1 : ℝ) ≤ w.mult := by exact_mod_cast InfinitePlace.one_le_mult
--
--  have hτ : p.2 = q.2 := by
--    have key : ∀ t : ℝ, Complex.exp ((w.mult * p.2 : ℝ) * t * I) =
--        Complex.exp ((w.mult * q.2 : ℝ) * t * I) := by
--      intro t
--      obtain ⟨a, ha⟩ := exists_extensionEmbedding_eq_ofReal w (Real.exp t)
--      have ha0 : a ≠ 0 := fun h0 ↦ by
--        rw [h0, map_zero] at ha
--        exact (Real.exp_pos t).ne' (by exact_mod_cast ha.symm)
--      have hn : ‖a‖ = Real.exp t := by
--        rw [← norm_extensionEmbedding', ha, Complex.norm_real, Real.norm_eq_abs,
--          abs_of_pos (Real.exp_pos t)]
--      have h := heq (Units.mk0 a ha0)
--      simp only [Units.val_mk0, ha, hn, div_self (by exact_mod_cast (Real.exp_pos t).ne' :
--        ((Real.exp t : ℝ) : ℂ) ≠ 0), one_zpow, one_mul, ← Real.exp_nat_mul,
--        ofReal_exp_cpow] at h
--      convert h using 2 <;> push_cast <;> ring
--    have := eq_of_forall_exp_mul_I key
--    have hM0 : (w.mult : ℝ) ≠ 0 := by positivity
--    exact mul_left_cancel₀ hM0 this
--
--  have hm : ∀ a : (w.Completion)ˣ,
--      (extensionEmbedding w (a : w.Completion) / (‖(a : w.Completion)‖ : ℂ)) ^ p.1 =
--      (extensionEmbedding w (a : w.Completion) / (‖(a : w.Completion)‖ : ℂ)) ^ q.1 := by
--    intro a
--    have h := heq a
--    rw [hτ] at h
--    have hpos : (0 : ℝ) < ‖(a : w.Completion)‖ ^ w.mult := pow_pos (norm_pos_iff.2 a.ne_zero) _
--    have hne : ((‖(a : w.Completion)‖ ^ w.mult : ℝ) : ℂ) ^ ((q.2 : ℂ) * I) ≠ 0 := by
--      rw [cpow_def_of_ne_zero (by exact_mod_cast hpos.ne')]
--      exact Complex.exp_ne_zero _
--    exact mul_right_cancel₀ hne h
--  refine Prod.ext ?_ hτ
--  by_cases hw : w.IsReal
--  · obtain ⟨hp0, hp2'⟩ := hp1 hw
--    obtain ⟨hq0, hq2'⟩ := hq1 hw
--    obtain ⟨a, ha⟩ := exists_extensionEmbedding_eq_ofReal w (-1)
--    have ha0 : a ≠ 0 := fun h0 ↦ by rw [h0, map_zero] at ha; norm_num at ha
--    have hn : ‖a‖ = 1 := by rw [← norm_extensionEmbedding', ha]; simp
--    have h := hm (Units.mk0 a ha0)
--    simp only [Units.val_mk0, ha, hn, ofReal_one, div_one, ofReal_neg] at h
--    rcases (show p.1 = 0 ∨ p.1 = 1 by omega) with h1 | h1 <;>
--      rcases (show q.1 = 0 ∨ q.1 = 1 by omega) with h2 | h2 <;> rw [h1, h2] at h ⊢ <;>
--      norm_num at h
--  · have hc := not_isReal_iff_isComplex.1 hw
--    have key : ∀ θ : ℝ, Complex.exp ((p.1 : ℝ) * θ * I) = Complex.exp ((q.1 : ℝ) * θ * I) := by
--      intro θ
--      obtain ⟨a, ha⟩ := surjective_extensionEmbedding_of_isComplex hc (Complex.exp (θ * I))
--      have ha0 : a ≠ 0 := fun h0 ↦ by
--        rw [h0, map_zero] at ha
--        exact Complex.exp_ne_zero _ ha.symm
--      have hn : ‖a‖ = 1 := by
--        rw [← norm_extensionEmbedding', ha, Complex.norm_exp_ofReal_mul_I]
--      have h := hm (Units.mk0 a ha0)
--      simp only [Units.val_mk0, ha, hn, ofReal_one, div_one, ← Complex.exp_int_mul] at h
--      convert h using 2 <;> push_cast <;> ring
--    exact_mod_cast eq_of_forall_exp_mul_I key
--
- theorem inv_toIdele (x : IdeleGroup K) : (χ⁻¹).toIdele x = (χ.toIdele x)⁻¹ := rfl
- 
--theorem localComponent_inv (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
--    (a : (v.adicCompletion K)ˣ) : (χ⁻¹).localComponent v a = (χ.localComponent v a)⁻¹ := rfl
--
--theorem infiniteComponent_inv (w : InfinitePlace K) (a : (w.Completion)ˣ) :
--    (χ⁻¹).infiniteComponent w a = (χ.infiniteComponent w a)⁻¹ := rfl
--
--theorem conductor_inv : χ⁻¹.conductor = χ.conductor := by
--  have hker : (χ⁻¹).toIdele.ker = χ.toIdele.ker := by
--    ext x
--    simp only [MonoidHom.mem_ker, inv_toIdele, inv_eq_one]
--  have h1 : χ⁻¹.conductor ∣ χ.conductor := by
--    rw [← (χ⁻¹).map_idealLevel_le_ker_iff χ.conductor_ne_bot, hker]
--    exact χ.map_idealLevel_conductor_le_ker
--  have h2 : χ.conductor ∣ χ⁻¹.conductor := by
--    rw [← χ.map_idealLevel_le_ker_iff (χ⁻¹).conductor_ne_bot, ← hker]
--    exact (χ⁻¹).map_idealLevel_conductor_le_ker
--  exact le_antisymm (Ideal.le_of_dvd h2) (Ideal.le_of_dvd h1)
--
--open Classical in
--
--theorem infiniteParams_inv (w : InfinitePlace K) :
--    (χ⁻¹).infiniteParams w =
--      (if w.IsReal then χ.infiniteWeight w else -χ.infiniteWeight w, -χ.infiniteTau w) := by
--  symm
--  refine (χ⁻¹).infiniteParams_unique w ?_ fun a ↦ ?_
--  · intro hw
--    rw [if_pos hw]
--    exact χ.infiniteWeight_of_isReal hw
--  · rw [infiniteComponent_inv, Circle.coe_inv, χ.infiniteComponent_eq]
--    simp only
--    rw [mul_inv, ofReal_neg, neg_mul, cpow_neg]
--    congr 1
--    split_ifs with hw
--    ·
--      have hι : extensionEmbedding w (a : w.Completion) =
--          ((extensionEmbeddingOfIsReal hw (a : w.Completion) : ℝ) : ℂ) :=
--        (extensionEmbeddingOfIsReal_apply hw _).symm
--      have hn : ‖(a : w.Completion)‖ = |extensionEmbeddingOfIsReal hw (a : w.Completion)| := by
--        rw [← Real.norm_eq_abs]
--        exact ((isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) _).symm
--      have hx0 : extensionEmbeddingOfIsReal hw (a : w.Completion) ≠ 0 :=
--        (map_ne_zero_iff _ (extensionEmbeddingOfIsReal hw).injective).2 a.ne_zero
--      rw [hι, hn, ofReal_div_abs_eq_sign hx0, ← zpow_neg, ← inv_zpow']
--      congr 1
--      rcases lt_or_gt_of_ne hx0 with h | h
--      · rw [Real.sign_of_neg h]; push_cast; norm_num
--      · rw [Real.sign_of_pos h]; push_cast; norm_num
--    · rw [zpow_neg]
--
--theorem infiniteWeight_inv_of_isReal {w : InfinitePlace K} (hw : w.IsReal) :
--    (χ⁻¹).infiniteWeight w = χ.infiniteWeight w := by
--  rw [infiniteWeight, infiniteParams_inv, if_pos hw]
--
--theorem infiniteWeight_inv_of_isComplex {w : InfinitePlace K} (hw : w.IsComplex) :
--    (χ⁻¹).infiniteWeight w = -χ.infiniteWeight w := by
--  rw [infiniteWeight, infiniteParams_inv, if_neg (not_isReal_iff_isComplex.2 hw)]
- 
- end HeckeCharacter
  
 --- a/GroundTheory/GlobalFields/TateThesis/Gaussian.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/Gaussian.lean
@@ -3439,7 +3177,7 @@
  
  namespace HeckeCharacter
  
-@@ -165,107 +35,6 @@
+@@ -165,106 +35,7 @@
  theorem toIdele_diagonal (a : Kˣ) : χ.toIdele (diagonal K a) = 1 := by
    rw [toIdele_apply, IdeleClassGroup.mk_diagonal, map_one]
  
@@ -3543,10 +3281,10 @@
 -      χ.localComponent v π :=
 -  χ.idealCharacter_apply (finiteEmbedding_mem_primeToLevel hv π) _
 -    (toFractionalIdeal_finiteEmbedding_of_uniformizer hπ)
--
++theorem inv_toIdele (x : IdeleGroup K) : (χ⁻¹).toIdele x = (χ.toIdele x)⁻¹ := rfl
+ 
  end HeckeCharacter
  
- end
 --- a/GroundTheory/GlobalFields/TateThesis/HeckeCharRayClass.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/HeckeCharRayClass.lean
 @@ -16,32 +16,10 @@
@@ -4375,11 +4113,14 @@
  theorem tendsto_const_mul_cpow_half (c : ℂ) :
 -    Tendsto (fun s : ℂ ↦ ((π : ℂ) ^ nrComplexPlaces K)⁻¹ * (χ.discrNormConductor : ℂ) ^ (s / 2))
 -      (𝓝[≠] c) (𝓝 (((π : ℂ) ^ nrComplexPlaces K)⁻¹ * (χ.discrNormConductor : ℂ) ^ (c / 2))) :=
-+    Tendsto (fun s : ℂ ↦ ((π : ℂ) ^ nrComplexPlaces K)⁻¹ * (χ.unramifiedDiscriminant : ℂ) ^ (s / 2))
-+      (𝓝[≠] c) (𝓝 (((π : ℂ) ^ nrComplexPlaces K)⁻¹ * (χ.unramifiedDiscriminant : ℂ) ^ (c / 2))) :=
-   ((((differentiable_const _).mul ((differentiable_id.div_const 2).const_cpow
-     (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')))).continuous.tendsto c).mono_left
-       nhdsWithin_le_nhds)
+-  ((((differentiable_const _).mul ((differentiable_id.div_const 2).const_cpow
+-    (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')))).continuous.tendsto c).mono_left
+-      nhdsWithin_le_nhds)
++    Tendsto (fun s : ℂ ↦ (χ.unramifiedDiscriminant : ℂ) ^ (s / 2))
++      (𝓝[≠] c) (𝓝 ((χ.unramifiedDiscriminant : ℂ) ^ (c / 2))) :=
++  (((differentiable_id.div_const 2).const_cpow
++    (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne'))).continuous.tendsto c).mono_left
++      nhdsWithin_le_nhds
  
 -section Trivial
 +theorem differentiableAt_classCompleted (hcond : χ.TrivialOnStandardOpen) {s : ℂ} (h0 : s ≠ 0) (h1 : s ≠ 1) :
@@ -4526,7 +4267,16 @@
  
 --- a/GroundTheory/GlobalFields/TateThesis/HeckeTheoremConj.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/HeckeTheoremConj.lean
-@@ -13,56 +13,21 @@
+@@ -1,6 +1,7 @@
+ import Mathlib
+ import GroundTheory.GlobalFields.TateThesis.HeckeTheoremScaling
+-import GroundTheory.GlobalFields.TateThesis.EulerFactorsInverse
++import GroundTheory.GlobalFields.TateThesis.EulerFactorsArch
++import GroundTheory.GlobalFields.TateThesis.EulerFactorsFinite
+ 
+ open NumberField InfinitePlace IsDedekindDomain MeasureTheory Complex Topology Filter Set
+ open scoped NumberField.AdeleRing ComplexConjugate Real
+@@ -13,56 +14,21 @@
  
  open IdeleGroup
  
@@ -4599,7 +4349,7 @@
  
  open NumberField InfinitePlace IsDedekindDomain MeasureTheory Complex Topology Filter Set
  open scoped NumberField.AdeleRing ComplexConjugate Real
-@@ -16,97 +16,64 @@
+@@ -16,97 +16,62 @@
  
  variable (χ : HeckeCharacter K)
  
@@ -4607,7 +4357,7 @@
 -  ((π : ℂ) ^ nrComplexPlaces K)⁻¹ * (χ.discrNormConductor : ℂ) ^ (s / 2) *
 -    tateZeta χ.testFunction χ s
 +def unramifiedCompletedLFunction (s : ℂ) : ℂ :=
-+  ((π : ℂ) ^ nrComplexPlaces K)⁻¹ * (χ.unramifiedDiscriminant : ℂ) ^ (s / 2) *
++  (χ.unramifiedDiscriminant : ℂ) ^ (s / 2) *
 +    classTateZeta χ.unramifiedTestFunction χ s
  
 -theorem discrNormConductor_cpow_ne_zero (s : ℂ) : (χ.discrNormConductor : ℂ) ^ s ≠ 0 := by
@@ -4620,20 +4370,23 @@
 -      (χ.discrNormConductor : ℂ) ^ (s / 2) * χ.gammaFactor s * χ.LFunction s := by
 -  rw [completedLFunction, tateZeta_eq_globalZeta χ.testFunction_mem χ hs,
 -    χ.globalZeta_testFunction hs]
+-  have hπ := pi_pow_nrComplexPlaces_ne_zero (K := K)
+-  field_simp
 +theorem completedLFunction_eq [IsTotallyReal K] (hc : χ.TrivialOnStandardOpen) {s : ℂ} (hs : 1 < s.re) :
 +    χ.unramifiedCompletedLFunction s =
 +      (χ.unramifiedDiscriminant : ℂ) ^ (s / 2) * χ.realGammaPower s * χ.idealLFunction s := by
 +  rw [unramifiedCompletedLFunction, tateZeta_eq_globalZeta (χ.testFunction_mem) χ (χ.trivialOnSection_of_standardOpen hc) hs,
 +    χ.globalZeta_testFunction hc hs]
-   have hπ := pi_pow_nrComplexPlaces_ne_zero (K := K)
-   field_simp
++  ring
  
  theorem differentiable_const_mul_cpow_half {f : ℂ → ℂ} {s : ℂ} (hf : DifferentiableAt ℂ f s) :
-     DifferentiableAt ℂ (fun s ↦ ((π : ℂ) ^ nrComplexPlaces K)⁻¹ *
+-    DifferentiableAt ℂ (fun s ↦ ((π : ℂ) ^ nrComplexPlaces K)⁻¹ *
 -      (χ.discrNormConductor : ℂ) ^ (s / 2) * f s) s :=
-+      (χ.unramifiedDiscriminant : ℂ) ^ (s / 2) * f s) s :=
-   ((differentiableAt_const _).mul ((differentiableAt_id.div_const 2).const_cpow
-     (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')))).mul hf
+-  ((differentiableAt_const _).mul ((differentiableAt_id.div_const 2).const_cpow
+-    (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')))).mul hf
++    DifferentiableAt ℂ (fun s ↦ (χ.unramifiedDiscriminant : ℂ) ^ (s / 2) * f s) s :=
++  ((differentiableAt_id.div_const 2).const_cpow
++    (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne'))).mul hf
  
 -def conductorDifferentIdele : (FiniteAdeleRing (𝓞 K) K)ˣ :=
 +def unramifiedDifferentIdele : (FiniteAdeleRing (𝓞 K) K)ˣ :=
@@ -4680,7 +4433,7 @@
      ring
 -  linear_combination (((π : ℂ) ^ nrComplexPlaces K)⁻¹ * χ.fourierConst χ.conductorDifferentIdele *
 -    (χ.toIdele (ofFinite χ.conductorDifferentIdele) : ℂ) * tateZeta (χ⁻¹).testFunction χ⁻¹ (1 - s)) * hc
-+  linear_combination (((π : ℂ) ^ nrComplexPlaces K)⁻¹ * χ.unramifiedFourierConst χ.unramifiedDifferentIdele *
++  linear_combination (χ.unramifiedFourierConst χ.unramifiedDifferentIdele *
 +    (χ.toIdele (ofFinite χ.unramifiedDifferentIdele) : ℂ) * classTateZeta (χ⁻¹).unramifiedTestFunction χ⁻¹ (1 - s)) * hc
  
 -theorem completedLFunction_eq_rootNumber_mul {s : ℂ}
