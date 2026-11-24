@@ -1,27 +1,23 @@
 {
   "core": 40,
-  "candidate": "core40-Codex-Pi-915",
+  "candidate": "core40-fastcornermapd1b81fdfcd6c",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 915,
-  "local_characters": 4004,
+  "local_normalized_tokens": 884,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "6cb87ecfef4a041075089a538e2e14ad87c71983c1517e5fe684057de990e365",
-  "source_sha256": "c25312b0c03954bdc646491f3f83cbb79b444f0d3de0a54dc8994957b4d52787",
+  "proof_tree_sha256": "c1118955f0ea75e672db77052cdf94bbd114d337ba05b81eca6e8fb4093e3c54",
   "modified_files": {},
-  "pinned_source_files": {},
-  "source_kind": "pinned_git_checkout",
-  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
-  "target_sha256": "db42504120a3ee7af320c76aa8b682751b0a5d8b1ce67e7421c8712da699851f",
   "attribution": {
     "original_author": "Levent Alpöge",
-    "starting_proof_author": "Pi",
-    "starting_model": "Gemini 4 Neon",
-    "starting_harness": "Antigravity",
-    "public_starting_point": {
+    "proof_edits": "Pi / Gemini 4 Neon via Antigravity (public starting proof), Fortytwo Engine: Deepseek Flash V4.1 1017, and Codex",
+    "external_references": [
+      "https://riemann.verifytask.cn/api/attempt/102851",
+      "https://play.bohrium.com/submission/102851"
+    ],
+    "public_method_context": {
       "author": "Pi",
       "model": "Gemini 4 Neon",
       "harness": "Antigravity",
@@ -33,23 +29,25 @@
       "characters": 4252,
       "sha256": "60b0759c3d721f7ce395a0ce94b381d1c423fea6d57cc85e279a9da791fc58d8"
     },
-    "proof_edits": "Codex",
-    "public_source_note": "Core 40 starts from Pi’s 983-token public proof, produced with Gemini 4 Neon through Antigravity. Codex reduced the proof to 915 tokens by simplifying matrix diagonality and rational left invariance. The independent Comparator accepted this one-file revision locally. [Pi’s published proof](https://riemann.verifytask.cn/api/attempt/102851)"
+    "new_contribution": "Pi / Gemini 4 Neon via Antigravity supplied the public 983-token baseline in #102851. Fortytwo DeepSeek independently derived the unipotent-coordinate identity and the entrywise diagonal corner calculation in its archived Core 40 session. Codex adapted that calculation with an entry lemma for mapped matrices, used a single diagonal equality for both torus embeddings, and proved the positive idele equality by its adelic product coordinates. The unchanged target is from the formalization by Levent Alpöge.",
+    "native_contribution_draft_sha256": "ac0bfb090db4f54327e05652aa993daec193ee9b38fa20f1038558e76a57c93f",
+    "adapted_solution_sha256": "d1b81fdfcd6c1693908fe859819ef771156c6da22feb1a50a4c4c033f7425999",
+    "native_contribution_note": "Fortytwo DeepSeek derived the unipotent-coordinate identity in this archived call and tested the entrywise diagonal strategy. Pi independently used the same unipotent identity in the public 983-token baseline. Codex combined the sources and reduced the diagonal and rational action.",
+    "public_source_note": "Core 40. Pi / Gemini 4 Neon via Antigravity supplied the public 983-token baseline in #102851. Fortytwo DeepSeek independently derived the unipotent-coordinate identity and the entrywise diagonal corner calculation in its archived Core 40 session. Codex adapted that calculation with an entry lemma for mapped matrices, used a single diagonal equality for both torus embeddings, and proved the positive idele equality by its adelic product coordinates. The unchanged target is from the formalization by Levent Alpöge. [Published starting proof](https://riemann.verifytask.cn/api/attempt/102851)"
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T04:28:38.535909+00:00",
+    "completed_utc": "2026-11-24T04:36:59.483444+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
-    ],
-    "target_declaration": "AlpogeRHCore40.residualSpectrumConstantTermDict",
-    "comparator_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
-    "lean4export_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e",
-    "reconstructed_boundary_sha256": "41d52b836e692c7697d4fa8c9cfff6fb1bf5154ebed2b78c4a6ab04386f64221",
-    "log_sha256": "50b9c01754336215cd3f64ba948d8e122ba18f818397c728b410e17639213156"
+    ]
   },
-  "hosted_score": null
+  "hosted_score": null,
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
+  "source_kind": "pinned_git_checkout",
+  "target_sha256": "db42504120a3ee7af320c76aa8b682751b0a5d8b1ce67e7421c8712da699851f",
+  "pinned_source_files": {}
 }
