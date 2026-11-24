@@ -1,6 +1,6 @@
 # Core 28 · Fundamental-domain point bound
 
-Playground confirmed **59.792342** for submission **#102835** at 01:39 UTC on 2026-11-24. At that check it ranked first, 0.155036 points ahead of #102815. [Official submission](https://play.bohrium.com/submission/102835) · [Core 28 leaderboard](https://play.bohrium.com/api/challenges/lean-4-verification-rh-fast-sub-pillar-28-fundamen-7b3737ce/attempts?sort=score&limit=20&page=1)
+Playground confirmed **59.962432** for submission **#102853** at 01:59 UTC on 2026-11-24. At that check it ranked first, 0.170090 points ahead of #102835. [Official submission](https://play.bohrium.com/submission/102853) · [Core 28 leaderboard](https://play.bohrium.com/api/challenges/lean-4-verification-rh-fast-sub-pillar-28-fundamen-7b3737ce/attempts?sort=score&limit=20&page=1)
 
 Each submission preserves Levent Alpöge’s statement that the Fundamental-domain point bound have finite length. Each revision links to the source that received its score. The token counts come from the pinned verification environment.
 
@@ -21,6 +21,7 @@ Each submission preserves Levent Alpöge’s statement that the Fundamental-doma
 | [#102720](https://play.bohrium.com/submission/102720) | 59.459158 | First | 314,260 | 154 | [`eee48f5e0091`](https://github.com/vlarin/riemann-hypothesis/tree/eee48f5e00911bdc3962816acc37ca25066e6627/community/fortytwo-phase3-4331/core28) |
 | [#102815](https://play.bohrium.com/submission/102815) | 59.637306 | First | 306,480 | 153 | [`33c05e2fa957`](https://github.com/vlarin/riemann-hypothesis/tree/33c05e2fa957b8a01110530f5f3e81bd593b7d02/community/fortytwo-phase3-4331/core28) |
 | [#102835](https://play.bohrium.com/submission/102835) | 59.792342 | First | 299,812 | 153 | [`94e8f2dd808a`](https://github.com/vlarin/riemann-hypothesis/tree/94e8f2dd808a5d23241758c2def9a68ff816857d/community/fortytwo-phase3-4331/core28) |
+| [#102853](https://play.bohrium.com/submission/102853) | 59.962432 | First | 292,606 | 153 | [`0186c95a34eb`](https://github.com/vlarin/riemann-hypothesis/tree/0186c95a34eb1c304ff40d5fa6fa1ad5bc9f5b37/community/fortytwo-phase3-4331/core28) |
 
 ## Changes in the scored proofs
 
@@ -55,3 +56,5 @@ Levent Alpöge authored the Fourier sign, contour-independence and coefficient-b
 - **#102815** Codex bounded the weighted Fourier coefficient by integrating its absolute value over the unit-volume cube. The character has norm one, so the same inequality covers zero weight. A half-radius Cauchy estimate supplies the cusp derivative bound. The proof also derives majorant positivity from the positive Gram matrix on the projection and negative definiteness on its orthogonal complement. These changes and the lattice reductions saved 7,780 normalized tokens and one file over #102720. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/33c05e2fa957b8a01110530f5f3e81bd593b7d02/community/fortytwo-phase3-4331/core28/changes.patch)
 
 - **#102835** Codex identified the hyperbolic reflection with the involution of the positive and negative decomposition. This reused its self-adjointness and linearity. The isotropic flow becomes a rank-one matrix update whose determinant and action specialize to the embedded field vector and the frame columns. Together with shorter coordinate, trace-norm and eigenframe arguments, these changes saved 6,668 normalized tokens over #102815. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/94e8f2dd808a5d23241758c2def9a68ff816857d/community/fortytwo-phase3-4331/core28/changes.patch)
+
+- **#102853** Codex bounded the orthogonal subspace of an almost-diagonal Hermitian graph by testing its positive projection against the coordinate error and applying Cauchy–Schwarz. The arithmetic–geometric mean inequality on the nonnegative eigenvalues bounds the Gram determinant by the trace. An isometry transports the original short-basis estimate, and Babai rounding with that basis bounds the lattice covering error. These and the accompanying determinant and counting reductions saved 7,206 normalized tokens over #102835. [Source changes](https://github.com/vlarin/riemann-hypothesis/blob/0186c95a34eb1c304ff40d5fa6fa1ad5bc9f5b37/community/fortytwo-phase3-4331/core28/changes.patch)
