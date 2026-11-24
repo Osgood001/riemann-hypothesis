@@ -8,14 +8,9 @@ namespace Bl.FunctionAtZero
 
 private lemma f_zero (f : Real → Complex) (hmul : ∀ s t, f (s + t) = f s * f t)
     (hn : ∀ s, ‖f s‖ = 1) : f 0 = 1 := by
-  have h := hmul 0 0
-  rw [add_zero] at h
-  have h0 : f 0 ≠ 0 := by
-    intro h'
-    have := hn 0
-    rw [h', norm_zero] at this
-    exact zero_ne_one this
-  exact mul_left_cancel₀ h0 (h.symm.trans (mul_one (f 0)).symm)
+  have hidem : IsIdempotentElem (f 0) := by simpa [IsIdempotentElem] using (hmul 0 0).symm
+  refine (IsIdempotentElem.iff_eq_zero_or_one.mp hidem).resolve_left fun hzero => ?_
+  simpa [hzero] using hn 0
 
 theorem goal1 :
   ∀ (f : Real → Complex),
