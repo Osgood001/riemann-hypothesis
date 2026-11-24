@@ -1,14 +1,14 @@
 {
   "core": 29,
-  "candidate": "core29-fastrayclass07c0fe22b82e",
+  "candidate": "core29-fastrayclass449a4fe8bbbd",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 65,
-  "local_normalized_tokens": 113412,
+  "local_normalized_tokens": 111847,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "42c9b0ae92c4f355874a874641c591179b03eedac1717f928e2f44d8cfc251af",
+  "proof_tree_sha256": "309353f7dc75e30f8657f7f7873f73f7303765439cdfba82caf1525cb7e96a3d",
   "modified_files": {
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ConductorEqTopOfStandardOpen.lean": {
       "before": "32a326aa893cd7346d768a4d4e302cda98d7ccbcdd5d61d038ddec4b8b1577f1",
@@ -24,7 +24,7 @@
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean": {
       "before": "38bea0a8be8b648482565fd3ec40ccfe299c495a45e06a005176683d2d7e8309",
-      "after": "a7862e3597e7ea88a134807fd239a5e767d28a9044e4628c6866200aa09bc4a3"
+      "after": "200a7899dd38fbb1ffc548b8196f2d6f0c4154ca819938f4e863809069d3b1dd"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/InfiniteEmbeddingMemStandardOpenSubgroup.lean": {
       "before": "936d4971e99f7d748ddd32de4b683d62472a5155ecbb057d5c68e60c4216920b",
@@ -36,7 +36,7 @@
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean": {
       "before": "909345232b14c949b84d270ae1ae8e8d7fdafd59af5b2154dc060755e45977e5",
-      "after": "6290eabdf8ad2609cac72dad907246ea08e5066fa112aa5991b68f8082bcb356"
+      "after": "c4fd3c94a1dfbad363212c3fa675f4c8fca28d388c149e77f67dbec43bd6a3be"
     },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/SumAddCharOfMulMulOfMulInv.lean": {
       "before": "917ad92505e98ef7d2c68651adc5a09298385b1718a628d20821b942cd1c4adf",
@@ -44,11 +44,11 @@
     },
     "Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean": {
       "before": "5e3bf1687e825702c08ae63e4c451fc6f897eab82e6b2b8ee1249f4f7776fed1",
-      "after": "ea4a5a01891f6555e17310a08a47b4f6401dadf16c5ad5f016bf7a50b0ca2717"
+      "after": "9690a6ee10eaae950483b6a35f26d3b8be58bd8ec06ee5554a368fd209b94dae"
     },
     "GroundTheory/GlobalFields/AnalyticClassNumber/HeckeContinued.lean": {
       "before": "76aede10518bf5faf3ced25bc7d3f97357c9d69865874ba3a24bf68d882b2d29",
-      "after": "a82fe62af9189c78373ba8f858160bc6def2ea8373a933a1d2cba348e3d2fcaa"
+      "after": "c709a3f8cfe8cd890b38e7523d337282cedea4490e548b4446eed990ae316bad"
     },
     "GroundTheory/GlobalFields/IdeleGroups/IdeleNorms.lean": {
       "before": "c3c4299496b4db89261c42bf2a602a08973563247bb87a76e20724d6977a9b38",
@@ -84,11 +84,11 @@
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactors.lean": {
       "before": "6221123d5f2b20524545d17b1647a4de847f0c655b4af7cc7d9bd5b47fc724ee",
-      "after": "5e4afb82e9c0b9f2a99d5c8478ec79eace8bd772529dd1ed906109f39b57456a"
+      "after": "dbc6825bc73c86c6dba6f5950a7e882e11a96d6603d1af7cd3ec7e8704e157c8"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsArch.lean": {
       "before": "74f42b8629bacf7e2e571fcff04d238afaa17dda3679ab9a21f3309f0f6db9f1",
-      "after": "f11d38f8b7cd20709428e3594924c4767d12940df0bf1cddee1d671c3c15909a"
+      "after": "249b04b7760e69d0c43c6bdc00dee167e502f110e3f36b15f92a8d5a2b2bb331"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFinite.lean": {
       "before": "7d0a33060c115a699675529b1ac8ea1930694ff85e122a8ef24c63712b5e13a9",
@@ -96,19 +96,23 @@
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourier.lean": {
       "before": "c4535e5cc8f2e495c2498ea88aaf409305ede95af74fe60161f5d590ed2bbd2a",
-      "after": "bbd46eb70f830cc9080466d1122ccf611eb81d522481ea4d4b6b8ef0ae7c55cc"
+      "after": "47e2ef9703c79af42754f50b1e5e486baf8b1764e7981f1eb0c1e1569feddbd1"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierInfinite.lean": {
       "before": "0f1b634d67760eb31ad4b4fa0b565f67c5b9d5e1e4409b3c89dede373ecbc10f",
-      "after": "1f541d59fa8707f11778c0788743060de605d7cfd24e9a3cafe81694addce2ad"
+      "after": "343468f641835fc41c8f5ef0b7142c2f349eac49615dc8901bd3fca1c96bbcfe"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsInfinite.lean": {
       "before": "7b76eaa86e387dc72e7d995ae371edc52859e648359f5ce2fce71dd43f99f6f6",
-      "after": "24b4eac9e8c9fc9142d0e11ca6b0673c727ff803ea33a78e71f3a2e1e8e7a886"
+      "after": "22a81ffca1795abb1401a629a77c3cdbac3038212a6df445a942236c7e8dcad4"
     },
     "GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean": {
       "before": "3c39a97a34767d9e5a47d976081fa4a4e3e8b5659db95c54d4b632296fcdd93c",
-      "after": "1affcb5f33671ff1327b77b114c370efa19fd0c8f649b268f861c881b601325f"
+      "after": "329cef1295d4eea0ac6351827924771304852c88f2acf903bb9aacf47f9a5243"
+    },
+    "GroundTheory/GlobalFields/TateThesis/Gaussian.lean": {
+      "before": "7dcc685d847bb445ea07010d26c3a3cf2674da8f021c05000b4dbf2f4d789db1",
+      "after": "4af2a4a467918ab709693c740b6355a4fd082fa22fc671b94266ff6e42900fcb"
     },
     "GroundTheory/GlobalFields/TateThesis/GlobalZeta.lean": {
       "before": "a2c21ea0f36d35705df95cba0bd0659e37556690fe94192eb05f40b8ef7c3528",
@@ -128,7 +132,7 @@
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheorem.lean": {
       "before": "72b1a93c64cc307d070454699dc5ad9821fd762c0cd3220e8c8fa5b85ed6066a",
-      "after": "7a4e071f262ad1c799b5020fc82841a68f959cebd0cfbf0b1f9279c84f80e8e0"
+      "after": "6843bb98bd10790cfe3c71c422489b36d2e2252198524716f68d816408849b51"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremConj.lean": {
       "before": "6fcf98c6e60a6d49f23ddddde6abfb2b8c93bbf9d086283e57ca73dead974262",
@@ -136,11 +140,11 @@
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremFE.lean": {
       "before": "2aa01187e9524961a88ca6edf68919521efeec96b44ba3e2b4d0e0679208a269",
-      "after": "685e5d1027bfe6e1a314c1ff13654c348832615e00f23103c6e6b8dc771bdfca"
+      "after": "4519a3dbb705f1829600dec5969072db6280d377ef224803796fdaea103eb7f1"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremScaling.lean": {
       "before": "323e561e14c1df2a6ee4f4c5b93f41e8dace8c020ba5d24bc6a7cc40f894c237",
-      "after": "13870849a444886214c1b14cb4938d998493ab7fc491f843756e9c30a692db37"
+      "after": "d3706c3e6c0eaadc188d8e5e63ef9645f30edde2382aab778191f1c4fb9bb083"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremTrivial.lean": {
       "before": "19bf564b401e43c938e7fb50677bd1b9c2f259ada6b4878e1e4a5873cd71b939",
@@ -190,17 +194,17 @@
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
-    "new_contribution": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex evaluated the finite Euler factor on the unit lattice via the ideal character and used its coset indicator for the Schwartz–Bruhat condition.",
+    "new_contribution": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex evaluated the finite Euler factor on the unit lattice via the ideal character and used its coset indicator for the Schwartz–Bruhat condition. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals.",
     "native_proof_module": "GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass",
     "native_contribution_draft_sha256": "9753b9fc94a132ad81ba5b7110bd1668203337c310ac04b74bb246401ba155ec",
     "native_contribution_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass.",
-    "public_source_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex evaluated the finite Euler factor on the unit lattice via the ideal character and used its coset indicator for the Schwartz–Bruhat condition.",
+    "public_source_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex evaluated the finite Euler factor on the unit lattice via the ideal character and used its coset indicator for the Schwartz–Bruhat condition. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals.",
     "source_history": "The 115,908-token proof first retained Fortytwo’s 592-token ray-class reduction. The explicit unit-lattice coset indicator and its Schwartz–Bruhat proof first appear in the 113,412-token revision."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T06:16:32.289568+00:00",
+    "completed_utc": "2026-11-24T06:26:50.495130+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",

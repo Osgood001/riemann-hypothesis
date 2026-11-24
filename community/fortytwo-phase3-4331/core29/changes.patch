@@ -72,7 +72,7 @@
  namespace GlobalTheory.CompanionTheory.PartialZeta
  
 -theorem fe_of_parts (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (χ : HeckeCharacter F)
-+theorem fe_of_parts (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (χ : HeckeCharacter F) (hcond : χ.conductor = ⊤)
++theorem fe_of_parts (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (χ : HeckeCharacter F) (hwt : ∀ w, χ.infiniteWeight w = 0) (hcond : χ.conductor = ⊤)
      (hD : χ.discrNormConductor = GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F)
      (hG : ∀ s : ℂ, χ.gammaFactor s = Complex.Gammaℝ s ^ Module.finrank ℚ F)
      (hG' : ∀ s : ℂ, (χ⁻¹).gammaFactor s = Complex.Gammaℝ s ^ Module.finrank ℚ F)
@@ -81,7 +81,7 @@
      obtain ⟨n, hn⟩ := Complex.Gammaℝ_eq_zero_iff.1 h0
      exact ht n (by rw [hn]; ring)
 -  have key := χ.continuedLFunction_functional_equation (s := s)
-+  have key := χ.continuedLFunction_functional_equation hcond (s := s)
++  have key := χ.continuedLFunction_functional_equation hwt hcond (s := s)
      (by rw [hG]; exact pow_ne_zero _ (nz s h1))
      (by rw [hG']; exact pow_ne_zero _ (nz _ h2))
    rw [hG, hG', hD, hR] at key
@@ -129,7 +129,8 @@
  end GlobalTheory.CompanionTheory.PartialZeta
 --- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean
 +++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean
-@@ -1,6 +1,6 @@
+@@ -1,6 +1,7 @@
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InfiniteEmbeddingMemStandardOpenSubgroup
 +import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConductorEqTopOfStandardOpen
  import Mathlib
  import GroundTheory.GlobalFields.AnalyticClassNumber.HeckeContinued
@@ -137,7 +138,7 @@
  import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
  import GroundTheory.GlobalFields.IdeleGroups.LocalConditionIndex
  import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
-@@ -17,22 +17,7 @@
+@@ -17,30 +18,11 @@
  variable {F : Type} [Field F] [NumberField F] {χ : HeckeCharacter F}
  
  theorem conductor_eq_top (h : standardOpenSubgroup F ≤ χ.toIdele.ker) : χ.conductor = ⊤ := by
@@ -161,7 +162,16 @@
  
  theorem infiniteWeight_eq_zero (h : standardOpenSubgroup F ≤ χ.toIdele.ker)
      (w : InfinitePlace F) : χ.infiniteWeight w = 0 := by
-@@ -51,11 +36,11 @@
+-  have hp : χ.infiniteParams w = (0, 0) := by
+-    refine (χ.infiniteParams_unique w (p := (0, 0)) (fun _ ↦ ⟨le_rfl, by norm_num⟩) fun a ↦ ?_).symm
+-    have h1 : χ.infiniteComponent w a = 1 := h (infiniteEmbedding_mem_standardOpenSubgroup w a)
+-    simp [h1]
+-  rw [HeckeCharacter.infiniteWeight, hp]
++  rw [HeckeCharacter.infiniteWeight, infiniteParams_eq_zero χ h w]
+ 
+ theorem idealUnit_eq_one {I : Ideal (𝓞 F)} (hI : I = ⊤) (h : I ≠ ⊥) : idealUnit I h = 1 := by
+   subst hI
+@@ -51,11 +33,11 @@
      (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit) :
      finiteFourier F χ.finiteTestFun ((δ⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) =
        (((NNReal.sqrt ‖discr F‖₊)⁻¹ : ℝ≥0) : ℂ) := by
@@ -231,7 +241,7 @@
          (∑ i, c i * (χ i).continuedLFunction s) := by
        refine hasSum_sum fun i _ => ?_
 -      rw [(χ i).continuedLFunction_eq hs]
-+      rw [(χ i).continuedLFunction_eq (conductor_eq_top (hU i)) hs]
++      rw [(χ i).continuedLFunction_eq (infiniteWeight_eq_zero (hU i)) (conductor_eq_top (hU i)) hs]
        exact ((χ i).hasSum_LFunction hs).mul_left (c i)
      have hfac : ∀ I : Ideal (𝓞 F),
          ∑ i, c i * ((χ i).coeff I * (Ideal.absNorm I : ℂ) ^ (-s)) =
@@ -281,7 +291,7 @@
          Complex.Gammaℝ (1 - s) ^ Module.finrank ℚ F * ((classHecke ψ)⁻¹).continuedLFunction (1 - s)) := by
    have hU := standardOpenSubgroup_le_ker ψ
 -  have h := fe_of_parts F (classHecke ψ) (discrNormConductor_eq_dF_of_unramified F _ hU)
-+  have h := fe_of_parts F (classHecke ψ) (conductor_eq_top hU) (discrNormConductor_eq_dF_of_unramified F _ hU)
++  have h := fe_of_parts F (classHecke ψ) (infiniteWeight_eq_zero hU) (conductor_eq_top hU) (discrNormConductor_eq_dF_of_unramified F _ hU)
      (gammaFactor_eq_of_unramified F _ hU)
 -    (gammaFactor_eq_of_unramified F _ (standardOpenSubgroup_le_ker_inv F _ hU))
 +    (gammaFactor_eq_of_unramified F _ (classHecke_neg ψ ▸ standardOpenSubgroup_le_ker (-ψ)))
@@ -303,8 +313,8 @@
  
 -theorem normalizedLFunction_eq {s : ℂ} (hs : 1 < s.re) : χ.normalizedLFunction s = χ.LFunction s :=
 -  (χ.LFunction_eq_mul_completedLFunction hs).symm
-+theorem normalizedLFunction_eq [IsTotallyReal K] (hc : χ.conductor = ⊤) {s : ℂ} (hs : 1 < s.re) : χ.normalizedLFunction s = χ.LFunction s :=
-+  (χ.LFunction_eq_mul_completedLFunction hc hs).symm
++theorem normalizedLFunction_eq [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (hc : χ.conductor = ⊤) {s : ℂ} (hs : 1 < s.re) : χ.normalizedLFunction s = χ.LFunction s :=
++  (χ.LFunction_eq_mul_completedLFunction hwt hc hs).symm
  
  open Classical in
  
@@ -363,7 +373,7 @@
  end Trivial
  
 -theorem continuedLFunction_eq {s : ℂ} (hs : 1 < s.re) : χ.continuedLFunction s = χ.LFunction s := by
-+theorem continuedLFunction_eq [IsTotallyReal K] (hc : χ.conductor = ⊤) {s : ℂ} (hs : 1 < s.re) : χ.continuedLFunction s = χ.LFunction s := by
++theorem continuedLFunction_eq [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (hc : χ.conductor = ⊤) {s : ℂ} (hs : 1 < s.re) : χ.continuedLFunction s = χ.LFunction s := by
    by_cases h : ∃ τ : ℝ, ∀ x : IdeleGroup K,
        (χ.toIdele x : ℂ) = ((ideleModule K x : ℝ) : ℂ) ^ ((τ : ℂ) * I)
    · obtain ⟨τ, hτ⟩ := h
@@ -373,8 +383,8 @@
        linarith
 -    rw [continuedLFunction_of_ne hτ hsc, χ.normalizedLFunction_eq hs]
 -  · rw [χ.continuedLFunction_of_not h, χ.normalizedLFunction_eq hs]
-+    rw [continuedLFunction_of_ne hτ hsc, χ.normalizedLFunction_eq hc hs]
-+  · rw [χ.continuedLFunction_of_not h, χ.normalizedLFunction_eq hc hs]
++    rw [continuedLFunction_of_ne hτ hsc, χ.normalizedLFunction_eq hwt hc hs]
++  · rw [χ.continuedLFunction_of_not h, χ.normalizedLFunction_eq hwt hc hs]
  
  theorem completedLFunction_eq_mul_continuedLFunction {s : ℂ} (hΓ : χ.gammaFactor s ≠ 0) :
      χ.completedLFunction s =
@@ -383,7 +393,7 @@
      hA, mul_inv_cancel₀ hΓ, one_mul, one_mul]
  
 -theorem continuedLFunction_functional_equation {s : ℂ} (hs : χ.gammaFactor s ≠ 0)
-+theorem continuedLFunction_functional_equation [IsTotallyReal K] (hcond : χ.conductor = ⊤) {s : ℂ} (hs : χ.gammaFactor s ≠ 0)
++theorem continuedLFunction_functional_equation [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (hcond : χ.conductor = ⊤) {s : ℂ} (hs : χ.gammaFactor s ≠ 0)
      (hs' : χ⁻¹.gammaFactor (1 - s) ≠ 0) :
      (χ.discrNormConductor : ℂ) ^ (s / 2) * χ.gammaFactor s * χ.continuedLFunction s =
        χ.rootNumber * ((χ.discrNormConductor : ℂ) ^ ((1 - s) / 2) * χ⁻¹.gammaFactor (1 - s) *
@@ -392,7 +402,7 @@
    rw [discrNormConductor_inv] at h'
    rw [← χ.completedLFunction_eq_mul_continuedLFunction hs, ← h']
 -  refine χ.completedLFunction_eq_rootNumber_mul fun τ hτ ↦ ⟨fun h0 ↦ hs ?_, fun h1 ↦ hs' ?_⟩
-+  refine χ.completedLFunction_eq_rootNumber_mul hcond fun τ hτ ↦ ⟨fun h0 ↦ hs ?_, fun h1 ↦ hs' ?_⟩
++  refine χ.completedLFunction_eq_rootNumber_mul hwt hcond fun τ hτ ↦ ⟨fun h0 ↦ hs ?_, fun h1 ↦ hs' ?_⟩
    · rw [h0]
      exact gammaFactor_neg_of_forall hτ
    · rw [h1, show 1 - (1 - (τ : ℂ) * I) = -(((-τ : ℝ) : ℂ) * I) by push_cast; ring]
@@ -1020,7 +1030,7 @@
    ring
  
 -theorem globalZeta_testFunction {s : ℂ} (hs : 1 < s.re) :
-+theorem globalZeta_testFunction [IsTotallyReal K] (hc : χ.conductor = ⊤) {s : ℂ} (hs : 1 < s.re) :
++theorem globalZeta_testFunction [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (hc : χ.conductor = ⊤) {s : ℂ} (hs : 1 < s.re) :
      globalZeta χ.testFunction χ s = (π : ℂ) ^ nrComplexPlaces K * χ.gammaFactor s * χ.LFunction s := by
    have hs0 : 0 < s.re := by linarith
    set A : (InfiniteAdeleRing K)ˣ → ℂ := fun a ↦ χ.infiniteSchwartz (homeomorphMixedSpace K a) *
@@ -1044,12 +1054,14 @@
        ∫ a, χ.testFunction ((prodEquiv K).symm (a, c.out) : IdeleGroup K) *
          (χ.toIdele ((prodEquiv K).symm (a, c.out)) : ℂ) *
          ((ideleModule K ((prodEquiv K).symm (a, c.out)) : ℝ) : ℂ) ^ s ∂infiniteIdeleMeasure K =
-@@ -110,8 +110,8 @@
+@@ -109,9 +109,9 @@
+       · change ((prodEquiv K) ((prodEquiv K).symm (a, c.out))).2 = c.out
          rw [ContinuousMulEquiv.apply_symm_apply]
      simp only [hF, (hsymm _).1, (hsymm _).2]
-     rw [integral_mul_const, ← χ.integral_infiniteSchwartz hs0]
+-    rw [integral_mul_const, ← χ.integral_infiniteSchwartz hs0]
 -  simp only [hc] at h
 -  have h2 := (χ.hasSum_finiteTestFun hs).mul_left (∏ w, infiniteConst w * χ.infiniteGamma w s)
++    rw [integral_mul_const, ← χ.integral_infiniteSchwartz hwt hs0]
 +  simp only [hcosets] at h
 +  have h2 := (χ.hasSum_finiteTestFun hc hs).mul_left (∏ w, infiniteConst w * χ.infiniteGamma w s)
    rw [globalZeta, h.unique h2, Finset.prod_mul_distrib, prod_infiniteConst, gammaFactor]
@@ -1065,7 +1077,50 @@
  
  open NumberField InfinitePlace InfinitePlace.Completion MeasureTheory Complex ComplexConjugate
  open scoped Real
-@@ -98,29 +97,6 @@
+@@ -61,25 +60,14 @@
+ variable {K : Type*} [Field K] [NumberField K]
+ 
+ omit [NumberField K] in
+-theorem infinitePlaceMeasure_zero (w : InfinitePlace K) : infinitePlaceMeasure w {0} = 0 := by
+-  by_cases hw : w.IsReal
+-  · rw [infinitePlaceMeasure_of_isReal hw, Measure.map_apply
+-      (isometryEquivRealOfIsReal hw).symm.continuous.measurable (measurableSet_singleton 0)]
+-    refine measure_mono_null (fun x hx ↦ ?_) (measure_singleton (0 : ℝ))
+-    simp only [Set.mem_preimage, Set.mem_singleton_iff] at hx ⊢
+-    rw [← (isometryEquivRealOfIsReal hw).apply_symm_apply x, hx]
+-    change ringEquivRealOfIsReal hw 0 = 0
+-    exact map_zero _
+-  · have hc := not_isReal_iff_isComplex.1 hw
+-    rw [infinitePlaceMeasure_of_isComplex hc, Measure.map_apply
+-      (isometryEquivComplexOfIsComplex hc).symm.continuous.measurable (measurableSet_singleton 0),
+-      Measure.smul_apply]
+-    refine (mul_eq_zero.2 (Or.inr (measure_mono_null (fun x hx ↦ ?_)
+-      (measure_singleton (0 : ℂ))))).trans (by rfl)
+-    simp only [Set.mem_preimage, Set.mem_singleton_iff] at hx ⊢
+-    rw [← (isometryEquivComplexOfIsComplex hc).apply_symm_apply x, hx]
+-    change ringEquivComplexOfIsComplex hc 0 = 0
+-    exact map_zero _
++theorem infinitePlaceMeasure_zero {w : InfinitePlace K} (hw : w.IsReal) : infinitePlaceMeasure w {0} = 0 := by
++  rw [infinitePlaceMeasure_of_isReal hw, Measure.map_apply
++    (isometryEquivRealOfIsReal hw).symm.continuous.measurable (measurableSet_singleton 0)]
++  refine measure_mono_null (fun x hx ↦ ?_) (measure_singleton (0 : ℝ))
++  simp only [Set.mem_preimage, Set.mem_singleton_iff] at hx ⊢
++  rw [← (isometryEquivRealOfIsReal hw).apply_symm_apply x, hx]
++  change ringEquivRealOfIsReal hw 0 = 0
++  exact map_zero _
+ 
+ omit [NumberField K] in
+ 
+@@ -87,7 +75,7 @@
+     (g : w.Completion → ℂ) :
+     ∫ a : (w.Completion)ˣ, g a ∂infinitePlaceUnitsMeasure w =
+       ∫ x : ℝ, g ((isometryEquivRealOfIsReal hw).symm x) / ((|x| : ℝ) : ℂ) := by
+-  rw [infinitePlaceUnitsMeasure, integral_unitsMeasure _ (infinitePlaceMeasure_zero w),
++  rw [infinitePlaceUnitsMeasure, integral_unitsMeasure _ (infinitePlaceMeasure_zero hw),
+     infinitePlaceMeasure_of_isReal hw]
+   have he : MeasurableEmbedding (isometryEquivRealOfIsReal hw).symm :=
+     (isometryEquivRealOfIsReal hw).symm.toHomeomorph.measurableEmbedding
+@@ -98,29 +86,6 @@
      change (ringEquivRealOfIsReal hw).symm 0 = 0
      exact map_zero _
    simp only [mult, if_pos hw, pow_one, hn, Complex.real_smul]
@@ -1095,7 +1150,7 @@
    push_cast
    rw [div_eq_inv_mul]
  
-@@ -227,14 +203,8 @@
+@@ -227,14 +192,8 @@
  
  def infiniteConst (w : InfinitePlace K) : ℂ := if w.IsReal then 1 else π
  
@@ -1108,11 +1163,11 @@
 -
 -theorem integral_infiniteTest (w : InfinitePlace K) {s : ℂ} (hs : 0 < s.re) :
 +
-+theorem integral_infiniteTest [IsTotallyReal K] (w : InfinitePlace K) {s : ℂ} (hs : 0 < s.re) :
++theorem integral_infiniteTest [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (w : InfinitePlace K) {s : ℂ} (hs : 0 < s.re) :
      ∫ a : (w.Completion)ˣ, χ.infiniteTest w a * χ.infiniteComponent w a *
        ((‖(a : w.Completion)‖ ^ w.mult : ℝ) : ℂ) ^ s ∂infinitePlaceUnitsMeasure w =
        infiniteConst w * χ.infiniteGamma w s := by
-@@ -248,73 +218,40 @@
+@@ -248,73 +207,24 @@
      ring
    have hs' : 0 < (s + χ.infiniteTau w * I).re := by simpa using hs
    rw [hfun]
@@ -1182,40 +1237,25 @@
 -      · rw [if_neg hm0, if_pos (by omega)]
 -    simp only [h, htest, hι, hn, hmult']
 -    rw [← cpow_add _ _ (by exact_mod_cast hz'.ne')]
+-    ring_nf
 +  have hw : w.IsReal := IsTotallyReal.isReal w
 +  rw [integral_infinitePlaceUnitsMeasure_of_isReal hw, infiniteConst, infiniteGamma, if_pos hw,
 +    if_pos hw, one_mul]
-+  obtain ⟨hm0, hm2⟩ := χ.infiniteWeight_of_isReal hw
 +  set e := isometryEquivRealOfIsReal hw
-+  have hι : ∀ x : ℝ, extensionEmbedding w (e.symm x) = (x : ℂ) := fun x ↦ by
-+    rw [← extensionEmbeddingOfIsReal_apply hw]
-+    exact congrArg (fun y : ℝ ↦ (y : ℂ)) (e.apply_symm_apply x)
 +  have hn : ∀ x : ℝ, ‖e.symm x‖ = |x| := fun x ↦ by
 +    rw [← Real.norm_eq_abs, ← e.symm.isometry.norm_map_of_map_zero]
 +    change (ringEquivRealOfIsReal hw).symm 0 = 0
 +    exact map_zero _
-+  have hmult : (w.mult : ℝ) = 1 := by rw [mult, if_pos hw, Nat.cast_one]
 +  have hmult' : w.mult = 1 := by rw [mult, if_pos hw]
-+  rcases (show χ.infiniteWeight w = 0 ∨ χ.infiniteWeight w = 1 by omega) with h0 | h1
-+  · rw [h0, Int.cast_zero, add_zero, ← integral_realGaussian_mul_abs_cpow hs']
-+    refine integral_congr_ae (Filter.Eventually.of_forall fun x ↦ ?_)
-+    by_cases hx : x = 0
-+    · simp [hx]
-+    have hx' : (0 : ℝ) < |x| := abs_pos.2 hx
-+    simp only [h, infiniteTest, h0, hn, hmult', pow_one, zpow_zero, mul_one,
-+      Int.natAbs_zero, pow_zero, one_mul, realGaussian_eq_ofReal, sq_abs]
-+    rw [← cpow_add _ _ (by exact_mod_cast hx'.ne')]
-     ring_nf
-+  · rw [h1, Int.cast_one, ← integral_realGaussianOdd_mul_sign_mul_abs_cpow (by linarith)]
-+    refine integral_congr_ae (Filter.Eventually.of_forall fun x ↦ ?_)
-+    by_cases hx : x = 0
-+    · simp [hx]
-+    have hx' : (0 : ℝ) < |x| := abs_pos.2 hx
-+    simp only [h, infiniteTest, h1, hι, hn, hmult', pow_one, zpow_one,
-+      Int.natAbs_one, if_pos zero_lt_one, conj_ofReal, realGaussianOdd, sq_abs]
-+    rw [← cpow_add _ _ (by exact_mod_cast hx'.ne'), ofReal_div_abs_eq_sign hx, ofReal_exp]
-+    push_cast
-+    ring_nf
++  rw [(hwt w), Int.cast_zero, add_zero, ← integral_realGaussian_mul_abs_cpow hs']
++  refine integral_congr_ae (Filter.Eventually.of_forall fun x ↦ ?_)
++  by_cases hx : x = 0
++  · simp [hx]
++  have hx' : (0 : ℝ) < |x| := abs_pos.2 hx
++  simp only [h, infiniteTest, (hwt w), hn, hmult', pow_one, zpow_zero, mul_one,
++    Int.natAbs_zero, pow_zero, one_mul, realGaussian_eq_ofReal, sq_abs]
++  rw [← cpow_add _ _ (by exact_mod_cast hx'.ne')]
++  ring_nf
  
  end HeckeCharacter
  
@@ -1694,15 +1734,17 @@
 -    (χ.finiteFourier_finiteTestFun_ne_zero δ (χ.valued_of_toFractionalIdeal_eq hδ))
  
 -theorem adelicFourier_testFunction {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
-+theorem adelicFourier_testFunction [IsTotallyReal K] (hcond : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
++theorem adelicFourier_testFunction [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (hcond : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
      (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
      (y : 𝔸[K]) :
      adelicFourier K χ.testFunction y = χ.fourierConst δ * (χ⁻¹).testFunction (ofFinite δ • y) := by
-@@ -64,7 +97,7 @@
+@@ -63,8 +96,8 @@
+     exact one_mul _
    have hy2 : (ofFinite δ • y).2 = (δ : FiniteAdeleRing (𝓞 K) K) * y.2 := rfl
    rw [testFunction, adelicFourier_schwartzBruhatTensor, schwartzBruhatTensor,
-     mixedFourierSchwartz_apply, χ.mixedFourier_infiniteSchwartz,
+-    mixedFourierSchwartz_apply, χ.mixedFourier_infiniteSchwartz,
 -    χ.finiteFourier_finiteTestFun δ (χ.valued_of_toFractionalIdeal_eq hδ) y.2, testFunction,
++    mixedFourierSchwartz_apply, χ.mixedFourier_infiniteSchwartz hwt,
 +    χ.finiteFourier_unramified_scaling hcond hδ y.2, testFunction,
      schwartzBruhatTensor, hy1, hy2, fourierConst]
    ring
@@ -1717,7 +1759,23 @@
  import GroundTheory.GlobalFields.TateThesis.AdelicCharLocal
  
  open NumberField InfinitePlace MeasureTheory Complex ComplexConjugate NumberField.mixedEmbedding
-@@ -27,35 +26,15 @@
+@@ -11,51 +10,21 @@
+ 
+ noncomputable section
+ 
+-theorem fourier_pow_mul_realGaussian {n : ℕ} (hn : n < 2) (y : ℝ) :
+-    𝓕 (fun t : ℝ ↦ (t : ℂ) ^ n * realGaussian t) y = (-I) ^ n * ((y : ℂ) ^ n * realGaussian y) := by
+-  rcases (show n = 0 ∨ n = 1 by omega) with rfl | rfl
+-  · simp only [pow_zero, one_mul]
+-    rw [show (fun t : ℝ ↦ realGaussian t) = realGaussian from rfl, fourier_realGaussian]
+-  · simp only [pow_one]
+-    rw [show (fun t : ℝ ↦ (t : ℂ) * realGaussian t) = realGaussianOdd from rfl,
+-      fourier_realGaussianOdd]
+-    rfl
+-
+ variable {K : Type*} [Field K] [NumberField K]
+ 
+ namespace HeckeCharacter
  
  variable (χ : HeckeCharacter K)
  
@@ -1761,19 +1819,20 @@
  
  theorem fourierChar_neg_mixedTraceForm (x y : mixedSpace K) :
      ((𝐞 (-mixedTraceForm K x y) : Circle) : ℂ) =
-@@ -65,19 +44,18 @@
+@@ -65,52 +34,30 @@
      ← Finset.sum_neg_distrib, addChar_map_finsetSum, addChar_map_finsetSum, Circle.coe_mul]
    congr 1 <;> exact map_prod Circle.coeHom _ _
  
 -theorem mixedFourier_infiniteSchwartz (y : mixedSpace K) :
-+theorem mixedFourier_infiniteSchwartz [IsTotallyReal K] (y : mixedSpace K) :
++theorem mixedFourier_infiniteSchwartz [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (y : mixedSpace K) :
      mixedFourier K χ.infiniteSchwartz y =
        (∏ w, (-I) ^ (χ.infiniteWeight w).natAbs) * (χ⁻¹).infiniteSchwartz y := by
 +  letI : IsEmpty {w : InfinitePlace K // IsComplex w} := ⟨fun w ↦ not_isReal_iff_isComplex.2 w.2 (IsTotallyReal.isReal w.1)⟩
    set A : ∀ w : {w // IsReal w}, ℝ → ℂ := fun w t ↦ ((𝐞 (-(t * y.1 w)) : Circle) : ℂ) *
-     ((t : ℂ) ^ (χ.infiniteWeight w).natAbs * realGaussian t)
+-    ((t : ℂ) ^ (χ.infiniteWeight w).natAbs * realGaussian t)
 -  set B : ∀ w : {w // IsComplex w}, ℂ → ℂ := fun w z ↦
 -    ((𝐞 (-(2 * (z * y.2 w).re)) : Circle) : ℂ) * complexGaussian (-χ.infiniteWeight w) z
++    realGaussian t
 +  let B : ∀ w : {w : InfinitePlace K // IsComplex w}, ℂ → ℂ := fun _ _ ↦ 1
    have hint : ∀ x : mixedSpace K, 𝐞 (-mixedTraceForm K x y) • χ.infiniteSchwartz x =
        (∏ w, A w (x.1 w)) * ∏ w, B w (x.2 w) := by
@@ -1781,13 +1840,15 @@
      rw [Circle.smul_def, smul_eq_mul, fourierChar_neg_mixedTraceForm, infiniteSchwartz_eq_prod]
 -    simp only [A, B, Finset.prod_mul_distrib]
 -    ring
-+    simp [Finset.univ_eq_empty (α := {w : InfinitePlace K // IsComplex w}), A, Finset.prod_mul_distrib]
-   have hA : ∀ w : {w // IsReal w}, ∫ t, A w t =
-       (-I) ^ (χ.infiniteWeight w).natAbs *
-         ((y.1 w : ℂ) ^ (χ.infiniteWeight w).natAbs * realGaussian (y.1 w)) := by
-@@ -85,32 +63,15 @@
-     have hm := χ.infiniteWeight_of_isReal w.2
-     rw [← fourier_pow_mul_realGaussian (by omega), Real.fourier_real_eq]
+-  have hA : ∀ w : {w // IsReal w}, ∫ t, A w t =
+-      (-I) ^ (χ.infiniteWeight w).natAbs *
+-        ((y.1 w : ℂ) ^ (χ.infiniteWeight w).natAbs * realGaussian (y.1 w)) := by
+-    intro w
+-    have hm := χ.infiniteWeight_of_isReal w.2
+-    rw [← fourier_pow_mul_realGaussian (by omega), Real.fourier_real_eq]
++    simp [Finset.univ_eq_empty (α := {w : InfinitePlace K // IsComplex w}), A, hwt, Finset.prod_mul_distrib]
++  have hA (w : {w // IsReal w}) : ∫ t, A w t = realGaussian (y.1 w) := by
++    rw [← congrFun fourier_realGaussian (y.1 w), Real.fourier_real_eq]
      rfl
 -  have hB : ∀ w : {w // IsComplex w}, ∫ z, B w z =
 -      (-I) ^ (χ.infiniteWeight w).natAbs * complexGaussian (χ.infiniteWeight w) (y.2 w) / 2 := by
@@ -1806,8 +1867,8 @@
      integral_fintype_prod_volume_eq_prod]
 -  simp only [hA, hB]
    rw [(χ⁻¹).infiniteSchwartz_eq_prod, prod_eq_prod_mul_prod]
-   have hr : ∀ w : {w // IsReal w}, (χ⁻¹).infiniteWeight w = χ.infiniteWeight w := fun w ↦
-     χ.infiniteWeight_inv_of_isReal w.2
+-  have hr : ∀ w : {w // IsReal w}, (χ⁻¹).infiniteWeight w = χ.infiniteWeight w := fun w ↦
+-    χ.infiniteWeight_inv_of_isReal w.2
 -  have hc : ∀ w : {w // IsComplex w}, (χ⁻¹).infiniteWeight w = -χ.infiniteWeight w := fun w ↦
 -    χ.infiniteWeight_inv_of_isComplex w.2
 -  simp only [hr, hc, neg_neg, Finset.prod_div_distrib, Finset.prod_mul_distrib, Finset.prod_const,
@@ -1815,7 +1876,9 @@
 -  have h2 : (2 : ℂ) ^ Fintype.card {w : InfinitePlace K // IsComplex w} ≠ 0 := pow_ne_zero _ two_ne_zero
 -  push_cast
 -  field_simp
-+  simp [nrComplexPlaces, Finset.univ_eq_empty (α := {w : InfinitePlace K // IsComplex w}), hA, hr, Finset.prod_mul_distrib]
++  have hr (w : {w : InfinitePlace K // IsReal w}) : (χ⁻¹).infiniteWeight w = 0 :=
++    χ.infiniteWeight_inv_zero (hwt w)
++  simp [nrComplexPlaces, Finset.univ_eq_empty (α := {w : InfinitePlace K // IsComplex w}), hA, hr, hwt, Finset.prod_mul_distrib]
  
  end HeckeCharacter
  
@@ -1826,13 +1889,43 @@
      rfl
  
 -theorem integral_infiniteSchwartz {s : ℂ} (hs : 0 < s.re) :
-+theorem integral_infiniteSchwartz [IsTotallyReal K] {s : ℂ} (hs : 0 < s.re) :
++theorem integral_infiniteSchwartz [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) {s : ℂ} (hs : 0 < s.re) :
      ∫ a : (InfiniteAdeleRing K)ˣ, χ.infiniteSchwartz (homeomorphMixedSpace K a) *
        (χ.toIdele (IdeleGroup.ofInfinite a) : ℂ) *
          ((∏ w, ‖(a : InfiniteAdeleRing K) w‖ ^ w.mult : ℝ) : ℂ) ^ s ∂infiniteIdeleMeasure K =
+@@ -173,7 +173,7 @@
+   have hfub := integral_fintype_prod_eq_prod (μ := fun w : InfinitePlace K ↦ infinitePlaceUnitsMeasure w)
+     (fun w (u : (w.Completion)ˣ) ↦ χ.infiniteTest w u * (χ.infiniteComponent w u : ℂ) *
+       ((‖(u : w.Completion)‖ ^ w.mult : ℝ) : ℂ) ^ s)
+-  exact hfub.trans (Finset.prod_congr rfl fun w _ ↦ χ.integral_infiniteTest w hs)
++  exact hfub.trans (Finset.prod_congr rfl fun w _ ↦ χ.integral_infiniteTest hwt w hs)
+ 
+ end HeckeCharacter
+ 
 --- a/GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/EulerFactorsInverse.lean
-@@ -132,8 +132,6 @@
+@@ -21,18 +21,8 @@
+     have e : ((((a - b) * t : ℝ) : ℂ) * I) = (a : ℂ) * t * I - (b : ℂ) * t * I := by
+       push_cast; ring
+     rw [e, Complex.exp_sub, h t, div_self (Complex.exp_ne_zero _)]
+-  rw [ht, Complex.exp_eq_one_iff] at h1
+-  obtain ⟨n, hn⟩ := h1
+-  have h2 : (π : ℂ) = ((n * (2 * π) : ℝ) : ℂ) := by
+-    refine mul_right_cancel₀ I_ne_zero (hn.trans ?_)
+-    push_cast; ring
+-  have h3 : π = n * (2 * π) := by exact_mod_cast h2
+-  have h4 : (1 : ℝ) = 2 * n := by
+-    have hπ : π ≠ 0 := Real.pi_ne_zero
+-    field_simp at h3
+-    linarith
+-  have h5 : (1 : ℤ) = 2 * n := by exact_mod_cast h4
+-  omega
++  rw [ht, Complex.exp_pi_mul_I] at h1
++  norm_num at h1
+ 
+ omit [NumberField K] in
+ 
+@@ -132,8 +122,6 @@
  
  theorem inv_toIdele (x : IdeleGroup K) : (χ⁻¹).toIdele x = (χ.toIdele x)⁻¹ := rfl
  
@@ -1841,16 +1934,153 @@
  
  theorem infiniteComponent_inv (w : InfinitePlace K) (a : (w.Completion)ˣ) :
      (χ⁻¹).infiniteComponent w a = (χ.infiniteComponent w a)⁻¹ := rfl
-@@ -185,9 +183,6 @@
-     (χ⁻¹).infiniteWeight w = χ.infiniteWeight w := by
-   rw [infiniteWeight, infiniteParams_inv, if_pos hw]
+@@ -150,44 +138,13 @@
+     exact (χ⁻¹).map_idealLevel_conductor_le_ker
+   exact le_antisymm (Ideal.le_of_dvd h2) (Ideal.le_of_dvd h1)
  
+-open Classical in
+-
+-theorem infiniteParams_inv (w : InfinitePlace K) :
+-    (χ⁻¹).infiniteParams w =
+-      (if w.IsReal then χ.infiniteWeight w else -χ.infiniteWeight w, -χ.infiniteTau w) := by
+-  symm
+-  refine (χ⁻¹).infiniteParams_unique w ?_ fun a ↦ ?_
+-  · intro hw
+-    rw [if_pos hw]
+-    exact χ.infiniteWeight_of_isReal hw
+-  · rw [infiniteComponent_inv, Circle.coe_inv, χ.infiniteComponent_eq]
+-    simp only
+-    rw [mul_inv, ofReal_neg, neg_mul, cpow_neg]
+-    congr 1
+-    split_ifs with hw
+-    ·
+-      have hι : extensionEmbedding w (a : w.Completion) =
+-          ((extensionEmbeddingOfIsReal hw (a : w.Completion) : ℝ) : ℂ) :=
+-        (extensionEmbeddingOfIsReal_apply hw _).symm
+-      have hn : ‖(a : w.Completion)‖ = |extensionEmbeddingOfIsReal hw (a : w.Completion)| := by
+-        rw [← Real.norm_eq_abs]
+-        exact ((isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) _).symm
+-      have hx0 : extensionEmbeddingOfIsReal hw (a : w.Completion) ≠ 0 :=
+-        (map_ne_zero_iff _ (extensionEmbeddingOfIsReal hw).injective).2 a.ne_zero
+-      rw [hι, hn, ofReal_div_abs_eq_sign hx0, ← zpow_neg, ← inv_zpow']
+-      congr 1
+-      rcases lt_or_gt_of_ne hx0 with h | h
+-      · rw [Real.sign_of_neg h]; push_cast; norm_num
+-      · rw [Real.sign_of_pos h]; push_cast; norm_num
+-    · rw [zpow_neg]
+-
+-theorem infiniteWeight_inv_of_isReal {w : InfinitePlace K} (hw : w.IsReal) :
+-    (χ⁻¹).infiniteWeight w = χ.infiniteWeight w := by
+-  rw [infiniteWeight, infiniteParams_inv, if_pos hw]
+-
 -theorem infiniteWeight_inv_of_isComplex {w : InfinitePlace K} (hw : w.IsComplex) :
 -    (χ⁻¹).infiniteWeight w = -χ.infiniteWeight w := by
 -  rw [infiniteWeight, infiniteParams_inv, if_neg (not_isReal_iff_isComplex.2 hw)]
++theorem infiniteWeight_inv_zero {w : InfinitePlace K} (hw : χ.infiniteWeight w = 0) :
++    (χ⁻¹).infiniteWeight w = 0 := by
++  have hp : (0, -χ.infiniteTau w) = (χ⁻¹).infiniteParams w := by
++    refine (χ⁻¹).infiniteParams_unique w (p := (0, -χ.infiniteTau w)) (fun _ ↦ by norm_num) fun a ↦ ?_
++    simp only [infiniteComponent_inv, Circle.coe_inv, χ.infiniteComponent_eq, hw, zpow_zero,
++      one_mul, ofReal_neg, neg_mul, cpow_neg]
++  exact congrArg Prod.fst hp.symm
  
  end HeckeCharacter
  
+--- a/GroundTheory/GlobalFields/TateThesis/Gaussian.lean
++++ b/GroundTheory/GlobalFields/TateThesis/Gaussian.lean
+@@ -21,8 +21,6 @@
+ 
+ def realGaussian (x : ℝ) : ℂ := Complex.exp (-π * (x : ℂ) ^ 2)
+ 
+-def realGaussianOdd (x : ℝ) : ℂ := (x : ℂ) * Complex.exp (-π * (x : ℂ) ^ 2)
+-
+ theorem realGaussian_eq_ofReal (x : ℝ) :
+     realGaussian x = ((Real.exp (-(π * x ^ 2)) : ℝ) : ℂ) := by
+   simp [realGaussian, ofReal_exp]
+@@ -32,44 +30,6 @@
+   simp only [mul_one, one_cpow, div_one, one_mul] at h
+   unfold realGaussian
+   rw [h]
+-
+-theorem integrable_realGaussian : Integrable realGaussian := by
+-  exact integrable_cexp_neg_mul_sq (b := (π : ℂ)) (by simpa using Real.pi_pos)
+-
+-theorem integrable_realGaussianOdd : Integrable realGaussianOdd := by
+-  exact integrable_mul_cexp_neg_mul_sq (b := (π : ℂ)) (by simpa using Real.pi_pos)
+-
+-theorem hasDerivAt_realGaussian (x : ℝ) :
+-    HasDerivAt realGaussian (-2 * π * x * realGaussian x) x := by
+-  have h : HasDerivAt (fun y : ℝ ↦ -π * (y : ℂ) ^ 2) (-π * (2 * (x : ℂ))) x := by
+-    have := ((hasDerivAt_id x).ofReal_comp).pow 2
+-    simpa using this.const_mul (-(π : ℂ))
+-  unfold realGaussian
+-  convert h.cexp using 1
+-  ring
+-
+-theorem fourier_realGaussianOdd : 𝓕 realGaussianOdd = fun y ↦ -I * realGaussianOdd y := by
+-  have hxf : Integrable (fun x : ℝ ↦ x • realGaussian x) := by
+-    refine integrable_realGaussianOdd.congr (Filter.Eventually.of_forall fun x ↦ ?_)
+-    simp [realGaussianOdd, realGaussian, Complex.real_smul]
+-  funext y
+-  have hd := hasDerivAt_fourier integrable_realGaussian hxf y
+-  rw [fourier_realGaussian] at hd
+-  have h2 := (hasDerivAt_realGaussian y).unique hd
+-  have h3 : 𝓕 (fun x : ℝ ↦ (-2 * π * I * x) • realGaussian x) y =
+-      (-2 * π * I) * 𝓕 realGaussianOdd y := by
+-    rw [fourier_real_eq, fourier_real_eq, ← integral_const_mul]
+-    congr 1; funext x
+-    simp only [realGaussianOdd, realGaussian, Circle.smul_def, smul_eq_mul]
+-    ring
+-  rw [h3] at h2
+-  have hpi : (π : ℂ) ≠ 0 := ofReal_ne_zero.mpr Real.pi_ne_zero
+-  have : 𝓕 realGaussianOdd y = (-2 * π * y * realGaussian y) / (-2 * π * I) := by
+-    rw [h2]; field_simp
+-  rw [this, realGaussianOdd, realGaussian]
+-  field_simp
+-  ring_nf
+-  simp [I_sq]
+ 
+ theorem integral_comp_abs_complex (f : ℝ → ℂ) :
+     ∫ x : ℝ, f |x| = 2 * ∫ y in Ioi (0 : ℝ), f y := by
+@@ -104,38 +64,6 @@
+   rw [this, mellin_exp_neg_pi_mul_sq hs]
+   ring
+ 
+-theorem integral_realGaussianOdd_mul_sign_mul_abs_cpow {s : ℂ} (hs : -1 < s.re) :
+-    ∫ x : ℝ, realGaussianOdd x * (Real.sign x : ℂ) * ((|x| : ℝ) : ℂ) ^ s / ((|x| : ℝ) : ℂ) =
+-      Gammaℝ (s + 1) := by
+-  have hs1 : 0 < (s + 1).re := by simp; linarith
+-  have h : (fun x : ℝ ↦ realGaussianOdd x * (Real.sign x : ℂ) * ((|x| : ℝ) : ℂ) ^ s /
+-        ((|x| : ℝ) : ℂ)) =
+-      fun x ↦ (fun y : ℝ ↦ (y : ℂ) * ((Real.exp (-(π * y ^ 2)) : ℝ) : ℂ) * (y : ℂ) ^ s /
+-        (y : ℂ)) |x| := by
+-    funext x
+-    have hx : (x : ℂ) * (Real.sign x : ℂ) = ((|x| : ℝ) : ℂ) := by
+-      rw [← ofReal_mul]
+-      congr 1
+-      rcases lt_trichotomy x 0 with h | h | h
+-      · rw [Real.sign_of_neg h, abs_of_neg h]; ring
+-      · simp [h]
+-      · rw [Real.sign_of_pos h, abs_of_pos h]; ring
+-    rw [realGaussianOdd, ← realGaussian, realGaussian_eq_ofReal]
+-    simp only [sq_abs]
+-    rw [← hx]
+-    ring
+-  rw [h, integral_comp_abs_complex
+-    (fun y : ℝ ↦ (y : ℂ) * ((Real.exp (-(π * y ^ 2)) : ℝ) : ℂ) * (y : ℂ) ^ s / (y : ℂ))]
+-  have : ∫ y in Ioi (0 : ℝ), (y : ℂ) * ((Real.exp (-(π * y ^ 2)) : ℝ) : ℂ) * (y : ℂ) ^ s / (y : ℂ)
+-      = mellin (fun t : ℝ ↦ ((Real.exp (-(π * t ^ 2)) : ℝ) : ℂ)) (s + 1) := by
+-    rw [mellin]
+-    refine setIntegral_congr_fun measurableSet_Ioi fun y hy ↦ ?_
+-    have hy' : (y : ℂ) ≠ 0 := ofReal_ne_zero.mpr (ne_of_gt hy)
+-    rw [add_sub_cancel_right, smul_eq_mul]
+-    field_simp
+-  rw [this, mellin_exp_neg_pi_mul_sq hs1]
+-  ring
+-
+ end
+ 
+ end GroundTheory.Global
 --- a/GroundTheory/GlobalFields/TateThesis/GlobalZeta.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/GlobalZeta.lean
 @@ -164,36 +164,6 @@
@@ -2625,13 +2855,13 @@
 +    (differentiable_tateZeta (χ.testFunction_mem hc) (χ.exists_normOne_ne_one_of_not hχ) s)
  
 -theorem LFunction_eq_mul_completedLFunction {s : ℂ} (hs : 1 < s.re) :
-+theorem LFunction_eq_mul_completedLFunction [IsTotallyReal K] (hc : χ.conductor = ⊤) {s : ℂ} (hs : 1 < s.re) :
++theorem LFunction_eq_mul_completedLFunction [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (hc : χ.conductor = ⊤) {s : ℂ} (hs : 1 < s.re) :
      χ.LFunction s = (χ.discrNormConductor : ℂ) ^ (-(s / 2)) * (χ.gammaFactor s)⁻¹ *
        χ.completedLFunction s := by
    have h1 := χ.discrNormConductor_cpow_ne_zero (s / 2)
    have h2 := χ.gammaFactor_ne_zero (by linarith : 0 < s.re)
 -  rw [χ.completedLFunction_eq hs, cpow_neg]
-+  rw [χ.completedLFunction_eq hc hs, cpow_neg]
++  rw [χ.completedLFunction_eq hwt hc hs, cpow_neg]
    field_simp
  
  theorem differentiable_cpow_mul_gammaFactor_inv :
@@ -2803,13 +3033,13 @@
    exact Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')
  
 -theorem completedLFunction_eq {s : ℂ} (hs : 1 < s.re) :
-+theorem completedLFunction_eq [IsTotallyReal K] (hc : χ.conductor = ⊤) {s : ℂ} (hs : 1 < s.re) :
++theorem completedLFunction_eq [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (hc : χ.conductor = ⊤) {s : ℂ} (hs : 1 < s.re) :
      χ.completedLFunction s =
        (χ.discrNormConductor : ℂ) ^ (s / 2) * χ.gammaFactor s * χ.LFunction s := by
 -  rw [completedLFunction, tateZeta_eq_globalZeta χ.testFunction_mem χ hs,
 -    χ.globalZeta_testFunction hs]
 +  rw [completedLFunction, tateZeta_eq_globalZeta (χ.testFunction_mem hc) χ hs,
-+    χ.globalZeta_testFunction hc hs]
++    χ.globalZeta_testFunction hwt hc hs]
    have hπ := pi_pow_nrComplexPlaces_ne_zero (K := K)
    field_simp
  
@@ -2835,7 +3065,7 @@
      (χ.toIdele (ofFinite χ.conductorDifferentIdele) : ℂ) * tateZeta (χ⁻¹).testFunction χ⁻¹ (1 - s)) * hc
  
 -theorem completedLFunction_eq_rootNumber_mul {s : ℂ}
-+theorem completedLFunction_eq_rootNumber_mul [IsTotallyReal K] (hcond : χ.conductor = ⊤) {s : ℂ}
++theorem completedLFunction_eq_rootNumber_mul [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (hcond : χ.conductor = ⊤) {s : ℂ}
      (hs : ∀ τ : ℝ, (∀ x : IdeleGroup K,
        (χ.toIdele x : ℂ) = ((ideleModule K x : ℝ) : ℂ) ^ ((τ : ℂ) * I)) →
          s ≠ -((τ : ℂ) * I) ∧ s ≠ 1 - (τ : ℂ) * I) :
@@ -2876,7 +3106,7 @@
 -  rw [show (1 : ℂ) - 2 = -1 by norm_num, h2, ← mul_assoc] at h1
 -  exact mul_right_cancel₀ χ.completedLFunction_two_ne_zero (h1.symm.trans (one_mul _).symm)
 +  refine χ.completedLFunction_eq_rootNumber_mul_of_eq hcond ?_
-+  apply χ.tateZeta_adelicFourier_testFunction hcond χ.toFractionalIdeal_conductorDifferentIdele
++  apply χ.tateZeta_adelicFourier_testFunction hwt hcond χ.toFractionalIdeal_conductorDifferentIdele
 +  intro τ hτ
 +  obtain ⟨h0,h1⟩ := hs τ hτ
 +  constructor
@@ -2926,7 +3156,7 @@
      mul_comm]
  
 -theorem globalZeta_adelicFourier_testFunction {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
-+theorem globalZeta_adelicFourier_testFunction [IsTotallyReal K] (hcond : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
++theorem globalZeta_adelicFourier_testFunction [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (hcond : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
      (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
      (s : ℂ) :
      globalZeta (adelicFourier K χ.testFunction) χ⁻¹ s =
@@ -2935,7 +3165,7 @@
    have hf : adelicFourier K χ.testFunction =
        fun y ↦ χ.fourierConst δ * (χ⁻¹).testFunction (ofFinite δ • y) :=
 -    funext (χ.adelicFourier_testFunction hδ)
-+    funext (χ.adelicFourier_testFunction hcond hδ)
++    funext (χ.adelicFourier_testFunction hwt hcond hδ)
    have h1 : globalZeta (fun y ↦ χ.fourierConst δ * (χ⁻¹).testFunction (ofFinite δ • y)) χ⁻¹ s =
        χ.fourierConst δ * globalZeta (fun y ↦ (χ⁻¹).testFunction (ofFinite δ • y)) χ⁻¹ s := by
      unfold globalZeta
@@ -2949,7 +3179,7 @@
 -    (differentiable_id.const_cpow (Or.inl (ofReal_ne_zero.2 hr.ne')))).mul hf
 -
 -theorem tateZeta_adelicFourier_testFunction {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
-+theorem tateZeta_adelicFourier_testFunction [IsTotallyReal K] (hcond : χ.conductor = ⊤)
++theorem tateZeta_adelicFourier_testFunction [IsTotallyReal K] (hwt : ∀ w, χ.infiniteWeight w = 0) (hcond : χ.conductor = ⊤)
 +    {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
      (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
 -    (hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1) (s : ℂ) :
@@ -3028,7 +3258,7 @@
 +      (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')))).differentiableOn).mul
 +        (hD _ ((χ⁻¹).testFunction_mem (χ.conductor_inv.trans hcond)))
 +  intro z hz
-+  rw [tateZeta_eq_globalZeta ((χ⁻¹).testFunction_mem (χ.conductor_inv.trans hcond)) _ hz, χ.globalZeta_adelicFourier_testFunction hcond hδ]
++  rw [tateZeta_eq_globalZeta ((χ⁻¹).testFunction_mem (χ.conductor_inv.trans hcond)) _ hz, χ.globalZeta_adelicFourier_testFunction hwt hcond hδ]
  
  end HeckeCharacter
  
