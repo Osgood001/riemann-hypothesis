@@ -1,6 +1,6 @@
 {
   "core": 35,
-  "candidate": "core35-recovered11b6fdedd49f",
+  "candidate": "core35-finiteorbits50804205ea41",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/lean/src",
@@ -8,11 +8,11 @@
   "target_sha256": "eb34f555ff4f8f9067fd3efed1b3b1a425e052f17f9c240c94e52c4cff725ad9",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 200,
+  "submitted_files": 197,
   "published_baseline_tokens": 773767,
-  "local_normalized_tokens": 341864,
-  "proof_tree_sha256": "d8990f07b49cb176fe25007256c74ea8a4ca4ff0f2696010325b0be18f13388c",
-  "proof_id": "a8db5da30c290a280a438c7b62be0d688362e36b8a52cf902dde556f184ccee5",
+  "local_normalized_tokens": 340753,
+  "proof_tree_sha256": "33cf8464ea7049afe18217de2d54a9cb7dd56cd0d64f0d3ab38ed14c342bb4d7",
+  "proof_id": "50804205ea414765c6acaa13c18d8da84a35960eabdf04e0c7b00bc93954b2b7",
   "modified_files": {
     "Development/AbelianVarietyTheory/Definitions/Foundations/IsIntegralIff.lean": {
       "before": "a561948f682666ffaba5d6883542fa6e326c766bf1cc373aa3080c82fbe429c4",
@@ -360,7 +360,7 @@
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean": {
       "before": "280cfbe22732c9511bb3162d7f89d8bbe5d5ef808791dec489ab58367d3ea27f",
-      "after": "b0d353781f64446049e028964c86017b8a72330e1242213f94a98cb5c6870012"
+      "after": "b79a7b7a2f401f1718b0c1b124a28658f758c1f0b12a26ffdc029d803b9b31ff"
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructureStatement.lean": {
       "before": "dc5b059264f567bc9b473e380d4314d3af986224945d32ed4c13b8c50edf7ca4",
@@ -381,14 +381,6 @@
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFramesLevelLeIffCongrFlagSteStatement.lean": {
       "before": "dddd3aa084702a13b5f59b54261213ca4a8350b68fe3abcdae1ea4af07ccf0f2",
       "after": "8d573123516d1a6427b07ae671dfa88bc67833fe9dedd3feaf84d999203a3797"
-    },
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFinite.lean": {
-      "before": "9604416861c733fe8a5d0f64368f19997ab005c58a34e9508e15089eeeca4625",
-      "after": "3e07d380ae1864c47195cc9b92210fe9c7766ec4d91acf5ca814b84e528c6438"
-    },
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFiniteStatement.lean": {
-      "before": "f672beb16d3a6e2fc994d02e103f22c99c52e40238326973af953665640a0da2",
-      "after": "300e30b621e668b183451de1c749e196e722ef725c74670bc14c12ca7ba7885d"
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetTermBasicFacts.lean": {
       "before": "eae89039a4bd820dd19fa1f9db8c1daf53019bc90d0b3ba4cdc90ecf79741772",
@@ -445,10 +437,6 @@
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClasses.lean": {
       "before": "5db47bbc64c0a05212a12e7480516f1edbd910f2ed5bf27a67b7e6d452915128",
       "after": "dbcb5427a096b537862cbbd83f97fce56be21471653573008d7ab6054cd54731"
-    },
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClassesStatement.lean": {
-      "before": "08d1c4556e3e0151fe13d235f7b814f518ca1902fb8d1064dbb3202a22b745f1",
-      "after": "ce604c54ec1bb607ec5093c6e7e86d00d1cdf4dfa51d95b8008199da14c49429"
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairs.lean": {
       "before": "eae2d6869c4feab4c39042a40034fc065057c953dfe308356e216d7da3addeaa",
@@ -904,8 +892,6 @@
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFrameClassPropertiesStatement.lean": "f66b01c122326331dd8f10400a49eb1e996aba445413581bef86f04b8648f6cf",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFramesLevelLeIffCongrFlagSte.lean": "36fb6c21e16cca588d5bf8ff36604237544168f5588ea47654ce25d1cd0a183d",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFramesLevelLeIffCongrFlagSteStatement.lean": "dddd3aa084702a13b5f59b54261213ca4a8350b68fe3abcdae1ea4af07ccf0f2",
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFinite.lean": "9604416861c733fe8a5d0f64368f19997ab005c58a34e9508e15089eeeca4625",
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFiniteStatement.lean": "f672beb16d3a6e2fc994d02e103f22c99c52e40238326973af953665640a0da2",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetTermBasicFacts.lean": "eae89039a4bd820dd19fa1f9db8c1daf53019bc90d0b3ba4cdc90ecf79741772",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFourInverseMul.lean": "4375157c5113dc9eb55a71e2f32bb997f945b58a49e1148ff82b6dc5b1ceaa8d",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFrameClassesTotalWeightLe.lean": "99d1a4db0a10c24b4f1f198fb06b3f0512e9b627c7bf2050502c63aded3af167",
@@ -920,7 +906,6 @@
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianLatticeMassEqFinprodLocal.lean": "da50eb7976257f5bea1383a3b89afb891c10bfb1e35503adea4218f08dc569c3",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianLatticeMassEqFinprodLocalStatement.lean": "ecbf7f0b59a20694cabc4b96c52df1b4c08b79d535bf8e89cd42474cf4f8657a",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClasses.lean": "5db47bbc64c0a05212a12e7480516f1edbd910f2ed5bf27a67b7e6d452915128",
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClassesStatement.lean": "08d1c4556e3e0151fe13d235f7b814f518ca1902fb8d1064dbb3202a22b745f1",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairs.lean": "eae2d6869c4feab4c39042a40034fc065057c953dfe308356e216d7da3addeaa",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairsStatement.lean": "454bc90f56e5e55d3129a37ec0cf0eb2b223b55e919eed975db43794ea373cc0",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianTermCountFrameClassLe.lean": "40fa1b8cc58f23d012f62cee56876fab525a2a8a1e2fe5e7d702cfa03d99b6ad",
@@ -1023,19 +1008,34 @@
       "Formalism.LocalRingCardinality.DataLevelD",
       "Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GapAtLeast"
     ],
-    "supervisor": "Codex traced the dependencies required by the amplitude expansion and adapted the flag-measure, lattice and cardinality proofs."
+    "supervisor": "Codex traced the dependencies required by the amplitude expansion and adapted the flag-measure, lattice and cardinality proofs.",
+    "finiteness_analysis": "Selected the finite-orbits component and seven direct dependencies and measured the three unused editable modules in the accepted parent.",
+    "source_implementation": "Codex adapted the consumer, extracted the original three finite-set lemmas and replaced the conjunction projection with its finite-orbits component.",
+    "native_research_result_sha256": "a806a8e9c907fe1749d2efce348c0e801bf1e896cee9e943295bf42a6bfa1acd",
+    "native_finiteness_dependencies": [
+      "Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement",
+      "Development.AbelianVarietyTheory.Proofs.FlagMeasures.GluingImageCardPowLeDefectGroupCardStatement",
+      "Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts",
+      "Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameClassesTotalWeightLeStatement",
+      "Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTermsStatement",
+      "Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTermCountFrameClassLeStatement",
+      "Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBoundStatement"
+    ],
+    "changed_consumer": "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean",
+    "changed_consumer_sha256": "b79a7b7a2f401f1718b0c1b124a28658f758c1f0b12a26ffdc029d803b9b31ff",
+    "parent_proof_id": "a8db5da30c290a280a438c7b62be0d688362e36b8a52cf902dde556f184ccee5"
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T11:03:58.013310+00:00",
-    "elapsed_seconds": 534.891,
+    "completed_utc": "2026-11-24T11:15:37.353188+00:00",
+    "elapsed_seconds": 135.726,
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
     ],
-    "log_sha256": "d22e6c187417e35734337230b219e1ab8949f4244f176c709a8c76b50c2723eb",
+    "log_sha256": "9d833538cb7ea6595cb42f2c91b84494b0feb06fac08f65447b86f0b19982824",
     "frozen_files": 20,
     "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
     "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e"

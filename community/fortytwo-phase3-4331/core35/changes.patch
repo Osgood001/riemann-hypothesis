@@ -2435,7 +2435,7 @@
  set_option maxHeartbeats 1000000 in
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean
-@@ -1,21 +1,17 @@
+@@ -1,25 +1,85 @@
  import Mathlib
 -import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 -import Formalism.SharpRestriction.CuspSpanNormBounds.PsiEDef
@@ -2446,7 +2446,11 @@
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordinateLatticeUniqueTermAlmostAllPlacesStatement
  import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalHermitianFramesTermsOrbitsLocalStatement
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetMassLeAndFiniteStatement
++import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GluingImageCardPowLeDefectGroupCardStatement
++import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
++import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameClassesTotalWeightLeStatement
++import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTermCountFrameClassLeStatement
++import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBoundStatement
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesComplementUnitaryNormalisesStabilStatement
 +import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTermsStatement
  import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeMassEqFinprodLocalStatement
@@ -2465,6 +2469,79 @@
  open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL NumberField IsDedekindDomain
  open scoped Pointwise ENNReal Classical
  
+ noncomputable section
++
++section
++open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
++open scoped Pointwise ENNReal Classical
++
++namespace GlobalTheory.HL.MassGlue
++
++variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F]
++variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
++variable {L : LocE F E} {r k : ℕ}
++
++theorem finite_fibre (S : Frames L r k) (d : S.Datum) (C : Set S.FrP) :
++    {Λ | S.IsTerm d Λ ∧ S.Fr d Λ = C}.Finite := by
++  have h1 : ∀ j : ℕ, {Λ | S.IsTerm d Λ ∧ S.cardI d Λ = j ∧ S.Fr d Λ = C}.Finite := fun j => by
++    have h := (GlobalTheory.T.hermitianTermCount_frameClass_le L r k S d C j).trans_lt ENNReal.ofReal_lt_top
++    unfold Frames.nT at h
++    rw [← Set.encard_lt_top_iff]
++    by_contra hc
++    rw [not_lt, top_le_iff] at hc
++    rw [hc] at h
++    simp at h
++  refine ((Set.finite_Iic S.a.toNat).biUnion fun i _ =>
++    (Set.finite_Iic (S.q ^ i)).biUnion fun j _ => h1 j).subset ?_
++  rintro Λ ⟨hT, hC⟩
++  obtain ⟨i, hi, hb⟩ := (GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT).2.2.2.2.2.1
++  have h2 := (GlobalTheory.T.gluingImage_card_pow_le_defectGroup_card L r k S d Λ hT).2.1
++  simp only [Set.mem_iUnion, Set.mem_Iic, Set.mem_setOf_eq]
++  exact ⟨i, by omega, S.cardI d Λ, hb ▸ h2, hT, rfl, hC⟩
++
++theorem finite_cls (S : Frames L r k) (h : ∃ d Λ, S.IsTerm d Λ) :
++    {o : MulAction.orbitRel.Quotient S.St (Set S.FrP) | S.IsIntCls o.out}.Finite := by
++  have h1 := ((GlobalTheory.T.hermitianFrameClasses_total_weight_le L r k S h).trans_lt ENNReal.ofReal_lt_top).ne
++  unfold Frames.sumCls at h1
++  refine (ENNReal.finite_const_le_of_tsum_ne_top h1 (ε := 1) one_ne_zero).subset fun o ho => ?_
++  have ho' : S.IsIntCls o.out := ho
++  simp only [Set.mem_setOf_eq, if_pos ho', mul_one]
++  exact ENNReal.one_le_ofReal.2 ((GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).2 _ ho'.1).2.2.1
++
++theorem finite_orbits (S : Frames L r k) (d : S.Datum) :
++    {o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V) | S.IsTerm d o.out}.Finite := by
++  by_cases hex : ∃ Λ, S.IsTerm d Λ
++  · obtain ⟨Λ₀, h₀⟩ := hex
++    refine (((finite_cls S ⟨d, Λ₀, h₀⟩).biUnion fun o _ => finite_fibre S d o.out).image
++      (fun Λ => (Quotient.mk _ Λ : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V)))).subset ?_
++    intro o ho
++    have hT : S.IsTerm d o.out := ho
++    let o' : MulAction.orbitRel.Quotient S.St (Set S.FrP) := Quotient.mk _ (S.Fr d o.out)
++    obtain ⟨h, hh⟩ : o'.out ∈ MulAction.orbit S.St (S.Fr d o.out) :=
++      MulAction.orbitRel_apply.1 (Quotient.mk_out (s := MulAction.orbitRel S.St (Set S.FrP)) _)
++    have hA := GlobalTheory.T.hermitianFrames_stabilizer_acts_on_terms L r k S d _ hT h.1 h.2
++    have hF : S.Fr d (h.1 • o.out) = o'.out := hA.2.2.2.2.1.trans hh
++    refine ⟨h.1 • o.out, ?_, ?_⟩
++    · simp only [Set.mem_iUnion, Set.mem_setOf_eq]
++      exact ⟨o', hF ▸ (GlobalTheory.HL.TermBasic.term_basic L r k S d _ hA.1).2.2.2.2.2.2.1, hA.1, hF⟩
++    · refine Eq.trans ?_ (Quotient.out_eq o)
++      exact Quotient.sound (MulAction.orbitRel_apply.2 ⟨h, rfl⟩)
++  · refine Set.finite_empty.subset fun o ho => hex ⟨_, ho⟩
++
++end GlobalTheory.HL.MassGlue
++end
+ 
+ namespace GlobalTheory.HL.ProdStruct
+ 
+@@ -157,7 +217,7 @@
+       (A.lat p Γ) (hΓ.2 p) ((GlobalTheory.T.numberField_lattice_determined_by_local_lattices A _ Γ hΓ.1).2.1 p) _ rfl
+     simp only [and_self_left, hΓ.2 p, true_and] at t
+     exact ⟨t.1, t.2.2.1, t.2.2.2⟩
+-  have hUfin : ∀ p ∈ s, (U p).Finite := fun p _ => (GlobalTheory.T.hermitianDoubleCoset_mass_le_and_finite (A.L p) r k (G.S p) (by omega) (d p)).2
++  have hUfin : ∀ p ∈ s, (U p).Finite := fun p _ => GlobalTheory.HL.MassGlue.finite_orbits (G.S p) (d p)
+   have hinj : ∀ c ∈ Tq, ∀ c' ∈ Tq, (∀ p ∈ s, Φ c p = Φ c' p) → c = c' := by
+     intro c hc c' hc' he
+     have hc1 : G.IsTerm d c.out := hc
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructureStatement.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructureStatement.lean
 @@ -1,10 +1,7 @@
@@ -2580,44 +2657,6 @@
  import Mathlib
 +import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
  import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFramesLevelLeIffCongrFlagSte
--import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
--import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
--import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
-+
- open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
- open scoped Pointwise ENNReal Classical
- set_option maxHeartbeats 1000000 in
---- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFinite.lean
-+++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFinite.lean
-@@ -1,15 +1,14 @@
- import Mathlib
--import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
--import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
--import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
-+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GluingImageCardPowLeDefectGroupCardStatement
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameClassesTotalWeightLeStatement
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTermsStatement
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianMassEqSumFrameClassesStatement
-+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTermCountFrameClassLeStatement
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBoundStatement
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianMassEqSumFrameClassesStatement
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameClassesTotalWeightLeStatement
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GluingImageCardPowLeDefectGroupCardStatement
--import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTermCountFrameClassLeStatement
-+
- open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
- open scoped Pointwise ENNReal Classical
- 
---- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFiniteStatement.lean
-+++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFiniteStatement.lean
-@@ -1,8 +1,7 @@
- import Mathlib
-+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetMassLeAndFinite
 -import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 -import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
 -import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
@@ -3473,19 +3512,6 @@
  
  open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
  open scoped Pointwise ENNReal Classical
---- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClassesStatement.lean
-+++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClassesStatement.lean
-@@ -1,8 +1,7 @@
- import Mathlib
-+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
- import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianMassEqSumFrameClasses
--import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
--import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
--import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
-+
- open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
- open scoped Pointwise ENNReal Classical
- set_option maxHeartbeats 1000000 in
 --- a/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairs.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairs.lean
 @@ -1,12 +1,11 @@
