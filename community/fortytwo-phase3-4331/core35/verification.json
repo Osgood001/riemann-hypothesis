@@ -1,6 +1,6 @@
 {
   "core": 35,
-  "candidate": "core35-finiteorbits50804205ea41",
+  "candidate": "core35-amplitude74f7045e92ac",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/lean/src",
@@ -8,11 +8,11 @@
   "target_sha256": "eb34f555ff4f8f9067fd3efed1b3b1a425e052f17f9c240c94e52c4cff725ad9",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 197,
+  "submitted_files": 196,
   "published_baseline_tokens": 773767,
-  "local_normalized_tokens": 340753,
-  "proof_tree_sha256": "33cf8464ea7049afe18217de2d54a9cb7dd56cd0d64f0d3ab38ed14c342bb4d7",
-  "proof_id": "50804205ea414765c6acaa13c18d8da84a35960eabdf04e0c7b00bc93954b2b7",
+  "local_normalized_tokens": 339769,
+  "proof_tree_sha256": "7ebd00df157215a3d2694d3dca4f4cea3376a8801f5ab262ba2d708c968c1133",
+  "proof_id": "74f7045e92ace162bfcaab5eb07342c6a9a8c9fa4f9e95d3004f069b70f15f86",
   "modified_files": {
     "Development/AbelianVarietyTheory/Definitions/Foundations/IsIntegralIff.lean": {
       "before": "a561948f682666ffaba5d6883542fa6e326c766bf1cc373aa3080c82fbe429c4",
@@ -28,7 +28,7 @@
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeExpansionOverFinitePlaces.lean": {
       "before": "d06b07dc3c9e1019f29d58a66f1bb97f142f655016f978e13f25ec882d8233e7",
-      "after": "787ba1a81c9f2dedbbd714d197cf8357f5eeaa52d7c12726fd568013527038ca"
+      "after": "394ca74db7290967322cecae0f008179ee27db1feba9ecd78d32dbfa78bd980a"
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeExpansionOverFinitePlacesStatement.lean": {
       "before": "817e1a18ea0ef4b5ef7200cb198b4e46028bd16d7799e75e80b0f8e49d4879f7",
@@ -360,11 +360,7 @@
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean": {
       "before": "280cfbe22732c9511bb3162d7f89d8bbe5d5ef808791dec489ab58367d3ea27f",
-      "after": "b79a7b7a2f401f1718b0c1b124a28658f758c1f0b12a26ffdc029d803b9b31ff"
-    },
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructureStatement.lean": {
-      "before": "dc5b059264f567bc9b473e380d4314d3af986224945d32ed4c13b8c50edf7ca4",
-      "after": "8702dfe7b029ef3b6da1a6c1ab8499b84a9484d9be20d0d487c12b54f58f1965"
+      "after": "18f1314d5afddbfaadb9aceab370fd9cb7aa8b7b5f815dccc1b0b365d2a73a17"
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFrameClassProperties.lean": {
       "before": "cbf53511de32072178baa67fac15653d5bad47ad53c2ceff0a3f96157aae3aa3",
@@ -887,7 +883,6 @@
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HaarInvVolumeRelIndexPiUnivEqFinprod.lean": "78b0473cbc1f9e2150c54234f3a97714d9de47e3c517f5c05c3f2d00e762e36d",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HaarInvVolumeRelIndexPiUnivEqFinprodStatement.lean": "f3633ee28aed1b6047ba2164b721b17ff5f139e67834320f13624acf2cbd39dc",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean": "280cfbe22732c9511bb3162d7f89d8bbe5d5ef808791dec489ab58367d3ea27f",
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructureStatement.lean": "dc5b059264f567bc9b473e380d4314d3af986224945d32ed4c13b8c50edf7ca4",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFrameClassProperties.lean": "cbf53511de32072178baa67fac15653d5bad47ad53c2ceff0a3f96157aae3aa3",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFrameClassPropertiesStatement.lean": "f66b01c122326331dd8f10400a49eb1e996aba445413581bef86f04b8648f6cf",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFramesLevelLeIffCongrFlagSte.lean": "36fb6c21e16cca588d5bf8ff36604237544168f5588ea47654ce25d1cd0a183d",
@@ -1022,20 +1017,23 @@
       "Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBoundStatement"
     ],
     "changed_consumer": "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean",
-    "changed_consumer_sha256": "b79a7b7a2f401f1718b0c1b124a28658f758c1f0b12a26ffdc029d803b9b31ff",
-    "parent_proof_id": "a8db5da30c290a280a438c7b62be0d688362e36b8a52cf902dde556f184ccee5"
+    "changed_consumer_sha256": "18f1314d5afddbfaadb9aceab370fd9cb7aa8b7b5f815dccc1b0b365d2a73a17",
+    "parent_proof_id": "50804205ea414765c6acaa13c18d8da84a35960eabdf04e0c7b00bc93954b2b7",
+    "supervisor_amplitude_reduction": "Codex specialized the internal product theorem to the amplitude identity and removed its unused real nonnegative mass identity. The original challenge theorem and the local support and finiteness arguments are retained.",
+    "finite_orbit_implementation_in_parent_sha256": "b79a7b7a2f401f1718b0c1b124a28658f758c1f0b12a26ffdc029d803b9b31ff",
+    "amplitude_entry_sha256": "394ca74db7290967322cecae0f008179ee27db1feba9ecd78d32dbfa78bd980a"
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T11:15:37.353188+00:00",
-    "elapsed_seconds": 135.726,
+    "completed_utc": "2026-11-24T11:21:03.130360+00:00",
+    "elapsed_seconds": 144.438,
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
     ],
-    "log_sha256": "9d833538cb7ea6595cb42f2c91b84494b0feb06fac08f65447b86f0b19982824",
+    "log_sha256": "26fc8040c035afee504119453f971ce2877f263780d21cfa8df004eeba9d9071",
     "frozen_files": 20,
     "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
     "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e"
