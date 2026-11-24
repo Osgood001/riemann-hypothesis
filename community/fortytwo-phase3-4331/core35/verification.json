@@ -1,6 +1,6 @@
 {
   "core": 35,
-  "candidate": "core35-goodweights890f5f5da0d7",
+  "candidate": "core35-finitepatch01f7505e3e45",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/lean/src",
@@ -8,11 +8,11 @@
   "target_sha256": "eb34f555ff4f8f9067fd3efed1b3b1a425e052f17f9c240c94e52c4cff725ad9",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 186,
+  "submitted_files": 185,
   "published_baseline_tokens": 773767,
-  "local_normalized_tokens": 330546,
-  "proof_tree_sha256": "0c365b9e8ffb76d7fefc1edd81d1c4d12bd528a1765c5f405365543f4d71e2fc",
-  "proof_id": "890f5f5da0d7b29bf004a1e3e1ef4be68442b2f8e2d6e6deedd6e7998a7e4b94",
+  "local_normalized_tokens": 328750,
+  "proof_tree_sha256": "3cb3d7f5c0f8e95dc9d8e78ef46ab9cbf7973caf806cc0cfe039e252ee5635d4",
+  "proof_id": "01f7505e3e451c4eac1b4e6ba064e631d854a21008f020821ad9cc50848ecfdb",
   "modified_files": {
     "Development/AbelianVarietyTheory/Definitions/Foundations/IsIntegralIff.lean": {
       "before": "a561948f682666ffaba5d6883542fa6e326c766bf1cc373aa3080c82fbe429c4",
@@ -300,11 +300,7 @@
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesTermsOrbitsLocal.lean": {
       "before": "fece085d8b55a60d0c8ebaa6c82021cf364711b0b91dc64cc393175a3d3aaddd",
-      "after": "d9e52290c58769dc70b0498c1d09d0b628a978ab8bcd617a651b3611b3c6f8b4"
-    },
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesTermsOrbitsLocalStatement.lean": {
-      "before": "44a26f6522a7333a86e686a435c75c9fa3a63ddbc5e0028e64fa245962d69834",
-      "after": "02a8bd161a0df678d393c9b7af45e1a01827eaba70f93f4c11765e7ee6aef7f3"
+      "after": "b3a9375f399a9e73772d4496b089ba6fa6a00b60603a3fd8cd55c19ae2c03a9a"
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingCount.lean": {
       "before": "af90d63e40fa50c4d468ba0126501eed290f4580e969864155cf23c9d7f40e37",
@@ -352,7 +348,7 @@
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean": {
       "before": "280cfbe22732c9511bb3162d7f89d8bbe5d5ef808791dec489ab58367d3ea27f",
-      "after": "9a32658d47e79bdf1ec123556122fc919f89f636c61b3dc58e303f0253d87157"
+      "after": "f4b3580cdc5ad06ae08f6f74caac6c9b5527f69b2db0fde23e24a52d192f64d9"
     },
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFrameClassProperties.lean": {
       "before": "cbf53511de32072178baa67fac15653d5bad47ad53c2ceff0a3f96157aae3aa3",
@@ -828,7 +824,6 @@
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesGoodAlmostAllPlaces.lean": "6a645708879957e648d1c4ed4de332938d8a384e60b2a1c4f573d3ddfc6f970e",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesGoodAlmostAllPlacesStatement.lean": "f112ea7ba817e9aea597f160ae66c4d93ba6b50fdf0862bfc60721c89deb6fd5",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesTermsOrbitsLocal.lean": "fece085d8b55a60d0c8ebaa6c82021cf364711b0b91dc64cc393175a3d3aaddd",
-    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesTermsOrbitsLocalStatement.lean": "44a26f6522a7333a86e686a435c75c9fa3a63ddbc5e0028e64fa245962d69834",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingCount.lean": "af90d63e40fa50c4d468ba0126501eed290f4580e969864155cf23c9d7f40e37",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingCountStatement.lean": "7e01d07e09d2553fd2e22ecae8049e80ac42a817e15e725bf080d00ff9d6f049",
     "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingImageCardPowLeDefectGroupCard.lean": "42568bfc65f1b04326f465331c7885af03b790f02a33e56b4d27e73400a28353",
@@ -958,8 +953,8 @@
     "source_implementation": "Codex adapted the consumer, extracted the original three finite-set lemmas and replaced the conjunction projection with its finite-orbits component.",
     "native_research_result_sha256": "a806a8e9c907fe1749d2efce348c0e801bf1e896cee9e943295bf42a6bfa1acd",
     "changed_consumer": "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean",
-    "changed_consumer_sha256": "9a32658d47e79bdf1ec123556122fc919f89f636c61b3dc58e303f0253d87157",
-    "parent_proof_id": "29616deacfeb7b809de55868e28bdec72f5c18c929d39181efb6c2a35fe7c090",
+    "changed_consumer_sha256": "f4b3580cdc5ad06ae08f6f74caac6c9b5527f69b2db0fde23e24a52d192f64d9",
+    "parent_proof_id": "890f5f5da0d7b29bf004a1e3e1ef4be68442b2f8e2d6e6deedd6e7998a7e4b94",
     "supervisor_amplitude_reduction": "Codex specialized the internal product theorem to the amplitude identity and removed its unused real nonnegative mass identity. The original challenge theorem and the local support and finiteness arguments are retained.",
     "finite_orbit_implementation_in_parent_sha256": "9a32658d47e79bdf1ec123556122fc919f89f636c61b3dc58e303f0253d87157",
     "amplitude_entry_sha256": "8c4398eae1c5aa673428278f88bb471a3bf1615d750e5c842c02c47d7bb58a12",
@@ -990,19 +985,20 @@
       "finite_orbits"
     ],
     "original_applications_in_these_lemmas": 5,
-    "supervisor_good_places": "Codex computed the unique good-place term weight from equality of the term and frame stabilizer, and specialized the good-place theorem to the two statements needed by the amplitude expansion. The coordinate height follows directly from the zero exponents."
+    "supervisor_good_places": "Codex computed the unique good-place term weight from equality of the term and frame stabilizer, and specialized the good-place theorem to the two statements needed by the amplitude expansion. The coordinate height follows directly from the zero exponents.",
+    "supervisor_finite_patch": "Codex glued a prescribed finite patch of local lattice representatives directly onto the existing global term. This specializes the local-to-global step to exact lattice equality at the exceptional places and removes the unused global datum equivalence."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T12:02:56.550167+00:00",
-    "elapsed_seconds": 153.199,
+    "completed_utc": "2026-11-24T12:06:00.986719+00:00",
+    "elapsed_seconds": 136.693,
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
     ],
-    "log_sha256": "6154c76893dfc4c4b5c21e6e1e4f8affb3eb775e58e8a6eae271847da25b20c2",
+    "log_sha256": "99e5c10690105d38b67638108105c823572f163674c94ff0fe08d529bb68fa91",
     "frozen_files": 20,
     "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
     "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e"
