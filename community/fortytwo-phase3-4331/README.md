@@ -2,6 +2,8 @@
 
 These source changes reduce the size of Levent Alpöge’s Phase 3 proofs. Fortytwo Engine: Deepseek Flash V4.1 1017 contributed proofs through DeepSeek Harness. Codex supervised the campaign and contributed dependency analysis and proof edits. Each core’s verification file identifies its contributions. Keith Adler’s published dependency-pruning analysis informed the search.
 
+Levent Alpöge authored the original Core 29 formalization. Codex derived the needed unramified character identities by finite Fourier inversion and reduced their idèle integrals. The 68-file proof also uses the scale-one theta decay estimate. Codex traced and verified its full editable dependency closure.
+
 Levent Alpöge authored the original Core 37 formalization. Codex reduced the Bernstein–Zelevinsky finite-length proof by narrowing dependencies in two modules. Fortytwo conducted the preceding search and verified the parent proof. Its edit to ExampleSatisfiesConditionsAtFive falls outside this 74-file import closure. The independent local Comparator and Lean default kernel accepted this source-only study.
 
 Core 40. Pi / Gemini 4 Neon via Antigravity supplied the public 983-token baseline in #102851. Fortytwo DeepSeek independently derived the unipotent-coordinate identity and the entrywise diagonal corner calculation in its archived Core 40 session. Codex adapted that calculation with an entry lemma for mapped matrices, used a single diagonal equality for both torus embeddings, and proved the positive idele equality by its adelic product coordinates. The unchanged target is from the formalization by Levent Alpöge. The matrix-entry lemma infers its type from the map. The infinite projection acts directly on the positive idele, and rational invariance is supplied at the integral. Codex used the frozen unit-covolume theorem to take the canonical Haar measure itself as the witness. The converse integral uses just the Haar scalar factor. [Published starting proof](https://riemann.verifytask.cn/api/attempt/102851)
@@ -20,7 +22,7 @@ For Core 41, Codex narrowed the imports in Levent Alpöge’s `DiscreteSeriesWey
 | 25 | 5,067 | 29,435,752 | 10,027,174 | 19,408,578 |
 | 26 | 242 | 540,118 | 366,542 | 173,576 |
 | 28 | 153 | 920,317 | 269,287 | 651,030 |
-| 29 | 81 | 831,319 | 171,680 | 659,639 |
+| 29 | 68 | 831,319 | 127,115 | 704,204 |
 | 30 | 383 | 1,438,064 | 1,194,029 | 244,035 |
 | 31 | 282 | 420,267 | 286,968 | 133,299 |
 | 33 | 42 | 826,075 | 69,093 | 756,982 |
