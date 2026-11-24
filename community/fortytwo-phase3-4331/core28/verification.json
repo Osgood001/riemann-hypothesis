@@ -1,14 +1,14 @@
 {
   "core": 28,
-  "candidate": "core28-fastspanprojectionse534be4904",
+  "candidate": "core28-fastquotientforms3e8f5adf2a",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 151,
-  "local_normalized_tokens": 260685,
+  "local_normalized_tokens": 260150,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "8d747dd62e2f3e4a36cb1cc9302eced74b68ee5e4a7e3fbd52b98faca9850d83",
+  "proof_tree_sha256": "3f0bf06c4de6829ac8325af3c28efa4fd5848fe70037607e878f9bdc553df8ba",
   "modified_files": {
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
       "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
@@ -112,7 +112,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpComponentCombination.lean": {
       "before": "279f73e574038f0aa6695b9d57dccf0b247e9e5592fc3135c19298577befad74",
-      "after": "cbd9862b1a03801e97ed08686aa75439e62e16d3fecd087a1cb57f5017512537"
+      "after": "2742fed666b90ae871aa83ca8c9a540a9f7e9bd11834d28ceeaf3a377f5210a9"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PositiveSpanMatrices.lean": {
       "before": "71c12c7d6ab35cd91d7116b0d5d06e6bac4281117d9649eaff917833378a3d36",
@@ -260,7 +260,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramMatrixExistence.lean": {
       "before": "33fd21095386ac53e6862f5511ceb9e271f18681870e645cc514e750f8cd5a5a",
-      "after": "6b55a79fec7f63990919c31e08a9bb7061b7cd5923d586170463c8d89ea56881"
+      "after": "842a57779b875ae891633999c1513c4574a15c3387471248226e7a394b5b6418"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermCOrthonormalCoordinates.lean": {
       "before": "b7378d68fd628f770a1247fef6bc968d6092a742de4b3fc2bc586ddc8e9eeb34",
@@ -328,7 +328,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpSpanRight.lean": {
       "before": "5ce3d8794ac2ea63c5d9433b4493b2effea521bca68afd57df1e1b141effe885",
-      "after": "65672ae806b176c9ccda116be62eb9d07b2702abd3401d73f7e6bf8e6a130832"
+      "after": "94a4f3e4fd035a6ea1ca73fc00e5724d4285a89a860225346e4c9848c1c5ffa4"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ReducedLatticeShortBound.lean": {
       "before": "25853a470340945d012a3d46bd28136c33a969106764d6bd2a85ba173974f3e5",
@@ -486,7 +486,7 @@
       "ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.GROWCountStatement": "e1c1816f9617b22a65d5da8fcff9f58bd8344496bee089b4e3b0d6cf503ac8a6"
     },
     "credit_detail": "Fortytwo supplied the parent proof edits. Codex revised the listed mathematical proof sources and checked the resulting proof.",
-    "new_contribution": "Original Lean formalization by Levent Alpöge. Fortytwo removed the FourSignHolds import from FractionalSliceDomains; its retained checkpoint is byte-identical. Codex contributed the following additional reductions. Show both the Hermitian perpendicular-space inclusion and unipotent complement spanning statement by pulling the target lattice span back along their linear projections and checking integral generators. Use the canonical coordinate linear embedding at each CM place. Transport only the positive projection at a CM place; unitary covariance of the Hermitian majorant then follows immediately by its defining Hermitian pairing.",
+    "new_contribution": "Original Lean formalization by Levent Alpöge. Fortytwo removed the FourSignHolds import from FractionalSliceDomains; its retained checkpoint is byte-identical. Codex contributed the following additional reductions. The quotient basis already supplies orthonormal coordinates. Remove the auxiliary signed Gram-coordinate expansion after checking that no reachable module uses it. Use the linear majorant covector on the orthogonal quotient to prove vanishing directly by cancellation at the isotropic vector. Derive right orthogonality by conjugate linearity on a submodule span, and left orthogonality by the kernel of the covector. This dispenses with a second conjugate symmetry proof.",
     "shared_module_attribution": {
       "original_author": "Levent Alpöge",
       "inherited_native_module": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains",
@@ -613,7 +613,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T07:54:21.593557+00:00",
+    "completed_utc": "2026-11-24T08:06:47.800695+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",

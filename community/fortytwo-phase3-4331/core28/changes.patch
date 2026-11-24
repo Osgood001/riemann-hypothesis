@@ -4282,20 +4282,24 @@
  
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpComponentCombination.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpComponentCombination.lean
-@@ -14,9 +14,6 @@
+@@ -12,52 +12,6 @@
  
- def eps' (p : ℕ) {n : ℕ} (k : Fin n) : ℂ := if (k : ℕ) < p then 1 else -1
+ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
  
+-def eps' (p : ℕ) {n : ℕ} (k : Fin n) : ℂ := if (k : ℕ) < p then 1 else -1
+-
 -lemma eps'_sq (p : ℕ) {n : ℕ} (k : Fin n) : eps' p k * eps' p k = 1 := by
 -  unfold eps'
 -  split_ifs <;> norm_num
- 
- section Coord
- 
-@@ -26,35 +23,12 @@
- 
- lemma hC_comb_f (y y' : Fin n → ℂ) :
-     hermC τ.1 X.Gm (∑ j, y' j • f j) (∑ l, y l • f l) = ∑ j, eps' p j * (conj (y j) * y' j) := by
+-
+-section Coord
+-
+-variable (X : Data E r) (τ : X.Ψ) {n : ℕ} (p : ℕ) (f : Fin n → Fin r → ℂ)
+-  (hf : ∀ k l, hermC τ.1 X.Gm (f k) (f l) = if k = l then eps' p k else 0)
+-include hf
+-
+-lemma hC_comb_f (y y' : Fin n → ℂ) :
+-    hermC τ.1 X.Gm (∑ j, y' j • f j) (∑ l, y l • f l) = ∑ j, eps' p j * (conj (y j) * y' j) := by
 -  have hsumR : ∀ (u : Fin r → ℂ) (w : Fin n → Fin r → ℂ),
 -      hermC τ.1 X.Gm u (∑ l, w l) = ∑ l, hermC τ.1 X.Gm u (w l) := by
 -    intro u w
@@ -4308,14 +4312,12 @@
 -    intro c u w
 -    simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
 -    exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
-   rw [hermC_sum_left]
-   refine Finset.sum_congr rfl fun j _ => ?_
+-  rw [hermC_sum_left]
+-  refine Finset.sum_congr rfl fun j _ => ?_
 -  rw [hermC_smul_left, hsumR]
 -  simp only [hsmulR, hf, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
-+  rw [hermC_smul_left, hermC_sum_right]
-+  simp only [hermC_smul_right, hf, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
-   ring
- 
+-  ring
+-
 -lemma coord_f {v : Fin r → ℂ} (hv : v ∈ Submodule.span ℂ (Set.range f)) :
 -    v = ∑ j, (eps' p j * hermC τ.1 X.Gm v (f j)) • f j := by
 -  obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).mp hv
@@ -4327,10 +4329,13 @@
 -  rw [key]
 -  congr 1
 -  linear_combination (-(c j)) * eps'_sq p j
- 
- end Coord
- 
-@@ -68,22 +42,11 @@
+-
+-end Coord
+-
+ def uc (X : Data E r) (z0 : Frame X.Ψ r) (ξ : Fin r → E) (τ : X.Ψ) (v : Fin r → ℂ) : Fin r → ℂ :=
+   v - (X.Hf z0 τ v (Data.emb τ.1 ξ) / X.Hf z0 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ)) •
+     Data.emb τ.1 ξ
+@@ -68,22 +22,11 @@
  
  lemma uc_comb (hz : z0 ∈ X.dom) {n : ℕ} (a : Fin n → ℂ) (V : Fin n → Fin r → ℂ) :
      uc X z0 ξ τ (∑ k, a k • V k) = ∑ k, a k • uc X z0 ξ τ (V k) := by
@@ -4356,7 +4361,7 @@
    unfold uc
    rw [hsum]
    simp only [smul_sub, Finset.sum_sub_distrib, Finset.sum_div, Finset.sum_smul, smul_smul,
-@@ -92,32 +55,13 @@
+@@ -92,32 +35,13 @@
  lemma uc_perp (hξξ : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0) (v v' : Fin r → ℂ)
      (hv : hermC τ.1 X.Gm v (Data.emb τ.1 ξ) = 0) (hv' : hermC τ.1 X.Gm v' (Data.emb τ.1 ξ) = 0) :
      hermC τ.1 X.Gm (uc X z0 ξ τ v') (uc X z0 ξ τ v) = hermC τ.1 X.Gm v' v := by
@@ -9772,10 +9777,21 @@
  
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramMatrixExistence.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramMatrixExistence.lean
-@@ -20,41 +20,6 @@
-   refine Finset.sum_congr rfl fun j _ => ?_
-   simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
-   ring
+@@ -9,52 +9,6 @@
+ noncomputable section
+ 
+ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
+-
+-private lemma hermC_sub_smul_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
+-    (u w v : Fin r → ℂ) (a : ℂ) :
+-    hermC τ G (u - a • w) v = hermC τ G u v - a * hermC τ G w v := by
+-  unfold hermC
+-  rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
+-  refine Finset.sum_congr rfl fun i _ => ?_
+-  rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
+-  refine Finset.sum_congr rfl fun j _ => ?_
+-  simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+-  ring
 -
 -private lemma hermC_smul_left_mul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
 -    (u v : Fin r → ℂ) (a : ℂ) :
@@ -9814,7 +9830,7 @@
  
  private lemma emb_sum_smul' (τ : E →+* ℂ) {n : ℕ} (c : Fin n → E) (β : Fin n → Fin r → E) :
      Data.emb τ (∑ k, c k • β k) = ∑ k, τ (c k) • Data.emb τ (β k) := by
-@@ -90,7 +55,7 @@
+@@ -90,7 +44,7 @@
    have hperp : ∀ (τ : X.Ψ) (y : Fin r → E), herm X.Gm y ξ = 0 →
        hermC τ.1 X.Gm (Data.emb τ.1 y) (Data.emb τ.1 ξ) = 0 := by
      intro τ y hy
@@ -9823,7 +9839,30 @@
    have hee : ∀ τ : X.Ψ, hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0 :=
      fun τ => hperp τ ξ hξξ
    have huc : ∀ (τ : X.Ψ) (v : Fin r → E),
-@@ -119,7 +84,7 @@
+@@ -102,24 +56,18 @@
+     set t := X.Hf z0 τ v e / X.Hf z0 τ e e with ht
+     have hu : uc X.toData z0 ξ τ v = v - t • e := rfl
+     have h1 : hermC τ.1 X.Gm (uc X.toData z0 ξ τ v) e = 0 := by
+-      rw [hu, hermC_sub_smul_left, hv, hee τ]
++      rw [hu, hermC_sub_left, hermC_smul_left, hv, hee τ]
+       ring
+     have h2 : X.Hf z0 τ (uc X.toData z0 ξ τ v) e = 0 := by
+-      have hl : (2 : ℂ) • X.ppos z0 τ (v - t • e) - (v - t • e) =
+-          ((2 : ℂ) • X.ppos z0 τ v - v) - t • ((2 : ℂ) • X.ppos z0 τ e - e) := by
+-        rw [ReciprocityTheory.ChartRestriction.G.FD.OrthogonalComplementLines.ppos_sub X.toData, Data.ppos_smul_eq]
+-        module
+-      have hd : X.Hf z0 τ (uc X.toData z0 ξ τ v) e =
+-          X.Hf z0 τ v e - t * X.Hf z0 τ e e := by
+-        rw [hu]
+-        show hermC τ.1 X.Gm ((2 : ℂ) • X.ppos z0 τ (v - t • e) - (v - t • e)) e = _
+-        rw [hl, hermC_sub_smul_left]
+-        rfl
+-      rw [hd, ht, div_mul_cancel₀ _ (hHf τ), sub_self]
++      let L := X.toData.majorantCovector z0 τ e
++      change L (uc X.toData z0 ξ τ v) = 0
++      rw [hu, map_sub, map_smul]
++      change X.Hf z0 τ v e - t * X.Hf z0 τ e e = 0
++      rw [ht, div_mul_cancel₀ _ (hHf τ), sub_self]
      have h3 : hermC τ.1 X.Gm (X.Jt z0 τ (uc X.toData z0 ξ τ v)) e = 0 := by
        show hermC τ.1 X.Gm (I • ((2 : ℂ) • X.ppos z0 τ (uc X.toData z0 ξ τ v) -
          uc X.toData z0 ξ τ v)) e = 0
@@ -9832,7 +9871,7 @@
        change I * X.Hf z0 τ (uc X.toData z0 ξ τ v) e = 0
        rw [h2, mul_zero]
      exact (hf τ).2.2.2.2 _ h1 h3
-@@ -129,7 +94,7 @@
+@@ -129,7 +77,7 @@
      obtain ⟨a, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1 hw
      refine Finset.sum_congr rfl fun j _ => ?_
      congr 1
@@ -9841,7 +9880,7 @@
      simp_rw [(hf τ).2.2.1]
      simp only [mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
      split_ifs <;> ring
-@@ -153,16 +118,16 @@
+@@ -153,16 +101,16 @@
    have hp : ∀ (τ : X.Ψ) (c : Fin (r - 2) → E),
        hermC τ.1 X.Gm (Data.emb τ.1 (∑ k, c k • β k)) (Data.emb τ.1 ξ) = 0 := by
      intro τ c
@@ -11903,7 +11942,7 @@
      (hTz : X.flowV e s z ∈ X.dom) (τ : X.Ψ) (v : Fin r → ℂ)
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpSpanRight.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpSpanRight.lean
-@@ -12,10 +12,7 @@
+@@ -12,56 +12,34 @@
  variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {r : ℕ}
    (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
  
@@ -11915,13 +11954,19 @@
  
  theorem perp_span {s : Set (Fin r → ℂ)} {v : Fin r → ℂ} (h : ∀ y ∈ s, hermC τ G y v = 0) :
      ∀ y ∈ Submodule.span ℂ s, hermC τ G y v = 0 := by
-@@ -27,41 +24,25 @@
+-  intro y hy
+-  have hle : Submodule.span ℂ s ≤ LinearMap.ker (hL τ G v) :=
+-    Submodule.span_le.mpr (fun z hz => LinearMap.mem_ker.mpr (h z hz))
+-  exact LinearMap.mem_ker.mp (hle hy)
++  exact fun y hy => (Submodule.span_le (p := LinearMap.ker (hL τ G v))).mpr h hy
+ 
  theorem perp_span_right (hG : ∀ a b, cc (G a b) = G b a) {s : Set (Fin r → ℂ)} {v : Fin r → ℂ}
      (h : ∀ y ∈ s, hermC τ G v y = 0) : ∀ y ∈ Submodule.span ℂ s, hermC τ G v y = 0 := by
    intro y hy
--  induction hy using Submodule.span_induction with
+   induction hy using Submodule.span_induction with
 -  | mem x hx => exact h x hx
--  | zero => simp [hermC]
++  | mem z hz => exact h z hz
+   | zero => simp [hermC]
 -  | add x y _ _ hx hy =>
 -    have e : hermC τ G v (x + y) = hermC τ G v x + hermC τ G v y := by
 -      simp only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
@@ -11932,11 +11977,8 @@
 -      refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
 -      ring
 -    rw [e, hx, mul_zero]
-+  rw [← hermC_conj τ hG]
-+  have hv := perp_span τ G (v := v) (s := s) (fun z hz => (hermC_conj τ hG v z).symm.trans
-+    (by rw [h z hz, map_zero])) y hy
-+  rw [hv, map_zero]
-+
++  | add x y _ _ hx hy => simp [hermC_add_right, hx, hy]
++  | smul c x _ hx => simp [hermC_smul_right, hx]
  
  theorem coef_of_mem {n : ℕ} (Y : Fin n → Fin r → ℂ) (S : Set (Fin n)) {v : Fin r → ℂ}
      (hv : v ∈ Submodule.span ℂ (Y '' S)) :
@@ -11971,10 +12013,11 @@
  
  theorem sum_mem_of {n : ℕ} (Y : Fin n → Fin r → ℂ) (S : Set (Fin n)) (w : Fin n → ℂ)
      (hw : ∀ j, j ∉ S → w j = 0) : ∑ j, w j • Y j ∈ Submodule.span ℂ (Y '' S) := by
-@@ -75,21 +56,59 @@
+@@ -74,22 +52,56 @@
+ variable (hG : ∀ a b, cc (G a b) = G b a)
  include hG
  
- theorem hC_self_im (v : Fin r → ℂ) : (hermC τ G v v).im = 0 := by
+-theorem hC_self_im (v : Fin r → ℂ) : (hermC τ G v v).im = 0 := by
 -  have hτ : ∀ a b, conj (τ (G a b)) = τ (G b a) := by
 -    intro a b
 -    rw [← hG a b]
@@ -11990,9 +12033,6 @@
 -    rw [hτ]
 -    ring
 -  exact Complex.conj_eq_iff_im.mp hc
-+  exact Complex.conj_eq_iff_im.mp (hermC_conj τ hG v v)
-+
-+
 +private theorem block_basis {n : ℕ} (Y : Fin n → Fin r → ℂ) (hind : LinearIndependent ℂ Y)
 +    (A : Set (Fin n)) (e : ℝ) (he : e = 1 ∨ e = -1)
 +    (hpos : ∀ v ∈ Submodule.span ℂ (Y '' A), v ≠ 0 → 0 < e * (hermC τ G v v).re) :
@@ -12046,7 +12086,7 @@
  
  theorem gs_exists {n : ℕ} (p : ℕ) (Y : Fin n → Fin r → ℂ) (hind : LinearIndependent ℂ Y)
      (horth : ∀ j k : Fin n, (j : ℕ) < p → p ≤ (k : ℕ) → hermC τ G (Y j) (Y k) = 0)
-@@ -105,240 +124,52 @@
+@@ -105,240 +117,52 @@
        (∀ j : Fin n, ∃ β : Fin n → ℂ, (∀ c : Fin n, ¬((c : ℕ) < p ↔ (j : ℕ) < p) → β c = 0) ∧
          Y j = ∑ c, β c • g c) := by
    classical
