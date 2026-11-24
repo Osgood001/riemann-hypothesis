@@ -53,19 +53,15 @@ theorem mertensInequality : ThreeFourOne := by
   have h1 := hasSum_re_L hσ t
   have h2 := hasSum_re_L hσ (2 * t)
   have hs := ((h0.mul_left 3).add (h1.mul_left 4)).add h2
-  have key := HasSum.nonneg (fun n => ?_) hs
+  have hnonneg := HasSum.nonneg (fun n => ?_) hs
   · have e0 : ((σ : ℂ) + ((0 : ℝ) : ℂ) * I) = σ := by simp
     have e2 : ((σ : ℂ) + ((2 * t : ℝ) : ℂ) * I) = σ + 2 * t * I := by push_cast; ring
-    rw [e0, e2] at key
-    exact key
-  · by_cases hn : n = 0
-    · subst hn
-      simp [LSeries.term_zero]
+    simpa only [e0, e2] using hnonneg
+  · rcases eq_or_ne n 0 with rfl | hn
+    · simp [LSeries.term_zero]
     · rw [re_term_vonMangoldt hn, re_term_vonMangoldt hn, re_term_vonMangoldt hn]
-      have ha : 0 ≤ Λ n * Real.exp (-σ * Real.log n) :=
-        mul_nonneg ArithmeticFunction.vonMangoldt_nonneg (Real.exp_pos _).le
-      have hc := comb_nonneg _ (t * Real.log n) ha
-      rw [zero_mul, Real.cos_zero, mul_one, show 2 * t * Real.log n = 2 * (t * Real.log n) by ring]
-      linarith
+      simpa only [zero_mul, Real.cos_zero, mul_one, mul_assoc] using
+        comb_nonneg _ (t * Real.log n)
+          (mul_nonneg vonMangoldt_nonneg (Real.exp_pos (-σ * Real.log n)).le)
 
 end Formalism.ZF
