@@ -1,15 +1,15 @@
 {
   "core": 29,
-  "candidate": "core29-independent-fourier524e3eb083ad",
+  "candidate": "core29-independent-fourierfd11566b598a",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 65,
-  "local_normalized_tokens": 117164,
-  "local_characters": 487700,
+  "local_normalized_tokens": 116500,
+  "local_characters": 485250,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "d6297d067eee046bceeb3e25c57ffa9a0fc1f58045bf47e30783d8eada83c647",
+  "proof_tree_sha256": "e21ccd1b7864a312d4b034dba55eaf8e0a7eadde2d3e39eb241ffdf7ef21a504",
   "modified_files": {
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ConductorEqTopOfStandardOpen.lean": {
       "before": "32a326aa893cd7346d768a4d4e302cda98d7ccbcdd5d61d038ddec4b8b1577f1",
@@ -133,11 +133,11 @@
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremFE.lean": {
       "before": "2aa01187e9524961a88ca6edf68919521efeec96b44ba3e2b4d0e0679208a269",
-      "after": "e05eb5732907289745a0375f07bb05e4619b4e5abd064f155c5e39567e72c52a"
+      "after": "70e524c21cf0ed79ec2c5e2ee534c40f2784bc28fc46d03952d7c95a77f557fe"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremScaling.lean": {
       "before": "323e561e14c1df2a6ee4f4c5b93f41e8dace8c020ba5d24bc6a7cc40f894c237",
-      "after": "9a0b62a4d1a8c8f9177d9d7818a7b69407a417b14d29ced465dec15bf0befe43"
+      "after": "eb5c02117b675fab508e669289e635c6c7b525fd125cc8d40e47d877f7a09a59"
     },
     "GroundTheory/GlobalFields/TateThesis/HeckeTheoremTrivial.lean": {
       "before": "19bf564b401e43c938e7fb50677bd1b9c2f259ada6b4878e1e4a5873cd71b939",
@@ -174,6 +174,10 @@
     "GroundTheory/GlobalFields/TateThesis/TateMain.lean": {
       "before": "2393fa3f7cb2cec951ab5d70f2e3d66373d6d77b6e349f27ac2f9e06f6bcbd9f",
       "after": "615a63d1dee48b29bf450c0d9f6cf5cb694f148bb74a03ef5bec5634cd9e2345"
+    },
+    "GroundTheory/GlobalFields/TateThesis/TateMainUnique.lean": {
+      "before": "6a5c319c6a1642a4a5a35b17da00eea187f457c55560486faa1ffd606ebdb362",
+      "after": "b2728ff9d6eb54e9df2be6ec4f732efb1aa47263e1ad758835bc58eae0a58d5f"
     },
     "GroundTheory/GlobalFields/TateThesis/TateThetaDecay.lean": {
       "before": "cf0e6a357c9fc00efd36049c3ef1e979b464abbcc48d971f4df500589e117450",
@@ -252,20 +256,20 @@
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Codex",
-    "public_source_note": "Levent Alpöge authored the original Core 29 formalization. Codex derived the required unramified character identities using finite Fourier inversion and reduced the idèle integrals. This 65-file proof retains the scale-one theta decay estimate. Codex specialized the functional equation directly to unramified characters. The Archimedean factor specializes to the totally real case. Codex also traced the declaration dependencies of the unramified coset calculation and removed unused supporting declarations."
+    "public_source_note": "Levent Alpöge authored the original Core 29 formalization. Codex derived the required unramified character identities using finite Fourier inversion and reduced the idèle integrals. This 65-file proof retains the scale-one theta decay estimate. Codex specialized the functional equation directly to unramified characters. The Archimedean factor specializes to the totally real case. Codex also traced the declaration dependencies of the unramified coset calculation and removed unused supporting declarations. A single analytic continuation argument now proves equality off any finite set of poles with real parts at most one. The two functions agree with the global zeta integral near 2, and the complement of the pole set is connected."
   },
   "hosted_score": null,
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T05:44:39.524207+00:00",
+    "completed_utc": "2026-11-24T05:54:51.648338+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
       "Classical.choice"
     ],
     "target_declaration": "AlpogeRHCore29.partialZetaFunctionalEquation",
-    "log_sha256": "41abc9b6d1a0cc0198a0b0af09b4bc9ef95b4830077e5bbf677a9caea0130a2f",
+    "log_sha256": "0ba0dce8c1ac2328d0c528d6696b6de9f0c633eb2ebecbc6797a5bf51d0dc761",
     "comparator_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf"
   }
 }

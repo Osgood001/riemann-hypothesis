@@ -2260,7 +2260,7 @@
      χ.completedLFunction s =
        (χ.discrNormConductor : ℂ) ^ (s / 2) * χ.gammaFactor s * χ.LFunction s := by
    rw [completedLFunction, tateZeta_eq_globalZeta χ.testFunction_mem χ hs,
-@@ -67,46 +67,26 @@
+@@ -67,46 +67,20 @@
    linear_combination (((π : ℂ) ^ nrComplexPlaces K)⁻¹ * χ.fourierConst χ.conductorDifferentIdele *
      (χ.toIdele (ofFinite χ.conductorDifferentIdele) : ℂ) * tateZeta (χ⁻¹).testFunction χ⁻¹ (1 - s)) * hc
  
@@ -2271,42 +2271,48 @@
          s ≠ -((τ : ℂ) * I) ∧ s ≠ 1 - (τ : ℂ) * I) :
      χ.completedLFunction s = χ.rootNumber * χ⁻¹.completedLFunction (1 - s) := by
    refine χ.completedLFunction_eq_rootNumber_mul_of_eq ?_
-   by_cases hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1
+-  by_cases hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1
 -  · exact χ.tateZeta_adelicFourier_testFunction χ.toFractionalIdeal_conductorDifferentIdele hχ _
-+  · exact χ.tateZeta_adelicFourier_testFunction hcond χ.toFractionalIdeal_conductorDifferentIdele hχ _
-   · push Not at hχ
-     obtain ⟨τ, hτ⟩ := (forall_normOne_eq_one_iff χ).1 hχ
-     obtain ⟨h0, h1⟩ := hs τ hτ
+-  · push Not at hχ
+-    obtain ⟨τ, hτ⟩ := (forall_normOne_eq_one_iff χ).1 hχ
+-    obtain ⟨h0, h1⟩ := hs τ hτ
 -    refine χ.tateZeta_adelicFourier_testFunction_of_forall
-+    refine χ.tateZeta_adelicFourier_testFunction_of_forall hcond
-       χ.toFractionalIdeal_conductorDifferentIdele hτ (fun h ↦ h1 ?_) (fun h ↦ h0 ?_)
-     · linear_combination -h
-     · linear_combination -h
- 
+-      χ.toFractionalIdeal_conductorDifferentIdele hτ (fun h ↦ h1 ?_) (fun h ↦ h0 ?_)
+-    · linear_combination -h
+-    · linear_combination -h
+-
 -theorem completedLFunction_eq_rootNumber_mul_of_not
 -    (hχ : ¬ ∃ τ : ℝ, ∀ x : IdeleGroup K,
 -      (χ.toIdele x : ℂ) = ((ideleModule K x : ℝ) : ℂ) ^ ((τ : ℂ) * I)) (s : ℂ) :
 -    χ.completedLFunction s = χ.rootNumber * χ⁻¹.completedLFunction (1 - s) :=
 -  χ.completedLFunction_eq_rootNumber_mul fun τ hτ ↦ absurd ⟨τ, hτ⟩ hχ
- 
+-
 -theorem two_ne_pole (τ : ℝ) : (2 : ℂ) ≠ -((τ : ℂ) * I) ∧ (2 : ℂ) ≠ 1 - (τ : ℂ) * I := by
 -  constructor <;> intro h <;> have := congrArg re h <;> simp at this
- 
+-
 -theorem neg_one_ne_pole (τ : ℝ) :
 -    (-1 : ℂ) ≠ -((τ : ℂ) * I) ∧ (-1 : ℂ) ≠ 1 - (τ : ℂ) * I := by
 -  constructor <;> intro h <;> have := congrArg re h <;> simp at this <;> norm_num at this
- 
+-
 -theorem completedLFunction_two_ne_zero : χ.completedLFunction 2 ≠ 0 := by
 -  rw [χ.completedLFunction_eq (by norm_num)]
 -  exact mul_ne_zero (mul_ne_zero (χ.discrNormConductor_cpow_ne_zero _)
 -    (χ.gammaFactor_ne_zero (by norm_num))) (χ.LFunction_ne_zero (by norm_num))
- 
+-
 -theorem rootNumber_mul_rootNumber_inv : χ.rootNumber * χ⁻¹.rootNumber = 1 := by
 -  have h1 := χ.completedLFunction_eq_rootNumber_mul (s := 2) fun τ _ ↦ two_ne_pole τ
 -  have h2 := χ⁻¹.completedLFunction_eq_rootNumber_mul (s := -1) fun τ _ ↦ neg_one_ne_pole τ
 -  rw [inv_inv, show (1 : ℂ) - -1 = 2 by norm_num] at h2
 -  rw [show (1 : ℂ) - 2 = -1 by norm_num, h2, ← mul_assoc] at h1
 -  exact mul_right_cancel₀ χ.completedLFunction_two_ne_zero (h1.symm.trans (one_mul _).symm)
++  apply χ.tateZeta_adelicFourier_testFunction hcond χ.toFractionalIdeal_conductorDifferentIdele
++  intro τ hτ
++  obtain ⟨h0,h1⟩ := hs τ hτ
++  constructor
++  · intro h
++    exact h1 (by linear_combination -h)
++  · intro h
++    exact h0 (by linear_combination -h)
  
  end HeckeCharacter
  
@@ -2330,37 +2336,99 @@
    have h1 : globalZeta (fun y ↦ χ.fourierConst δ * (χ⁻¹).testFunction (ofFinite δ • y)) χ⁻¹ s =
        χ.fourierConst δ * globalZeta (fun y ↦ (χ⁻¹).testFunction (ofFinite δ • y)) χ⁻¹ s := by
      unfold globalZeta
-@@ -123,7 +123,7 @@
-   ((differentiable_const c).mul
-     (differentiable_id.const_cpow (Or.inl (ofReal_ne_zero.2 hr.ne')))).mul hf
+@@ -118,60 +118,42 @@
+   push_cast
+   ring_nf
  
+-theorem differentiable_const_cpow_mul {f : ℂ → ℂ} (hf : Differentiable ℂ f) (c : ℂ) {r : ℝ}
+-    (hr : 0 < r) : Differentiable ℂ fun s ↦ c * (r : ℂ) ^ s * f s :=
+-  ((differentiable_const c).mul
+-    (differentiable_id.const_cpow (Or.inl (ofReal_ne_zero.2 hr.ne')))).mul hf
+-
 -theorem tateZeta_adelicFourier_testFunction {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
-+theorem tateZeta_adelicFourier_testFunction [IsTotallyReal K] (hcond : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
++theorem tateZeta_adelicFourier_testFunction [IsTotallyReal K] (hcond : χ.conductor = ⊤)
++    {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
      (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
-     (hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1) (s : ℂ) :
+-    (hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1) (s : ℂ) :
++    {s : ℂ} (hs : ∀ τ : ℝ, (∀ x : IdeleGroup K,
++      (χ.toIdele x : ℂ) = ((ideleModule K x : ℝ) : ℂ) ^ ((τ : ℂ) * I)) →
++        s ≠ (τ : ℂ) * I ∧ s ≠ 1 + (τ : ℂ) * I) :
      tateZeta (adelicFourier K χ.testFunction) χ⁻¹ s =
-@@ -137,10 +137,10 @@
-       χ.discrNormConductor_pos)
-     fun s hs ↦ by
-       rw [tateZeta_eq_globalZeta (χ⁻¹).testFunction_mem _ hs,
+       χ.fourierConst δ * (χ.toIdele (ofFinite δ) : ℂ) * (χ.discrNormConductor : ℂ) ^ s *
+         tateZeta (χ⁻¹).testFunction χ⁻¹ s := by
+-  have hχ' := χ.exists_inv_ne_one hχ
+-  have h := eq_tateZeta_of_differentiable (adelicFourier_mem_schwartzBruhat χ.testFunction_mem) hχ'
+-    (G := fun s ↦ χ.fourierConst δ * (χ.toIdele (ofFinite δ) : ℂ) * (χ.discrNormConductor : ℂ) ^ s *
+-      tateZeta (χ⁻¹).testFunction χ⁻¹ s)
+-    (differentiable_const_cpow_mul (differentiable_tateZeta (χ⁻¹).testFunction_mem hχ') _
+-      χ.discrNormConductor_pos)
+-    fun s hs ↦ by
+-      rw [tateZeta_eq_globalZeta (χ⁻¹).testFunction_mem _ hs,
 -        χ.globalZeta_adelicFourier_testFunction hδ]
-+        χ.globalZeta_adelicFourier_testFunction hcond hδ]
-   exact (congrFun h s).symm
- 
+-  exact (congrFun h s).symm
+-
 -theorem tateZeta_adelicFourier_testFunction_of_forall {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
-+theorem tateZeta_adelicFourier_testFunction_of_forall [IsTotallyReal K] (hcond : χ.conductor = ⊤) {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
-     (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
-     {τ : ℝ}
-     (hτ : ∀ x : IdeleGroup K, (χ.toIdele x : ℂ) = ((ideleModule K x : ℝ) : ℂ) ^ ((τ : ℂ) * I))
-@@ -170,7 +170,7 @@
-         (differentiableAt_tateZeta hτ' (χ⁻¹).testFunction_mem hz.1 hz.2))
-     fun s hs ↦ by
-       rw [tateZeta_eq_globalZeta (χ⁻¹).testFunction_mem _ hs,
+-    (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
+-    {τ : ℝ}
+-    (hτ : ∀ x : IdeleGroup K, (χ.toIdele x : ℂ) = ((ideleModule K x : ℝ) : ℂ) ^ ((τ : ℂ) * I))
+-    {s : ℂ} (hs₀ : s ≠ (τ : ℂ) * I) (hs₁ : s ≠ 1 + (τ : ℂ) * I) :
+-    tateZeta (adelicFourier K χ.testFunction) χ⁻¹ s =
+-      χ.fourierConst δ * (χ.toIdele (ofFinite δ) : ℂ) * (χ.discrNormConductor : ℂ) ^ s *
+-        tateZeta (χ⁻¹).testFunction χ⁻¹ s := by
+-  have hτ' := χ.inv_eq_cpow_of_forall hτ
+-  have hpole : ∀ z : ℂ, z ≠ (τ : ℂ) * I → z ≠ 1 + (τ : ℂ) * I →
+-      z ≠ -(((-τ : ℝ) : ℂ) * I) ∧ z ≠ 1 - ((-τ : ℝ) : ℂ) * I := fun z h0 h1 ↦ by
+-    push_cast
+-    constructor
+-    · rw [neg_mul, neg_neg]; exact h0
+-    · rw [neg_mul, sub_neg_eq_add]; exact h1
+-  have hmem : s ∈ ({-(((-τ : ℝ) : ℂ) * I), 1 - ((-τ : ℝ) : ℂ) * I} : Set ℂ)ᶜ := by
+-    simp only [mem_compl_iff, mem_insert_iff, mem_singleton_iff, not_or]
+-    exact hpole s hs₀ hs₁
+-  have h := eqOn_tateZeta_of_differentiableOn hτ'
+-    (adelicFourier_mem_schwartzBruhat χ.testFunction_mem)
+-    (G := fun s ↦ χ.fourierConst δ * (χ.toIdele (ofFinite δ) : ℂ) * (χ.discrNormConductor : ℂ) ^ s *
+-      tateZeta (χ⁻¹).testFunction χ⁻¹ s)
+-    (fun z hz ↦ by
+-      simp only [mem_compl_iff, mem_insert_iff, mem_singleton_iff, not_or] at hz
+-      refine DifferentiableAt.differentiableWithinAt ?_
+-      exact ((differentiableAt_const _).mul ((differentiableAt_id).const_cpow
+-        (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')))).mul
+-        (differentiableAt_tateZeta hτ' (χ⁻¹).testFunction_mem hz.1 hz.2))
+-    fun s hs ↦ by
+-      rw [tateZeta_eq_globalZeta (χ⁻¹).testFunction_mem _ hs,
 -        χ.globalZeta_adelicFourier_testFunction hδ]
-+        χ.globalZeta_adelicFourier_testFunction hcond hδ]
-   exact (h hmem).symm
+-  exact (h hmem).symm
++  obtain ⟨S, hfin, hre, hsS, hD⟩ : ∃ S : Set ℂ, S.Finite ∧ (∀ z ∈ S, z.re ≤ 1) ∧ s ∈ Sᶜ ∧
++      ∀ F ∈ schwartzBruhat K, DifferentiableOn ℂ (tateZeta F χ⁻¹) Sᶜ := by
++    by_cases hn : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1
++    · exact ⟨∅, finite_empty, by simp, by simp, fun _ hF ↦
++        (differentiable_tateZeta hF (χ.exists_inv_ne_one hn)).differentiableOn⟩
++    · push Not at hn
++      obtain ⟨τ, hτ⟩ := (forall_normOne_eq_one_iff χ).1 hn
++      refine ⟨{(τ : ℂ) * I, 1 + (τ : ℂ) * I}, toFinite _, ?_, ?_, ?_⟩
++      · intro z hz
++        rcases hz with rfl | rfl <;> simp
++      · simpa only [mem_compl_iff, mem_insert_iff, mem_singleton_iff, not_or] using hs τ hτ
++      · intro F hF z hz
++        simp only [mem_compl_iff, mem_insert_iff, mem_singleton_iff, not_or] at hz
++        apply DifferentiableAt.differentiableWithinAt
++        apply differentiableAt_tateZeta (χ.inv_eq_cpow_of_forall hτ) hF
++        · simpa only [ofReal_neg, neg_mul, neg_neg] using hz.1
++        · simpa only [ofReal_neg, neg_mul, sub_neg_eq_add] using hz.2
++  have hF := adelicFourier_mem_schwartzBruhat χ.testFunction_mem
++  refine eqOn_of_differentiableOn_of_eq_globalZeta (H := fun z ↦
++    χ.fourierConst δ * (χ.toIdele (ofFinite δ) : ℂ) * (χ.discrNormConductor : ℂ) ^ z *
++      tateZeta (χ⁻¹).testFunction χ⁻¹ z) hfin hre (hD _ hF) ?_
++      (fun z hz ↦ tateZeta_eq_globalZeta hF _ hz) ?_ hsS
++  · exact (((differentiable_const _).mul (differentiable_id.const_cpow
++      (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')))).differentiableOn).mul
++        (hD _ (χ⁻¹).testFunction_mem)
++  intro z hz
++  rw [tateZeta_eq_globalZeta (χ⁻¹).testFunction_mem _ hz, χ.globalZeta_adelicFourier_testFunction hcond hδ]
  
  end HeckeCharacter
+ 
 --- a/GroundTheory/GlobalFields/TateThesis/HeckeTheoremTrivial.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/HeckeTheoremTrivial.lean
 @@ -12,17 +12,7 @@
@@ -2705,6 +2773,39 @@
  
  end
  
+--- a/GroundTheory/GlobalFields/TateThesis/TateMainUnique.lean
++++ b/GroundTheory/GlobalFields/TateThesis/TateMainUnique.lean
+@@ -29,30 +29,6 @@
+   exact AnalyticOnNhd.eqOn_of_preconnected_of_eventuallyEq (hG.analyticOnNhd hopen)
+     (hH.analyticOnNhd hopen) hU h2 heq
+ 
+-theorem eq_tateZeta_of_differentiable {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K)
+-    {χ : HeckeCharacter K} (hχ : ∃ v : normOneSubgroup K, χ.toIdele (v : IdeleGroup K) ≠ 1)
+-    {G : ℂ → ℂ} (hG : Differentiable ℂ G) (hGZ : ∀ s : ℂ, 1 < s.re → G s = globalZeta F χ s) :
+-    G = tateZeta F χ := by
+-  have h := eqOn_of_differentiableOn_of_eq_globalZeta (S := ∅) finite_empty (by simp)
+-    hG.differentiableOn (differentiable_tateZeta hF hχ).differentiableOn hGZ
+-    fun s hs ↦ tateZeta_eq_globalZeta hF χ hs
+-  funext s
+-  exact h (by simp)
+-
+-theorem eqOn_tateZeta_of_differentiableOn {χ : HeckeCharacter K} {τ : ℝ}
+-    (hτ : ∀ x : IdeleGroup K, (χ.toIdele x : ℂ) = ((ideleModule K x : ℝ) : ℂ) ^ ((τ : ℂ) * I))
+-    {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K) {G : ℂ → ℂ}
+-    (hG : DifferentiableOn ℂ G {-((τ : ℂ) * I), 1 - (τ : ℂ) * I}ᶜ)
+-    (hGZ : ∀ s : ℂ, 1 < s.re → G s = globalZeta F χ s) :
+-    EqOn G (tateZeta F χ) {-((τ : ℂ) * I), 1 - (τ : ℂ) * I}ᶜ := by
+-  refine eqOn_of_differentiableOn_of_eq_globalZeta (toFinite _) ?_ hG ?_ hGZ
+-    fun s hs ↦ tateZeta_eq_globalZeta hF χ hs
+-  · intro z hz
+-    rcases hz with rfl | rfl <;> simp
+-  · intro s hs
+-    simp only [mem_compl_iff, mem_insert_iff, mem_singleton_iff, not_or] at hs
+-    exact (differentiableAt_tateZeta hτ hF hs.1 hs.2).differentiableWithinAt
+-
+ end
+ 
+ end GroundTheory.Global
 --- a/GroundTheory/GlobalFields/TateThesis/TateThetaDecay.lean
 +++ b/GroundTheory/GlobalFields/TateThesis/TateThetaDecay.lean
 @@ -12,268 +12,6 @@
