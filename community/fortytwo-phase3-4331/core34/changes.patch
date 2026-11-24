@@ -1517,9 +1517,14 @@
  
  end Lex
  
-@@ -196,106 +125,43 @@
-   exact (Submodule.Quotient.mk_smul I r x).symm
+@@ -191,111 +120,44 @@
  
+ variable {K : Type} {ι : K → Type} {F : Type u} [Field F]
+ 
+-theorem smul_quot_mk (I : Ideal (MRing ι F)) (r x : MRing ι F) :
+-    r • Ideal.Quotient.mk I x = Ideal.Quotient.mk I (r * x) := by
+-  exact (Submodule.Quotient.mk_smul I r x).symm
+-
  theorem multAt_eq_zero {A W : Ideal (MRing ι F)} [W.IsPrime] (h : ¬ A ≤ W) : multAt A W = 0 := by
 -  obtain ⟨q, hqA, hqW⟩ := Set.not_subset.mp h
 -  have hz : ∀ z : LocalizedModule W.primeCompl (MRing ι F ⧸ A), z = 0 := by

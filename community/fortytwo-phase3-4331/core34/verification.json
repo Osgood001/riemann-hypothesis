@@ -1,14 +1,14 @@
 {
   "core": 34,
-  "candidate": "core34-fastslice55e341ccea",
+  "candidate": "core34-fastmixb6e8e57f70",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 127,
-  "local_normalized_tokens": 106660,
+  "local_normalized_tokens": 106603,
   "published_baseline_tokens": 400204,
-  "proof_tree_sha256": "500e05eca0fecfe376c9573ca6e17074fab7d83c6c2452c52c6e6946c4d1d597",
+  "proof_tree_sha256": "2f2d3f274916d1ca3c4512b9c4243c00a1398c18805e704815bf93dfa1ba83f7",
   "modified_files": {
     "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PDivCycleMul.lean": {
       "before": "7b44bb2bcc590eec8a8f5d98f60ece6da14a1bd5ef3746155ead419cab9fbace",
@@ -84,7 +84,7 @@
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean": {
       "before": "ed3a729e65d80e69eeca0225865e79fc9bd95d869306ab17b5a757a023d555ea",
-      "after": "0ede414c81457195baec442a918b0b160c2dec79f3e192e1b8faa1985f1a6def"
+      "after": "5855d21af0f1852fb9366b62d0cc4a21b32ba9f6d6c05e6a4afe040d223d8428"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDegZeroLocSeparate.lean": {
       "before": "4c9c0daee540563295eae49066df86c34158eb64f9dc80463eeb55a161c36f4c",
@@ -138,12 +138,12 @@
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-    "new_contribution": "Fortytwo native Lean proof simplification in GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.NumericalSegre, from phase3-fast-core34-r01, adapted to the published Core 34 target. Original proof by Levent Alpöge. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle."
+    "new_contribution": "Fortytwo DeepSeek supplied the verified replacement in GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration. The retained Fortytwo source contributions are in GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration, GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.NumericalSegre. Codex assembled the proof and checked the full import closure. Original proof by Levent Alpöge."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T02:39:22.142431+00:00",
+    "completed_utc": "2026-11-24T03:32:27.067809+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
