@@ -15,17 +15,8 @@ private lemma scal {K A : Type} [Field K] [IsAlgClosed K] [Ring A] [Algebra K A]
   have : Nontrivial S0 := IsSimpleModule.nontrivial A S0
   obtain ⟨c, hc⟩ := Module.End.exists_eigenvalue (g.restrictScalars K)
   obtain ⟨v, hv⟩ := hc.exists_hasEigenvector
-  let h : S0 →ₗ[A] S0 :=
-    { toFun := fun w => g w - c • w
-      map_add' := fun x y => by simp only [map_add (f := _), smul_add]; abel
-      map_smul' := fun a w => by
-        simp only [map_smul, RingHom.id_apply, smul_sub]
-        rw [smul_comm c a w] }
-  have h0 : h v = 0 := by
-    have := hv.apply_eq_smul
-    simp only [LinearMap.restrictScalars_apply] at this
-    show g v - c • v = 0
-    rw [this, sub_self]
+  let h : S0 →ₗ[A] S0 := g - Algebra.lsmul K A S0 c
+  have h0 : h v = 0 := sub_eq_zero.mpr hv.apply_eq_smul
   have hni : ¬ Function.Injective h := by
     intro hi
     exact hv.2 (hi (h0.trans h.map_zero.symm))
@@ -48,10 +39,7 @@ theorem goal1 {K A : Type} [Field K] [IsAlgClosed K] [Ring A] [Algebra K A]
   let b := Module.finBasis K S0
   obtain ⟨r, hr⟩ := jacobson_density f (Finset.univ.image b)
   refine ⟨r, fun v => ?_⟩
-  let ψ : S0 →ₗ[K] S0 :=
-    { toFun := fun w => r • w
-      map_add' := smul_add r
-      map_smul' := fun c w => (smul_comm c r w).symm }
+  let ψ : S0 →ₗ[K] S0 := Algebra.lsmul K K S0 r
   have hψ : ψ = φ := b.ext fun i => (hr (b i) (Finset.mem_image_of_mem b (Finset.mem_univ i))).symm
   exact LinearMap.congr_fun hψ v
 
