@@ -1255,6 +1255,124 @@
  import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
  import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDivPushForward
  import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PExistsForm
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPolyOfDiffs.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPolyOfDiffs.lean
+@@ -44,13 +44,6 @@
+     field_simp
+     ring
+ 
+-theorem eval_aeval_X (y : K → ℚ) (k : K) (F : Polynomial ℚ) :
+-    eval y (Polynomial.aeval (X k) F) = F.eval (y k) := by
+-  induction F using Polynomial.induction_on with
+-  | C a => simp
+-  | add p r hp hr => rw [map_add, map_add, hp, hr, Polynomial.eval_add]
+-  | monomial n a _ => simp
+-
+ theorem exists_antideriv (k : K) (q : MvPolynomial K ℚ) : ∃ P : MvPolynomial K ℚ,
+     P.totalDegree ≤ q.totalDegree + 1 ∧
+     ∀ x : K → ℚ, eval x P - eval (x - Pi.single k 1) P = eval x q := by
+@@ -58,7 +51,7 @@
+       ∀ x : K → ℚ, eval x P - eval (x - Pi.single k 1) P = eval x (monomial α (q.coeff α)) := by
+     intro α hα
+     obtain ⟨F, hFd, hF⟩ := exists_pow_antideriv (α k)
+-    refine ⟨monomial (α.erase k) (q.coeff α) * Polynomial.aeval (X k) F, ?_, fun x => ?_⟩
++    refine ⟨monomial (α.erase k) (q.coeff α) * F.toMvPolynomial k, ?_, fun x => ?_⟩
+     · have hsum : ((α.erase k).sum fun _ e => e) + α k ≤ q.totalDegree := by
+         refine le_trans (le_of_eq ?_) (le_totalDegree hα)
+         conv_rhs => rw [← Finsupp.single_add_erase k α]
+@@ -66,8 +59,8 @@
+           Finsupp.sum_single_index rfl, add_comm]
+       have h1 : (monomial (α.erase k) (q.coeff α)).totalDegree ≤
+           (α.erase k).sum fun _ e => e := totalDegree_monomial_le _ _
+-      have h2 : (Polynomial.aeval (X k : MvPolynomial K ℚ) F).totalDegree ≤ α k + 1 := by
+-        rw [Polynomial.aeval_eq_sum_range]
++      have h2 : (F.toMvPolynomial k).totalDegree ≤ α k + 1 := by
++        rw [Polynomial.toMvPolynomial, Polynomial.aeval_eq_sum_range]
+         refine totalDegree_finsetSum_le fun i hi => ?_
+         refine (totalDegree_smul_le _ _).trans ?_
+         rw [totalDegree_X_pow]
+@@ -85,9 +78,7 @@
+           rw [Finsupp.support_erase] at hj
+           exact (Finset.mem_erase.1 hj).1
+         simp [Pi.single_apply, hjk]
+-      have hev : ∀ y : K → ℚ, eval y (Polynomial.aeval (X k) F) = F.eval (y k) :=
+-        fun y => eval_aeval_X y k F
+-      rw [hmono, map_mul, map_mul, hsh, hev, hev, map_mul, map_pow, eval_X, ← mul_sub]
++      rw [hmono, map_mul, map_mul, hsh, eval_toMvPolynomial, eval_toMvPolynomial, map_mul, map_pow, eval_X, ← mul_sub]
+       congr 1
+       rw [← hF (x k)]
+       simp
+@@ -102,19 +93,15 @@
+ 
+ theorem totalDegree_freeze_le (s : Finset K) (N : K → ℚ) (j : K) :
+     (freeze s N j).totalDegree ≤ 1 := by
+-  unfold freeze
+-  split_ifs
+-  · exact (totalDegree_X j).le
+-  · rw [totalDegree_C]; exact zero_le_one
++  by_cases h : j ∈ s <;> simp [freeze, h]
+ 
+ theorem eval_aeval_freeze (s : Finset K) (N x : K → ℚ) (P : MvPolynomial K ℚ) :
+     eval x (aeval (freeze s N) P) = eval (fun j => if j ∈ s then x j else N j) P := by
+-  induction P using MvPolynomial.induction_on with
+-  | C a => simp
+-  | add p r hp hr => rw [map_add, map_add, hp, hr, map_add]
+-  | mul_X p j hp =>
+-    simp only [map_mul, hp, aeval_X, eval_X, freeze]
+-    split_ifs <;> simp
++  change aeval x (aeval (freeze s N) P) = aeval (fun j => if j ∈ s then x j else N j) P
++  rw [comp_aeval_apply]
++  apply congrArg (fun g : K → ℚ => aeval g P)
++  funext j
++  by_cases hj : j ∈ s <;> simp [freeze, hj]
+ 
+ def pathPt (N : K → ℤ) (s : Finset K) (m : K → ℤ) : K → ℤ :=
+   fun j => if j ∈ s then m j else N j
+@@ -153,7 +140,7 @@
+       (h (Function.update x k t) : ℚ) - eval (fun j => (Function.update x k t j : ℚ)) (P k) =
+       (h x : ℚ) - eval (fun j => (x j : ℚ)) (P k) := by
+     intro k x hx hxk t ht
+-    induction t, ht using Int.le_induction with
++    induction t, ht using Int.leInduction with
+     | base => rw [← hxk, Function.update_eq_self]
+     | succ t ht ih =>
+       have hy : N ≤ Function.update x k (t + 1) := by
+@@ -174,21 +161,16 @@
+     induction s using Finset.induction_on with
+     | empty =>
+       refine ⟨C (h N : ℚ), by rw [totalDegree_C]; exact Nat.zero_le _, fun m _ => ?_⟩
+-      have e : pathPt N ∅ m = N := by funext j; simp [pathPt]
+-      rw [e, eval_C]
++      rw [show pathPt N ∅ m = N from funext fun j => by simp [pathPt], eval_C]
+     | insert k s hk ih =>
+       obtain ⟨Q, hQd, hQ⟩ := ih
+       refine ⟨Q + aeval (freeze (insert k s) (fun j => (N j : ℚ))) (P k) -
+         aeval (freeze s (fun j => (N j : ℚ))) (P k), ?_, fun m hm => ?_⟩
+       · refine (totalDegree_sub _ _).trans
+           (max_le ((totalDegree_add _ _).trans (max_le hQd ?_)) ?_)
+-        · exact (totalDegree_aeval_le _ (totalDegree_freeze_le _ _) _).trans (hPd k)
+-        · exact (totalDegree_aeval_le _ (totalDegree_freeze_le _ _) _).trans (hPd k)
++        all_goals exact (totalDegree_aeval_le _ (totalDegree_freeze_le _ _) _).trans (hPd k)
+       · have hx : N ≤ pathPt N s m := fun j => by
+-          simp only [pathPt]
+-          split_ifs
+-          · exact hm j
+-          · exact le_rfl
++          by_cases hj : j ∈ s <;> simp [pathPt, hj, hm j]
+         have hxk : pathPt N s m k = N k := by simp [pathPt, hk]
+         have hupd : pathPt N (insert k s) m = Function.update (pathPt N s m) k (m k) := by
+           funext j
+@@ -206,9 +188,7 @@
+   refine ⟨Q, hQd, ?_⟩
+   rw [EventuallyPoly, Filter.eventually_atTop]
+   refine ⟨N, fun m hm => ?_⟩
+-  have e : pathPt N Finset.univ m = m := by funext j; simp [pathPt]
+-  rw [← e]
+-  exact (hQ m hm).trans (by rw [e])
++  simpa only [show pathPt N Finset.univ m = m from funext fun j => by simp [pathPt]] using hQ m hm
+ 
+ end PolyOfDiffs
+ 
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean
 @@ -16,105 +16,34 @@
