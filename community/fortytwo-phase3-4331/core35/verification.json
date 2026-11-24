@@ -1,0 +1,1044 @@
+{
+  "core": 35,
+  "candidate": "core35-recovered11b6fdedd49f",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/lean/src",
+  "source_kind": "pinned_git_checkout",
+  "target_sha256": "eb34f555ff4f8f9067fd3efed1b3b1a425e052f17f9c240c94e52c4cff725ad9",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 200,
+  "published_baseline_tokens": 773767,
+  "local_normalized_tokens": 341864,
+  "proof_tree_sha256": "d8990f07b49cb176fe25007256c74ea8a4ca4ff0f2696010325b0be18f13388c",
+  "proof_id": "a8db5da30c290a280a438c7b62be0d688362e36b8a52cf902dde556f184ccee5",
+  "modified_files": {
+    "Development/AbelianVarietyTheory/Definitions/Foundations/IsIntegralIff.lean": {
+      "before": "a561948f682666ffaba5d6883542fa6e326c766bf1cc373aa3080c82fbe429c4",
+      "after": "3a4f03cfa6485c205577ab1c6154623444a715f779b93aca95fb21dc422e394d"
+    },
+    "Development/AbelianVarietyTheory/Definitions/SemilocalFrames/HermLat.lean": {
+      "before": "1473413519d304253bcc511e06dd79cdec469f0cc9a6eb6776c618e03630feef",
+      "after": "5068cc25ba2f7798ead640e30bde9d70327a0ac2d3ac778699799fe4abdadae0"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DecoratedLatticeProofs/IndexComapEqOfCosetsHit.lean": {
+      "before": "eb263cdb5f8997ab21dbd5977331aab6bd3b963b24fcef7cbd5e45eff30902b0",
+      "after": "8eed5e139758569281f9c57e535673c90c1d65e94b640402ce975d001ac50581"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeExpansionOverFinitePlaces.lean": {
+      "before": "d06b07dc3c9e1019f29d58a66f1bb97f142f655016f978e13f25ec882d8233e7",
+      "after": "787ba1a81c9f2dedbbd714d197cf8357f5eeaa52d7c12726fd568013527038ca"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeExpansionOverFinitePlacesStatement.lean": {
+      "before": "817e1a18ea0ef4b5ef7200cb198b4e46028bd16d7799e75e80b0f8e49d4879f7",
+      "after": "dd6dd08879140d75beffea77d7c3c56ebfad092aee8de0ce70f77704a622d25e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeMassEqOneOfSingleOrbit.lean": {
+      "before": "b5bd8c97b56e326a520e7e7a913fbdd27bbe24570dfae59d2a78c2706f4e2bca",
+      "after": "4f3959d0bab771fc7bbfddcae5b37f877f96549266c596e14babb4e47b669450"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeMassEqOneOfSingleOrbitStatement.lean": {
+      "before": "688ef5353191e3d493c5f0f0f22b4deb6b2591ca7eaf44ef0ed9d8fee8f5357a",
+      "after": "69375109bf360ad09a7fad4a892a0e987d7893c4f76f8c7a073ee9ada176c45d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/BasisOfIsCompl.lean": {
+      "before": "2e1604dd8a17813199c4569144f0abb2d6454347e0a48adeab6edacd341ee4d4",
+      "after": "0956dd0225fb57707eee41dd54300f7f12853c1bdac9551cd61438ccd3c0132e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/BlockUnitriangularRationalFromCommonStabiliser.lean": {
+      "before": "9d176c1ae1d39d5006e8971839c9415e482018b5b629144ff6a6832fb1ebd777",
+      "after": "60428c89e554779a562bde089f1ec749573546764dd5c167044b9162e9c252a1"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/BlockUnitriangularRationalFromCommonStabiliserStatement.lean": {
+      "before": "810111da5c6779385334ba3f5f8903cf8918d69b919113ceaf9294210b1de81b",
+      "after": "48b8bee10f984340485f4ca12a532d08043c3ea8dd615405aa0a732fb1b5f6da"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardCokernelUnramifiedOrderMatrixOfDetBase.lean": {
+      "before": "9c9ca6f18ce4951747bb9430eec62024f2db13db6ec12bf943a04fee213b87da",
+      "after": "cbe7a9ae5088579b0e9cd85ae890fe402c38df9097412e7014af3221e099f0e6"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardCokernelUnramifiedOrderMatrixOfDetBaseStatement.lean": {
+      "before": "504ca33e41f29d13bde48c2b20aeaf8a8aa8c2e3ec0bbab93accba0f4b8f8c14",
+      "after": "ef7fdfc0c5f341b7866938e0131014a83f5ecaec848699b11551e5845443509f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardDiscriminantModuleIntegralOverlatticeSpan.lean": {
+      "before": "972807bf49d2f0518ab66afe31a681156082aa407869d8fe80bb77311e61d7d9",
+      "after": "301a67ca7aa1c09b4683c72bed1f337ffb6588eaad4f64863cd54b86f98a369f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardDiscriminantModuleIntegralOverlatticeSpanStatement.lean": {
+      "before": "fb4e9bf8e34ff26eb77a16666c24a040fbe8c0f3621fdb50c0298a973acb778f",
+      "after": "f64eb1c691125abb6c21f7d3b94bc0a254d3bd97ba2752adb05806315cb61e57"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardEqPowAndIndexGe.lean": {
+      "before": "b41b7d4737324b908c33bad522fc328211959f81f168c3eef43564e33a2a7a9e",
+      "after": "2a31cf0fef52d9ff4e172837180267df44338ec8c5a18f26ea39a53608cfb719"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardQuotEqPow.lean": {
+      "before": "3e92323f5f22e5459d5510b29ed02b44818fa417c81941ccf5b3c3b8030e579e",
+      "after": "9b78330938ca5d6c4ce4191e4901a8955c4cb8d9239565f98d75af9ddbc5daa9"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardSubmoduleAndHomLe.lean": {
+      "before": "1f8b7047ea90ab5380b34a710d170d58052599899f45f823da01ed965686daa7",
+      "after": "96cbcb8ca47b4846849acf79bbccc2a82dcdc29a5ef3136a49293e307989e2fa"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CloseOnCompletedLatticeOfCloseOnFrames.lean": {
+      "before": "d48026bdaf7d3b5aa121a9fabf2d0a34c01fba6e1ed16a68329fb89da35ab28d",
+      "after": "ec297f73f8d71f010dc80e7a4c44e55014530a36bcabba1fe2fd1c026e378114"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CloseOnCompletedLatticeOfCloseOnFramesStatement.lean": {
+      "before": "4b68534538ec9300725ac98986256480e6ee0bd26e2fa42aaa93a866d56a2773",
+      "after": "9f810461192e32ce3bb739b922d9e862a72b93e4c0f4c35b230ea488f951338c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CommonStabilizerStabilizersCommensurableVolume.lean": {
+      "before": "310cc9bc8f74168787b30e297e709674c9e0bce58a3fddbf3bc0d0a778d0469a",
+      "after": "63c2a3cc9144e108e9a7e09fd3dba8aa03651a892924b1ab203470a4fd679501"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CommonStabilizerStabilizersCommensurableVolumeStatement.lean": {
+      "before": "5e7c1b6236ed6c600028f2dcfae4259429c53404deeef5804fbdf2a68a5382a0",
+      "after": "d49946db078803fa24eb3ee9815f8d048a4b13dcb1a610da501edd5142fdadc1"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ComplementLatticeOfTermFreeRank.lean": {
+      "before": "00cc63a0af06c51d4d256d6327c432f1c622530443d5e2507c81d3f8fc6820f4",
+      "after": "4be93847f714cebc40be6e2e8341972fdffeba6c13bdb5d37c5fd31c1c78f57f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CongruenceSubgroupLatticeStabilizer.lean": {
+      "before": "ea092e08ca54792e8704eab1585fca162e723618ab7bf4232e5dcf951089c9d1",
+      "after": "2ae319524df46fa96a6e1bc50e90ba468c67437bcdc8a67148851f8e1713db68"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CongruenceSubgroupLatticeStabilizerStatement.lean": {
+      "before": "0c3c2310dce20f5a12b9a401126ac1a83221453ff1f43e1bd7e7ab8be5b344f5",
+      "after": "fce08a314f0d65ee1fbeeb993ae55d2a8e568ba577ce0cd2f268d12633743513"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CoordinateLatticeUniqueTermAlmostAllPlaces.lean": {
+      "before": "539b99622cf95125d2522d2e0738456c4b3596ce352b46c438b83e20e939030a",
+      "after": "52f037ee54b842c30b09553525b30a8b5f2261ba339409fbe0ff525d7f96129d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CoordinateLatticeUniqueTermAlmostAllPlacesStatement.lean": {
+      "before": "663a0c927a3261f089383ff98bc8c50f23ed0d15469dd5a5a73def0eaf2f0c1c",
+      "after": "3340cd48983f1904556b50b828c89e5d5717ad89f7d0c8d7d1e18c8884ad4a93"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/DetGramTwoFrames.lean": {
+      "before": "e53c89bda06862469379d397bc1f2e4b91130c6686a152633b08ccbe4dfbe4df",
+      "after": "93a84061686679a0d84ab541c33dfc8fce0791e138ada5958c06d4c3db8c55ed"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/DetUpdateRowLastSingle.lean": {
+      "before": "25348b7e8910abd812bb3a6ad8a7e506af20bd0962243fa2a1b7104b9c376c38",
+      "after": "71d4781ccb5471cde9ae784ec49c7c4b041d639ee499608edfafe0766d29734d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/DualInterSelfDualHermitianLatticeSubspace.lean": {
+      "before": "b8980238ca89bee4a27b91c9935c7c95c317117272b0aaa29bccf90357c0716d",
+      "after": "fffe34a6e4bbd75102a18059643a88410a48db686af6fcff31a0d5a3554ed2ac"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/EichlerIsometry.lean": {
+      "before": "2bb8d45a999e3238ac8d1377263ae73f7e6bc800435516410ae97c2795d71894",
+      "after": "fdc75309aa471ccae9355d10de7fd0c111629350c6376ced81902875549cf7cd"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/EncardGluingHomKernelsLe.lean": {
+      "before": "5f994f52423888a6518f3f816fd250d509044be4a278c487631c342f2188ba99",
+      "after": "74f20ffee20d669f4cb561d58f6b974c50f81c75014c899b7cecb1426dfe8154"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/EncardGluingHomKernelsLeStatement.lean": {
+      "before": "a98a1f40fc0b3783ec636f3804e996c7a7954b565ba540efe8d3918083e3789e",
+      "after": "c345e0ded6be912e52486d61f24e68f6a71704005b2f0969339d5b214258bcbd"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/EncardUniCosetsLe.lean": {
+      "before": "c8181fd9338d7c36455417abad22da5442906bf522a17d65e16fc86acd3d0673",
+      "after": "6f01b272d4e3ba43ef7c9acc57895c60f884297bd38d54373258583815099542"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/Equality.lean": {
+      "before": "6fa87411cee8dbcdbd02dd222bb201f9da0b439a826c04bc0c19aa83cc0b221c",
+      "after": "b0ff7be1c1a41b0872a0329ecaf775fe47111e406463db4b73440cc1e28bbd63"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsBasisFgMaximalOrderSpanningFree.lean": {
+      "before": "2d9b334d4c4e23f21bb5e31eeca4f7e4ae1a31219e34cd37869dc76d9a21e6f2",
+      "after": "6ccd4861928825b8b1e488681e4079296730e60ccb9a43aa6efcc0e7b790efdd"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsCommonDenominatorForHermitianLatticeData.lean": {
+      "before": "c982675e33f3a1b295591f4cac25494a73209e8bcebd5099b6e12ebfe787b14f",
+      "after": "488c3c0bc5f3707f3f09a02d208e2b6991d11384c1d164b4523f77f54c770b89"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsCommonDenominatorForHermitianLatticeDataStatement.lean": {
+      "before": "7092e66fa383e9f6d1cc6d5920c23e5f935a78c75d668083e3b749b95be8a6c2",
+      "after": "fb1408f522f8fbcc1c98b0ead5b537c356dafc594583a5da311f053935f98dd7"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsEqZpowMulUnit.lean": {
+      "before": "4bfea101f0efa943b7e8b402ba13913a487eb9388bbecd6f854f997cf68331dc",
+      "after": "b4f79fce8dd8811d793d1e988ddfb6d9c03486e5366175e594d386aaf5b4b3d0"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsEquivOfRetractions.lean": {
+      "before": "46e1e816cdc81ef6afa18d75568e1751a0e9b7276b2bf12762065f4f914e3914",
+      "after": "bd351565bd49afa89b7709442ee659123de5481da435c1f5cdadb8153251fe97"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsFrameUnipotentExchangingDualIsotropic.lean": {
+      "before": "b9919758f06d1214c8b256967f42eb4a4e5c55bef2ccd37f459c72aad4891b47",
+      "after": "a9c353de74fe9b26ff1ae11cd08e101f18ea4f233e40dea5d39eadc31cda6575"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsFrameUnipotentExchangingDualIsotropicStatement.lean": {
+      "before": "1759c839411476c5ace437398a776b14f77b1c5e01901bda8dfd023b2e87ab46",
+      "after": "bc80625910a640ffbb9c62f472aa7761c3c6be6ecb435153ac642bb807ded972"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsGluingHomomorphismDefectGroup.lean": {
+      "before": "8c2707886260574178e09da893ae0c223c5f133ac78f2a1b078f443aa8ad3e47",
+      "after": "2aaf48ac3ecdd707bed20f8c7b6ea6d337dd2345a2a71386e6d214cad966f28a"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsGluingHomomorphismDefectGroupStatement.lean": {
+      "before": "f2a761ee83d8db1f9799bdb8305223b42c6d45de6852d81705eafaff1b45946a",
+      "after": "d2d99f49855d08bd8bd1c16b760d8351ac914e6f8eff424f6257ad2e3efb969a"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsIntSmulMemLattice.lean": {
+      "before": "5f70fe03ec7dd58437f9210c87189ec57888069756a0ab47269eeb12c17a4e9b",
+      "after": "8c60dbd7a3b55891f164f88ab46505c6238c2964519318427d6a2480681e6c76"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsLatticeStabilizerNormalisingSubgroup.lean": {
+      "before": "2fbd8104493470a5dbab0ccd6890b8feaa3931dbdbc66f4b92d77a15e2f74196",
+      "after": "0ee2c6c1154ab98757d358da6363fe902a1ae5792cbb9e5f501e510da7dc0acd"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsLatticeStabilizerNormalisingSubgroupStatement.lean": {
+      "before": "0a9282c7d9dcea82fe4a5c8f5185f75a7ef6e736d45805ba55a449e02f385b35",
+      "after": "2a6569424defc06fcf51047fdb609c0276b471ee2b8cfbd126f615f1ba4de746"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsNatBoundLocalLatticesStandardAe.lean": {
+      "before": "4ecc0561f22a5e78f189d8b99fa3a14f67cad2d7d963fb97ffc6dde2e9863362",
+      "after": "09c99b64c1e8494eccfb6a1eec6a31bda6dfdd3eff5942bb4269a784e6c80446"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsNatBoundLocalLatticesStandardAeStatement.lean": {
+      "before": "af80ef246697be5f9593752d14ecadbb15d9147b222bca52d8587229f5b068ba",
+      "after": "cfc69fa79f69f67cb5e4a1061e1e5cb37059ec447b52aab999ca8bc6d6940c79"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsNatMulMemIntegersQuadraticCompletion.lean": {
+      "before": "f770b8b05372285dcc4d6d43791fccb03855a14429bda5095f00f70e653c12b0",
+      "after": "c98a79da24586560f981c24a3e252b4d5a966f57f7c3ec75ec8ac4b90ef46871"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsNatMulMemIntegersQuadraticCompletionStatement.lean": {
+      "before": "5d9f56823cdd7646b261a1554cb542e78228b546dba3922c177887134107a26a",
+      "after": "9590913a344bd812e89ab5af52c5e4aeed4d1f5074242facc20a9276b5eef1b3"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsOrthonormalSameIntegralSpanUnimodular.lean": {
+      "before": "1f2d9eee3ec7399f34245fe8c255e17be6bbb81054dbd10781cd78402ca25611",
+      "after": "2d31c8082dc1fdfba4ba2b134cf8712f47d95f3d96334af3604e3b482aadcef9"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsOrthonormalSameIntegralSpanUnimodularStatement.lean": {
+      "before": "cdf30532453e4e24c2911f84662cd419c2f5ec91f065d84429be1bafd8a48d12",
+      "after": "d51af24a68a3c9723f780754c94f6bec10e8fba2f0d95167a2faa2fc797d3cb4"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsPowSmulMem.lean": {
+      "before": "0ed5210fc20cba1ca3877d34189af9d398b659eba7a124f6bfe4a394ded5db66",
+      "after": "009aeae914ad0bf61437f2bdc541fff77ff05067fb3ea4cd222b4f4ea392c7df"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsUniqueGlobalLatticeOfLocalLattices.lean": {
+      "before": "4c52f9013d1235162e602584bc0b95218b4abde870abdce0c1f9cb719f08d9f4",
+      "after": "c5b77ba3a0ee61778d1bfba3c7ab94a54ecdb72851da4b2495902e63669f7782"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsUniqueGlobalLatticeOfLocalLatticesStatement.lean": {
+      "before": "31cc6862df7fb3c70631c04d87de5da3dac5441b32e654847463961eae401f5d",
+      "after": "9e52360fe9ddb8ea0aa265f1babe564e5932f3f838eca4bde59ec2f21ac6644e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FinprodEqProdMulFinprodIte.lean": {
+      "before": "54326589c5af452f083a583b1c9fdf7a402f7ecffcd6dcfabdaf535f7b6288f0",
+      "after": "fa1ed822d9cc01f70b43c08a8767cff2cf843030fb062105d3aae0490b3d6d90"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameLatticeGramDetAndMinorsOrbitInvariant.lean": {
+      "before": "3dea1103c9aee6b1df99000edb0cf566e92e484feb318e71420ea7d07d33fd39",
+      "after": "89e7874b471cf5673715dd93943332678c1026205f33e95ee7cc5ad97a1b8d90"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameLatticeGramDetAndMinorsOrbitInvariantStatement.lean": {
+      "before": "9543915b5f6c5779945b73a9172bf4199a6e1378478741325cbea1dd0c828a88",
+      "after": "f093984de54b92a44035a3ad2f5b9172add7c344d6ad94514ef26a4087633b15"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameLatticeUnimodularGeneratorsExponentZero.lean": {
+      "before": "a0000c081ca09fe955ac8cec9888f01a7278756e1dcc61f8d6106c578491b8ce",
+      "after": "7706e1c35c6afae1cfb5ff226436288e48ec1e83ed8bcf25e508ca7a5b1f15ad"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameLatticeUnimodularGeneratorsExponentZeroStatement.lean": {
+      "before": "79fa7ea462a66e7689c401058f49ea2035fb4ebd1aeb0ae5cec5d8ef6ac9686c",
+      "after": "b7505321f91ae692f9731a2acadd40b54c468651f3152d7e8caa0dc0bf4635f6"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameMatrixCloseGivesLatticeCloseIntegral.lean": {
+      "before": "f86904e78477b78ee119517dc3003bcd75b5948ddd5ab1cee9254e433c79ce5e",
+      "after": "de17c66f62c8d3d7c8eb5e35eea086ddb1b359f9f130cfcaed25606b1b4f7c8b"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameMatrixCloseGivesLatticeCloseIntegralStatement.lean": {
+      "before": "8f3e42a1851bad6e2f44723bce17ff3186a8f0e3d9d76fb5f158c095e862c4c6",
+      "after": "915c3f5df3729d0ceb6d7d68a2db0dbfeb3f65641a135efaf9b1483a5ada5260"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameUnipotentUnitriangular.lean": {
+      "before": "273c65d3e51f23bf614b7fe6a82e62c6d7fed6ad5ca262aec607524eccebe619",
+      "after": "0252522ca393507aecc7e8ea7920e4a7b8dedc97d7ac6af64097a4b453288170"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCharactersAgreeCommonStabiliser.lean": {
+      "before": "9f53fe66071ea416cdbad79aafaf21ba372989ac2f02259b63ec22fc348ba54c",
+      "after": "ca57431fbe8bca2e111cd97664fbdbc7bd1a7b52357d91b0c507ba8a37624df2"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCharactersAgreeCommonStabiliserStatement.lean": {
+      "before": "e59c584f2922ccf76e427283bdac4ad6a5bb98f33abc587f344924a2110688c9",
+      "after": "c619d6cbf2ace3e7d16533a3e0a41a1f07335f3587ffb5972f12af530f896a4b"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCommonStabiliserEqPairingMatrixStabiliser.lean": {
+      "before": "1abda889415e2904586dca1c61d9a70db4be7bde2da26016d269c7c50fb0b01f",
+      "after": "2545361f0411159b0be58c5fa76776226b26833518104bff2e2a2f703f01fc31"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCommonStabiliserEqPairingMatrixStabiliserStatement.lean": {
+      "before": "9e47fd4b745ddc059f4f6473e960d8222c33abf8456a9e88619bd3062dbee730",
+      "after": "d24cd1bc12528616157acd82ca3a9965d315874c1e14284012b86c55c75b8af6"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCoordinateLatticeIsTermTrivialWitnesses.lean": {
+      "before": "368aa45c74ffa22b795e0606ec732ac6387b829eafa8c7e59c02fb1d5c4b4a3e",
+      "after": "13877b8dedba97f6f0f0143d5e12032bf94d2658b76a7a82cbfcfe71dfb47506"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCoordinateLatticeIsTermTrivialWitnessesStatement.lean": {
+      "before": "cb8327a48db2f1154718f4ae21b1c17f82ab6f316b09bd94b9122e8d10c8964e",
+      "after": "0111feb107650638152c11605e88512bfa8c305d8015ce6787b80d6be334e1a9"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalFramesJointGramInvMulSelf.lean": {
+      "before": "a0a371b95b3ef0a7cf3e33848db5b55dbb414c7bd46d5b61af37744a279aa6f1",
+      "after": "8d94b4127a12459239bf0e50bc3c45386ac5f616bdeb4eef7c0e0bc70a3bb0c0"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalFramesJointGramInvMulSelfStatement.lean": {
+      "before": "2f372372b2839d06c500f5c8c5d93236f62a6121fed0651ed15514b93b17eb31",
+      "after": "633c51a2991f52833680a4fd2a0f4d0699beb6aaa7db3bec95dcc161a56fe532"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesGoodAlmostAllPlaces.lean": {
+      "before": "6a645708879957e648d1c4ed4de332938d8a384e60b2a1c4f573d3ddfc6f970e",
+      "after": "2753ffb6ed28580d2c5af9599483a847b579f27cca640a3815d7dcf90e38668f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesGoodAlmostAllPlacesStatement.lean": {
+      "before": "f112ea7ba817e9aea597f160ae66c4d93ba6b50fdf0862bfc60721c89deb6fd5",
+      "after": "58b49a4bfe06d1960e42ec562190fe567ecb785a1484ffbdf041754f53c83f55"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesTermsOrbitsLocal.lean": {
+      "before": "fece085d8b55a60d0c8ebaa6c82021cf364711b0b91dc64cc393175a3d3aaddd",
+      "after": "d9e52290c58769dc70b0498c1d09d0b628a978ab8bcd617a651b3611b3c6f8b4"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesTermsOrbitsLocalStatement.lean": {
+      "before": "44a26f6522a7333a86e686a435c75c9fa3a63ddbc5e0028e64fa245962d69834",
+      "after": "02a8bd161a0df678d393c9b7af45e1a01827eaba70f93f4c11765e7ee6aef7f3"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingCount.lean": {
+      "before": "af90d63e40fa50c4d468ba0126501eed290f4580e969864155cf23c9d7f40e37",
+      "after": "e99a6c9a3f86051f5df4bfc9045fc2951c0a762c3ff1bea06b9c553fec354195"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingCountStatement.lean": {
+      "before": "7e01d07e09d2553fd2e22ecae8049e80ac42a817e15e725bf080d00ff9d6f049",
+      "after": "e26fc49c9dc7360b7182ec500eb460e60715f975f84e5d653a84757f01cf05e9"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingImageCardPowLeDefectGroupCard.lean": {
+      "before": "42568bfc65f1b04326f465331c7885af03b790f02a33e56b4d27e73400a28353",
+      "after": "9480ab7b0baaa1903bd08d0a17073362747f9d2a5889a96df064ef4c837c35b9"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingImageCardPowLeDefectGroupCardStatement.lean": {
+      "before": "f3552aba99596e595c62ff90c52c6a97f682c220d23a57672ff9643768964964",
+      "after": "39df46cd590988f13be51ff022bcaad3a708ce21af5a7c0ca687fde62d505970"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GoodOfHpEqOne.lean": {
+      "before": "0d0390fd04324450864e07dc3be0c4c597f47dd3d5f0fe9f90a060824df065ba",
+      "after": "7e9bf4bf2861dc2085bf57d9a032df7cce62e2420a1160d039f97cbe66bd047d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GoodPlaceGramInvariantMinorsValuationZero.lean": {
+      "before": "f0edef56ce65004e65434fa803a464497214665df19c6a017574c26404e77b19",
+      "after": "63aaa991460bb7654ff7fb90de77299163cf59af061736b6fbbc9f10baa7214a"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GoodPlaceGramInvariantMinorsValuationZeroStatement.lean": {
+      "before": "9b67b384d3e5e9daacde9bb909a6f0c31f9f16ec3db97f9a3e7f3206c9ad62e2",
+      "after": "15e043670a284e18a3665b61c49576836cfbfc8c0aa2ccb139567e934ae99029"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HaarInvVolumeConjModularCharacter.lean": {
+      "before": "2203b072882f718e8c2d8c68f1cf99b23903962345a838dfbfcf8c92cf4892ae",
+      "after": "671b9f9f49dcb98ef23159db4da594af266909be168c5685a8593b9836769114"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HaarInvVolumeConjModularCharacterStatement.lean": {
+      "before": "dc254e1b4d17934a5ad93f401298dff011e06ba8d347a0cd60b932a551f80979",
+      "after": "97e5431a6e132c566d0479d121be2c2be1124683c4ba2a5c4fa15ae06ae865f2"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HaarInvVolumeRelIndexPiUnivEqFinprod.lean": {
+      "before": "78b0473cbc1f9e2150c54234f3a97714d9de47e3c517f5c05c3f2d00e762e36d",
+      "after": "fdc348cd8c426caf7418ca0776cc953d8316f23121dd891842c85d41305b1441"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HaarInvVolumeRelIndexPiUnivEqFinprodStatement.lean": {
+      "before": "f3633ee28aed1b6047ba2164b721b17ff5f139e67834320f13624acf2cbd39dc",
+      "after": "dcef2338f9faf6e0233ac98a101a852d3fccc902cc2720a6c628771669988392"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean": {
+      "before": "280cfbe22732c9511bb3162d7f89d8bbe5d5ef808791dec489ab58367d3ea27f",
+      "after": "b0d353781f64446049e028964c86017b8a72330e1242213f94a98cb5c6870012"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructureStatement.lean": {
+      "before": "dc5b059264f567bc9b473e380d4314d3af986224945d32ed4c13b8c50edf7ca4",
+      "after": "8702dfe7b029ef3b6da1a6c1ab8499b84a9484d9be20d0d487c12b54f58f1965"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFrameClassProperties.lean": {
+      "before": "cbf53511de32072178baa67fac15653d5bad47ad53c2ceff0a3f96157aae3aa3",
+      "after": "21759ac17103749f38f3b796026c67860b6b9655247df19835ff6dff14b0844f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFrameClassPropertiesStatement.lean": {
+      "before": "f66b01c122326331dd8f10400a49eb1e996aba445413581bef86f04b8648f6cf",
+      "after": "fb8368a1b58364c2c32af5fbd6df577f26fc50a577d99caa26464a558c3e67c1"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFramesLevelLeIffCongrFlagSte.lean": {
+      "before": "36fb6c21e16cca588d5bf8ff36604237544168f5588ea47654ce25d1cd0a183d",
+      "after": "e0770395758436442c0233a7aed8cc42d4b2c5a72ae1b0c09c01d2039b530b89"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFramesLevelLeIffCongrFlagSteStatement.lean": {
+      "before": "dddd3aa084702a13b5f59b54261213ca4a8350b68fe3abcdae1ea4af07ccf0f2",
+      "after": "8d573123516d1a6427b07ae671dfa88bc67833fe9dedd3feaf84d999203a3797"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFinite.lean": {
+      "before": "9604416861c733fe8a5d0f64368f19997ab005c58a34e9508e15089eeeca4625",
+      "after": "3e07d380ae1864c47195cc9b92210fe9c7766ec4d91acf5ca814b84e528c6438"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFiniteStatement.lean": {
+      "before": "f672beb16d3a6e2fc994d02e103f22c99c52e40238326973af953665640a0da2",
+      "after": "300e30b621e668b183451de1c749e196e722ef725c74670bc14c12ca7ba7885d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetTermBasicFacts.lean": {
+      "before": "eae89039a4bd820dd19fa1f9db8c1daf53019bc90d0b3ba4cdc90ecf79741772",
+      "after": "26c6febabf72690039f9a13d9d69d3df5bc08c27e79a57639b16926fa1f51909"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFourInverseMul.lean": {
+      "before": "4375157c5113dc9eb55a71e2f32bb997f945b58a49e1148ff82b6dc5b1ceaa8d",
+      "after": "bae100e40ac18ebbd0eb10902d12799999555da0f6278ce017fc99e73d562fa8"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFrameClassesTotalWeightLe.lean": {
+      "before": "99d1a4db0a10c24b4f1f198fb06b3f0512e9b627c7bf2050502c63aded3af167",
+      "after": "469282130ab7f1174c39bbd0ad27e808d4f6e2b4beeeffe27de09aeb32401e5c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFrameClassesTotalWeightLeStatement.lean": {
+      "before": "7d6cc56ac821eb8642ac5e7281cfb69b9a3cfd3180ee0b14e52dc18ca22aa322",
+      "after": "6c3fc23ba04484c988fa0e3ad16490c458472a6e0d2491630eb5097150828673"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesComplementUnitaryActsOnTerms.lean": {
+      "before": "5710f32ffa7a4c57c28b617b7e7ad0830e49e3495a9363549981b09f8acd0fde",
+      "after": "ff171d7b49a4a978aa936d7638448610a4a24d90f3f4d9caf1fcf1ca76c91673"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesComplementUnitaryNormalisesStabil.lean": {
+      "before": "8b207fb0c4df0bcf7661933b1e58f7ab879b084ead386396c1ffa4a333dae883",
+      "after": "23f75a8e0cbc5e2f20864cce836a645f5273013eaa5d48b545f862051ce23f5b"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesComplementUnitaryNormalisesStabilStatement.lean": {
+      "before": "6871dedfe9a707b3290a954dda0d644b5a023838dcae0b372403b8d937059d3a",
+      "after": "217fa2921831fb8b71c315a872b2f649c24ae27e75de3a78222ae81218ec1940"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesPairingStabilizerBlockDiagonal.lean": {
+      "before": "a6d9c6d761afe4b0499d2a16f9500af25695b132ec04b4f21ca126e9aeb5a026",
+      "after": "20331125b6638f2ca9710cf795714cd0628c85df66732d9b463e63aedc59077a"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesPairingStabilizerBlockDiagonalStatement.lean": {
+      "before": "3593584d3b70ac1c8e2ec326d7255d40287b53b6c1c54f41e1cd77e14a42aebb",
+      "after": "2818ed4c2efc741b9cfa2537154ea95d1fd397cec5835b39e6b28f654a44223c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesStabilizerActsOnTerms.lean": {
+      "before": "cf809026c0922507f0090de5501c87c2db991d8e8ba0539e066747add845cc7d",
+      "after": "739eecc0968cb4b41358b293575333f8b16fc12c9a54667418483f0d9804fa69"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesStabilizerActsOnTermsStatement.lean": {
+      "before": "fc07eeeef019bfdfa298af48e9f53a1ff2e01c59e2e4ad9ab471471f074456e4",
+      "after": "840586ec4ddf322e4449edc3e1673042634eb54e0d4c21ce5a52954bdc23744a"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianLatticeMassEqFinprodLocal.lean": {
+      "before": "da50eb7976257f5bea1383a3b89afb891c10bfb1e35503adea4218f08dc569c3",
+      "after": "fb9dcc1d247b58b36c1c9f3661799e004511045bb5e06ddf4e3adbb91a8c8707"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianLatticeMassEqFinprodLocalStatement.lean": {
+      "before": "ecbf7f0b59a20694cabc4b96c52df1b4c08b79d535bf8e89cd42474cf4f8657a",
+      "after": "4aaeaccf8a1eb59ca886036186362ad611223e7c972aa8d3dc169cbeecbc2ca0"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClasses.lean": {
+      "before": "5db47bbc64c0a05212a12e7480516f1edbd910f2ed5bf27a67b7e6d452915128",
+      "after": "dbcb5427a096b537862cbbd83f97fce56be21471653573008d7ab6054cd54731"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClassesStatement.lean": {
+      "before": "08d1c4556e3e0151fe13d235f7b814f518ca1902fb8d1064dbb3202a22b745f1",
+      "after": "ce604c54ec1bb607ec5093c6e7e86d00d1cdf4dfa51d95b8008199da14c49429"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairs.lean": {
+      "before": "eae2d6869c4feab4c39042a40034fc065057c953dfe308356e216d7da3addeaa",
+      "after": "9b55edf6bc10c4234c394769f353a25949d06c7e18006689e2c5828a212da846"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairsStatement.lean": {
+      "before": "454bc90f56e5e55d3129a37ec0cf0eb2b223b55e919eed975db43794ea373cc0",
+      "after": "06f3a995d0e6c793fb8d30c98b9f5c0e4581a823d93b9838547a484354c337ae"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianTermCountFrameClassLe.lean": {
+      "before": "40fa1b8cc58f23d012f62cee56876fab525a2a8a1e2fe5e7d702cfa03d99b6ad",
+      "after": "5aae3be04f29249738e5b86cf004f9008fca440d24b14c47615fa6acaff07042"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianTermCountFrameClassLeStatement.lean": {
+      "before": "8de76be0be06c4608318e7e55da1c29b93ec1f23c7f49f4bc1e960b769921d9b",
+      "after": "d1909762d966ed07b73cdb2a516e9bd1efd825a6e24ddebf35f6499d7363dcbc"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianTermSplitsUnimodularComplement.lean": {
+      "before": "cf59011493ec2e10c5c1ea49ca2614b95211d3f2ea37d1fa7df8cbc0ee2a04c1",
+      "after": "ea9420e8c9d47f7aeedc1f1f794daa81838e0c0743f1584e36bb84a40ff83336"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianTermSplitsUnimodularComplementStatement.lean": {
+      "before": "8b6123f489c270ab4df2f17fe8b175010445fa1375b07506d5f057536b151248",
+      "after": "99441b35910522bb4999c3c7913288c163e85258f6364b23b80fa67a277f48af"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HmUnit.lean": {
+      "before": "64e5f6fc07817f78babf78e39fc88d3e6339615f26a79882d56d5720aba173eb",
+      "after": "baa0fb500118642bc9665b537fd341362199262f135a151666f5bd9a0cd96afc"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ImportsBisFurther.lean": {
+      "before": "381fd7583d9351eb50b0b74c06bcaca440cfc319102b45721ff852003a3ac620",
+      "after": "ab15df9f25a837674ea4fa28a3e847eae2d96f76b23d51c7d30f686bdce7c511"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ImportsSide.lean": {
+      "before": "40897597ecdd5f41c227c0c935ae78a9e94aa7443ce3b6e856b33fe27d3b41a1",
+      "after": "8196a331a0284b413899c78a6aea6777a06edcb6e383418a6da1763aa45dd530"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ImportsTail.lean": {
+      "before": "2fb5609d72f52470a90f5c710d4cecb8ccdaeec1ada44800f3cb6dbc7310d3cf",
+      "after": "8295d7eac6a015e2fe7c57012f3c35bac94b4c13d25dce7f03aef50b73ffdebb"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IntCastIsUnitCompletionAlmostAllPlaces.lean": {
+      "before": "f984eba0ade591372e091b41a047880a0cb0f63a220caba41386571cefae5543",
+      "after": "ac8266da8206eadf8689f557b761f485fceb67e6aeb41b298073548c65911e7d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IntCastIsUnitCompletionAlmostAllPlacesStatement.lean": {
+      "before": "96d5f54049500e7980390cc50d7125080f6472a8b2cf09153d73828be6186e90",
+      "after": "494478e2ed7ed1747f561b7118bd89133b6a6043a806b61adae70df7113548b0"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IntegralOfMulVec.lean": {
+      "before": "77cf3bfc9c102f66e95f2885cd5a092563b1e3456e4160de408850080921d503",
+      "after": "4c9bb66dadba05e7842f2ee26ef4de98d53a797642714db74f69a8250b401cc1"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/InvVolMulPosLeConj.lean": {
+      "before": "4dc6d7b6086fd35062ac013dc11bd9c37afaf44d49493dd940e42054bbbec9bd",
+      "after": "0966d46b67cfebf01a25030fda1f6ddf53d289bc87916815ec7f1dec5b0b783c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsIntegralOfIntegralAllQuadraticCompletions.lean": {
+      "before": "803a5655aa1eac490121e213d7eb38396062ebd87934822545ffd97685fed87d",
+      "after": "4c17170b629b06cc6bca0ee22b58063731cacb06a5b5d84093e75befa30ed37e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsIntegralOfIntegralAllQuadraticCompletionsStatement.lean": {
+      "before": "53ecd4861b8caafce419db9fc1344067b40418c4bec7775ec0f8c8f361e36136",
+      "after": "567254a9552bc31479a3eb1405c6322e1105721629157bc8973b56a08e6addcc"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsIntegralOfQuad.lean": {
+      "before": "370c342740deec4c6cacef5c78c02660681f463488f059a653aba92e59bcdee7",
+      "after": "30b4e05dc9c4ded4bfe4462ff52121b190cc88c981e4c900dde5bc68bdb03be2"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsIntegralValIntegerIff.lean": {
+      "before": "ddaded5a88295b14d14afea9bdc2650bfc9ff8f04705b23d0d67d4e2679f4339",
+      "after": "584f91917e93ee79f1d6a240631b85c787c4b821e48379e1a5dae68fb4cc96bf"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsLatticeOfSqueezedBetweenNatMultiples.lean": {
+      "before": "ccbf957a59f0d728447a4be6aaf98188b620cb58f04bd94f6b6145970973f74f",
+      "after": "c7b04280eeed84d50369dac11752d116115dfabca7e3e77eddc480dcc029e8d2"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsLatticeOfSqueezedBetweenNatMultiplesStatement.lean": {
+      "before": "a93241e01d063c3578552a02a17cf09ea1d130a8bddf53024dd153dc97f5113c",
+      "after": "4ac0e3db6914905dd9dc51154bb04897ced65133600476c29c04e5f9473a81cf"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsPrincipalIdealRingOfHenselian.lean": {
+      "before": "c862ffe339db85dc50433836274a98e4667e7b3b723a2cbf819d2597be19586d",
+      "after": "0d69d7ee12f2a589892302036bafaac70bbfcf7131c24f500649a913603dbcca"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeCountBoundFrames.lean": {
+      "before": "883a8db7ffc9fcb2ceb612d41cdd11da81cee24fb1a499a9a139f2f26c5e7d67",
+      "after": "7f9e1a42838bcef2d298fd7e989d35170fca213d49b5dc280b443e7fbc7b0a20"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeCountBoundFramesStatement.lean": {
+      "before": "511ec97b46a72d203a260b86aca8184baadf542f12ef75953b15467e24d43aed",
+      "after": "c27b73d11a41d2fee876909588384a510bc620bdc8caf4eda886faa997c82e9f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeStabilizerCommensurableUnramifiedHermitia.lean": {
+      "before": "6f1c3e700458de32796ed49a6b4a4a84f2393c792eb6ab2ce27a531ee13403b0",
+      "after": "74b7c5fce39095f6b106ce2a5ad8f9dfb5592af286782674ee956ca1cb90e831"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeStabilizerCommensurableUnramifiedHermitiaStatement.lean": {
+      "before": "482a549a46ddbd9befe8bb5ffb640f5eb00a0e11788d468a6d3ac4818307df19",
+      "after": "c95edcf87c66463d4295b85d291905fc6397914ac058faf943ba93bca722b4bb"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeStabilizerInfLeConjNormalisingSubgroup.lean": {
+      "before": "bf1f44fb00fb13b14b7cb1d503a100ddd62cd796ae77e05c0d6143afb4028974",
+      "after": "1502cb163924733e84652654962cfcaa96687fae84d52130d8de7d108736c8c7"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeStabilizerInfLeConjNormalisingSubgroupStatement.lean": {
+      "before": "585492420397f44702949065b0f9ec6224ba3546f68531bcf3f7f4fc595c2495",
+      "after": "7ea89313f6d745d224e141981a0753331e873fa11479b387aa3666c29bcc05c2"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LeadingMinorsProdDenominatorUnitriangularFactors.lean": {
+      "before": "7fbc5128b10d0b23113c4d50c123190a409bcf958249ddc546acd19cd9b5d7f1",
+      "after": "d47558e6f9fb4f322c28ea012f0bb86254d9bb6f1f7583bcb61ca0a8e6258715"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LeadingMinorsProdDenominatorUnitriangularFactorsStatement.lean": {
+      "before": "fc3bb3f78339e0f103b70c35d8d1478753981cc940ec7bfcaef2a0837a9b5e35",
+      "after": "e37dc415c528dcd63a2e00f5273b4f2b1cf60149def8ed7553a72c48cc1ac2c7"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbit.lean": {
+      "before": "c38ee82fb5e4f3cac95e5c18b64f74de7400746b55a5fb660648efc19569c6bf",
+      "after": "85ed4c21518541b9b34c2dff578815c5c6c198c67fbb480f283396b55446a47b"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbitStatement.lean": {
+      "before": "09557d88775f0ca6ea0c2032ee12a89659b84ceb4cf5daa76acac40b6ab11a15",
+      "after": "9546e6af8e4e4c7792160ea569d5854741c05e7212644e51d53164123f239f01"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalCommonStabiliserBlockUnitriangularOnFrame.lean": {
+      "before": "a372257c21b8be92ed1856df72a34873b96b23ba9635d3a3afe6b2867adec142",
+      "after": "84b346075ed0b806027917d8d32a7e5a627053d67e2694b32f1d795aa8751282"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalCommonStabiliserBlockUnitriangularOnFrameStatement.lean": {
+      "before": "7d9dc8999bdb6e59ab0858135793f252bee83a4973ffbdd977713089d8f7ee0b",
+      "after": "ce4800d9010ba73e4e84e1024d53312ad59aec5fdd20e953f9b8c169999dbc57"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalLatticeBetweenScaledStandardLattices.lean": {
+      "before": "17d6370d959644b167c96e4eb35c90cc0501ec004d526a638d723084d1cfc5fb",
+      "after": "37b710923b3a0b5986676d46c972b0cdbf0f96fee0177f9e1f2b0e3a31dce3e2"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalLatticeBetweenScaledStandardLatticesStatement.lean": {
+      "before": "b78fc4350d5bb454617086250251fe4f51c0b14e38584eb22b31c62140f8db81",
+      "after": "88a15bb55e1c132f85550dd9b2b3a1b3a2d79bc32594f682437b751673e290bc"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalLatticeLeCompletionGluedLattice.lean": {
+      "before": "b5d5632b00fa7e75b562c5a89b47d8f732ec5f9b9f2ae2f6e241448fb8adc575",
+      "after": "bca7c95f74c7d86daaa3a10acd750f87b140e20da05a2dc53c5f50373ec7fcc4"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalLatticeLeCompletionGluedLatticeStatement.lean": {
+      "before": "f2e878e6802ebd1db78997e8994e865e89059b660e0bcf18c1bc5b2f27585ef0",
+      "after": "8dee55eea656b2f9d9400fa0355a00028de714682324ece94550dcdcf4c3c7c5"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/MassOrbitsEqTsumFiber.lean": {
+      "before": "e9cf0392af543bf8572a122780e82b14fe406ea980072122bc2c82d8db0d38a5",
+      "after": "eb7d74c5581c19c21cf298933088e39440cc1e01f1e6b41a3469b5d5506cd7b7"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/MemMaximalCompactOfIntegral.lean": {
+      "before": "4c46e5fa99efd30961f424c49f375cdc10af8341e2b0d38bd665ae7a2372542c",
+      "after": "26e054f70638248b051074fccdcdd4cc1b42b5eebbe2f811434fbe7be2ee5554"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/MemMaximalCompactOfIntegralStatement.lean": {
+      "before": "d87ff69c436308b38ce0674471a912464e34846e8100def87b30f49c1d340202",
+      "after": "47e2580764540e55069bbb0b2f1d025e4821da08d60b25793a9c417f763232da"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/MemPerpSpan.lean": {
+      "before": "c0b890385aae759031a4c61e18eb0a29b027851ba255523fdbdd66a8833fb5ca",
+      "after": "20631af804690185d4f2091b445cf571b38c23daa7e56b7f2034de96992d2438"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/MemSpanSingleIff.lean": {
+      "before": "e613824532c3328728ecb3f98ba8d349a2885605fe1f7591f3828d6923f4de37",
+      "after": "d75ce4c1a9400ec471b11e613018a9d92987e0ad4cf57874996bc6021068eb9f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/NatCastIsUnitQuadraticCompletionAlmostAll.lean": {
+      "before": "353630b9c2cb72b12ef0aa48fba0532a3cfc1db709a91b59079725c2c03664f1",
+      "after": "c2a3f845e47cb12c6c9e6b0bda19d82b1a756dcf6b9ad32c42e4f2c3f9cecc76"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/NatCastIsUnitQuadraticCompletionAlmostAllStatement.lean": {
+      "before": "5de27bbfe877ed8926129e7451480e2003cdf829801d7099d8285cf124ba0018",
+      "after": "541786ead104d2c9b4503ec38667010c2dc6870ecf65a138b3218566513d50b7"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/NormAdditiveCharacterTypePrimeEqOne.lean": {
+      "before": "26ba8bec6ef919dfe98c581e73e73c90735d3a8b6f8298a5af9d71204136f1e0",
+      "after": "4479f7530bda6ae8782f8293418dd21579ef5e8aa5f5de4b47f26d101975a9a5"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/NumberFieldLatticeDeterminedByLocalLattices.lean": {
+      "before": "885cdde08ab553c56a5a9fa5588a1b6fd76ffe2fd3230d1505c935e1ed3b3ecc",
+      "after": "1e83fafa7dc1bdcb20367185f26f4337c26278bcffb82a60c9cc376665ff259e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/NumberFieldLatticeDeterminedByLocalLatticesStatement.lean": {
+      "before": "2c97b2da6abf2f530a22c3303e600f2046cbd9b48e9dc8ee4b97f147e77868cd",
+      "after": "5e8c9dd53e34c731d5e8a915b3a2cc31829c795fadb4f09b9af8405ed09aa737"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/OrthonormalBasisAndOneOrbit.lean": {
+      "before": "625439a782fadc410a20170bfef3d82562b9fd360f974113c64283eccb71c7d2",
+      "after": "8d64207051d0f3b78c1a625843a90e89542f20ad17ae8f08ba96028761e9d250"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PairingConjInverseAdjointCloseToOne.lean": {
+      "before": "3f52e03143f19d2878c9eddc1892f908f5365f8f199a1bf704e940408cec37b2",
+      "after": "e430c9293470d8a8560ca5040806c2fcb316a7a30aa14ce4cdf1d742e2b8257c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PairingConjInverseAdjointCloseToOneStatement.lean": {
+      "before": "f9ea37c16015b4c6497e2b165cbad8ac23ddb2993088c8c2f022985d73fbb4d7",
+      "after": "e57142ba49edfee48233e622a0dce46ef4b208d648d309aa2060f702ff4ba6e7"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PairingSecondTypeTestOnRepresentatives.lean": {
+      "before": "680725773fb089ae30221373553b7b5e01fbeb1d33581304b64ec5b6674a0739",
+      "after": "991ae26c91f93544e495bacf2c48645aed825dbdbe36121f99616835c088abdc"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PatternUnitriangularStrongApproximation.lean": {
+      "before": "deef9dd3de44ebf0e4dab9ac039fedd34506987420e0d7b674ba6b9141b5a6e0",
+      "after": "51ace0602a69ecbd8cf98f0120f6c899f816cc4cb31049adb93bfe3390af060a"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PatternUnitriangularStrongApproximationStatement.lean": {
+      "before": "a206e5c8970f381cc628ad7afc5dbfa1008cc5d2367467685b324498820bc2c6",
+      "after": "51cf3cdb8437e02454509b3e432299ea91675b6d01b0f6c1bcac83f1eb2874e0"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PowEqZeroOfMemHermitianFrameUnipotent.lean": {
+      "before": "1b30268352ea4f2e308290215b1a537ab0790aca1367df6e90c2c3d46d7c3d24",
+      "after": "92fc3926913dff35d409f20419c50e850b6cd1bc6bd486c371a9430740e55e6b"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PowEqZeroOfMemHermitianFrameUnipotentStatement.lean": {
+      "before": "d96c3a628526aafc352fe55f6f6b810ef59068ade624b239250ef9c237d5b955",
+      "after": "4899fbd9b63741d1ff97c917be0f74f5735b900f552f22c5547ee5088c1650f5"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RationalExtend.lean": {
+      "before": "9e66666b24e74edefd2b72086f0b20e322e7199ebce4e68174fe42693a3567fd",
+      "after": "2d839c9ca067bbac8849383f1cd9530715de926fdffe4e40d98d75a7b054db0c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RationalPairingMatrixInvMulSelf.lean": {
+      "before": "2bf559de0aa9c0d050581c09a0bf214c30d3c44278fe13d4882192a698894262",
+      "after": "e00d418f846c4bb1badc7d9ec30d52feb0293612b65e6b7ffe13683936966ffa"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RationalPairingMatrixInvMulSelfStatement.lean": {
+      "before": "cbaf494890133df1ac0f4863954e23c5a0432a92ec48a2027cb5dfbc3c017272",
+      "after": "1f44333473da4be451ee0a44ab59af50443f2c9c6bb33482314905df9408bfba"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RelIndexComapPairOfDenseImage.lean": {
+      "before": "9b50a6e64a640566e0420032646be238d46bd37bcd778b6e5f2e5871ab82abed",
+      "after": "b9c7b56eadfc00607cf4c4418e94114d0ddcb3d7752688a9ed422f832f4ad5a1"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RelIndexComapPairOfDenseImageStatement.lean": {
+      "before": "11de77df578d8bddd23543b5464b0cfaae54809e9035d9573aaa052ed9f4cd38",
+      "after": "236310bc56b531ddcc704dd3d752a14fd52fa98f7f9d22ee23608a693eddf0de"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RelIndexSpanLatticeMatrixDetNorm.lean": {
+      "before": "801362a63d2d4cf8d340c1e11976a448678affbb38db9f71a5523ff800c92ae0",
+      "after": "54ccc28e3532b2426ed8723c2ed4422d3847a6e2fedd88046ed888824956eb83"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RelativeLatticeVolumeOfDetValuation.lean": {
+      "before": "8c65310092891f3d8f163ef0fd6c66618029a4e1d89604c9b476d8901e780c53",
+      "after": "4dcab0d8fd49c1cdc15e11c7aff9e9c5e2ed2174a17364cb682e4189f6638ed9"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RmulMul.lean": {
+      "before": "c6f6357f4e2eb4b8523adef77b627f202a8a546ea8b014d3f4dec22bd3cc0ab8",
+      "after": "c8b505dc73673a1b42afa0f2fc591c76a80d717fb666a1fe8035c180c020a1fd"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SelfDualLatticeUnipotentTranslateStandard.lean": {
+      "before": "c13a7b986452ab072305e51e17d9ffb87b4e231acc8961dc3ecfa351ba4bbde1",
+      "after": "ee3daf459a20f939ff6e9aaca13cd90188296525b2b45165d7a52e89f45dcb6c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SelfDualLatticeUnipotentTranslateStandardStatement.lean": {
+      "before": "9ff45f30f4d7f114911f4ac8a9ffff45e67df2f80e65510ce796c30a3b16fb20",
+      "after": "2738f4cd89625c3f632a2d8c6187bb9f22388e63f0f9572c8a7230a1dedab27a"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SpanToLePerp.lean": {
+      "before": "8f272826cb0fe04d48280904d2cb2c2f80b0622d6be3e13354fcf5c48b58017d",
+      "after": "cebe084bdbd3ccd78552061a68bebd6c468bb32e52ca45c06cf55030b9df7525"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StabilizerFramesCoordinateLatticeGoodPlace.lean": {
+      "before": "8dd2f1d36844204979a2717dc4f7956803789b11739e7bc5236c2ae6d7afc4ef",
+      "after": "83057a1ef17aaaead6c72ae1ba0498b67bdad7c81bfb5bcaa17f0c2dd03095af"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StabilizerFramesCoordinateLatticeGoodPlaceStatement.lean": {
+      "before": "8c3d614fedf6918d44ff7f8be35bd70f4aff10c8b2265f4c68ec1313d146554f",
+      "after": "b4b06584ce61e7daaf195c57894acd7681e2296f7011cf844e4d2e87b06724d4"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StrongApproxStab.lean": {
+      "before": "1474fea02f9a31df7905aa1c2ca7733c1732782fcd89da5de666b39d28ab02bb",
+      "after": "ae00f07e1c3ba3d3ef9a747bd9a4506efb7c9cd7af6b028c124a7cfe2c4d6d4e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StrongApproxStabStatement.lean": {
+      "before": "261d96a64b167cbf2c01d8c6ae1ee15a0c5196fa44b93ec19e973c25293a1711",
+      "after": "007f5475857e28d53bb2fc4c9abb4bbe80e38da0cc73be39b6ce2a48137ea8d1"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StrongApproximationAdditiveQuadraticExtension.lean": {
+      "before": "f879fa8aab55e95cb7fad0f560b2ce2ed2d888b35378a666d32af7aec8611cf1",
+      "after": "158047f93d5f44ed113052078110187e4ec67faf148c537e897952522c2a5465"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StrongApproximationAdditiveQuadraticExtensionStatement.lean": {
+      "before": "0a00e4390e99d57088d1e36802dd039bdbedfb1d720e8f7d3b39ebe62697d92b",
+      "after": "b0e886b6667007489cbf7b2e663559d672f5de463aadf9d619dd3b72ee503843"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SumClsLeEncard.lean": {
+      "before": "ac45f00b4becf2874ef76fa79e2ad0ff198274df7e420d0bee18a8de158d0e21",
+      "after": "0b14c6c442cacb5639cd4941c758943f6880b1227432d2d26c9985ad71e144dd"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SumProdOfLocalChoicesBijection.lean": {
+      "before": "c52e1671a48aab6433bdc64840d003a05385e33a92489994988b0e198825a4c9",
+      "after": "22f7f0dd75a7aec3c04b55bf6b25f35a8a8187e5498586b9d200faa3d4f63c82"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SumProdOfLocalChoicesBijectionStatement.lean": {
+      "before": "eb384ffc085a3d812e058faaa2118384de903c906b5144bc901e94e1e41e36f3",
+      "after": "e8126736f08a4c8247a113c14426f7d40c6098b8365a28a4703e664a7ff97800"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermExponentsNonnegAndDefectGroupBound.lean": {
+      "before": "80f3e1fa2ea70ec4cca8d2f1afd4306d135b41f65ea876350550c4a7ef7a477a",
+      "after": "e6ce42fc8226ad5a1169381b9261342f7497f4c186bed01aafd22520a55481ac"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermExponentsNonnegAndDefectGroupBoundStatement.lean": {
+      "before": "758188313de26085cac699d17c9a17fa6b606fd50dc0913a0a1e9a1811801827",
+      "after": "ede2bf6829a91d23e88d9f092eea7fc55bc437bc536ef3de4e9d4a6e2fe9517d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermInvariantsIndependentOfWitnesses.lean": {
+      "before": "dc37910d07bbcdd31f9f065360aae0945e211364258ff6d01c80f0de595014fc",
+      "after": "fcbacd3b704fcae9e3dd73760211e7dad53f5cbd10c4c5643273e377a8e7bbc1"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermInvariantsIndependentOfWitnessesStatement.lean": {
+      "before": "ac7905205520f4eee3144fa44b001f67ebbfef0d90f92b28ab7b8833f06af337",
+      "after": "66a26b102aa560f0eedd735917396d8c4a93a61d44b95011ab2a91f7c6ec8af4"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermLevelZeroAndBoundedRepresentatives.lean": {
+      "before": "333003bb5d309cecb42216f940047ba70dc2dc89c9a396527938ccee3f94a40b",
+      "after": "0adfea55ab64f0b64f16c2c643a1d9e580dcadd09833b1310a19977f482c7013"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermLevelZeroAndBoundedRepresentativesStatement.lean": {
+      "before": "d67d0ff88256c1aaf65344a37823cc77da01c2800090b9949b2387277553187b",
+      "after": "91e0cfea776ec7593994a944652d072383d3183d1587eaf3ffa7909b05ffacf1"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TupleJacobianRightMulIsometry.lean": {
+      "before": "7aa6fa03c561d1e2f42764d1311d021a22112d475114ac592595837cd09c5bf0",
+      "after": "1c005c4a447bda7fc2c6d89d8dc2808873ad58189fd2baa15507f24ac9477020"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/UnipotentStabilizesSomeLattice.lean": {
+      "before": "e38df04f3987a43c019c3ed52d3efe8f2466ce2fc5df5f1fbf6b7402d5226509",
+      "after": "2f686968de3c87f7c40f37b75974807b23be1079ea600ee950b4a3356c90dbbd"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/UnipotentStabilizesSomeLatticeStatement.lean": {
+      "before": "adff85034d1675fda60329779889f419a0c229840d330ac0a3ddcbbc2f6dba60",
+      "after": "3c2829036b11fe61a413762891c81552ed4a88cf09d4ba3bfbada0d4f227786c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/UnitEntries.lean": {
+      "before": "5edc3898fa79e20b502bb7624ba0a4763982c72e2582b1399c6c4f47e5a19cac",
+      "after": "8c59ec309a50c4593e64ebe0bec009ce9da6820fc217e3232aa74331d63d06c5"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/UnitriangularCloseToOneInverseClose.lean": {
+      "before": "5141455711c7a689e2deb24355b0085b8ec19175544ef0932d200f8e6fdff62b",
+      "after": "743afd1c99884a56040a25a418329e9bc55759cc337382cc02ce7b0291439871"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/UnitriangularCloseToOneInverseCloseStatement.lean": {
+      "before": "56e71720bb32a71f9463fe0327ea156ff837fa0cda7a209abc3396ebe2d0d3ae",
+      "after": "4871e2da2ebb339821edcaebe659c37d9d9855af09b8c0d26387c972159264ca"
+    },
+    "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/ExistsMemProjEqOnFinset.lean": {
+      "before": "cc1e8f04421de0314dee6554af1355e8a0547c8c17bfa638dcceeb98a1be55f8",
+      "after": "f63b127460c073d14cc2e0bf7e0dd036ffa661960cc678a0b867f919dc3aa5a1"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HermitianTraceForms/ExistsGlIsometryCompEqOfNondegenerate.lean": {
+      "before": "e5888a0f7359d1866cd1157b712ff9fc8debb554d5bf3f1bcb7c4dda53dd8811",
+      "after": "8766414cdfe76de03d989cca642de8436654ace1768c65aef77cccbb018bcc25"
+    },
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/CardQuotPow.lean": {
+      "before": "ab3b9ec954ac2cd7605049481d7724956dd67886f01f2945a5fa89f455172daf",
+      "after": "a085f01972837a8871a39875d60227260a6e495ae1df14691ae3a1e3fffbcb0c"
+    }
+  },
+  "pinned_source_files": {
+    "Development/AbelianVarietyTheory/Definitions/Foundations/IsIntegralIff.lean": "a561948f682666ffaba5d6883542fa6e326c766bf1cc373aa3080c82fbe429c4",
+    "Development/AbelianVarietyTheory/Definitions/SemilocalFrames/HermLat.lean": "1473413519d304253bcc511e06dd79cdec469f0cc9a6eb6776c618e03630feef",
+    "Development/AbelianVarietyTheory/Proofs/DecoratedLatticeProofs/IndexComapEqOfCosetsHit.lean": "eb263cdb5f8997ab21dbd5977331aab6bd3b963b24fcef7cbd5e45eff30902b0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeExpansionOverFinitePlaces.lean": "d06b07dc3c9e1019f29d58a66f1bb97f142f655016f978e13f25ec882d8233e7",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeExpansionOverFinitePlacesStatement.lean": "817e1a18ea0ef4b5ef7200cb198b4e46028bd16d7799e75e80b0f8e49d4879f7",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeMassEqOneOfSingleOrbit.lean": "b5bd8c97b56e326a520e7e7a913fbdd27bbe24570dfae59d2a78c2706f4e2bca",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/AmplitudeMassEqOneOfSingleOrbitStatement.lean": "688ef5353191e3d493c5f0f0f22b4deb6b2591ca7eaf44ef0ed9d8fee8f5357a",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/BasisOfIsCompl.lean": "2e1604dd8a17813199c4569144f0abb2d6454347e0a48adeab6edacd341ee4d4",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/BlockUnitriangularRationalFromCommonStabiliser.lean": "9d176c1ae1d39d5006e8971839c9415e482018b5b629144ff6a6832fb1ebd777",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/BlockUnitriangularRationalFromCommonStabiliserStatement.lean": "810111da5c6779385334ba3f5f8903cf8918d69b919113ceaf9294210b1de81b",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardCokernelUnramifiedOrderMatrixOfDetBase.lean": "9c9ca6f18ce4951747bb9430eec62024f2db13db6ec12bf943a04fee213b87da",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardCokernelUnramifiedOrderMatrixOfDetBaseStatement.lean": "504ca33e41f29d13bde48c2b20aeaf8a8aa8c2e3ec0bbab93accba0f4b8f8c14",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardDiscriminantModuleIntegralOverlatticeSpan.lean": "972807bf49d2f0518ab66afe31a681156082aa407869d8fe80bb77311e61d7d9",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardDiscriminantModuleIntegralOverlatticeSpanStatement.lean": "fb4e9bf8e34ff26eb77a16666c24a040fbe8c0f3621fdb50c0298a973acb778f",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardEqPowAndIndexGe.lean": "b41b7d4737324b908c33bad522fc328211959f81f168c3eef43564e33a2a7a9e",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardQuotEqPow.lean": "3e92323f5f22e5459d5510b29ed02b44818fa417c81941ccf5b3c3b8030e579e",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CardSubmoduleAndHomLe.lean": "1f8b7047ea90ab5380b34a710d170d58052599899f45f823da01ed965686daa7",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CloseOnCompletedLatticeOfCloseOnFrames.lean": "d48026bdaf7d3b5aa121a9fabf2d0a34c01fba6e1ed16a68329fb89da35ab28d",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CloseOnCompletedLatticeOfCloseOnFramesStatement.lean": "4b68534538ec9300725ac98986256480e6ee0bd26e2fa42aaa93a866d56a2773",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CommonStabilizerStabilizersCommensurableVolume.lean": "310cc9bc8f74168787b30e297e709674c9e0bce58a3fddbf3bc0d0a778d0469a",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CommonStabilizerStabilizersCommensurableVolumeStatement.lean": "5e7c1b6236ed6c600028f2dcfae4259429c53404deeef5804fbdf2a68a5382a0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ComplementLatticeOfTermFreeRank.lean": "00cc63a0af06c51d4d256d6327c432f1c622530443d5e2507c81d3f8fc6820f4",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CongruenceSubgroupLatticeStabilizer.lean": "ea092e08ca54792e8704eab1585fca162e723618ab7bf4232e5dcf951089c9d1",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CongruenceSubgroupLatticeStabilizerStatement.lean": "0c3c2310dce20f5a12b9a401126ac1a83221453ff1f43e1bd7e7ab8be5b344f5",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CoordinateLatticeUniqueTermAlmostAllPlaces.lean": "539b99622cf95125d2522d2e0738456c4b3596ce352b46c438b83e20e939030a",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/CoordinateLatticeUniqueTermAlmostAllPlacesStatement.lean": "663a0c927a3261f089383ff98bc8c50f23ed0d15469dd5a5a73def0eaf2f0c1c",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/DetGramTwoFrames.lean": "e53c89bda06862469379d397bc1f2e4b91130c6686a152633b08ccbe4dfbe4df",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/DetUpdateRowLastSingle.lean": "25348b7e8910abd812bb3a6ad8a7e506af20bd0962243fa2a1b7104b9c376c38",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/DualInterSelfDualHermitianLatticeSubspace.lean": "b8980238ca89bee4a27b91c9935c7c95c317117272b0aaa29bccf90357c0716d",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/EichlerIsometry.lean": "2bb8d45a999e3238ac8d1377263ae73f7e6bc800435516410ae97c2795d71894",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/EncardGluingHomKernelsLe.lean": "5f994f52423888a6518f3f816fd250d509044be4a278c487631c342f2188ba99",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/EncardGluingHomKernelsLeStatement.lean": "a98a1f40fc0b3783ec636f3804e996c7a7954b565ba540efe8d3918083e3789e",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/EncardUniCosetsLe.lean": "c8181fd9338d7c36455417abad22da5442906bf522a17d65e16fc86acd3d0673",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/Equality.lean": "6fa87411cee8dbcdbd02dd222bb201f9da0b439a826c04bc0c19aa83cc0b221c",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsBasisFgMaximalOrderSpanningFree.lean": "2d9b334d4c4e23f21bb5e31eeca4f7e4ae1a31219e34cd37869dc76d9a21e6f2",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsCommonDenominatorForHermitianLatticeData.lean": "c982675e33f3a1b295591f4cac25494a73209e8bcebd5099b6e12ebfe787b14f",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsCommonDenominatorForHermitianLatticeDataStatement.lean": "7092e66fa383e9f6d1cc6d5920c23e5f935a78c75d668083e3b749b95be8a6c2",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsEqZpowMulUnit.lean": "4bfea101f0efa943b7e8b402ba13913a487eb9388bbecd6f854f997cf68331dc",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsEquivOfRetractions.lean": "46e1e816cdc81ef6afa18d75568e1751a0e9b7276b2bf12762065f4f914e3914",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsFrameUnipotentExchangingDualIsotropic.lean": "b9919758f06d1214c8b256967f42eb4a4e5c55bef2ccd37f459c72aad4891b47",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsFrameUnipotentExchangingDualIsotropicStatement.lean": "1759c839411476c5ace437398a776b14f77b1c5e01901bda8dfd023b2e87ab46",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsGluingHomomorphismDefectGroup.lean": "8c2707886260574178e09da893ae0c223c5f133ac78f2a1b078f443aa8ad3e47",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsGluingHomomorphismDefectGroupStatement.lean": "f2a761ee83d8db1f9799bdb8305223b42c6d45de6852d81705eafaff1b45946a",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsIntSmulMemLattice.lean": "5f70fe03ec7dd58437f9210c87189ec57888069756a0ab47269eeb12c17a4e9b",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsLatticeStabilizerNormalisingSubgroup.lean": "2fbd8104493470a5dbab0ccd6890b8feaa3931dbdbc66f4b92d77a15e2f74196",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsLatticeStabilizerNormalisingSubgroupStatement.lean": "0a9282c7d9dcea82fe4a5c8f5185f75a7ef6e736d45805ba55a449e02f385b35",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsNatBoundLocalLatticesStandardAe.lean": "4ecc0561f22a5e78f189d8b99fa3a14f67cad2d7d963fb97ffc6dde2e9863362",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsNatBoundLocalLatticesStandardAeStatement.lean": "af80ef246697be5f9593752d14ecadbb15d9147b222bca52d8587229f5b068ba",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsNatMulMemIntegersQuadraticCompletion.lean": "f770b8b05372285dcc4d6d43791fccb03855a14429bda5095f00f70e653c12b0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsNatMulMemIntegersQuadraticCompletionStatement.lean": "5d9f56823cdd7646b261a1554cb542e78228b546dba3922c177887134107a26a",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsOrthonormalSameIntegralSpanUnimodular.lean": "1f2d9eee3ec7399f34245fe8c255e17be6bbb81054dbd10781cd78402ca25611",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsOrthonormalSameIntegralSpanUnimodularStatement.lean": "cdf30532453e4e24c2911f84662cd419c2f5ec91f065d84429be1bafd8a48d12",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsPowSmulMem.lean": "0ed5210fc20cba1ca3877d34189af9d398b659eba7a124f6bfe4a394ded5db66",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsUniqueGlobalLatticeOfLocalLattices.lean": "4c52f9013d1235162e602584bc0b95218b4abde870abdce0c1f9cb719f08d9f4",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ExistsUniqueGlobalLatticeOfLocalLatticesStatement.lean": "31cc6862df7fb3c70631c04d87de5da3dac5441b32e654847463961eae401f5d",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FinprodEqProdMulFinprodIte.lean": "54326589c5af452f083a583b1c9fdf7a402f7ecffcd6dcfabdaf535f7b6288f0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameLatticeGramDetAndMinorsOrbitInvariant.lean": "3dea1103c9aee6b1df99000edb0cf566e92e484feb318e71420ea7d07d33fd39",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameLatticeGramDetAndMinorsOrbitInvariantStatement.lean": "9543915b5f6c5779945b73a9172bf4199a6e1378478741325cbea1dd0c828a88",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameLatticeUnimodularGeneratorsExponentZero.lean": "a0000c081ca09fe955ac8cec9888f01a7278756e1dcc61f8d6106c578491b8ce",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameLatticeUnimodularGeneratorsExponentZeroStatement.lean": "79fa7ea462a66e7689c401058f49ea2035fb4ebd1aeb0ae5cec5d8ef6ac9686c",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameMatrixCloseGivesLatticeCloseIntegral.lean": "f86904e78477b78ee119517dc3003bcd75b5948ddd5ab1cee9254e433c79ce5e",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameMatrixCloseGivesLatticeCloseIntegralStatement.lean": "8f3e42a1851bad6e2f44723bce17ff3186a8f0e3d9d76fb5f158c095e862c4c6",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FrameUnipotentUnitriangular.lean": "273c65d3e51f23bf614b7fe6a82e62c6d7fed6ad5ca262aec607524eccebe619",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCharactersAgreeCommonStabiliser.lean": "9f53fe66071ea416cdbad79aafaf21ba372989ac2f02259b63ec22fc348ba54c",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCharactersAgreeCommonStabiliserStatement.lean": "e59c584f2922ccf76e427283bdac4ad6a5bb98f33abc587f344924a2110688c9",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCommonStabiliserEqPairingMatrixStabiliser.lean": "1abda889415e2904586dca1c61d9a70db4be7bde2da26016d269c7c50fb0b01f",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCommonStabiliserEqPairingMatrixStabiliserStatement.lean": "9e47fd4b745ddc059f4f6473e960d8222c33abf8456a9e88619bd3062dbee730",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCoordinateLatticeIsTermTrivialWitnesses.lean": "368aa45c74ffa22b795e0606ec732ac6387b829eafa8c7e59c02fb1d5c4b4a3e",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/FramesCoordinateLatticeIsTermTrivialWitnessesStatement.lean": "cb8327a48db2f1154718f4ae21b1c17f82ab6f316b09bd94b9122e8d10c8964e",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalFramesJointGramInvMulSelf.lean": "a0a371b95b3ef0a7cf3e33848db5b55dbb414c7bd46d5b61af37744a279aa6f1",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalFramesJointGramInvMulSelfStatement.lean": "2f372372b2839d06c500f5c8c5d93236f62a6121fed0651ed15514b93b17eb31",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesGoodAlmostAllPlaces.lean": "6a645708879957e648d1c4ed4de332938d8a384e60b2a1c4f573d3ddfc6f970e",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesGoodAlmostAllPlacesStatement.lean": "f112ea7ba817e9aea597f160ae66c4d93ba6b50fdf0862bfc60721c89deb6fd5",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesTermsOrbitsLocal.lean": "fece085d8b55a60d0c8ebaa6c82021cf364711b0b91dc64cc393175a3d3aaddd",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GlobalHermitianFramesTermsOrbitsLocalStatement.lean": "44a26f6522a7333a86e686a435c75c9fa3a63ddbc5e0028e64fa245962d69834",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingCount.lean": "af90d63e40fa50c4d468ba0126501eed290f4580e969864155cf23c9d7f40e37",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingCountStatement.lean": "7e01d07e09d2553fd2e22ecae8049e80ac42a817e15e725bf080d00ff9d6f049",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingImageCardPowLeDefectGroupCard.lean": "42568bfc65f1b04326f465331c7885af03b790f02a33e56b4d27e73400a28353",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GluingImageCardPowLeDefectGroupCardStatement.lean": "f3552aba99596e595c62ff90c52c6a97f682c220d23a57672ff9643768964964",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GoodOfHpEqOne.lean": "0d0390fd04324450864e07dc3be0c4c597f47dd3d5f0fe9f90a060824df065ba",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GoodPlaceGramInvariantMinorsValuationZero.lean": "f0edef56ce65004e65434fa803a464497214665df19c6a017574c26404e77b19",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/GoodPlaceGramInvariantMinorsValuationZeroStatement.lean": "9b67b384d3e5e9daacde9bb909a6f0c31f9f16ec3db97f9a3e7f3206c9ad62e2",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HaarInvVolumeConjModularCharacter.lean": "2203b072882f718e8c2d8c68f1cf99b23903962345a838dfbfcf8c92cf4892ae",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HaarInvVolumeConjModularCharacterStatement.lean": "dc254e1b4d17934a5ad93f401298dff011e06ba8d347a0cd60b932a551f80979",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HaarInvVolumeRelIndexPiUnivEqFinprod.lean": "78b0473cbc1f9e2150c54234f3a97714d9de47e3c517f5c05c3f2d00e762e36d",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HaarInvVolumeRelIndexPiUnivEqFinprodStatement.lean": "f3633ee28aed1b6047ba2164b721b17ff5f139e67834320f13624acf2cbd39dc",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructure.lean": "280cfbe22732c9511bb3162d7f89d8bbe5d5ef808791dec489ab58367d3ea27f",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianAmplitudeMassProductStructureStatement.lean": "dc5b059264f567bc9b473e380d4314d3af986224945d32ed4c13b8c50edf7ca4",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFrameClassProperties.lean": "cbf53511de32072178baa67fac15653d5bad47ad53c2ceff0a3f96157aae3aa3",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFrameClassPropertiesStatement.lean": "f66b01c122326331dd8f10400a49eb1e996aba445413581bef86f04b8648f6cf",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFramesLevelLeIffCongrFlagSte.lean": "36fb6c21e16cca588d5bf8ff36604237544168f5588ea47654ce25d1cd0a183d",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetFramesLevelLeIffCongrFlagSteStatement.lean": "dddd3aa084702a13b5f59b54261213ca4a8350b68fe3abcdae1ea4af07ccf0f2",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFinite.lean": "9604416861c733fe8a5d0f64368f19997ab005c58a34e9508e15089eeeca4625",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetMassLeAndFiniteStatement.lean": "f672beb16d3a6e2fc994d02e103f22c99c52e40238326973af953665640a0da2",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianDoubleCosetTermBasicFacts.lean": "eae89039a4bd820dd19fa1f9db8c1daf53019bc90d0b3ba4cdc90ecf79741772",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFourInverseMul.lean": "4375157c5113dc9eb55a71e2f32bb997f945b58a49e1148ff82b6dc5b1ceaa8d",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFrameClassesTotalWeightLe.lean": "99d1a4db0a10c24b4f1f198fb06b3f0512e9b627c7bf2050502c63aded3af167",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFrameClassesTotalWeightLeStatement.lean": "7d6cc56ac821eb8642ac5e7281cfb69b9a3cfd3180ee0b14e52dc18ca22aa322",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesComplementUnitaryActsOnTerms.lean": "5710f32ffa7a4c57c28b617b7e7ad0830e49e3495a9363549981b09f8acd0fde",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesComplementUnitaryNormalisesStabil.lean": "8b207fb0c4df0bcf7661933b1e58f7ab879b084ead386396c1ffa4a333dae883",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesComplementUnitaryNormalisesStabilStatement.lean": "6871dedfe9a707b3290a954dda0d644b5a023838dcae0b372403b8d937059d3a",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesPairingStabilizerBlockDiagonal.lean": "a6d9c6d761afe4b0499d2a16f9500af25695b132ec04b4f21ca126e9aeb5a026",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesPairingStabilizerBlockDiagonalStatement.lean": "3593584d3b70ac1c8e2ec326d7255d40287b53b6c1c54f41e1cd77e14a42aebb",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesStabilizerActsOnTerms.lean": "cf809026c0922507f0090de5501c87c2db991d8e8ba0539e066747add845cc7d",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianFramesStabilizerActsOnTermsStatement.lean": "fc07eeeef019bfdfa298af48e9f53a1ff2e01c59e2e4ad9ab471471f074456e4",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianLatticeMassEqFinprodLocal.lean": "da50eb7976257f5bea1383a3b89afb891c10bfb1e35503adea4218f08dc569c3",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianLatticeMassEqFinprodLocalStatement.lean": "ecbf7f0b59a20694cabc4b96c52df1b4c08b79d535bf8e89cd42474cf4f8657a",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClasses.lean": "5db47bbc64c0a05212a12e7480516f1edbd910f2ed5bf27a67b7e6d452915128",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianMassEqSumFrameClassesStatement.lean": "08d1c4556e3e0151fe13d235f7b814f518ca1902fb8d1064dbb3202a22b745f1",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairs.lean": "eae2d6869c4feab4c39042a40034fc065057c953dfe308356e216d7da3addeaa",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianStabiliserRationalUnitriangularPairsStatement.lean": "454bc90f56e5e55d3129a37ec0cf0eb2b223b55e919eed975db43794ea373cc0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianTermCountFrameClassLe.lean": "40fa1b8cc58f23d012f62cee56876fab525a2a8a1e2fe5e7d702cfa03d99b6ad",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianTermCountFrameClassLeStatement.lean": "8de76be0be06c4608318e7e55da1c29b93ec1f23c7f49f4bc1e960b769921d9b",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianTermSplitsUnimodularComplement.lean": "cf59011493ec2e10c5c1ea49ca2614b95211d3f2ea37d1fa7df8cbc0ee2a04c1",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HermitianTermSplitsUnimodularComplementStatement.lean": "8b6123f489c270ab4df2f17fe8b175010445fa1375b07506d5f057536b151248",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/HmUnit.lean": "64e5f6fc07817f78babf78e39fc88d3e6339615f26a79882d56d5720aba173eb",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ImportsBisFurther.lean": "381fd7583d9351eb50b0b74c06bcaca440cfc319102b45721ff852003a3ac620",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ImportsSide.lean": "40897597ecdd5f41c227c0c935ae78a9e94aa7443ce3b6e856b33fe27d3b41a1",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/ImportsTail.lean": "2fb5609d72f52470a90f5c710d4cecb8ccdaeec1ada44800f3cb6dbc7310d3cf",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IntCastIsUnitCompletionAlmostAllPlaces.lean": "f984eba0ade591372e091b41a047880a0cb0f63a220caba41386571cefae5543",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IntCastIsUnitCompletionAlmostAllPlacesStatement.lean": "96d5f54049500e7980390cc50d7125080f6472a8b2cf09153d73828be6186e90",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IntegralOfMulVec.lean": "77cf3bfc9c102f66e95f2885cd5a092563b1e3456e4160de408850080921d503",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/InvVolMulPosLeConj.lean": "4dc6d7b6086fd35062ac013dc11bd9c37afaf44d49493dd940e42054bbbec9bd",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsIntegralOfIntegralAllQuadraticCompletions.lean": "803a5655aa1eac490121e213d7eb38396062ebd87934822545ffd97685fed87d",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsIntegralOfIntegralAllQuadraticCompletionsStatement.lean": "53ecd4861b8caafce419db9fc1344067b40418c4bec7775ec0f8c8f361e36136",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsIntegralOfQuad.lean": "370c342740deec4c6cacef5c78c02660681f463488f059a653aba92e59bcdee7",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsIntegralValIntegerIff.lean": "ddaded5a88295b14d14afea9bdc2650bfc9ff8f04705b23d0d67d4e2679f4339",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsLatticeOfSqueezedBetweenNatMultiples.lean": "ccbf957a59f0d728447a4be6aaf98188b620cb58f04bd94f6b6145970973f74f",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsLatticeOfSqueezedBetweenNatMultiplesStatement.lean": "a93241e01d063c3578552a02a17cf09ea1d130a8bddf53024dd153dc97f5113c",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/IsPrincipalIdealRingOfHenselian.lean": "c862ffe339db85dc50433836274a98e4667e7b3b723a2cbf819d2597be19586d",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeCountBoundFrames.lean": "883a8db7ffc9fcb2ceb612d41cdd11da81cee24fb1a499a9a139f2f26c5e7d67",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeCountBoundFramesStatement.lean": "511ec97b46a72d203a260b86aca8184baadf542f12ef75953b15467e24d43aed",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeStabilizerCommensurableUnramifiedHermitia.lean": "6f1c3e700458de32796ed49a6b4a4a84f2393c792eb6ab2ce27a531ee13403b0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeStabilizerCommensurableUnramifiedHermitiaStatement.lean": "482a549a46ddbd9befe8bb5ffb640f5eb00a0e11788d468a6d3ac4818307df19",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeStabilizerInfLeConjNormalisingSubgroup.lean": "bf1f44fb00fb13b14b7cb1d503a100ddd62cd796ae77e05c0d6143afb4028974",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LatticeStabilizerInfLeConjNormalisingSubgroupStatement.lean": "585492420397f44702949065b0f9ec6224ba3546f68531bcf3f7f4fc595c2495",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LeadingMinorsProdDenominatorUnitriangularFactors.lean": "7fbc5128b10d0b23113c4d50c123190a409bcf958249ddc546acd19cd9b5d7f1",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LeadingMinorsProdDenominatorUnitriangularFactorsStatement.lean": "fc3bb3f78339e0f103b70c35d8d1478753981cc940ec7bfcaef2a0837a9b5e35",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbit.lean": "c38ee82fb5e4f3cac95e5c18b64f74de7400746b55a5fb660648efc19569c6bf",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalAmplitudeSummandAtTermOrbitStatement.lean": "09557d88775f0ca6ea0c2032ee12a89659b84ceb4cf5daa76acac40b6ab11a15",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalCommonStabiliserBlockUnitriangularOnFrame.lean": "a372257c21b8be92ed1856df72a34873b96b23ba9635d3a3afe6b2867adec142",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalCommonStabiliserBlockUnitriangularOnFrameStatement.lean": "7d9dc8999bdb6e59ab0858135793f252bee83a4973ffbdd977713089d8f7ee0b",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalLatticeBetweenScaledStandardLattices.lean": "17d6370d959644b167c96e4eb35c90cc0501ec004d526a638d723084d1cfc5fb",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalLatticeBetweenScaledStandardLatticesStatement.lean": "b78fc4350d5bb454617086250251fe4f51c0b14e38584eb22b31c62140f8db81",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalLatticeLeCompletionGluedLattice.lean": "b5d5632b00fa7e75b562c5a89b47d8f732ec5f9b9f2ae2f6e241448fb8adc575",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/LocalLatticeLeCompletionGluedLatticeStatement.lean": "f2e878e6802ebd1db78997e8994e865e89059b660e0bcf18c1bc5b2f27585ef0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/MassOrbitsEqTsumFiber.lean": "e9cf0392af543bf8572a122780e82b14fe406ea980072122bc2c82d8db0d38a5",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/MemMaximalCompactOfIntegral.lean": "4c46e5fa99efd30961f424c49f375cdc10af8341e2b0d38bd665ae7a2372542c",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/MemMaximalCompactOfIntegralStatement.lean": "d87ff69c436308b38ce0674471a912464e34846e8100def87b30f49c1d340202",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/MemPerpSpan.lean": "c0b890385aae759031a4c61e18eb0a29b027851ba255523fdbdd66a8833fb5ca",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/MemSpanSingleIff.lean": "e613824532c3328728ecb3f98ba8d349a2885605fe1f7591f3828d6923f4de37",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/NatCastIsUnitQuadraticCompletionAlmostAll.lean": "353630b9c2cb72b12ef0aa48fba0532a3cfc1db709a91b59079725c2c03664f1",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/NatCastIsUnitQuadraticCompletionAlmostAllStatement.lean": "5de27bbfe877ed8926129e7451480e2003cdf829801d7099d8285cf124ba0018",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/NormAdditiveCharacterTypePrimeEqOne.lean": "26ba8bec6ef919dfe98c581e73e73c90735d3a8b6f8298a5af9d71204136f1e0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/NumberFieldLatticeDeterminedByLocalLattices.lean": "885cdde08ab553c56a5a9fa5588a1b6fd76ffe2fd3230d1505c935e1ed3b3ecc",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/NumberFieldLatticeDeterminedByLocalLatticesStatement.lean": "2c97b2da6abf2f530a22c3303e600f2046cbd9b48e9dc8ee4b97f147e77868cd",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/OrthonormalBasisAndOneOrbit.lean": "625439a782fadc410a20170bfef3d82562b9fd360f974113c64283eccb71c7d2",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PairingConjInverseAdjointCloseToOne.lean": "3f52e03143f19d2878c9eddc1892f908f5365f8f199a1bf704e940408cec37b2",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PairingConjInverseAdjointCloseToOneStatement.lean": "f9ea37c16015b4c6497e2b165cbad8ac23ddb2993088c8c2f022985d73fbb4d7",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PairingSecondTypeTestOnRepresentatives.lean": "680725773fb089ae30221373553b7b5e01fbeb1d33581304b64ec5b6674a0739",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PatternUnitriangularStrongApproximation.lean": "deef9dd3de44ebf0e4dab9ac039fedd34506987420e0d7b674ba6b9141b5a6e0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PatternUnitriangularStrongApproximationStatement.lean": "a206e5c8970f381cc628ad7afc5dbfa1008cc5d2367467685b324498820bc2c6",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PowEqZeroOfMemHermitianFrameUnipotent.lean": "1b30268352ea4f2e308290215b1a537ab0790aca1367df6e90c2c3d46d7c3d24",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/PowEqZeroOfMemHermitianFrameUnipotentStatement.lean": "d96c3a628526aafc352fe55f6f6b810ef59068ade624b239250ef9c237d5b955",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RationalExtend.lean": "9e66666b24e74edefd2b72086f0b20e322e7199ebce4e68174fe42693a3567fd",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RationalPairingMatrixInvMulSelf.lean": "2bf559de0aa9c0d050581c09a0bf214c30d3c44278fe13d4882192a698894262",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RationalPairingMatrixInvMulSelfStatement.lean": "cbaf494890133df1ac0f4863954e23c5a0432a92ec48a2027cb5dfbc3c017272",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RelIndexComapPairOfDenseImage.lean": "9b50a6e64a640566e0420032646be238d46bd37bcd778b6e5f2e5871ab82abed",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RelIndexComapPairOfDenseImageStatement.lean": "11de77df578d8bddd23543b5464b0cfaae54809e9035d9573aaa052ed9f4cd38",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RelIndexSpanLatticeMatrixDetNorm.lean": "801362a63d2d4cf8d340c1e11976a448678affbb38db9f71a5523ff800c92ae0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RelativeLatticeVolumeOfDetValuation.lean": "8c65310092891f3d8f163ef0fd6c66618029a4e1d89604c9b476d8901e780c53",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/RmulMul.lean": "c6f6357f4e2eb4b8523adef77b627f202a8a546ea8b014d3f4dec22bd3cc0ab8",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SelfDualLatticeUnipotentTranslateStandard.lean": "c13a7b986452ab072305e51e17d9ffb87b4e231acc8961dc3ecfa351ba4bbde1",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SelfDualLatticeUnipotentTranslateStandardStatement.lean": "9ff45f30f4d7f114911f4ac8a9ffff45e67df2f80e65510ce796c30a3b16fb20",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SpanToLePerp.lean": "8f272826cb0fe04d48280904d2cb2c2f80b0622d6be3e13354fcf5c48b58017d",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StabilizerFramesCoordinateLatticeGoodPlace.lean": "8dd2f1d36844204979a2717dc4f7956803789b11739e7bc5236c2ae6d7afc4ef",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StabilizerFramesCoordinateLatticeGoodPlaceStatement.lean": "8c3d614fedf6918d44ff7f8be35bd70f4aff10c8b2265f4c68ec1313d146554f",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StrongApproxStab.lean": "1474fea02f9a31df7905aa1c2ca7733c1732782fcd89da5de666b39d28ab02bb",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StrongApproxStabStatement.lean": "261d96a64b167cbf2c01d8c6ae1ee15a0c5196fa44b93ec19e973c25293a1711",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StrongApproximationAdditiveQuadraticExtension.lean": "f879fa8aab55e95cb7fad0f560b2ce2ed2d888b35378a666d32af7aec8611cf1",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/StrongApproximationAdditiveQuadraticExtensionStatement.lean": "0a00e4390e99d57088d1e36802dd039bdbedfb1d720e8f7d3b39ebe62697d92b",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SumClsLeEncard.lean": "ac45f00b4becf2874ef76fa79e2ad0ff198274df7e420d0bee18a8de158d0e21",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SumProdOfLocalChoicesBijection.lean": "c52e1671a48aab6433bdc64840d003a05385e33a92489994988b0e198825a4c9",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/SumProdOfLocalChoicesBijectionStatement.lean": "eb384ffc085a3d812e058faaa2118384de903c906b5144bc901e94e1e41e36f3",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermExponentsNonnegAndDefectGroupBound.lean": "80f3e1fa2ea70ec4cca8d2f1afd4306d135b41f65ea876350550c4a7ef7a477a",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermExponentsNonnegAndDefectGroupBoundStatement.lean": "758188313de26085cac699d17c9a17fa6b606fd50dc0913a0a1e9a1811801827",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermInvariantsIndependentOfWitnesses.lean": "dc37910d07bbcdd31f9f065360aae0945e211364258ff6d01c80f0de595014fc",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermInvariantsIndependentOfWitnessesStatement.lean": "ac7905205520f4eee3144fa44b001f67ebbfef0d90f92b28ab7b8833f06af337",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermLevelZeroAndBoundedRepresentatives.lean": "333003bb5d309cecb42216f940047ba70dc2dc89c9a396527938ccee3f94a40b",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TermLevelZeroAndBoundedRepresentativesStatement.lean": "d67d0ff88256c1aaf65344a37823cc77da01c2800090b9949b2387277553187b",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/TupleJacobianRightMulIsometry.lean": "7aa6fa03c561d1e2f42764d1311d021a22112d475114ac592595837cd09c5bf0",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/UnipotentStabilizesSomeLattice.lean": "e38df04f3987a43c019c3ed52d3efe8f2466ce2fc5df5f1fbf6b7402d5226509",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/UnipotentStabilizesSomeLatticeStatement.lean": "adff85034d1675fda60329779889f419a0c229840d330ac0a3ddcbbc2f6dba60",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/UnitEntries.lean": "5edc3898fa79e20b502bb7624ba0a4763982c72e2582b1399c6c4f47e5a19cac",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/UnitriangularCloseToOneInverseClose.lean": "5141455711c7a689e2deb24355b0085b8ec19175544ef0932d200f8e6fdff62b",
+    "Development/AbelianVarietyTheory/Proofs/FlagMeasures/UnitriangularCloseToOneInverseCloseStatement.lean": "56e71720bb32a71f9463fe0327ea156ff837fa0cda7a209abc3396ebe2d0d3ae",
+    "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/ExistsMemProjEqOnFinset.lean": "cc1e8f04421de0314dee6554af1355e8a0547c8c17bfa638dcceeb98a1be55f8",
+    "Development/AbelianVarietyTheory/Proofs/HermitianTraceForms/ExistsGlIsometryCompEqOfNondegenerate.lean": "e5888a0f7359d1866cd1157b712ff9fc8debb554d5bf3f1bcb7c4dda53dd8811",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/CardQuotPow.lean": "ab3b9ec954ac2cd7605049481d7724956dd67886f01f2945a5fa89f455172daf"
+  },
+  "attribution": {
+    "original_formalization": "Levent Alpöge",
+    "native_model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "native_session": "phase3-fast-core35-r01",
+    "native_source": "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/ExistsMemProjEqOnFinset.lean",
+    "retained_source_sha256": "f63b127460c073d14cc2e0bf7e0dd036ffa661960cc678a0b867f919dc3aa5a1",
+    "retained_import_reductions": [
+      "Formalism.LocalRingCardinality.DataLevel",
+      "Formalism.LocalRingCardinality.DataLevelD",
+      "Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GapAtLeast"
+    ],
+    "supervisor": "Codex traced the dependencies required by the amplitude expansion and adapted the flag-measure, lattice and cardinality proofs."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-24T11:03:58.013310+00:00",
+    "elapsed_seconds": 534.891,
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ],
+    "log_sha256": "d22e6c187417e35734337230b219e1ab8949f4244f176c709a8c76b50c2723eb",
+    "frozen_files": 20,
+    "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
+    "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e"
+  },
+  "hosted_score": null
+}
