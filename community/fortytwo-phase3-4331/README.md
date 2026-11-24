@@ -2,7 +2,7 @@
 
 These source changes reduce the size of Levent Alpöge’s Phase 3 proofs. Fortytwo Engine: Deepseek Flash V4.1 1017 contributed proofs through DeepSeek Harness. Codex supervised the campaign and contributed dependency analysis and proof edits. Each core’s verification file identifies its contributions. Keith Adler’s published dependency-pruning analysis informed the search.
 
-Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex evaluated the finite Euler factor on the unit lattice via the ideal character and used its coset indicator for the Schwartz–Bruhat condition. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one.
+Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex expressed the L-series as an absolutely convergent sum over integral ideals.
 
 Levent Alpöge authored the original Core 37 formalization. Codex reduced the Bernstein–Zelevinsky finite-length proof by narrowing dependencies in two modules. Fortytwo conducted the preceding search and verified the parent proof. Its edit to ExampleSatisfiesConditionsAtFive falls outside this 74-file import closure. The independent local Comparator and Lean default kernel accepted this source-only study.
 
@@ -22,7 +22,7 @@ For Core 41, Codex narrowed the imports in Levent Alpöge’s `DiscreteSeriesWey
 | 25 | 4,382 | 29,435,752 | 7,851,988 | 21,583,764 |
 | 26 | 242 | 540,118 | 366,542 | 173,576 |
 | 28 | 153 | 920,317 | 269,287 | 651,030 |
-| 29 | 63 | 831,319 | 100,000 | 731,319 |
+| 29 | 63 | 831,319 | 98,241 | 733,078 |
 | 30 | 374 | 1,438,064 | 1,191,661 | 246,403 |
 | 31 | 282 | 420,267 | 286,968 | 133,299 |
 | 33 | 42 | 826,075 | 69,093 | 756,982 |
