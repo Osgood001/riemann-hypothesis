@@ -36,13 +36,11 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
       rw [htor]
       rfl,
     fun φ hφ r _ _ => ?_⟩
-  have hpi : (pi : MeasurableSpace (BlockIx N r → Ad E)) = borel _ :=
-      BorelSpace.measurable_eq
   set ν := unipMeasure E N r
   set D := unipFundamentalDomain E N r
   have hunip (X : UPos N r → Ad E) : unipGL X = unip X := Units.ext rfl
   unfold IsCT
-  rw [← hpi]
+  rw [← BorelSpace.measurable_eq (α := BlockIx N r → Ad E)]
   refine ⟨⟨ν, D, inferInstance, isAddFundamentalDomain_unipFundamentalDomain, by ext g; simp [ct, ctn, measureReal_def, unipMeasure_unipFundamentalDomain, constantTerm, hunip, D, ν]⟩,
     fun F ⟨μ, 𝓕, hμ, h𝓕, hF⟩ => ?_⟩
   subst hF
