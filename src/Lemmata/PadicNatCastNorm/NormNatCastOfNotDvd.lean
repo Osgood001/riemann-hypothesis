@@ -15,9 +15,7 @@ private lemma norm_natCast_padicAlgCl_of_not_dvd' {m : ℕ} (hm : ¬ p ∣ m) : 
 
 theorem goal1 {m : ℕ} (hm : ¬ p ∣ m) {η : PadicAlgCl p} (hη : η ^ m = 1) (h : η ≠ 1) :
     ‖η - 1‖ = 1 := by
-  have hm0 : m ≠ 0 := by
-    rintro rfl
-    exact hm (dvd_zero p)
+  have hm0 : m ≠ 0 := by aesop
   have hn : ‖η‖ = 1 := by
     have h2 : ‖η‖ ^ m = 1 := by rw [← norm_pow, hη, norm_one]
     exact (pow_eq_one_iff_of_nonneg (norm_nonneg η) hm0).1 h2
@@ -29,7 +27,7 @@ theorem goal1 {m : ℕ} (hm : ¬ p ∣ m) {η : PadicAlgCl p} (hη : η ^ m = 1)
   have hsub : η - 1 ≠ 0 := sub_ne_zero.2 h
   have hgeom : ∀ n : ℕ, ‖∑ j ∈ Finset.range n, η ^ j‖ ≤ 1 := fun n =>
     IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one
-      (fun j _ => by rw [norm_pow, hn, one_pow])
+      (fun j _ => by simp_all)
   have hpow : ∀ i : ℕ, ‖η ^ i - 1‖ ≤ ‖η - 1‖ := fun i => by
     rw [← geom_sum_mul, norm_mul]
     calc ‖∑ j ∈ Finset.range i, η ^ j‖ * ‖η - 1‖ ≤ 1 * ‖η - 1‖ :=
@@ -39,9 +37,7 @@ theorem goal1 {m : ℕ} (hm : ¬ p ∣ m) {η : PadicAlgCl p} (hη : η ^ m = 1)
     have h3 := geom_sum_mul η m
     rw [hη, sub_self] at h3
     exact (mul_eq_zero.1 h3).resolve_right hsub
-  have hmeq : (m : PadicAlgCl p) = -∑ i ∈ Finset.range m, (η ^ i - 1) := by
-    rw [Finset.sum_sub_distrib, hsum0, Finset.sum_const, Finset.card_range, nsmul_eq_mul,
-      mul_one, zero_sub, neg_neg]
+  have hmeq : (m : PadicAlgCl p) = -∑ i ∈ Finset.range m, (η ^ i - 1) := by simp_all
   have hle : ‖(m : PadicAlgCl p)‖ ≤ ‖η - 1‖ := by
     rw [hmeq, norm_neg]
     exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _)

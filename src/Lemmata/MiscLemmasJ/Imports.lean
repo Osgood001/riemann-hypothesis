@@ -14,8 +14,8 @@ theorem goal1 :
     Exists.{1} fun (d : R) ↦ And (Ne.{1} d 0) (Membership.mem.{0, 0} S (HSMul.hSMul.{0, 0, 0} d x)) := by
   intro R F X _ _ _ _ _ _ _ _ _ S x hx
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact S.zero_mem⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by simp_all⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨a, ha, hay⟩ := hy
     obtain ⟨b, hb, hbz⟩ := hz

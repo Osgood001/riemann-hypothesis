@@ -35,16 +35,12 @@ theorem goal1 :
   let a := Submodule.smithNormalFormCoeffs b h
   let b' := Submodule.smithNormalFormTopBasis b h
   let ab := Submodule.smithNormalFormBotBasis b h
-  have hab : ∀ i, (ab i : ι → O) = a i • b' i := Submodule.smithNormalFormBotBasis_def b h
   have hL : Module.length O ((ι → O) ⧸ N) = ∑ i, IsDiscreteValuationRing.addVal O (a i) := by
     rw [(N.quotientEquivPiSpan b h).length_eq, Module.length_pi_of_fintype]
     refine Finset.sum_congr rfl fun i _ => ?_
     exact Ring.ord_eq_addVal (a i)
   let u : (ι → O) ≃ₗ[O] N := b'.equiv ab (Equiv.refl ι)
-  have hgj : ∀ j, (N.subtype ∘ₗ u.toLinearMap) (b' j) = a j • b' j := by
-    intro j
-    rw [← hab j]
-    simp [u]
+  have hgj : ∀ j, (N.subtype ∘ₗ u.toLinearMap) (b' j) = a j • b' j := by aesop
   have hg : LinearMap.toMatrix b' b' (N.subtype ∘ₗ u.toLinearMap) = Matrix.diagonal a := by
     ext i j
     rw [LinearMap.toMatrix_apply, hgj, map_smul, Module.Basis.repr_self, Matrix.diagonal_apply]

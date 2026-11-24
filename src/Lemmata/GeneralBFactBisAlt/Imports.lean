@@ -15,8 +15,8 @@ theorem goal1 :
           (HSMul.hSMul.{0, 0, 0} d x)) := by
   intro K _ _ r n v x hx
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact Submodule.subset_span hy⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Submodule.zero_mem _⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by aesop⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨d, hd, hd'⟩ := hy
     obtain ⟨e, he, he'⟩ := hz
@@ -32,7 +32,6 @@ theorem goal1 :
     obtain ⟨e, he, hint⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ K).mpr (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) c)).exists_integral_multiple
     refine ⟨e * d, mul_ne_zero he hd, ?_⟩
     have key : ((⟨e • c, hint⟩ : NumberField.RingOfIntegers K)) • (d • y) = (e * d) • (c • y) := by
-      rw [← algebraMap_smul K]
       funext i
       simp only [Pi.smul_apply, smul_eq_mul, zsmul_eq_mul]
       change ((e : K) * c) * ((d : K) * y i) = ((e * d : ℤ) : K) * (c * y i)

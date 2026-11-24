@@ -25,13 +25,9 @@ theorem goal1 :
       rw [Fin.val_succ, pow_succ]
       ring
     rw [h2, Fin.val_zero, pow_zero, mul_one] at hs
-    have hd : B ∣ c 0 := ⟨-(∑ i : Fin n, c i.succ * B ^ i.val), by rw [mul_neg]; linarith⟩
+    have hd : B ∣ c 0 := ⟨-(∑ i : Fin n, c i.succ * B ^ i.val), by linarith⟩
     have h0 : c 0 = 0 := Int.eq_zero_of_abs_lt_dvd hd (hc 0)
-    rw [h0, zero_add] at hs
-    have hT : ∑ i : Fin n, c i.succ * B ^ i.val = 0 := by
-      rcases mul_eq_zero.mp hs with h | h
-      · exact absurd h hB.ne'
-      · exact h
+    have hT : ∑ i : Fin n, c i.succ * B ^ i.val = 0 := by aesop
     have ih' := ih (fun i => c i.succ) (fun i => hc _) hT
     exact Fin.cases h0 (fun i => ih' i) m
 

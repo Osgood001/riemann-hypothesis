@@ -28,18 +28,16 @@ theorem goal1 :
     rw [Matrix.det_mul, Matrix.det_mul, hdN, hdN', one_mul, one_mul] at h
     rw [h]
     exact hdet
-  have uN' : IsUnit N'.det := by rw [hdN']; exact isUnit_one
-  have uN : IsUnit N.det := by rw [hdN]; exact isUnit_one
+  have uN' : IsUnit N'.det := by simp_all
+  have uN : IsUnit N.det := by simp_all
   have uU : IsUnit U.det := isUnit_iff_ne_zero.mpr hdU
   let _ : Invertible N' := Matrix.invertibleOfIsUnitDet N' uN'
   let _ : Invertible U := Matrix.invertibleOfIsUnitDet U uU
   have hAeq : N'⁻¹ * N = U' * U⁻¹ := by
-    calc N'⁻¹ * N = N'⁻¹ * N * (U * U⁻¹) := by
-          rw [Matrix.mul_nonsing_inv U uU, Matrix.mul_one]
-      _ = N'⁻¹ * (N * U) * U⁻¹ := by simp only [Matrix.mul_assoc]
-      _ = N'⁻¹ * (N' * U') * U⁻¹ := by rw [hEq]
-      _ = U' * U⁻¹ := by
-          rw [← Matrix.mul_assoc N'⁻¹, Matrix.nonsing_inv_mul N' uN', Matrix.one_mul]
+    calc N'⁻¹ * N = N'⁻¹ * N * (U * U⁻¹) := by simp
+      _ = N'⁻¹ * (N * U) * U⁻¹ := by grind
+      _ = N'⁻¹ * (N' * U') * U⁻¹ := by simp_all
+      _ = U' * U⁻¹ := by simp
   have hAl : (N'⁻¹ * N).BlockTriangular (DFunLike.coe OrderDual.toDual) :=
     (Matrix.blockTriangular_inv_of_blockTriangular hN').mul hN
   have hAu : (N'⁻¹ * N).BlockTriangular id := by
@@ -50,8 +48,7 @@ theorem goal1 :
     rcases lt_or_gt_of_ne hij with h | h
     · exact hAl (OrderDual.toDual_lt_toDual.mpr h)
     · exact hAu h
-  have hNA : N = N' * (N'⁻¹ * N) := by
-    rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv N' uN', Matrix.one_mul]
+  have hNA : N = N' * (N'⁻¹ * N) := by simp
   have hdiag : ∀ i, (N'⁻¹ * N) i i = 1 := by
     intro i
     have h1 := congrFun (congrFun hNA i) i
@@ -68,11 +65,10 @@ theorem goal1 :
     · subst h
       rw [hdiag, Matrix.one_apply_eq]
     · rw [hoff i j h, Matrix.one_apply_ne h]
-  have hNN : N = N' := by rw [hNA, hA1, Matrix.mul_one]
+  have hNN : N = N' := by grind
   refine ⟨hNN, ?_⟩
-  calc U = N⁻¹ * (N * U) := by
-        rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul N uN, Matrix.one_mul]
-    _ = N⁻¹ * (N * U') := by rw [hEq, hNN]
+  calc U = N⁻¹ * (N * U) := by grind
+    _ = N⁻¹ * (N * U') := by grind
     _ = U' := by rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul N uN, Matrix.one_mul]
 
 end Bl.general_b_fact_form

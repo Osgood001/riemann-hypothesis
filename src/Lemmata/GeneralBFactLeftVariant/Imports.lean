@@ -19,28 +19,24 @@ theorem goal1 :
   have hFd : ∀ x : ℝ, HasDerivAt (fun u : ℝ => ∫ s in (0:ℝ)..u, f s) (f x) x :=
     fun x => (hf.integral_hasStrictDerivAt 0 x).hasDerivAt
   set F : ℝ → ℂ := fun u : ℝ => ∫ s in (0:ℝ)..u, f s with hF
-  have hF0 : F 0 = 0 := by simp [hF]
   obtain ⟨δ, hδ⟩ : ∃ δ : ℝ, F δ ≠ 0 := by
-    have h1 : ∀ᶠ z in nhdsWithin (0:ℝ) {0}ᶜ, F z ≠ 0 := (hFd 0).eventually_ne (by rw [h0]; exact one_ne_zero)
+    have h1 : ∀ᶠ z in nhdsWithin (0:ℝ) {0}ᶜ, F z ≠ 0 := (hFd 0).eventually_ne (by simp_all)
     obtain ⟨δ, hδ⟩ := h1.exists
     exact ⟨δ, hδ⟩
   have key : ∀ t : ℝ, F (t + δ) - F t = f t * F δ := by
     intro t
-    simp only [hF]
     rw [intervalIntegral.integral_interval_sub_left (hf.intervalIntegrable _ _)
       (hf.intervalIntegrable _ _), ← intervalIntegral.integral_const_mul]
     simp_rw [← hmul]
-    rw [intervalIntegral.integral_comp_add_left f t]
     simp
   set c : ℂ := (f δ - 1) / F δ with hc
   have hfd : ∀ t : ℝ, HasDerivAt f (c * f t) t := by
     intro t
-    have hfe : ∀ u : ℝ, f u = (F (u + δ) - F u) / F δ := by
-      intro u; rw [key u, mul_div_assoc, div_self hδ, mul_one]
+    have hfe : ∀ u : ℝ, f u = (F (u + δ) - F u) / F δ := by simp_all
     have h2 : HasDerivAt (fun u => (F (u + δ) - F u) / F δ) ((f (t + δ) - f t) / F δ) t :=
       ((HasDerivAt.comp_add_const t δ (hFd (t + δ))).sub (hFd t)).div_const (F δ)
     have h3 := h2.congr_of_eventuallyEq (Filter.Eventually.of_forall hfe)
-    have hv : (f (t + δ) - f t) / F δ = c * f t := by rw [hmul, hc]; ring
+    have hv : (f (t + δ) - f t) / F δ = c * f t := by grind
     rwa [hv] at h3
   have hg : ∀ t : ℝ, HasDerivAt (fun u : ℝ => f u * Complex.exp (-(c * (u:ℂ)))) 0 t := by
     intro t
@@ -53,10 +49,9 @@ theorem goal1 :
     simpa [h0] using this
   have hexp : ∀ t : ℝ, f t = Complex.exp (c * t) := by
     intro t
-    have h3 := hconst t
     calc f t = f t * Complex.exp (-(c * (t:ℂ))) * Complex.exp (c * t) := by
           rw [mul_assoc, ← Complex.exp_add]; simp
-      _ = Complex.exp (c * t) := by rw [h3, one_mul]
+      _ = Complex.exp (c * t) := by simp_all
   have hre : c.re = 0 := by
     have h4 := hnorm 1
     rw [hexp 1, Complex.norm_exp] at h4

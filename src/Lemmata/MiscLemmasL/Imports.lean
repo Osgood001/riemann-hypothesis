@@ -15,7 +15,7 @@ theorem goal1 [IsDomain R] [IsFractionRing R C]
     (S : Submodule R V) {x : V} (hx : x ∈ Submodule.span C (S : Set V)) :
     ∃ r : R, r ≠ 0 ∧ r • x ∈ S := by
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by simp_all⟩
   | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨r, hr, hrs⟩ := hy
@@ -32,9 +32,9 @@ theorem goal1 [IsDomain R] [IsFractionRing R C]
     refine ⟨(b : R) * r, mul_ne_zero (nonZeroDivisors.ne_zero b.2) hr, ?_⟩
     have h : ((b : R) * r) • (c • y) = a • (r • y) := by
       calc ((b : R) * r) • (c • y) = r • ((b : R) • (c • y)) := by rw [mul_comm, mul_smul]
-        _ = r • (((b : R) • c) • y) := by rw [smul_assoc]
+        _ = r • (((b : R) • c) • y) := by simp
         _ = r • ((algebraMap R C a) • y) := by rw [Algebra.smul_def, mul_comm, hab']
-        _ = r • (a • y) := by rw [algebraMap_smul]
+        _ = r • (a • y) := by simp
         _ = a • (r • y) := smul_comm r a y
     rw [h]
     exact S.smul_mem a hrs

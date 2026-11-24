@@ -36,6 +36,6 @@ theorem goal1 :
   have hm : c * p ∈ Ideal.span {a} := by
     rw [hJ, mul_comm c p]; exact Ideal.mul_mem_mul hp hcJ
   obtain ⟨t, ht⟩ := Ideal.mem_span_singleton'.mp hm
-  exact ⟨t, by rw [← ht, mul_comm]⟩
+  exact ⟨t, by grind⟩
 
 end Bl.general_b_fact_right_more

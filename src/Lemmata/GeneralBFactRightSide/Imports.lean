@@ -20,11 +20,8 @@ theorem goal1 :
   constructor
   · rintro ⟨n, hn⟩
     refine ⟨n, ?_⟩
-    have h2 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0 := by
-      simp [Real.pi_ne_zero, Complex.I_ne_zero]
-    have h3 : (x : ℂ) = (n : ℂ) := by
-      rw [mul_comm (n : ℂ)] at hn
-      exact mul_left_cancel₀ h2 hn
+    have h2 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0 := by simp
+    have h3 : (x : ℂ) = (n : ℂ) := by grind
     exact_mod_cast h3
   · rintro ⟨n, rfl⟩
     exact ⟨n, by push_cast; ring⟩

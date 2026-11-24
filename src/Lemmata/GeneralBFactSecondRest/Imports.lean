@@ -23,10 +23,10 @@ theorem goal1 :
   Eq.{u_2 + 1} (Submodule.span.{u_1, u_2} K (SetLike.coe.{u_2, u_2} L)) Top.top.{u_2} →
     ∀ (y : V), Exists.{1} fun (c : Int) ↦ And (Ne.{1} c 0) (Membership.mem.{u_2, u_2} L (HSMul.hSMul.{0, u_2, u_2} c y)) := by
   intro K V _ _ _ _ _ _ _ _ L hL y
-  have hy : y ∈ Submodule.span K (L : Set V) := by rw [hL]; exact Submodule.mem_top
+  have hy : y ∈ Submodule.span K (L : Set V) := by simp_all
   induction hy using Submodule.span_induction with
-  | mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact L.zero_mem⟩
+  | mem x hx => exact ⟨1, one_ne_zero, by simp_all⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add x z _ _ h1 h2 =>
     obtain ⟨c1, hc1, m1⟩ := h1
     obtain ⟨c2, hc2, m2⟩ := h2

@@ -17,10 +17,7 @@ theorem goal1 [IsAdicComplete I A] (ε : A) (h : ε * ε - ε ∈ I) : ∃ e : A
     simp only [eval_sub, eval_pow, eval_X]
     rw [pow_two]; exact h
   have hu : IsUnit (Ideal.Quotient.mk I ((X ^ 2 - X : A[X]).derivative.eval ε)) := by
-    have hd : (X ^ 2 - X : A[X]).derivative.eval ε = 2 * ε - 1 := by
-      simp only [derivative_sub, derivative_X_pow, derivative_X, eval_sub, eval_mul, eval_pow,
-        eval_X, eval_one, eval_C]
-      norm_num
+    have hd : (X ^ 2 - X : A[X]).derivative.eval ε = 2 * ε - 1 := by norm_num
     rw [hd]
     have hsq : (2 * ε - 1) * (2 * ε - 1) = 1 + 4 * (ε * ε - ε) := by ring
     have hq : Ideal.Quotient.mk I ((2 * ε - 1) * (2 * ε - 1)) = 1 := by

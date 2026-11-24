@@ -23,7 +23,6 @@ theorem goal1 :
   let σ : A →ₗ[A] S := LinearMap.toSpanSingleton A S s
   have hker : LinearMap.ker φ ≤ LinearMap.ker σ := by
     intro a ha
-    simp only [LinearMap.mem_ker] at ha ⊢
     have hb : ∀ i, a • b i = 0 := fun i => by
       simpa [φ] using congr_fun ha i
     have hw : ∀ w : W, a • w = 0 := by
@@ -34,7 +33,6 @@ theorem goal1 :
     simpa [σ] using h a hw s
   let ψ₀ : LinearMap.range φ →ₗ[A] S :=
     (LinearMap.ker φ).liftQ σ hker ∘ₗ φ.quotKerEquivRange.symm.toLinearMap
-  have hsm : IsSemisimpleModule A (Fin (Module.finrank k W) → W) := inferInstance
   obtain ⟨C, hC⟩ := ComplementedLattice.exists_isCompl (LinearMap.range φ)
   let Ψ : (Fin (Module.finrank k W) → W) →ₗ[A] S :=
     ψ₀ ∘ₗ Submodule.linearProjOfIsCompl _ _ hC
@@ -45,11 +43,7 @@ theorem goal1 :
       LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply]
     simp [σ]
   by_contra hne
-  push_neg at hne
-  have hz : Ψ = 0 := by
-    apply LinearMap.pi_ext'
-    intro i
-    exact hne _
+  have hz : Ψ = 0 := by aesop
   rw [hz] at hΨ
   exact hs hΨ.symm
 

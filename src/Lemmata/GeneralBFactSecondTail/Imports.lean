@@ -18,7 +18,7 @@ theorem goal1 :
       And (Ne.{u_1 + 1} d 0) (Membership.mem.{u_2, u_2} A (HSMul.hSMul.{u_1, u_2, u_2} d x)) := by
   intro K _ _ V _ _ _ _ A x hx
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by simp_all⟩
   | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨d1, hd1, h1⟩ := hy
@@ -34,9 +34,7 @@ theorem goal1 :
     have hm : (m : NumberField.RingOfIntegers K) ≠ 0 := nonZeroDivisors.coe_ne_zero m
     refine ⟨(m : NumberField.RingOfIntegers K) * d, mul_ne_zero hm hd, ?_⟩
     have key : algebraMap (NumberField.RingOfIntegers K) K ((m : NumberField.RingOfIntegers K) * d) * c
-        = algebraMap (NumberField.RingOfIntegers K) K (n * d) := by
-      rw [map_mul, map_mul]
-      linear_combination (algebraMap (NumberField.RingOfIntegers K) K d) * hc
+        = algebraMap (NumberField.RingOfIntegers K) K (n * d) := by grind
     have e : ((m : NumberField.RingOfIntegers K) * d) • (c • y) = n • (d • y) := by
       rw [← algebraMap_smul K ((m : NumberField.RingOfIntegers K) * d) (c • y), smul_smul, key,
         algebraMap_smul K, mul_smul]

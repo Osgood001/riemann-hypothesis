@@ -15,8 +15,7 @@ theorem goal1 (p : Fin n → ℂ) (a : MvPolynomial (Fin n) ℂ) :
   induction a using MvPolynomial.induction_on with
   | C c => simp
   | add f g hf hg =>
-    have h : f + g - C (eval p (f + g)) = (f - C (eval p f)) + (g - C (eval p g)) := by
-      simp only [map_add (f := _)]; ring
+    have h : f + g - C (eval p (f + g)) = (f - C (eval p f)) + (g - C (eval p g)) := by grind
     rw [h]
     exact Ideal.add_mem _ hf hg
   | mul_X f i hf =>

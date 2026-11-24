@@ -19,8 +19,8 @@ theorem goal1 :
   have hv : v ∈ Submodule.span K (Λ : Set V) := by
     rw [hΛ.span_eq_top]; exact Submodule.mem_top
   induction hv using Submodule.span_induction with
-  | mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Λ.zero_mem⟩
+  | mem x hx => exact ⟨1, one_ne_zero, by simp_all⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add x y _ _ hx hy =>
     obtain ⟨r, hr, hrx⟩ := hx
     obtain ⟨s, hs, hsy⟩ := hy
@@ -32,7 +32,6 @@ theorem goal1 :
     obtain ⟨r, hr, hrx⟩ := hx
     obtain ⟨⟨a, b⟩, hab⟩ :=
       IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers K)) c
-    dsimp only at hab
     refine ⟨r * (b : NumberField.RingOfIntegers K),
       mul_ne_zero hr (nonZeroDivisors.coe_ne_zero b), ?_⟩
     have hb : (b : NumberField.RingOfIntegers K) • (c • x) = a • x := by

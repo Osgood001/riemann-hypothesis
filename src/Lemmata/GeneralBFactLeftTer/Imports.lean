@@ -26,10 +26,10 @@ theorem goal1 :
       refine lt_of_le_of_lt hle ?_
       rw [norm_mul, norm_pow]
       have h1 : ‖(Int.castRingHom F) (p.coeff i)‖ ≤ 1 := by
-        rw [eq_intCast]; exact IsUltrametricDist.norm_intCast_le_one F _
+        exact IsUltrametricDist.norm_intCast_le_one F _
       have h2 : ‖y‖ ^ i < ‖y‖ ^ p.natDegree := pow_lt_pow_right₀ hy (Finset.mem_range.mp hi)
       calc _ ≤ 1 * ‖y‖ ^ i := mul_le_mul_of_nonneg_right h1 (by positivity)
-        _ < ‖y‖ ^ p.natDegree := by rw [one_mul]; exact h2
+        _ < ‖y‖ ^ p.natDegree := by simp_all
   rw [eq_neg_of_add_eq_zero_left h, norm_neg, norm_pow] at hsum
   exact lt_irrefl _ hsum
 

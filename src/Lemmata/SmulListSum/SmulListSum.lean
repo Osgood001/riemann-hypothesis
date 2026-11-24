@@ -31,7 +31,7 @@ theorem goal1 :
       rw [List.mem_singleton] at hw
       rw [hw]; exact hx
     · simp only [List.sum_cons, List.sum_nil, add_zero]
-  | zero => exact ⟨[], fun w hw => absurd hw (List.not_mem_nil), by simp only [List.sum_nil]⟩
+  | zero => exact ⟨[], fun w hw => absurd hw (List.not_mem_nil), by simp⟩
   | add a b _ _ iha ihb =>
     obtain ⟨la, hla, rfl⟩ := iha
     obtain ⟨lb, hlb, rfl⟩ := ihb

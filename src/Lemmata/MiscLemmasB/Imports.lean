@@ -16,15 +16,14 @@ theorem goal1 {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   classical
   obtain ⟨U, hUo, hU⟩ := isOpen_induced_iff.mp (isOpen_discrete ({1} : Set Γ))
   have h1U : (1 : G) ∈ U := by
-    have h : (1 : Γ) ∈ ((↑) : Γ → G) ⁻¹' U := by rw [hU]; rfl
+    have h : (1 : Γ) ∈ ((↑) : Γ → G) ⁻¹' U := by simp_all
     simpa using h
   obtain ⟨V, hVo, h1V, hV⟩ := exists_open_nhds_one_split (hUo.mem_nhds h1U)
   set W : Set G := V ∩ V⁻¹ with hW
   have hWo : IsOpen W := hVo.inter hVo.inv
-  have h1W : (1 : G) ∈ W := ⟨h1V, by simpa using h1V⟩
   have key : ∀ a ∈ W, ∀ b ∈ W, ∀ γ : Γ, (γ : G) = b * a⁻¹ → γ = 1 := by
     intro a ha b hb γ hγ
-    have h2 : a⁻¹ ∈ V := by simpa using ha.2
+    have h2 : a⁻¹ ∈ V := by simp_all
     have h3 : (γ : G) ∈ U := hγ ▸ hV b hb.1 a⁻¹ h2
     have h4 : γ ∈ ((↑) : Γ → G) ⁻¹' U := h3
     rw [hU] at h4
@@ -37,17 +36,15 @@ theorem goal1 {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     · rintro ⟨γ, hγ⟩
       exact ⟨γ * δ, by simpa [mul_assoc] using hγ⟩
     · rintro ⟨γ, hγ⟩
-      exact ⟨γ * δ⁻¹, by simpa [mul_assoc] using hγ⟩
+      exact ⟨γ * δ⁻¹, by simp_all⟩
   have hQex : ∀ x, ∃ n, Q x n := by
     intro x
     obtain ⟨n, hn⟩ := hu.exists_mem_open (s := {g | x * g⁻¹ ∈ W})
-      (hWo.preimage (by fun_prop)) ⟨x, by simpa using h1W⟩
-    exact ⟨n, 1, by simpa using hn⟩
+      (hWo.preimage (by fun_prop)) ⟨x, by simp_all⟩
+    exact ⟨n, 1, by simp_all⟩
   let s : Set G := {x | ∃ n, x * (u n)⁻¹ ∈ W ∧ ∀ m < n, ¬ Q x m}
   have hs : s = ⋃ n, ({x | x * (u n)⁻¹ ∈ W} ∩
-      ⋂ m, ⋂ (_ : m < n), (⋃ γ : Γ, {x | (γ : G) * x * (u m)⁻¹ ∈ W})ᶜ) := by
-    ext x
-    simp [s, Q]
+      ⋂ m, ⋂ (_ : m < n), (⋃ γ : Γ, {x | (γ : G) * x * (u m)⁻¹ ∈ W})ᶜ) := by aesop
   have hsm : MeasurableSet s := by
     rw [hs]
     refine MeasurableSet.iUnion fun n => ?_
@@ -63,9 +60,8 @@ theorem goal1 {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     rw [hQinv]
     exact Nat.find_min (hQex x) hm
   · intro δ hδ
-    change (δ : G) * x ∈ s at hδ
     obtain ⟨k, hk, hkmin⟩ := hδ
-    have hQk : Q x k := ⟨δ, by simpa [mul_assoc] using hk⟩
+    have hQk : Q x k := ⟨δ, by omega⟩
     have hle : Nat.find (hQex x) ≤ k := Nat.find_min' (hQex x) hQk
     have hk' : k = Nat.find (hQex x) := by
       rcases Nat.lt_or_ge (Nat.find (hQex x)) k with h | h
@@ -73,8 +69,7 @@ theorem goal1 {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
       · omega
     rw [hk'] at hk
     have hd : ((δ * γ⁻¹ : Γ) : G) = ((δ : G) * x * (u (Nat.find (hQex x)))⁻¹) *
-        ((γ : G) * x * (u (Nat.find (hQex x)))⁻¹)⁻¹ := by
-      simp [mul_assoc]
+        ((γ : G) * x * (u (Nat.find (hQex x)))⁻¹)⁻¹ := by simp
     have h1 := key _ hγ _ hk _ hd
     exact mul_inv_eq_one.mp h1
 

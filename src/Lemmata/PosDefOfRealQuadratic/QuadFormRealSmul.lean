@@ -66,9 +66,7 @@ theorem goal1 :
     (continuous_snd.star).dotProduct ((hAc.comp continuous_fst).matrix_mulVec continuous_snd)
   have key : ∀ᶠ x in nhds x0, ∀ y ∈ K, 0 < (star y ⬝ᵥ (Matrix.mulVec (A x) y)).re := by
     refine hKc.eventually_forall_of_forall_eventually fun y hy => ?_
-    have hy0 : y ≠ 0 := by
-      rintro rfl
-      simp [hK] at hy
+    have hy0 : y ≠ 0 := by aesop
     have hpos : 0 < (star y ⬝ᵥ (Matrix.mulVec (A x0) y)).re :=
       re_quad_pos h0 hy0
     have hev := (continuousAt_const (x := (x0, y))).eventually_lt

@@ -50,9 +50,7 @@ theorem goal1 :
   refine ⟨a, ?_⟩
   have e1 : x.1 - algebraMap (NumberField.RingOfIntegers F) (v.adicCompletion F) a
       = (x.1 - algebraMap F (v.adicCompletion F) y) +
-        algebraMap F (v.adicCompletion F) (y - algebraMap (NumberField.RingOfIntegers F) F a) := by
-    rw [IsScalarTower.algebraMap_apply (NumberField.RingOfIntegers F) F (v.adicCompletion F), map_sub]
-    ring
+        algebraMap F (v.adicCompletion F) (y - algebraMap (NumberField.RingOfIntegers F) F a) := by aesop
   rw [e1]
   refine Valuation.map_add_lt _ hy ?_
   have e3 : Valued.v (algebraMap F (v.adicCompletion F) (y - algebraMap (NumberField.RingOfIntegers F) F a))

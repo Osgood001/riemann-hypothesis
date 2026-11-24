@@ -21,11 +21,8 @@ theorem goal1 :
   · have h2 : (2 : k) = 0 := by
       have := ringChar.Nat.cast_ringChar (R := k)
       rwa [hc, Nat.cast_ofNat] at this
-    have h4 : (4 : k) = 0 := by
-      have : (4 : k) = 2 * 2 := by norm_num
-      rw [this, h2, zero_mul]
-    rw [h4, zero_mul, sub_zero] at hd
-    have ht : t ≠ 0 := fun h => hd (by rw [h]; ring)
+    have h4 : (4 : k) = 0 := by grind
+    have ht : t ≠ 0 := fun h => hd (by simp_all)
     by_cases hm : m = 0
     · refine ⟨1, (e - 1) / t, ?_⟩
       rw [hm]
@@ -33,7 +30,7 @@ theorem goal1 :
       ring
     · obtain ⟨r, hr⟩ := FiniteField.isSquare_of_char_two hc (e / m)
       refine ⟨0, r, ?_⟩
-      have : r ^ 2 = e / m := by rw [hr]; ring
+      have : r ^ 2 = e / m := by grind
       rw [this]
       field_simp
       ring
@@ -42,11 +39,7 @@ theorem goal1 :
       have : (4 : k) = 2 * 2 := by norm_num
       rw [this]; exact mul_ne_zero h2 h2
     set D : k := m - t ^ 2 / 4 with hD
-    have hD0 : D ≠ 0 := by
-      intro h0
-      apply hd
-      have : t ^ 2 - 4 * m = -4 * D := by rw [hD]; field_simp; ring
-      rw [this, h0, mul_zero]
+    have hD0 : D ≠ 0 := by grind
     have hf : Polynomial.degree (Polynomial.X ^ 2 - Polynomial.C e : Polynomial k) = 2 := by
       rw [Polynomial.degree_sub_C] <;> rw [Polynomial.degree_X_pow] <;> norm_num
     have hg : Polynomial.degree (Polynomial.C D * Polynomial.X ^ 2 : Polynomial k) = 2 := by
@@ -56,7 +49,7 @@ theorem goal1 :
     simp only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C,
       Polynomial.eval_mul] at hab
     refine ⟨a - t * b / 2, b, ?_⟩
-    have key : a ^ 2 + D * b ^ 2 = e := by linear_combination hab
+    have key : a ^ 2 + D * b ^ 2 = e := by grind
     rw [← key, hD]
     field_simp
     ring

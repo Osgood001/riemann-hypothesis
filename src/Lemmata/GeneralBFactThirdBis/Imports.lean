@@ -29,7 +29,7 @@ theorem goal1 :
       (((f ^ k) x : L.restrictScalars ℤ) : Fin n → E) = (M ^ k).mulVec (x : Fin n → E) := by
     intro k
     induction k with
-    | zero => intro x; simp
+    | zero => simp
     | succ k ih =>
       intro x
       rw [pow_succ, Module.End.mul_apply, ih, pow_succ, ← Matrix.mulVec_mulVec]
@@ -44,7 +44,7 @@ theorem goal1 :
     simpa only [Matrix.smul_mulVec] using h
   have hz : Polynomial.aeval M p = 0 := by
     have hlin : Matrix.mulVecLin (Polynomial.aeval M p) = 0 :=
-      LinearMap.ext_on hspan (fun x hx => by simpa using hzL x hx)
+      LinearMap.ext_on hspan (fun x hx => by simp_all)
     ext i j
     have := congrFun (LinearMap.congr_fun hlin (Pi.single j 1)) i
     simpa [Matrix.mulVec_single_one] using this
@@ -65,9 +65,8 @@ theorem goal1 :
     have h1 := spectrum.subset_polynomial_aeval (M.map φ) (p.map (algebraMap ℤ ℂ)) ⟨r, hsp, rfl⟩
     rw [Polynomial.aeval_map_algebraMap, hN] at h1
     rcases subsingleton_or_nontrivial (Matrix (Fin n) (Fin n) ℂ) with hs | hs
-    · exact absurd hsp (by rw [spectrum.mem_iff, not_not]; exact isUnit_of_subsingleton _)
-    · rw [spectrum.zero_eq, Set.mem_singleton_iff] at h1
-      simpa [Polynomial.eval_map, Polynomial.aeval_def] using h1
+    · exact absurd hsp (by simp)
+    · simpa [Polynomial.eval_map, Polynomial.aeval_def] using h1
   exact (isIntegral_algHom_iff φ.toIntAlgHom φ.injective).mp hint
 
 end Bl.general_b_fact_third_bis

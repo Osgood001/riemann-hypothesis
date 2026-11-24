@@ -56,7 +56,7 @@ theorem goal1 :
     have hz : ∀ n ∉ Finset.range (k + 1),
         (n.factorial : Complex)⁻¹ • (t - 0) ^ n • iteratedDeriv n g 0 = 0 := by
       intro n hn
-      rw [iter_zero k g A hg hb n (by simpa using hn), smul_zero, smul_zero]
+      rw [iter_zero k g A hg hb n (by simp_all), smul_zero, smul_zero]
     rw [hs.unique (hasSum_sum_of_ne_finset_zero hz), Polynomial.eval_finsetSum]
     refine Finset.sum_congr rfl ?_
     intro n _

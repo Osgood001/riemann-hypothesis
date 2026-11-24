@@ -30,7 +30,6 @@ private theorem mulBd {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : T
     ∀ d, ‖MvPowerSeries.coeff d (F * G)‖ ≤ a * b := by
   classical
   intro d
-  rw [MvPowerSeries.coeff_mul]
   refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) ?_
   intro p _
   rw [norm_mul]
@@ -88,7 +87,6 @@ theorem goal1 :
     have h2 := mulBd hC zero_le_one (X a - Y a) _ (hXY a (Finset.mem_insert_self a t))
       (prodInt Y t (fun i hi => hY i (Finset.mem_insert_of_mem hi)))
     intro d
-    rw [map_add (f := _)]
     refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)
     · have := h1 d; rwa [one_mul] at this
     · have := h2 d; rwa [mul_one] at this

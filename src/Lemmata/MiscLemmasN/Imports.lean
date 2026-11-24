@@ -22,14 +22,11 @@ theorem goal1 :
     have hbK : algebraMap V (FractionRing V) b ≠ 0 := (map_ne_zero_iff _ hinj).2 hb0
     obtain ⟨n, u, hu⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ
     refine ⟨⟨a * ↑u⁻¹, ⟨ϖ ^ n, n, rfl⟩⟩, ?_⟩
-    have hu' : algebraMap V (FractionRing V) (↑u⁻¹ : V) * algebraMap V (FractionRing V) (↑u : V) = 1 := by
-      rw [← map_mul, Units.inv_mul, map_one]
-    show algebraMap V (FractionRing V) a / algebraMap V (FractionRing V) b *
-      algebraMap V (FractionRing V) (ϖ ^ n) = algebraMap V (FractionRing V) (a * ↑u⁻¹)
+    have hu' : algebraMap V (FractionRing V) (↑u⁻¹ : V) * algebraMap V (FractionRing V) (↑u : V) = 1 := by simp
     rw [div_mul_eq_mul_div, div_eq_iff hbK, hu]
     simp only [map_mul, map_pow]
     linear_combination (-(algebraMap V (FractionRing V) a * algebraMap V (FractionRing V) ϖ ^ n)) * hu'
   · intro x y h
-    exact ⟨1, by rw [hinj h]⟩
+    exact ⟨1, by simp_all⟩
 
 end Bl.SecondBlockLemmaO

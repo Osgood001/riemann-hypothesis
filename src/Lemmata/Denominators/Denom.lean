@@ -32,7 +32,7 @@ theorem goal1 (M : Submodule (𝓞 E) (Fin n → E)) (hsp : Submodule.span E (M 
       ∃ m : ℕ, 0 < m ∧ (m : 𝓞 E) • x ∈ M := by
     intro x hx
     induction hx using Submodule.span_induction with
-    | mem x h => exact ⟨1, one_pos, by simpa using h⟩
+    | mem x h => exact ⟨1, one_pos, by simp_all⟩
     | zero => exact ⟨1, one_pos, by simp⟩
     | add x y _ _ ihx ihy =>
       obtain ⟨a, ha, hax⟩ := ihx
@@ -55,6 +55,6 @@ theorem goal1 (M : Submodule (𝓞 E) (Fin n → E)) (hsp : Submodule.span E (M 
         ring_nf
       rw [e]
       exact M.smul_mem _ hax
-  exact key v (by rw [hsp]; exact Submodule.mem_top)
+  exact key v (by simp_all)
 
 end Bl.DenominatorsAlt

@@ -14,8 +14,8 @@ theorem goal1 :
       And (Ne.{1} d 0) (Membership.mem.{0, 0} R (HSMul.hSMul.{0, 0, 0} d x)) := by
   intro K _ _ n R x hx
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact R.zero_mem⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by simp_all⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨d1, hd1, h1⟩ := hy
     obtain ⟨d2, hd2, h2⟩ := hz
@@ -32,7 +32,6 @@ theorem goal1 :
       rw [← algebraMap_smul K ((b : NumberField.RingOfIntegers K) * d), ← algebraMap_smul K a,
         ← algebraMap_smul K d, smul_smul, smul_smul]
       congr 1
-      simp only at hab
       rw [map_mul, ← hab]
       ring
     rw [e]

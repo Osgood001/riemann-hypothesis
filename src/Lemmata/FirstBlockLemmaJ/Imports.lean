@@ -29,7 +29,6 @@ theorem goal1 :
   have hSU : S ⊆ U := by
     rintro t ⟨θ, hθ, rfl⟩
     show z + (θ : ℂ) • (y - z) ∈ Metric.ball x ε
-    rw [Complex.coe_smul]
     exact (convex_ball x ε).add_smul_sub_mem hz hy hθ
   have h0 : (0 : ℂ) ∈ S := ⟨0, ⟨le_refl _, zero_le_one⟩, by simp⟩
   have h1 : (1 : ℂ) ∈ S := ⟨1, ⟨zero_le_one, le_refl _⟩, by simp⟩
@@ -37,7 +36,7 @@ theorem goal1 :
     have := hφc.tendsto 0
     simpa [φ] using this
   have hev : Filter.EventuallyEq (nhds (0 : ℂ)) (g ∘ φ) 0 :=
-    (ht.eventually hz0).mono (fun t h => by simpa using h)
+    (ht.eventually hz0).mono (fun t h => by simp_all)
   have := (han.mono hSU).eqOn_zero_of_preconnected_of_eventuallyEq_zero hSc h0 hev h1
   simpa [φ] using this
 

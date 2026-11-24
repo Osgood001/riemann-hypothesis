@@ -29,10 +29,7 @@ theorem goal1 :
   subst hs'
   have hpre : (fun (x : ι → P → β) (p : P) (v : ι) ↦ x v p) ⁻¹'
       Set.pi Set.univ (fun p => Set.pi Set.univ (t p)) =
-      Set.pi Set.univ (fun v => Set.pi Set.univ (fun p => t p v)) := by
-    ext x
-    simp only [Set.mem_preimage, Set.mem_univ_pi]
-    exact forall_comm
+      Set.pi Set.univ (fun v => Set.pi Set.univ (fun p => t p v)) := by grind
   have hmeas : MeasurableSet (Set.pi Set.univ (fun p => Set.pi Set.univ (t p))) :=
     MeasurableSet.univ_pi fun p => MeasurableSet.univ_pi fun v => hmt p v
   rw [MeasureTheory.Measure.map_apply hf hmeas, hpre, MeasureTheory.Measure.pi_pi]

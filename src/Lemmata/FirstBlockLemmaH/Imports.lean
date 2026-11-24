@@ -33,7 +33,6 @@ theorem goal1 :
   | mem x hx =>
     intro i
     have h := hs (x, i) (Finset.mem_product.mpr ⟨Finset.mem_coe.mp hx, Finset.mem_univ _⟩)
-    rw [IsLocalization.IsInteger, Algebra.smul_def] at h
     exact RingHom.mem_range.mpr (RingHom.mem_rangeS.mp h)
   | zero =>
     intro i

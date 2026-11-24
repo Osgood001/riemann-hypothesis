@@ -41,23 +41,20 @@ theorem goal1 :
     simpa using ((hasDerivAt_id t).smul_const v).const_add y
   have hgd : DifferentiableOn ℂ g (Metric.closedBall (0 : ℂ) r) := by
     intro t ht
-    have hmem : y + t • v ∈ U := hsub (key t (by simpa using ht))
+    have hmem : y + t • v ∈ U := hsub (key t (by simp_all))
     have hGt : DifferentiableAt ℂ G (y + t • v) := hG.differentiableAt (hU.mem_nhds hmem)
     exact (hGt.comp t (hl t).differentiableAt).differentiableWithinAt
   have hdc : DiffContOnCl ℂ g (Metric.ball (0 : ℂ) r) := by
     apply DifferentiableOn.diffContOnCl
     rw [closure_ball (0 : ℂ) hr.ne']
     exact hgd
-  have hbd : ∀ z ∈ Metric.sphere (0 : ℂ) r, ‖g z‖ ≤ C := by
-    intro z hz
-    have hz' : ‖z‖ = r := by simpa using hz
-    exact hC _ (key z hz'.le)
+  have hbd : ∀ z ∈ Metric.sphere (0 : ℂ) r, ‖g z‖ ≤ C := by simp_all
   have hest := Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hr hdc hbd
   have hGy : HasFDerivAt G (fderiv ℂ G y) y := (hG.differentiableAt (hU.mem_nhds hyU)).hasFDerivAt
   have hder : HasDerivAt g (fderiv ℂ G y v) 0 :=
     hGy.comp_hasDerivAt_of_eq (0 : ℂ) (hl 0) (by simp)
   rw [hder.deriv] at hest
   calc ‖fderiv ℂ G y v‖ ≤ C / r := hest
-    _ = C / R * ‖v‖ := by rw [hr_def, div_div_eq_mul_div, mul_div_right_comm]
+    _ = C / R * ‖v‖ := by grind
 
 end Bl.general_b_fact_bis_form

@@ -238,7 +238,7 @@ theorem goal1 :
   rcases sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h | h
   · exact h
   exfalso
-  have hx' : x ^ 2 = 8 * (c : L) + 1 := by rw [hx]; push_cast; ring
+  have hx' : x ^ 2 = 8 * (c : L) + 1 := by grind
   have hint : IsIntegral ℤ ((1 + x) / 2) := by
     refine ⟨Polynomial.X ^ 2 - Polynomial.X - Polynomial.C (2 * c), ?_, ?_⟩
     · monicity!

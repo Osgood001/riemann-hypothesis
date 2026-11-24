@@ -17,7 +17,6 @@ theorem goal1 :
     rw [Polynomial.mem_rootSet]
     refine ⟨minpoly.ne_zero hy, ?_⟩
     have h := Polynomial.aeval_algHom_apply ((σ ^ k : Ω ≃ₐ[E] Ω) : Ω →ₐ[E] Ω) y (minpoly E y)
-    rw [minpoly.aeval, map_zero] at h
     simpa using h
   obtain ⟨a, b, hab, he⟩ := Set.Finite.exists_lt_map_eq_of_forall_mem
     (f := fun k : ℕ => (σ ^ k) y) hmem (Polynomial.rootSet_finite _ _)

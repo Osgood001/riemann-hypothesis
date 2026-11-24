@@ -21,7 +21,7 @@ theorem goal1 :
   have hN' : N'.det = 1 := by
     rw [Matrix.det_of_isLowerTriangular N' h2]
     simp [h4]
-  have hu : IsUnit N'.det := by rw [hN']; exact isUnit_one
+  have hu : IsUnit N'.det := by simp_all
   have hB : IsUnit B.det := isUnit_iff_ne_zero.mpr h7
   let _iN : Invertible N' := Matrix.invertibleOfIsUnitDet N' hu
   let _iB : Invertible B := Matrix.invertibleOfIsUnitDet B hB
@@ -39,8 +39,7 @@ theorem goal1 :
     rcases lt_or_gt_of_ne hij with h | h
     · exact hMl h
     · exact hMu h
-  have hNM : N = N' * M := by
-    rw [hM, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv N' hu, Matrix.one_mul]
+  have hNM : N = N' * M := by simp_all
   have hdiag : ∀ i, M i i = 1 := by
     intro i
     have := congrFun (congrFun hNM i) i

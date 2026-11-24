@@ -60,10 +60,10 @@ theorem goal1 :
     rcases S.eq_empty_or_nonempty with hE | ⟨x1, hx1⟩
     · subst hE
       refine ⟨1, fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), ?_⟩
-      have h0 : cmp v = 0 := by simpa using hv
+      have h0 : cmp v = 0 := by simp_all
       have hv0 : v = 0 := by
         by_contra hne
-        have hnb : v ∉ (⊥ : Submodule K V) := by simpa using hne
+        have hnb : v ∉ (⊥ : Submodule K V) := by simp_all
         obtain ⟨f, hf, -⟩ := Submodule.exists_le_ker_of_notMem hnb
         obtain ⟨g, hg⟩ := T f
         have e := hg v
@@ -109,13 +109,12 @@ theorem goal1 :
         by_cases hyx : y = x0
         · rw [hyx]; exact hx0mem
         · exact Submodule.subset_span ⟨y, Finset.mem_coe.2 (Finset.mem_erase.2 ⟨hyx, hy⟩), rfl⟩
-      obtain ⟨s, hs, hsv⟩ := ih _ (by rw [← hSn]; exact Finset.card_erase_lt_of_mem hx0)
+      obtain ⟨s, hs, hsv⟩ := ih _ (by grind)
         (S.erase x0) rfl v hv'
       exact ⟨s, hs, Submodule.span_mono (Finset.coe_subset.2 (Finset.erase_subset _ _)) hsv⟩
     · obtain ⟨f, hf0, hker⟩ := Submodule.exists_le_ker_of_notMem hx
       obtain ⟨g, hg⟩ := T f
-      have hSins : (S : Set V) = insert x1 (S.erase x1 : Set V) := by
-        rw [← Finset.coe_insert, Finset.insert_erase hx1]
+      have hSins : (S : Set V) = insert x1 (S.erase x1 : Set V) := by simp_all
       rw [hSins, Set.image_insert_eq, Submodule.mem_span_insert] at hv
       obtain ⟨o, z, hz, hvz⟩ := hv
       have hgz : g z = 0 := by
@@ -137,7 +136,7 @@ theorem goal1 :
       have hrest : cmp (v - t • x1) ∈ Submodule.span O (cmp '' (S.erase x1 : Set V)) := by
         rw [map_sub, h2, hvz, hφt, algebraMap_smul Kf, add_sub_cancel_left]
         exact hz
-      obtain ⟨s, hs, hsv⟩ := ih _ (by rw [← hSn]; exact Finset.card_erase_lt_of_mem hx1)
+      obtain ⟨s, hs, hsv⟩ := ih _ (by grind)
         (S.erase x1) rfl _ hrest
       have hdA : (d : A) ∉ w.asIdeal := d.2
       refine ⟨s * d, fun h => (w.isPrime.mem_or_mem h).elim hs hdA, ?_⟩
@@ -157,7 +156,7 @@ theorem goal1 :
   have hle : Submodule.span O (cmp '' (Lat : Set V)) ≤ Submodule.span O (cmp '' (S : Set V)) := by
     rw [Submodule.span_le]
     rintro _ ⟨y, hy, rfl⟩
-    have hy' : y ∈ Submodule.span A (S : Set V) := by rw [hS]; exact hy
+    have hy' : y ∈ Submodule.span A (S : Set V) := by simp_all
     clear hy
     induction hy' using Submodule.span_induction with
     | mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩

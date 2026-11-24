@@ -29,9 +29,7 @@ theorem goal1 :
     intro σ
     by_cases hσ : σ ∈ Ψ
     · exact hx σ hσ
-    · have hc : NumberField.ComplexEmbedding.conjugate σ ∈ Ψ := by
-        by_contra hc
-        exact hσ ((hΨ σ).mpr hc)
+    · have hc : NumberField.ComplexEmbedding.conjugate σ ∈ Ψ := by grind
       have h2 := congrArg (starRingEnd Complex) (hx _ hc)
       set_option synthInstance.maxHeartbeats 100000 in
         rw [map_sum, map_zero] at h2

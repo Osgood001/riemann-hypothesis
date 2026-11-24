@@ -16,10 +16,10 @@ theorem goal1 :
       Exists.{1} fun (ν : NumberField.RingOfIntegers.{0} E) ↦
         And (Ne.{1} ν 0) (Membership.mem.{0, 0} L (HSMul.hSMul.{0, 0, 0} ν y)) := by
   intro E _ _ _ W _ _ _ _ L hL y
-  have hy : y ∈ Submodule.span E (L : Set W) := by rw [hL]; exact Submodule.mem_top
+  have hy : y ∈ Submodule.span E (L : Set W) := by simp_all
   induction hy using Submodule.span_induction with
-  | mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact L.zero_mem⟩
+  | mem x hx => exact ⟨1, one_ne_zero, by simp_all⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add x z _ _ ihx ihz =>
     obtain ⟨a, ha, hax⟩ := ihx
     obtain ⟨b, hb, hbz⟩ := ihz
@@ -36,7 +36,6 @@ theorem goal1 :
     have key : ((s : NumberField.RingOfIntegers E) * a) • (c • x) = n • (a • x) := by
       rw [mul_comm, mul_smul, ← smul_assoc (s : NumberField.RingOfIntegers E) c x, Algebra.smul_def,
         mul_comm, smul_comm a (c * algebraMap _ E (s : NumberField.RingOfIntegers E)) x]
-      simp only at hs
       rw [hs, algebraMap_smul]
     rw [key]
     exact L.smul_mem n hax

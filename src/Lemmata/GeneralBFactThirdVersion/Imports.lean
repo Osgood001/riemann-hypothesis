@@ -127,7 +127,7 @@ theorem goal1 :
     intro c
     have hc : IsAlgebraic ℤ c := (IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (IsAlgebraic.of_finite ℚ c)
     obtain ⟨m, s, hm, h⟩ := hc.exists_nsmul_eq (NumberField.RingOfIntegers E)
-    exact ⟨m, hm, s, by rw [← h, nsmul_eq_mul]⟩
+    exact ⟨m, hm, s, by simp_all⟩
   have h1 : ∀ (k : ℕ) (w : V), w ∈ Λ → (k : E) • w ∈ Λ := fun k w hw => by
     rw [Nat.cast_smul_eq_nsmul]; exact Λ.nsmul_mem hw k
   let S : Submodule E V :=
@@ -146,10 +146,10 @@ theorem goal1 :
         refine ⟨n * m, mul_ne_zero hn hm, ?_⟩
         have e : ((n * m : ℕ) : E) • (c • w) = a • ((m : E) • w) := by
           rw [← algebraMap_smul E a ((m : E) • w), ← ha, Nat.cast_mul, smul_smul, smul_smul]
-          congr 1; ring
+          ring
         rw [e]; exact Λ.smul_mem a hw }
   have hle : Submodule.span E (Λ : Set V) ≤ S :=
-    Submodule.span_le.mpr (fun w hw => ⟨1, one_ne_zero, by simpa using hw⟩)
+    Submodule.span_le.mpr (fun w hw => ⟨1, one_ne_zero, by simp_all⟩)
   rw [hΛ.span_eq_top] at hle
   obtain ⟨m, hm, h⟩ := hle (Submodule.mem_top : v ∈ (⊤ : Submodule E V))
   exact ⟨m, hm, h⟩

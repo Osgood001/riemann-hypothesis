@@ -19,16 +19,13 @@ theorem goal1 :
     have hy0 : y ≠ 0 := nonZeroDivisors.ne_zero hy
     obtain ⟨n, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy0 hϖ
     refine ⟨⟨x * ↑u⁻¹, ⟨ϖ ^ n, n, rfl⟩⟩, ?_⟩
-    simp only at h ⊢
     rw [map_mul] at h
     rw [map_mul, ← h]
-    have hu : algebraMap V (FractionRing V) (↑u : V) * algebraMap V (FractionRing V) (↑u⁻¹ : V) = 1 := by
-      rw [← map_mul, Units.mul_inv, map_one]
     calc z * algebraMap V (FractionRing V) (ϖ ^ n)
         = z * (algebraMap V (FractionRing V) (↑u : V) * algebraMap V (FractionRing V) (↑u⁻¹ : V))
-            * algebraMap V (FractionRing V) (ϖ ^ n) := by rw [hu, mul_one]
+            * algebraMap V (FractionRing V) (ϖ ^ n) := by simp
       _ = _ := by ring
   · intro x y h
-    exact ⟨1, by rw [hinj h]⟩
+    exact ⟨1, by simp_all⟩
 
 end Bl.general_b_fact_further

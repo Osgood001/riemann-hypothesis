@@ -53,9 +53,9 @@ theorem goal1 (O : Type) [CommRing O] [IsLocalRing O] (U L : Ideal O)
     obtain ⟨x', y', δ', hg, hx1, hx0, hxU, hδu, hδ, hy1, hy0, hyL⟩ :=
       ih (Matrix.of fun i j => g i.castSucc j.castSucc
         - g i.castSucc (Fin.last n) * u * g (Fin.last n) j.castSucc)
-        (fun i => by simp only [Matrix.of_apply]; exact hAd i)
-        (fun i j h => by simp only [Matrix.of_apply]; exact hAU i j h)
-        (fun i j h => by simp only [Matrix.of_apply]; exact hAL i j h)
+        (fun i => by simp_all)
+        (fun i j h => by simp_all)
+        (fun i j h => by simp_all)
     refine ⟨Matrix.of fun i j => Fin.lastCases (motive := fun _ => O)
         (Fin.lastCases (motive := fun _ => O) 1 (fun _ => 0) j)
         (fun i' => Fin.lastCases (motive := fun _ => O) (g i'.castSucc (Fin.last n) * u)
@@ -123,7 +123,6 @@ theorem goal1 (O : Type) [CommRing O] [IsLocalRing O] (U L : Ideal O)
       | last => simp
       | cast i =>
         have h1 := hδ i
-        simp only [Matrix.of_apply] at h1
         simp only [Fin.lastCases_castSucc]
         have e : δ' i - g i.castSucc i.castSucc = (δ' i - (g i.castSucc i.castSucc
             - g i.castSucc (Fin.last n) * u * g (Fin.last n) i.castSucc))

@@ -28,14 +28,10 @@ theorem goal1 :
     exact hsub.elim h1 h2
   obtain ⟨z, hzm, hz⟩ := Set.not_subset.mp hns
   refine ⟨z, hzm, ?_, ?_⟩
-  · have hz1 : z ∉ ⋃ p ∈ associatedPrimes R N₁, (p : Set R) := fun h => by
-      obtain ⟨p, hp, hzp⟩ := Set.mem_iUnion₂.mp h
-      exact hz (Set.mem_biUnion (Or.inl hp) hzp)
+  · have hz1 : z ∉ ⋃ p ∈ associatedPrimes R N₁, (p : Set R) := fun h => by simp_all
     rw [biUnion_associatedPrimes_eq_compl_regular R N₁] at hz1
     simpa using hz1
-  · have hz2 : z ∉ ⋃ p ∈ associatedPrimes R N₂, (p : Set R) := fun h => by
-      obtain ⟨p, hp, hzp⟩ := Set.mem_iUnion₂.mp h
-      exact hz (Set.mem_biUnion (Or.inr hp) hzp)
+  · have hz2 : z ∉ ⋃ p ∈ associatedPrimes R N₂, (p : Set R) := fun h => by simp_all
     rw [biUnion_associatedPrimes_eq_compl_regular R N₂] at hz2
     simpa using hz2
 

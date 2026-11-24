@@ -51,7 +51,6 @@ theorem goal1 :
     · right
       rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at hq
       rw [Submodule.Quotient.mk_eq_zero]
-      simp only [S', Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul] at hq ⊢
       exact hsat r x hr hq
   obtain ⟨h, hh⟩ := LinearMap.exists_rightInverse_of_surjective S'.mkQ (Submodule.range_mkQ S')
   have hidem : IsIdempotentElem (h ∘ₗ S'.mkQ) :=
@@ -70,9 +69,7 @@ theorem goal1 :
     have := LinearMap.IsIdempotentElem.isCompl hidem
     rw [hker] at this
     exact this.symm
-  have hS : S'.map N.subtype = S := by
-    simp only [S', Submodule.map_comap_subtype]
-    exact inf_eq_right.2 hSN
+  have hS : S'.map N.subtype = S := by aesop
   refine ⟨(LinearMap.range (h ∘ₗ S'.mkQ)).map N.subtype ⊔ N', ?_⟩
   have := compl_lift N N' hN S' _ hc
   rwa [hS] at this

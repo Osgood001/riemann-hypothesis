@@ -25,14 +25,13 @@ theorem goal1 :
     Exists.{1} fun (N : Nat) ↦ And (LT.lt.{0} 0 N) (Membership.mem.{0, 0} L (HSMul.hSMul.{0, 0, 0} N z)) := by
   intro E _ _ n L z hz
   induction hz using Submodule.span_induction with
-  | mem x hx => exact ⟨1, one_pos, by simpa using hx⟩
+  | mem x hx => exact ⟨1, one_pos, by simp_all⟩
   | zero => exact ⟨1, one_pos, by simp⟩
   | add x y _ _ hx hy =>
     obtain ⟨a, ha, hax⟩ := hx
     obtain ⟨b, hb, hby⟩ := hy
     refine ⟨a * b, Nat.mul_pos ha hb, ?_⟩
-    have key : (a * b) • (x + y) = b • (a • x) + a • (b • y) := by
-      rw [smul_add, smul_smul, smul_smul, mul_comm b a]
+    have key : (a * b) • (x + y) = b • (a • x) + a • (b • y) := by ring
     rw [key]
     exact L.add_mem (nsmul_mem hax b) (nsmul_mem hby a)
   | smul c x _ hx =>
@@ -40,7 +39,6 @@ theorem goal1 :
     obtain ⟨d, hd, hdi⟩ := exists_nat_mul_isIntegral c
     refine ⟨d * a, Nat.mul_pos hd ha, ?_⟩
     have key : (⟨(d : E) * c, hdi⟩ : NumberField.RingOfIntegers E) • (a • x) = (d * a) • (c • x) := by
-      rw [algebra_compatible_smul E (⟨(d : E) * c, hdi⟩ : NumberField.RingOfIntegers E)]
       show ((d : E) * c) • (a • x) = _
       rw [mul_smul, smul_comm c a x, Nat.cast_smul_eq_nsmul E, smul_smul]
     rw [← key]

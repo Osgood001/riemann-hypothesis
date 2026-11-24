@@ -23,10 +23,8 @@ theorem goal1 :
     intro i hi
     rw [Finset.mem_range] at hi
     rw [norm_mul, norm_pow, le_div_iff₀ hx0]
-    calc ‖P.coeff i‖ * ‖x‖ ^ i * ‖x‖ ≤ 1 * ‖x‖ ^ i * ‖x‖ := by
-          gcongr
-          exact hc i
-      _ = ‖x‖ ^ (i + 1) := by rw [one_mul, pow_succ]
+    calc ‖P.coeff i‖ * ‖x‖ ^ i * ‖x‖ ≤ 1 * ‖x‖ ^ i * ‖x‖ := by simp_all
+      _ = ‖x‖ ^ (i + 1) := by ring
       _ ≤ ‖x‖ ^ P.natDegree := pow_le_pow_right₀ h.le (Nat.succ_le_of_lt hi)
   have heq : ∑ i ∈ Finset.range P.natDegree, P.coeff i * x ^ i = -(x ^ P.natDegree) :=
     eq_neg_of_add_eq_zero_left hx

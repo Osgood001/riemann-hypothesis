@@ -53,7 +53,7 @@ theorem goal1 (A : ℝ → Matrix ι ι ℂ) (A' : Matrix ι ι ℂ) (h0 : A 0 =
     intro i _
     obtain ⟨j, hji, hj⟩ := exists_moved σ hσ i
     have hz : ∏ l ∈ univ.erase i, (1 : Matrix ι ι ℂ) (σ l) l = 0 :=
-      Finset.prod_eq_zero (i := j) (by simp [hji]) (Matrix.one_apply_ne hj)
+      Finset.prod_eq_zero (i := j) (by simp_all) (Matrix.one_apply_ne hj)
     rw [hz, zero_smul]
   · intro hn
     exact absurd (Finset.mem_univ _) hn

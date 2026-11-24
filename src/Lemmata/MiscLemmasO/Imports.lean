@@ -14,8 +14,8 @@ theorem goal1 :
     Exists.{1} fun (c : O) ↦ And (Ne.{1} c 0) (Membership.mem.{0, 0} M (HSMul.hSMul.{0, 0, 0} c v)) := by
   intro O K V _ _ _ _ _ _ _ _ _ M v hv
   induction hv using Submodule.span_induction with
-  | mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact M.zero_mem⟩
+  | mem x hx => exact ⟨1, one_ne_zero, by simp_all⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add x y _ _ hx hy =>
     obtain ⟨c1, hc1, h1⟩ := hx
     obtain ⟨c2, hc2, h2⟩ := hy

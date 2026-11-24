@@ -18,8 +18,8 @@ theorem goal1 :
       And (Ne.{u_1 + 1} d 0) (Membership.mem.{u_3, u_3} S (HSMul.hSMul.{u_1, u_3, u_3} d x))  := by
   intro R F X _ _ _ _ _ _ _ _ _ S x hx
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact S.zero_mem⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by simp_all⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨d1, hd1, h1⟩ := hy
     obtain ⟨d2, hd2, h2⟩ := hz

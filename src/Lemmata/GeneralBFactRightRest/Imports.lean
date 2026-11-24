@@ -13,8 +13,7 @@ private theorem aux {α : Type u_1} {β : Type u_2} (f : α → β) (t : Multise
   induction t using Multiset.induction_on with
   | empty =>
     intro s hs
-    rw [Multiset.map_zero, Multiset.le_zero] at hs
-    exact ⟨0, le_refl _, by rw [Multiset.map_zero, hs]⟩
+    exact ⟨0, le_refl _, by simp_all⟩
   | cons a t ih =>
     intro s hs
     rw [Multiset.map_cons] at hs
@@ -22,7 +21,7 @@ private theorem aux {α : Type u_1} {β : Type u_2} (f : α → β) (t : Multise
     · obtain ⟨s', rfl⟩ := Multiset.exists_cons_of_mem h
       rw [Multiset.cons_le_cons_iff] at hs
       obtain ⟨u, hu, hmap⟩ := ih s' hs
-      exact ⟨a ::ₘ u, (Multiset.cons_le_cons_iff a).mpr hu, by rw [Multiset.map_cons, hmap]⟩
+      exact ⟨a ::ₘ u, (Multiset.cons_le_cons_iff a).mpr hu, by simp_all⟩
     · obtain ⟨u, hu, hmap⟩ := ih s ((Multiset.le_cons_of_notMem h).mp hs)
       exact ⟨u, hu.trans (Multiset.le_cons_self t a), hmap⟩
 

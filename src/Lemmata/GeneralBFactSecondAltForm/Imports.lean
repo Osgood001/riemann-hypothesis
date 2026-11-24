@@ -77,7 +77,7 @@ theorem goal1 :
       rw [h3, hv.2, map_zero]) with h | h
     · exact h
     · exfalso
-      have h4 : v0 ∈ S' ⊓ LinearMap.ker E := by rw [h]; exact hv0S
+      have h4 : v0 ∈ S' ⊓ LinearMap.ker E := by simp_all
       exact hv0 (LinearMap.mem_ker.mp (Submodule.mem_inf.mp h4).2)
   have himg : S'.map E = S := by
     rcases hirrp (S'.map E) (by
@@ -100,7 +100,6 @@ theorem goal1 :
       intro x hx
       have h1 : (x : Wq) ∈ S' ⊓ LinearMap.ker E := by
         refine Submodule.mem_inf.mpr ⟨x.2, ?_⟩
-        rw [LinearMap.mem_ker]
         have h5 := congrArg Subtype.val hx
         simpa [E'] using h5
       rw [hker, Submodule.mem_bot] at h1
@@ -111,8 +110,7 @@ theorem goal1 :
       exact ⟨⟨v, hv⟩, rfl⟩
   let e := LinearEquiv.ofBijective E' hbij
   let T : Module.End ℂ S' := e.symm.toLinearMap ∘ₗ Z'
-  have : Nontrivial S' := ⟨⟨⟨v0, hv0S⟩, 0, fun h => hv0 (by
-    rw [show v0 = 0 from congrArg Subtype.val h, map_zero])⟩⟩
+  have : Nontrivial S' := ⟨⟨⟨v0, hv0S⟩, 0, fun h => hv0 (by simp_all)⟩⟩
   obtain ⟨c, hc⟩ := Module.End.exists_eigenvalue T
   obtain ⟨x, hx⟩ := hc.exists_hasEigenvector
   have hTx := hx.apply_eq_smul
@@ -120,7 +118,6 @@ theorem goal1 :
     have h1 : e (T x) = Z' x := by simp [T]
     rw [hTx, map_smul] at h1
     have h2 := congrArg Subtype.val h1
-    simp [e, E', Z'] at h2
     exact h2.symm
   have hx0 : (x : Wq) ≠ 0 := fun h => hx.2 (Subtype.ext h)
   let K : Submodule ℂ Wq := S' ⊓ LinearMap.ker (Z - c • E)
@@ -145,7 +142,7 @@ theorem goal1 :
       exact hx0 h6
     · exact h
   refine ⟨c, fun v hv => ?_⟩
-  have h7 : v ∈ K := by rw [hK]; exact hv
+  have h7 : v ∈ K := by simp_all
   have h8 := (Submodule.mem_inf.mp h7).2
   rw [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero] at h8
   exact h8

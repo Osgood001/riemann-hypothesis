@@ -42,8 +42,7 @@ theorem goal1 :
     obtain ⟨r, hr⟩ := hb i hi
     exact ⟨r, by rw [hr, Algebra.smul_def]⟩
   choose! x hx using hb'
-  have hspan : Ideal.span {(b : R)} ≠ 0 := by
-    rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
+  have hspan : Ideal.span {(b : R)} ≠ 0 := by simp
   set S := (Ideal.finite_factors hspan).toFinset with hS
   let N : IsDedekindDomain.HeightOneSpectrum R → ℕ := fun p =>
     (WithZero.log (p.valuation K (c p) * p.intValuation (b : R))).natAbs
@@ -59,7 +58,7 @@ theorem goal1 :
     have h1 := hy p (Finset.mem_union_left _ hp)
     simp only [xx, e, hp, if_true] at h1
     have h2 := (p.intValuation_le_pow_iff_mem _ _).mpr h1
-    have hcv : p.valuation K (c p) ≠ 0 := by simpa using hc p hp
+    have hcv : p.valuation K (c p) ≠ 0 := by simp_all
     have hγ : p.valuation K (c p) * p.intValuation (b : R) ≠ 0 :=
       mul_ne_zero hcv (p.intValuation_ne_zero _ hd0)
     have h3 : WithZero.exp (-((N p : ℕ) : ℤ)) ≤ p.valuation K (c p) * p.intValuation (b : R) := by
@@ -68,8 +67,7 @@ theorem goal1 :
       simp only [N]
       omega
     have key : (algebraMap R K y / algebraMap R K (b : R) - a p) * algebraMap R K (b : R)
-        = algebraMap R K (y - x p) := by
-      rw [map_sub, hx p hp, sub_mul, div_mul_cancel₀ _ hdK]; ring
+        = algebraMap R K (y - x p) := by grind
     have h4 : p.valuation K (algebraMap R K y / algebraMap R K (b : R) - a p) * p.intValuation (b : R)
         ≤ p.valuation K (c p) * p.intValuation (b : R) := by
       have vb : p.valuation K (algebraMap R K (b : R)) = p.intValuation (b : R) := by
@@ -89,12 +87,7 @@ theorem goal1 :
         simp only [xx, e, hq, if_false, sub_zero] at h1
         rw [q.intValuation_eq_exp_neg_multiplicity hd0]
         exact (q.intValuation_le_pow_iff_mem _ _).mpr h1
-      · have hnd : ¬ q.asIdeal ∣ Ideal.span {(b : R)} := by
-          simpa [hS] using hqS
-        have hone : q.intValuation (b : R) = 1 := by
-          refine le_antisymm (q.intValuation_le_one _) (not_lt.mp ?_)
-          rw [q.intValuation_lt_one_iff_dvd]
-          exact hnd
+      · have hone : q.intValuation (b : R) = 1 := by simp_all
         rw [hone]
         exact q.intValuation_le_one _
     have h4 : q.valuation K (algebraMap R K y / algebraMap R K (b : R)) * q.intValuation (b : R)

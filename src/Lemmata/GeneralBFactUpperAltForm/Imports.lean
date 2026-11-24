@@ -13,7 +13,7 @@ theorem goal1 :
     Function.Injective.{1, 1} (Matrix.mulVec.{0, 0, 0} (Matrix.map.{0, 0, 0, 0} A (DFunLike.coe.{1, 1, 1} f))) := by
   intro K _ n k _ _ _ _ f A hA
   have hker : LinearMap.ker (Matrix.toLin' A) = ⊥ :=
-    LinearMap.ker_eq_bot.mpr (fun x y hxy => hA (by simpa only [Matrix.toLin'_apply] using hxy))
+    LinearMap.ker_eq_bot.mpr (fun x y hxy => hA (by simp_all))
   obtain ⟨g, hg⟩ := (Matrix.toLin' A).exists_leftInverse_of_injective hker
   have hBA : LinearMap.toMatrix' g * A = 1 := by
     have h := congrArg LinearMap.toMatrix' hg

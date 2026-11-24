@@ -32,15 +32,8 @@ theorem goal1 :
       rw [Submodule.mem_colon_singleton, Submodule.mem_bot] at h
       exact hm0 (hreg (h.trans (smul_zero x).symm))
     set N : Submodule R M := Submodule.torsionBySet R M ((⊥ : Submodule R M).colon {m0} : Set R) with hN
-    have hNmem : ∀ n, n ∈ N ↔ ∀ r ∈ (⊥ : Submodule R M).colon {m0}, r • n = 0 := by
-      intro n
-      rw [hN, Submodule.mem_torsionBySet_iff]
-      exact ⟨fun h r hr => h ⟨r, hr⟩, fun h a => h a.1 a.2⟩
-    have hm0N : m0 ∈ N := by
-      rw [hNmem]
-      intro r hr
-      rw [Submodule.mem_colon_singleton, Submodule.mem_bot] at hr
-      exact hr
+    have hNmem : ∀ n, n ∈ N ↔ ∀ r ∈ (⊥ : Submodule R M).colon {m0}, r • n = 0 := by simp_all
+    have hm0N : m0 ∈ N := by simp_all
     have hex : ∃ n ∈ N, n ∉ x • (⊤ : Submodule R M) := by
       by_contra hcon
       push Not at hcon
@@ -63,9 +56,7 @@ theorem goal1 :
       exact (Submodule.mem_bot R).1 hm0N
     obtain ⟨n, hnN, hnx⟩ := hex
     set z : QuotSMulTop x M := Submodule.Quotient.mk n with hz
-    have hz0 : z ≠ 0 := by
-      rw [hz, Ne, Submodule.Quotient.mk_eq_zero]
-      exact hnx
+    have hz0 : z ≠ 0 := by simp_all
     obtain ⟨q, hq, hqle⟩ := exists_le_isAssociatedPrime_of_isNoetherianRing R z hz0
     have hxq : x ∈ q := by
       apply hqle

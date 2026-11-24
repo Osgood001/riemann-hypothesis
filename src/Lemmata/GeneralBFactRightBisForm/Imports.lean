@@ -45,7 +45,7 @@ private theorem aux {R : Type u_1} [CommRing R] {ι : Type u_2} [Fintype ι] [De
           rw [Function.update_self]
           exact hy
         · rw [Function.update_of_ne hia]
-          exact h2 i (by simp [hia, hi])
+          exact h2 i (by simp_all)
     have hx := hsub (h1 a (Finset.mem_insert_self a F))
     rw [Submodule.mem_comap, LinearMap.comp_apply, LinearMap.mulRight_apply, ← hlin (m a),
       Function.update_eq_self] at hx

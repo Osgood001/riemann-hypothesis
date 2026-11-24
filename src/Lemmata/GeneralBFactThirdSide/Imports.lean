@@ -16,10 +16,10 @@ theorem goal1 :
       Exists.{1} fun (d : NumberField.RingOfIntegers.{0} E) ↦
         And (Ne.{1} d 0) (Membership.mem.{0, 0} Λ (HSMul.hSMul.{0, 0, 0} d x)) := by
   intro E _ _ V _ _ _ _ Λ hspan x
-  have hx : x ∈ Submodule.span E (Λ : Set V) := by rw [hspan]; exact Submodule.mem_top
+  have hx : x ∈ Submodule.span E (Λ : Set V) := by simp_all
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Λ.zero_mem⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by simp_all⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨d1, hd1, h1⟩ := hy
     obtain ⟨d2, hd2, h2⟩ := hz

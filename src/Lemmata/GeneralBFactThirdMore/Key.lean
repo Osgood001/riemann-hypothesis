@@ -23,17 +23,15 @@ theorem goal1 :
     ∀ (w : Fin n → E),
       Exists.{1} fun (m : Nat) ↦ And (LT.lt.{0} 0 m) (Membership.mem.{0, 0} L (HSMul.hSMul.{0, 0, 0} m w)) := by
   intro E _ _ n L hL w
-  have hw : w ∈ Submodule.span E (L : Set (Fin n → E)) := by
-    rw [hL]; exact Submodule.mem_top
+  have hw : w ∈ Submodule.span E (L : Set (Fin n → E)) := by simp_all
   induction hw using Submodule.span_induction with
-  | mem x hx => exact ⟨1, one_pos, by simpa using hx⟩
+  | mem x hx => exact ⟨1, one_pos, by simp_all⟩
   | zero => exact ⟨1, one_pos, by simp⟩
   | add x y _ _ hx hy =>
     obtain ⟨a, ha, hax⟩ := hx
     obtain ⟨b, hb, hby⟩ := hy
     refine ⟨a * b, Nat.mul_pos ha hb, ?_⟩
-    have e : (a * b) • (x + y) = b • (a • x) + a • (b • y) := by
-      rw [smul_add, smul_smul, smul_smul, mul_comm b a]
+    have e : (a * b) • (x + y) = b • (a • x) + a • (b • y) := by ring
     rw [e]
     exact L.add_mem (nsmul_mem hax b) (nsmul_mem hby a)
   | smul c x _ hx =>
@@ -43,7 +41,6 @@ theorem goal1 :
     have h1 := L.smul_mem (⟨(d : E) * c, hdc⟩ : NumberField.RingOfIntegers E) hax
     convert h1 using 1
     ext i
-    rw [Pi.smul_apply, Algebra.smul_def]
     change _ = ((d : E) * c) * _
     simp [nsmul_eq_mul]
     ring

@@ -19,8 +19,7 @@ theorem goal1 :
     simp only [Finset.mem_filter, Finset.mem_map, Finset.mem_Iio]
     constructor
     · rintro ⟨hx, hlt⟩
-      have hr : x ∈ Set.range (J.orderEmbOfFin h) := by
-        rw [Finset.range_orderEmbOfFin]; exact hx
+      have hr : x ∈ Set.range (J.orderEmbOfFin h) := by simp_all
       obtain ⟨j, rfl⟩ := hr
       exact ⟨j, (J.orderEmbOfFin h).lt_iff_lt.mp hlt, rfl⟩
     · rintro ⟨j, hj, rfl⟩

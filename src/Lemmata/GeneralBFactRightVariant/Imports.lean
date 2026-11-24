@@ -29,9 +29,7 @@ theorem goal1 :
         exact hmem
       rcases hP.mem_or_mem hmem' with h | h
       · exact ⟨_, hp, Nat.minFac_dvd n, h⟩
-      · have hm0 : m ≠ 0 := by
-          rintro rfl
-          exact hn (by simpa using hm)
+      · have hm0 : m ≠ 0 := by grind
         have hpos : 0 < m := Nat.pos_of_ne_zero hm0
         have h2 := hp.two_le
         have hlt : m < n := by nlinarith

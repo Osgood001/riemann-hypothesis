@@ -17,9 +17,7 @@ theorem goal1 :
     rw [hM, sub_self] at h
     exact (mul_eq_zero.mp h).resolve_right (sub_ne_zero.mpr h1)
   rw [← Ideal.Quotient.eq_zero_iff_mem] at hP ⊢
-  have h2 : Ideal.Quotient.mk P ζ = 1 := by
-    rw [map_sub, map_one, sub_eq_zero] at hP
-    exact hP
+  have h2 : Ideal.Quotient.mk P ζ = 1 := by grind
   have h3 := congrArg (Ideal.Quotient.mk P) hs
   set_option synthInstance.maxHeartbeats 100000 in
     simpa [map_sum, map_pow, h2] using h3

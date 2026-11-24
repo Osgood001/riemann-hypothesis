@@ -16,7 +16,7 @@ theorem goal1 :
       And (Ne.{1} d 0) (Membership.mem.{0, 0} M (HSMul.hSMul.{0, 0, 0} d x)) := by
   intro K _ _ V _ _ _ _ M x hx
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by simp_all⟩
   | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨d1, hd1, h1⟩ := hy
@@ -29,7 +29,6 @@ theorem goal1 :
   | smul a y _ hy =>
     obtain ⟨d, hd, h⟩ := hy
     obtain ⟨⟨n, m⟩, hnm⟩ := IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers K)) a
-    dsimp only at hnm
     refine ⟨(m : NumberField.RingOfIntegers K) * d, mul_ne_zero (nonZeroDivisors.coe_ne_zero m) hd, ?_⟩
     have e : ∀ (r : NumberField.RingOfIntegers K) (v : V),
         r • v = (algebraMap (NumberField.RingOfIntegers K) K r) • v :=

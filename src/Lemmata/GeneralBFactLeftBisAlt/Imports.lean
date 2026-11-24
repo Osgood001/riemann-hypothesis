@@ -16,7 +16,7 @@ theorem goal1 :
       And (Ne.{1} d 0) (Membership.mem.{0, 0} L (HSMul.hSMul.{0, 0, 0} d v)) := by
   intro K V _ _ _ _ _ _ L v hv
   induction hv using Submodule.span_induction with
-  | mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩
+  | mem x hx => exact ⟨1, one_ne_zero, by simp_all⟩
   | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add x y _ _ hx hy =>
     obtain ⟨d1, hd1, h1⟩ := hx

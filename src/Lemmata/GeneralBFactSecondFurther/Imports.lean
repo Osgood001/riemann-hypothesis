@@ -13,10 +13,10 @@ theorem goal1 :
   Eq.{1} (Submodule.span.{0, 0} K (SetLike.coe.{0, 0} B)) Top.top.{0} →
     ∀ (x : X), Exists.{1} fun (d : O) ↦ And (Ne.{1} d 0) (Membership.mem.{0, 0} B (HSMul.hSMul.{0, 0, 0} d x)) := by
   intro O K X _ _ _ _ _ _ _ _ _ B hB x
-  have hx : x ∈ Submodule.span K (B : Set X) := by rw [hB]; exact Submodule.mem_top
+  have hx : x ∈ Submodule.span K (B : Set X) := by simp_all
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact B.zero_mem⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by simp_all⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨d1, hd1, h1⟩ := hy
     obtain ⟨d2, hd2, h2⟩ := hz

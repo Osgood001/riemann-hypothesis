@@ -19,14 +19,13 @@ theorem goal1 :
     Exists.{1} fun (m : Int) ↦ And (Ne.{1} m 0) (Membership.mem.{0, 0} L (HSMul.hSMul.{0, 0, 0} m v)) := by
   intro E _ _ n L v hv
   induction hv using Submodule.span_induction with
-  | mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩
+  | mem x hx => exact ⟨1, one_ne_zero, by simp_all⟩
   | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add x y _ _ hx hy =>
     obtain ⟨m1, h1, hm1⟩ := hx
     obtain ⟨m2, h2, hm2⟩ := hy
     refine ⟨m1 * m2, mul_ne_zero h1 h2, ?_⟩
-    have e : (m1 * m2) • (x + y) = m2 • (m1 • x) + m1 • (m2 • y) := by
-      rw [smul_add, smul_smul, smul_smul, mul_comm m2 m1]
+    have e : (m1 * m2) • (x + y) = m2 • (m1 • x) + m1 • (m2 • y) := by ring
     rw [e]
     exact L.add_mem (L.toAddSubgroup.zsmul_mem hm1 m2) (L.toAddSubgroup.zsmul_mem hm2 m1)
   | smul a x _ hx =>

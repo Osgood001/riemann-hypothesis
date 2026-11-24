@@ -17,7 +17,7 @@ theorem goal1 :
   have hx : x ∈ Submodule.span K (M : Set V) := by
     rw [hM.span_eq_top]; trivial
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by simp_all⟩
   | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨a, ha, hay⟩ := hy
@@ -32,9 +32,7 @@ theorem goal1 :
     obtain ⟨d, hd, hint⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ K).mpr (IsAlgebraic.of_finite ℚ c)).exists_integral_multiple
     let w : NumberField.RingOfIntegers K := ⟨d • c, hint⟩
     refine ⟨d * a, mul_ne_zero hd ha, ?_⟩
-    have hw : (algebraMap (NumberField.RingOfIntegers K) K w) = (d : K) * c := by
-      show (d • c : K) = _
-      rw [zsmul_eq_mul]
+    have hw : (algebraMap (NumberField.RingOfIntegers K) K w) = (d : K) * c := by aesop
     have key : (d * a) • (c • y) = w • (a • y) := by
       rw [← algebraMap_smul K w (a • y), hw, ← Int.cast_smul_eq_zsmul K, ← Int.cast_smul_eq_zsmul K,
         smul_smul, smul_smul]

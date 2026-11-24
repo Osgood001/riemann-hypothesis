@@ -45,7 +45,6 @@ theorem goal1 :
     refine Finset.sum_congr rfl (fun i _ => ?_)
     rw [Finset.prod_eq_one, one_mul]
     · rfl
-    intro j _
     simp
   · intro σ _ hσ
     rw [Finset.sum_eq_zero, mul_zero]

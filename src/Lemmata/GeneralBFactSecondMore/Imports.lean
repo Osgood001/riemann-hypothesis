@@ -16,10 +16,10 @@ theorem goal1 :
       Exists.{1} fun (d : NumberField.RingOfIntegers.{0} E) ↦
         And (Ne.{1} d 0) (Membership.mem.{0, 0} N (HSMul.hSMul.{0, 0, 0} d x)) := by
   intro E U _ _ _ _ _ _ N hN x
-  have hx : x ∈ Submodule.span E (N : Set U) := by rw [hN]; exact Submodule.mem_top
+  have hx : x ∈ Submodule.span E (N : Set U) := by simp_all
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact N.zero_mem⟩
+  | mem y hy => exact ⟨1, one_ne_zero, by simp_all⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
   | add y z _ _ hy hz =>
     obtain ⟨d1, hd1, h1⟩ := hy
     obtain ⟨d2, hd2, h2⟩ := hz
@@ -33,7 +33,6 @@ theorem goal1 :
     obtain ⟨⟨n, m⟩, hm⟩ := IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers E)) a
     have key : ((m : NumberField.RingOfIntegers E)) • (a • y) = n • y := by
       rw [← smul_assoc, Algebra.smul_def, mul_comm]
-      simp only at hm
       rw [hm, algebraMap_smul]
     refine ⟨d * m, mul_ne_zero hd (nonZeroDivisors.coe_ne_zero m), ?_⟩
     rw [mul_smul, key, ← mul_smul, mul_comm, mul_smul]

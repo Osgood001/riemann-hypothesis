@@ -26,16 +26,14 @@ theorem goal1 :
   have dN' : N'.det = 1 := by
     rw [Matrix.det_of_isLowerTriangular N' lN']
     simp [hN'1]
-  have uN' : IsUnit N'.det := by rw [dN']; exact isUnit_one
+  have uN' : IsUnit N'.det := by simp_all
   have uBd : IsUnit B.det := isUnit_iff_ne_zero.mpr hdet
   have iN' : Invertible N' := Matrix.invertibleOfIsUnitDet N' uN'
   have iB : Invertible B := Matrix.invertibleOfIsUnitDet B uBd
   have hM2 : N'⁻¹ * N = B' * B⁻¹ := by
-    calc N'⁻¹ * N = N'⁻¹ * N * B * B⁻¹ := by
-          rw [Matrix.mul_assoc (N'⁻¹ * N), Matrix.mul_nonsing_inv B uBd, Matrix.mul_one]
-      _ = N'⁻¹ * (N' * B') * B⁻¹ := by rw [Matrix.mul_assoc N'⁻¹ N B, hEq]
-      _ = B' * B⁻¹ := by
-          rw [← Matrix.mul_assoc N'⁻¹ N' B', Matrix.nonsing_inv_mul N' uN', Matrix.one_mul]
+    calc N'⁻¹ * N = N'⁻¹ * N * B * B⁻¹ := by simp
+      _ = N'⁻¹ * (N' * B') * B⁻¹ := by grind
+      _ = B' * B⁻¹ := by simp
   obtain ⟨M, hM⟩ : ∃ M, M = N'⁻¹ * N := ⟨_, rfl⟩
   have lM : M.BlockTriangular OrderDual.toDual := by
     rw [hM]; exact (Matrix.blockTriangular_inv_of_blockTriangular lN').mul lN
@@ -51,7 +49,7 @@ theorem goal1 :
   have hdiag : ∀ a, M a a = 1 := by
     intro a
     have h := congrFun (congrFun hNM a) a
-    rw [Matrix.mul_apply, Finset.sum_eq_single a (fun k _ hk => by rw [hoff k a hk, mul_zero])
+    rw [Matrix.mul_apply, Finset.sum_eq_single a (fun k _ hk => by grind)
       (fun h => absurd (Finset.mem_univ a) h), hN'1, one_mul, hN1] at h
     exact h.symm
   have hM1 : M = 1 := by

@@ -16,8 +16,7 @@ theorem goal1 :
     | zero => simp
     | succ k ih =>
       have hx := h (2 ^ k)
-      have e : z ^ (2 ^ (k + 1)) - 1 = (z ^ (2 ^ k) - 1) * ((z ^ (2 ^ k) - 1) + 2) := by
-        rw [pow_succ, pow_mul]; ring
+      have e : z ^ (2 ^ (k + 1)) - 1 = (z ^ (2 ^ k) - 1) * ((z ^ (2 ^ k) - 1) + 2) := by ring
       rw [e, norm_mul]
       have h3 : ‖(2 : ℂ)‖ ≤ ‖(z ^ (2 ^ k) - 1) + 2‖ + ‖z ^ (2 ^ k) - 1‖ := by
         have := norm_sub_le ((z ^ (2 ^ k) - 1) + 2) (z ^ (2 ^ k) - 1)
@@ -32,7 +31,6 @@ theorem goal1 :
   have hpos : 0 < ‖z - 1‖ := norm_pos_iff.mpr (sub_ne_zero.mpr hne)
   obtain ⟨k, hk⟩ := pow_unbounded_of_one_lt (1 / (2 * ‖z - 1‖)) (by norm_num : (1 : ℝ) < 3 / 2)
   have h6 : 1 < (3 / 2 : ℝ) ^ k * (2 * ‖z - 1‖) := (div_lt_iff₀ (by positivity)).mp hk
-  have h7 : (3 / 2 : ℝ) ^ k * (2 * ‖z - 1‖) = 2 * ((3 / 2) ^ k * ‖z - 1‖) := by ring
   have h8 := key k
   have h9 := h (2 ^ k)
   linarith

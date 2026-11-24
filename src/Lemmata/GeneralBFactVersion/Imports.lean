@@ -27,6 +27,6 @@ theorem goal1 :
       _ = 2 * M := by ring
   have h := Complex.norm_fderiv_le_div_of_mapsTo_ball hd hmaps (by positivity)
   calc ‖fderiv ℂ g y‖ ≤ 2 * M / (2 * R) := h
-    _ = M / R := by rw [mul_div_mul_left _ _ (two_ne_zero)]
+    _ = M / R := by ring
 
 end Bl.general_b_fact_version
