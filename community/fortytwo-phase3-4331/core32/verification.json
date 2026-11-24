@@ -1,14 +1,14 @@
 {
   "core": 32,
-  "candidate": "core32-fastcurved7fc4886638f",
+  "candidate": "core32-fastcurve0f109849bfef",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 370,
-  "local_normalized_tokens": 555077,
+  "local_normalized_tokens": 554450,
   "published_baseline_tokens": 607551,
-  "proof_tree_sha256": "517c41a106954eff3c71beb7f488b635b52a47a002351984caa98508bed00d26",
+  "proof_tree_sha256": "e69b2d39e71d71f271d3269bfe0246f7ce840e1b4227f3ad540fdb2d03006ead",
   "modified_files": {
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/PredMulSumPadicValNatFactorialAddCardLe.lean": {
       "before": "b7ea91e9b2ac52f229e062a3167f675acc85a42ac838bf741e27cab54baab87a",
@@ -28,7 +28,7 @@
     },
     "Development/AbelianVarietyTheory/Proofs/FoundationProofs/RangeAlgebraMapEqIInfDiscreteValuationSubring.lean": {
       "before": "d66be74be2c6b2ce18463b1662315d9c7e6a2bf017c59d8dfd16348242cef71f",
-      "after": "583d1e4db8e8234d7d146c4c0d33e3dad908ffa0f7945cdcb61703b5d3430fb8"
+      "after": "cfcbaf719510bf4211320156cb2b5950a3f8b57dfa038a298dc42081ed924004"
     },
     "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/StalkGenericPointSpecializesOfSpecializes.lean": {
       "before": "7931032ba9543a3e6c3461055fbe0ef8d7355d797137d6ceb2bdef7302894cd4",
@@ -290,7 +290,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T09:05:17.762962+00:00",
+    "completed_utc": "2026-11-24T09:45:39.421318+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
