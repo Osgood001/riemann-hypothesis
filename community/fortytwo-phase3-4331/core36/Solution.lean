@@ -16,9 +16,9 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
     (∀ y ∈ lat hP (sgnRt H true), n • y ∈ span (𝓞 E) (range (x ∘ inl))) ∧
     ∀ y ∈ lat hP (sgnRt H false), n • y ∈ span (𝓞 E) (range (x ∘ inr)) := by
 
-  have := disjoint_def.mp $ disjoint_lat hP (show H.rt0 ≠ -H.rt0 by grind [H.sqrt_neg_disc_sq, H.d_mod, Nat.cast_eq_zero])
+  have := disjoint_lat hP (show H.rt0 ≠ -H.rt0 by grind [H.sqrt_neg_disc_sq, H.d_mod, Nat.cast_eq_zero])
 
-  simp_rw [range_eq, span_union, mem_sup, mem_span, range_subset_iff] at hn ⊢
+  simp_all [disjoint_def, range_eq, mem_sup, mem_span, range_subset_iff]
 
   and_intros <;> intro y <;> obtain ⟨a, h, b, k, e⟩ := hn y
   all_goals try intro hy; have := nsmul_mem hy n
