@@ -1,18 +1,34 @@
 {
   "core": 30,
-  "candidate": "core30-fastmixf252b9a73e",
+  "candidate": "core30-fastmix24be0e20b5",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 381,
-  "local_normalized_tokens": 1193522,
+  "submitted_files": 374,
+  "local_normalized_tokens": 1191661,
   "published_baseline_tokens": 1438064,
-  "proof_tree_sha256": "f686631b3288a6a842459a02dfba52010eff91fc1a3e17ea3dd7ea6f394ba318",
+  "proof_tree_sha256": "15cf7eb632d40fd604fd8958ac91e910b67d61a7cd194fad4cb660bd6f286a86",
   "modified_files": {
     "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/AbelianSchemeLawsOfCubeBundleGenerator.lean": {
       "before": "56023958f58f3640091c1de67bc1e81e08a174a111761586dc956f08a38ae239",
       "after": "8148f3c1298d5d938243ff0351a66fdd574bf91451ddd713e739b08b4677677c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/NonemptyPerfectSectionsComplexOfSmoothProj.lean": {
+      "before": "3527f30bf46932e769ccef5c2968f894be031736ec2081b857175a504c8b5907",
+      "after": "22190d718375116ce483fb6cbe2e944712a413f68e47b2a31ec1de577b4e4e4c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechFiniteVanishesOffOrigin.lean": {
+      "before": "b6d5fd728e9ee8cd88496fc8975febdaac8f83cd9cd7f66cd40c8061c6849524",
+      "after": "b98ba4b000db6e8cd2cf6a1863510b119e22529905f12345cb2a6a20c9fbddae"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleFibreCechAcyclicOffOrigin.lean": {
+      "before": "44f6e202ab4b821a61acd9d9546a00e9a30ac8a659e73741b2768a1d63980eb6",
+      "after": "e79fe4a559b902aa80343efe035b28a40e5daccafebd8c6daac7aefea51dc5e3"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SubsingletonOfPoints.lean": {
+      "before": "043b8a023cd29bea665640f28af0a847aa43182ba626f8a136038ca642c52f6f",
+      "after": "f8774c4a2138ead09fa0eecd21f771f9a8791aaac98fb7beeef0fb1fc25adeab"
     },
     "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/CyclicIdeal.lean": {
       "before": "a9faa221a30c2c3a1f3c6d86d3179534d706c51410305cc2da10ac5e911f5c9b",
@@ -30,12 +46,12 @@
       "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaUniformisationComplexAbelianVariety": "fa3849fed28ae8ed75ca0c09e0602704ae3af827696aeb92376a9444d7e69c8e"
     },
     "credit_detail": "Fortytwo supplied the parent proof edits. Codex revised the listed mathematical proof sources and checked the resulting proof.",
-    "new_contribution": "Codex incorporated the source replacement in Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsOfCubeBundleGenerator from the independently verified core23-arithtransfer59a98676b2 campaign proof. The retained Fortytwo source contributions are in Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CyclicIdeal. Codex assembled the proof and checked the full import closure. Original proof by Levent Alpöge."
+    "new_contribution": "Codex incorporated the source replacement in Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.SubsingletonOfPoints from the independently verified core23-arithtransfer59a98676b2 campaign proof. The retained Fortytwo source contributions are in Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CyclicIdeal. Codex assembled the proof and checked the full import closure. Original proof by Levent Alpöge."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T04:53:05.787225+00:00",
+    "completed_utc": "2026-11-24T05:57:54.569736+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -137,11 +153,9 @@
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/BijOnKerAndExactOfQuasiIsoBaseChange.lean": "f2e1db42a5e39a562a09801d07cbb8ba3f5893c8858ccb51e0084929e380a764",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/BijectiveToPushforwardComp.lean": "0455d6079b756df1b885c042ad70138533ed5e9a0241f64c8b32320f096a17de",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechComplexAcyclicAdditiveLineBundleNoSections.lean": "80a953fa782693bf4f5a68cfebaaa72cc57152d2f7c739e9f034bf99b709e061",
-    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechComplexAcyclicAdditiveLineBundleNoSectionsStatement.lean": "34ed6a2b3a078f03a4639160f869e9fa455b0ea73d131850b091e8cf94fdf1bc",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBHomologyEquivOfAffineCovers.lean": "eb3689e90a0b62377fdb31ca44a4f04353cbf0e7640e245bcda3ebc38d1684c7",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBHomologyEquivOfAffineCoversStatement.lean": "9ad86f04e717fa09edb00b796a2da4249122b1bc67480aa683084c103bf5ffbd",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBHomologyFiniteOfAffineCover.lean": "e2c0ce558ace049272c8ff9f4cf64734ad4b4deb3ab0424d541039b886d68584",
-    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBHomologyFiniteOfAffineCoverStatement.lean": "6628b76d1efbed4201250d7800426f073ef7a78fc5bd318fefcee90435bdd5b4",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBHomologyZeroEquivSections.lean": "3912b9743ed1d39075c8921d5f999fac0d507aa82cf06cb0f42d5e02ce52f02e",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBPullIsoOfIsOpenImmersion.lean": "d46e4a981f6882c85f6f22297f58d3add79793b9147816b6b0f17827aef87fc7",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CokerDualMapEquivResidueFieldOfOrigin.lean": "e8696fcb3eed29df2e9c8933b52aa1b9ac0bc1eaa16ec2533983fd012fef50e2",
@@ -161,7 +175,6 @@
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsDehomogenisationTwistedChart.lean": "cc5df9c927763676e46bb0181622bea8ac508a1953f1a32ce9fd0cc36f7516de",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsDehomogenisationTwistedChartStatement.lean": "d9e3e05f92fc2ed720511728d579857b1fed1f76c4d24561cd7e49cf37ea027f",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsFiniteProjectiveCechComplexLineBundle.lean": "5c5017362fb9bcef4c5f38d0b8f07352cd7228f8411c7711bd95eb4e86715e0a",
-    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsFiniteProjectiveCechComplexLineBundleStatement.lean": "2e1cc7c7b90bcc9a8ac0cf4d3f8b5cce08c1666c38d6cf7820f3a2d66e294976",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsFiniteProjectiveComplexOfNoetherianModel.lean": "5359f86d711abb32b772c8cfdace30e9fc3998b8354651e2657f0237eac8f354",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsFiniteProjectiveComplexQuasiIso.lean": "24540250b4ba81759c49f05c52a839bfda8d23176492fa34323d40af29d8430b",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsGradedPresentationSaturating.lean": "6e8912e8fa8dc77ab484d7e08c7cf23e151d8ba5b9fd2ac996dbbbe950c70859",
@@ -226,9 +239,7 @@
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechCohomologyFinrank.lean": "df552ee96e6b0638bd6d881d1732a66343666ab7423c01895a7327226f3948c3",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechCohomologyFinrankStatement.lean": "9c44e3d97f86c50f01e3be0397f54a9f9921693f2e3b3c4a8e11ab1b2e35beba",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechFiniteVanishesOffOrigin.lean": "b6d5fd728e9ee8cd88496fc8975febdaac8f83cd9cd7f66cd40c8061c6849524",
-    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechFiniteVanishesOffOriginStatement.lean": "dc1e2a0934a2a8126708343d43b8df0ca74462071752026be4e88d23a70e4f87",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleFibreCechAcyclicOffOrigin.lean": "44f6e202ab4b821a61acd9d9546a00e9a30ac8a659e73741b2768a1d63980eb6",
-    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleFibreCechAcyclicOffOriginStatement.lean": "07a158c303ffb939fa39a0ae2d95872219c558c58d31e355e926886dd4cf4f3d",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/NonemptyBaseChangeGrCubeIso.lean": "1d6fd993c8452fc9cf95aee72d9767438686d7cbd68ce788a4b0b89dd6d9ad85",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/NonemptyHomLocSingletonEquivQuotSMulTop.lean": "146135e969cae13e75564daa494bfc4a7461f69d9ebd208395f298685f25fe75",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/OneLeFinrankSecM.lean": "379c54a15f954c08cf48ed5ff822fa41a3b4bf8c19c2d701aa44509a11287074",
@@ -238,7 +249,6 @@
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SecOnBasicOpenLocalization.lean": "ce34cf9e1a026662baa831eed9aa7d8b02c34849d6bcbdd6c3e2f6889c3d05c1",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SecOnFinitePresentationProjective.lean": "b1887c6acd7fdc5b18b123d67ab6d2d417fb7e6379622aaaa3291ed288de3ba6",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SectionsTranslationDifferenceEqZero.lean": "63bda5a6767103d374c3e7cc0ed0a59ecec760f2337a4099ed89b2b2404dc7cd",
-    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SectionsTranslationDifferenceEqZeroStatement.lean": "0cd5f7622445e0266ce2308bbe6303c69748121a512f03179255dfa6be66da79",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SerreVanishingH1Twist.lean": "5d1e26b7cb16a9f99d5e73089a311aacf8d8efae4dd416ef15cf19aaaea22112",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SerreVanishingH1TwistStatement.lean": "2092415624498220b4105a90e82a842456ac2aa7a50cec580fe98d36959ac187",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SpanLaurentMonomialEqHomLoc.lean": "d0c3d1ca99d1080df7c07283344b2b2d3492fe024d07ca077f280c675032a5a6",
@@ -251,7 +261,6 @@
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/TwistedSectionsLocaliseToCharts.lean": "bdfda2fa54eb3c81d00c30ced4bcfc535e01b83c9c0b0c45c955fc5e4ec936c5",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/TwistedSectionsLocaliseToChartsStatement.lean": "9c7531995d1c7aa59b5c5227cd1b1b0a5562a38e367470d572ff42ef442d22dc",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/VeryAmpleCompactQuasiSeparatedAffineCharts.lean": "7765ebfe6eb848691d0aa77ef13f14f06c3ba0fb9eaed3e5de73ea50b7770551",
-    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/VeryAmpleCompactQuasiSeparatedAffineChartsStatement.lean": "721415aa431bb5e11a7757e8c62390669965103b25c4897fabb9acf70323fd25",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/WeightAddLeOfMemSupportDividedContraction.lean": "99a07505e3a4dfeae5904e078af79e550fda83d22d3bb67d78f3973bfb197900",
     "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/XSmulMemWeightedHomogeneousSubmodule.lean": "99f6bbff21fb711f1fe29deaa7f607c2da0eda1a0b2d367b26c9588ea4566e69",
     "Development/AbelianVarietyTheory/Proofs/CovolumeBounds/DifferentiableOnOfTendstoLocallyUniformlyOn.lean": "c15e6bef828059d8e9d746a78ba56b5447545a3f4a0dd6ea5f5715dd9077eb87",

@@ -48,6 +48,103 @@
      (charPair h) (weil h) (GlobalTheory.weilIs_alternating_skew_natural g lift)
      (GlobalTheory.twisted_pow_translate (GlobalTheory.AbSquare.square_of_cube h).1 (mulA_props h))
  
+--- a/Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/NonemptyPerfectSectionsComplexOfSmoothProj.lean
++++ b/Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/NonemptyPerfectSectionsComplexOfSmoothProj.lean
+@@ -1,8 +1,8 @@
+ import Mathlib
+ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.VeryAmpleCompactQuasiSeparatedAffineChartsStatement
+-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsFiniteProjectiveCechComplexLineBundleStatement
++import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.VeryAmpleCompactQuasiSeparatedAffineCharts
++import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsFiniteProjectiveCechComplexLineBundle
+ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ThreeTermComplexOfProjectiveCechModelStatement
+ 
+ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
+@@ -17,8 +17,8 @@
+       Smooth f → IsProjBy f → ∀ M : LB X, M.IsLB → Nonempty (Perf f M) := by
+   intro R _ X f hf hp M hM
+   obtain ⟨H, hH, m, s, hs⟩ := hp
+-  obtain ⟨K, φ, hK⟩ := GlobalTheory.T.exists_finite_projective_cechComplex_lineBundle R X f H m s M hH hM hs hf
++  obtain ⟨K, φ, hK⟩ := GlobalTheory.Cohom.exists_finite_projective_complex_cechLB R X f H m s M hH hM hs hf
+   exact GlobalTheory.T.threeTermComplex_of_projective_cech_model R X f M (Fin (m + 1)) (fun i => nonzeroLocus (s i)) K φ hM hs.1
+-    (GlobalTheory.T.veryAmple_compact_quasiSeparated_affine_charts R X f H m s hH hs).2.2 hK
++    (GlobalTheory.VeryAmpleCharts.compact_quasiSeparated_isAffineOpen R X f H m s hH hs).2.2 hK
+ 
+ end GlobalTheory.AbLaw
+--- a/Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechFiniteVanishesOffOrigin.lean
++++ b/Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechFiniteVanishesOffOrigin.lean
+@@ -6,8 +6,8 @@
+ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
+ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.AbelianProjectiveBaseChange
+ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsSmulHomologyEqZeroOfAcyclicFibre
+-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechLBHomologyFiniteOfAffineCoverStatement
+-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MumfordBundleFibreCechAcyclicOffOriginStatement
++import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechLBHomologyFiniteOfAffineCover
++import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MumfordBundleFibreCechAcyclicOffOrigin
+ 
+ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry DirectSum TensorProduct
+ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
+@@ -47,13 +47,13 @@
+   have hI := isAffineOpen_biInf_of_isSeparated f hD
+   have hflat : ∀ p, Module.Flat R ((cechLB f ((translDiff P.A P.L (𝟙 P.A)).pull π) D).X p) :=
+     flat_cechLB_X f hM hI
+-  have hfin := GlobalTheory.T.finite_cechLB_homology_of_affine_cover R Y f _ κ D hM hsep hproj hD hc
++  have hfin := GlobalTheory.AbLaw.cechLB_homology_finite_of_affine_cover R Y f _ κ D hM hsep hproj hD hc
+   refine ⟨hN, hflat, hfin, fun χ h₁ h₂ => ?_⟩
+   refine exists_smul_homology_eq_zero_of_acyclic_fibre R K χ _ (Fintype.card κ)
+     (fun p hp => isZero_cechLB_X _ _ _ hp.le) hflat hfin ?_
+   have h' := IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom χ))
+   obtain ⟨w, hw⟩ := exists_iso_pull_pull hF π (pullback.fst f (Spec.map (CommRingCat.ofHom χ)))
+-  have hac := GlobalTheory.T.mumfordBundle_fibre_cech_acyclic_off_origin K P _ _ _ _ (h'.paste_horiz h) h₁ h₂ κ
++  have hac := GlobalTheory.MumfordFibre.fibre_acyclic K P _ _ _ _ (h'.paste_horiz h) h₁ h₂ κ
+     (fun i => pullback.fst f (Spec.map (CommRingCat.ofHom χ)) ⁻¹ᵁ D i)
+     (fun i => isAffineOpen_preimage_of_isPullback h' (hD i))
+     (by rw [← Scheme.Hom.preimage_iSup, hc]; rfl)
+--- a/Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleFibreCechAcyclicOffOrigin.lean
++++ b/Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleFibreCechAcyclicOffOrigin.lean
+@@ -6,8 +6,8 @@
+ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechLBPullIsoOfIsOpenImmersion
+ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.AbelianProjectiveBaseChange
+ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.TranslateDivAdditive
+-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechComplexAcyclicAdditiveLineBundleNoSectionsStatement
+-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.SectionsTranslationDifferenceEqZeroStatement
++import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechComplexAcyclicAdditiveLineBundleNoSections
++import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.SectionsTranslationDifferenceEqZero
+ 
+ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry DirectSum TensorProduct
+ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
+@@ -56,8 +56,8 @@
+   have he : e ≫ P.A.hom = f := hpb.w.trans (Category.comp_id _)
+   have hM := LB.isLB_linComb P.isLB (K := Fin 2)
+     ![(lift (toUnit P.A ≫ x) (𝟙 P.A) ≫ μ[P.A]).left, 𝟙 P.A.left] ![1, -1]
+-  have hac := GlobalTheory.T.cechComplex_acyclic_additiveLineBundle_noSections K P _ hM (GlobalTheory.TranslateAdditive.translate_div_additive K P x)
+-    (GlobalTheory.T.sections_translationDifference_eq_zero K P x hx) κ (fun i => inv e ⁻¹ᵁ D i) (fun i => (hD i).preimage_of_isIso _)
++  have hac := GlobalTheory.PicZeroVan.cechLB_acyclic_of_additive K P _ hM (GlobalTheory.TranslateAdditive.translate_div_additive K P x)
++    (GlobalTheory.sec_translDiff_eq_zero K P x hx) κ (fun i => inv e ⁻¹ᵁ D i) (fun i => (hD i).preimage_of_isIso _)
+     (by rw [← Scheme.Hom.preimage_iSup, hcov]; rfl)
+   obtain ⟨i₁⟩ := cechLB_pull_iso_of_isOpenImmersion K _ P.A.hom _ Y e κ (fun i => inv e ⁻¹ᵁ D i) hM
+     (fun i => by rw [Scheme.Hom.opensRange_of_isIso]; exact le_top)
+--- a/Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SubsingletonOfPoints.lean
++++ b/Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SubsingletonOfPoints.lean
+@@ -2,7 +2,7 @@
+ import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.IsScalarTowerOfAlgebraMapEq
+ import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.ExistsAwayFracOfMemHomLoc
+ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CubeTotalComplexAcyclicOfSlicesInductionOnCard
+-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MumfordBundleCechFiniteVanishesOffOriginStatement
++import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MumfordBundleCechFiniteVanishesOffOrigin
+ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.LengthBallQuotientEqSumMulFdeg
+ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry DirectSum TensorProduct
+ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
+@@ -33,7 +33,7 @@
+ 
+ theorem acyclic_away : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ P.A.left) (Y : Scheme.{0}) (π : Y ⟶ (P.A ⊗ P.A).left) (f : Y ⟶ Spec (CommRingCat.of R)), IsPullback π f (fst P.A P.A).left t → IsOpenImmersion t → (∀ p q, t p ≠ η[P.A].left q) → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB f ((translDiff P.A P.L (𝟙 P.A)).pull π) D).Acyclic := by
+   intro K _ _ P R _ t Y π f hpb ht hne κ _ _ D hD hcov p
+-  obtain ⟨-, -, -, h⟩ := GlobalTheory.T.mumfordBundle_cech_finite_vanishes_off_origin K P R t Y π f hpb ht κ D hD hcov
++  obtain ⟨-, -, -, h⟩ := GlobalTheory.MumfordSupport.cohomology_finite_and_vanishes_off_origin K P R t Y π f hpb ht κ D hD hcov
+   haveI := P.smoothDim
+   haveI : Smooth P.A.hom := SmoothOfRelativeDimension.smooth P.g _
+   rw [HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]
 --- a/Development/AbelianVarietyTheory/Proofs/UniformizationProofs/CyclicIdeal.lean
 +++ b/Development/AbelianVarietyTheory/Proofs/UniformizationProofs/CyclicIdeal.lean
 @@ -1,7 +1,6 @@
