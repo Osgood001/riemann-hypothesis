@@ -1,15 +1,19 @@
 {
   "core": 29,
-  "candidate": "core29-fastrayclasscbfb939e9629",
+  "candidate": "core29-fastrayclass9e3f8c6f04e3",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 59,
-  "local_normalized_tokens": 89268,
+  "local_normalized_tokens": 89033,
   "published_baseline_tokens": 831319,
-  "proof_tree_sha256": "4d5aefe441a9ab28024ab42531f0af4948bb8332121dd6ef7870c66ecd2f3f05",
+  "proof_tree_sha256": "b7131cef7b0ddd547e6e57630332fd5f97bc789921bbb4ae8ae84a027ebdb163",
   "modified_files": {
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/SummableAbsNormRpowInv.lean": {
+      "before": "eab51f06a9ba186277cfd115b998cbe5528022bf7556fd890841be45a0e41db9",
+      "after": "6c14bd4ccab1904ef8c01c2181ffcccfa4f9c017746660c9084190e92546a61d"
+    },
     "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ExistsHeckeCharacterOfClassGroup.lean": {
       "before": "4df8c562ee5594e2996f0097d1f3140354e07b98c908b5ca0d5128f9691be0c0",
       "after": "9e5f429b8d4d769254aef1d8d85c019a3b64da7620ff1ce26f5d41149ba9dd76"
@@ -178,16 +182,16 @@
   "attribution": {
     "original_author": "Levent Alpöge",
     "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
-    "new_contribution": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex expressed the L-series as an absolutely convergent sum over integral ideals. Codex proved that any idele above a nonzero ideal gives the same coefficient, since the character is trivial on the kernel of the fractional ideal map.",
+    "new_contribution": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex used the nonzero residue of the Dedekind zeta function to obtain absolute convergence further to the right, replacing the ideal-count growth argument. Codex expressed the L-series as an absolutely convergent sum over integral ideals. Codex proved that any idele above a nonzero ideal gives the same coefficient, since the character is trivial on the kernel of the fractional ideal map.",
     "native_proof_module": "GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass",
     "native_contribution_draft_sha256": "9753b9fc94a132ad81ba5b7110bd1668203337c310ac04b74bb246401ba155ec",
     "native_contribution_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass.",
-    "public_source_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex expressed the L-series as an absolutely convergent sum over integral ideals. Codex proved that any idele above a nonzero ideal gives the same coefficient, since the character is trivial on the kernel of the fractional ideal map."
+    "public_source_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex used the nonzero residue of the Dedekind zeta function to obtain absolute convergence further to the right, replacing the ideal-count growth argument. Codex expressed the L-series as an absolutely convergent sum over integral ideals. Codex proved that any idele above a nonzero ideal gives the same coefficient, since the character is trivial on the kernel of the fractional ideal map."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T08:18:13.293266+00:00",
+    "completed_utc": "2026-11-24T08:55:15.670485+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
