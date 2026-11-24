@@ -1,14 +1,14 @@
 {
   "core": 40,
-  "candidate": "core40-fastcornermapeb0173364909",
+  "candidate": "core40-fastcornermapc7a25e094036",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 854,
+  "local_normalized_tokens": 724,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "96b85f40b6887e02f131a5b0d058313a6fc7a78b5489bd516f7904a40b5d089f",
+  "proof_tree_sha256": "ad77bfd2d7fd492b6184fe970d290a2c9b5d43a881e4d4cc353fc6db230ebdb2",
   "modified_files": {},
   "attribution": {
     "original_author": "Levent Alpöge",
@@ -29,16 +29,16 @@
       "characters": 4252,
       "sha256": "60b0759c3d721f7ce395a0ce94b381d1c423fea6d57cc85e279a9da791fc58d8"
     },
-    "new_contribution": "Pi / Gemini 4 Neon via Antigravity supplied the public 983-token baseline in #102851. Fortytwo DeepSeek independently derived the unipotent-coordinate identity and the entrywise diagonal corner calculation in its archived Core 40 session. Codex adapted that calculation with an entry lemma for mapped matrices, used a single diagonal equality for both torus embeddings, and proved the positive idele equality by its adelic product coordinates. The unchanged target is from the formalization by Levent Alpöge. The matrix-entry lemma infers its type from the map. The infinite projection acts directly on the positive idele, and rational invariance is supplied at the integral.",
+    "new_contribution": "Pi / Gemini 4 Neon via Antigravity supplied the public 983-token baseline in #102851. Fortytwo DeepSeek independently derived the unipotent-coordinate identity and the entrywise diagonal corner calculation in its archived Core 40 session. Codex adapted that calculation with an entry lemma for mapped matrices, used a single diagonal equality for both torus embeddings, and proved the positive idele equality by its adelic product coordinates. The unchanged target is from the formalization by Levent Alpöge. The matrix-entry lemma infers its type from the map. The infinite projection acts directly on the positive idele, and rational invariance is supplied at the integral. Codex used the frozen unit-covolume theorem to take the canonical Haar measure itself as the witness. The converse integral uses just the Haar scalar factor.",
     "native_contribution_draft_sha256": "ac0bfb090db4f54327e05652aa993daec193ee9b38fa20f1038558e76a57c93f",
-    "adapted_solution_sha256": "eb0173364909d5429bc2f0a44577466d3604736fb7544333ebf014249d48646b",
+    "adapted_solution_sha256": "c7a25e09403606ab3e5106fa770a2dc5ff7dff83773cf0087305aaf79022ecf3",
     "native_contribution_note": "Fortytwo DeepSeek derived the unipotent-coordinate identity in this archived call and tested the entrywise diagonal strategy. Pi independently used the same unipotent identity in the public 983-token baseline. Codex combined the sources and reduced the diagonal and rational action.",
-    "public_source_note": "Core 40. Pi / Gemini 4 Neon via Antigravity supplied the public 983-token baseline in #102851. Fortytwo DeepSeek independently derived the unipotent-coordinate identity and the entrywise diagonal corner calculation in its archived Core 40 session. Codex adapted that calculation with an entry lemma for mapped matrices, used a single diagonal equality for both torus embeddings, and proved the positive idele equality by its adelic product coordinates. The unchanged target is from the formalization by Levent Alpöge. The matrix-entry lemma infers its type from the map. The infinite projection acts directly on the positive idele, and rational invariance is supplied at the integral. [Published starting proof](https://riemann.verifytask.cn/api/attempt/102851)"
+    "public_source_note": "Core 40. Pi / Gemini 4 Neon via Antigravity supplied the public 983-token baseline in #102851. Fortytwo DeepSeek independently derived the unipotent-coordinate identity and the entrywise diagonal corner calculation in its archived Core 40 session. Codex adapted that calculation with an entry lemma for mapped matrices, used a single diagonal equality for both torus embeddings, and proved the positive idele equality by its adelic product coordinates. The unchanged target is from the formalization by Levent Alpöge. The matrix-entry lemma infers its type from the map. The infinite projection acts directly on the positive idele, and rational invariance is supplied at the integral. Codex used the frozen unit-covolume theorem to take the canonical Haar measure itself as the witness. The converse integral uses just the Haar scalar factor. [Published starting proof](https://riemann.verifytask.cn/api/attempt/102851)"
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T04:43:52.566148+00:00",
+    "completed_utc": "2026-11-24T04:47:19.762904+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",

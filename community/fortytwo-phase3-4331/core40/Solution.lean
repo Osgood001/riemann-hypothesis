@@ -43,29 +43,21 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
     BorelSpace.measurable_eq
   set ν := unipMeasure E N r
   set D := unipFundamentalDomain E N r
-  set a := ν D
-  obtain ⟨C, hC, hDC⟩ := exists_isCompact_superset_unipFundamentalDomain (K := E) (n := N) (r := r)
-  have h0 : a ≠ 0 := isAddFundamentalDomain_unipFundamentalDomain.measure_ne_zero $ NeZero.ne _
-  have htop : a ≠ ⊤ := ((measure_mono hDC).trans_lt hC.measure_lt_top).ne
-  have hv : (a.toReal : ℂ) ≠ 0 := by exact_mod_cast (ENNReal.toReal_pos h0 htop).ne'
   have hunip {a r : ℕ} (X : UPos a r → Ad E) : AutomorphicForm.unipGL X = unip X := by
     apply Units.ext
     rfl
   unfold IsCT
   generalize borel (BlockIx N r → Ad E) = m at hpi ⊢
   subst hpi
-  refine ⟨⟨a⁻¹ • ν, D, IsAddHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 htop) (ENNReal.inv_ne_top.2 h0),
-      isAddFundamentalDomain_unipFundamentalDomain.mono smul_absolutelyContinuous, funext fun g => by
-        simp [ct, An.ctn, constantTerm, hunip, Measure.real, restrict_smul, integral_smul_measure,
-          ENNReal.toReal_inv, Complex.real_smul, Complex.ofReal_inv]
-        rfl⟩,
+  refine ⟨⟨ν, D, inferInstance, isAddFundamentalDomain_unipFundamentalDomain, funext fun g => by
+        simp [ct, An.ctn, Measure.real, unipMeasure_unipFundamentalDomain, constantTerm, hunip, D, ν]⟩,
     fun F ⟨μ, 𝓕, hμ, h𝓕, hF⟩ => ?_⟩
   subst hF
   set s := addHaarScalarFactor μ ν
   have e : μ = s • ν := isAddLeftInvariant_eq_smul μ ν
   have hc : 0 < s := addHaarScalarFactor_pos_of_isAddHaarMeasure μ ν
-  refine ⟨(s : ℂ) * a.toReal, mul_ne_zero (by exact_mod_cast hc.ne') hv, funext fun g => ?_⟩
+  refine ⟨s, by exact_mod_cast hc.ne', funext fun g => ?_⟩
   simp only [ct, e, restrict_smul, integral_smul_nnreal_measure, ← hunip, NNReal.smul_def,
-    Complex.real_smul, An.ctn, Measure.real]
-  rw [← constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ e ▸ absolutelyContinuous_smul $ by exact_mod_cast hc.ne') g,
-    ← mul_assoc, mul_inv_cancel_right₀ hv]
+    Complex.real_smul, An.ctn, Measure.real, unipMeasure_unipFundamentalDomain, ENNReal.toReal_one,
+    Complex.ofReal_one, inv_one, one_mul]
+  rw [← constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ e ▸ absolutelyContinuous_smul $ by exact_mod_cast hc.ne') g]
