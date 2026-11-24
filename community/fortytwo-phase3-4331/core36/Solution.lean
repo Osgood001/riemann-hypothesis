@@ -16,12 +16,12 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
     (∀ y ∈ lat hP (sgnRt H true), n • y ∈ span (𝓞 E) (range (x ∘ inl))) ∧
     ∀ y ∈ lat hP (sgnRt H false), n • y ∈ span (𝓞 E) (range (x ∘ inr)) := by
 
-  have sep := disjoint_def.mp $ disjoint_lat hP (show H.rt0 ≠ -H.rt0 by grind [H.sqrt_neg_disc_sq, H.d_mod, Nat.cast_eq_zero])
+  have := disjoint_def.mp $ disjoint_lat hP (show H.rt0 ≠ -H.rt0 by grind [H.sqrt_neg_disc_sq, H.d_mod, Nat.cast_eq_zero])
 
   simp_rw [range_eq, span_union, mem_sup] at hn
   have ha := span_le.mpr $ range_subset_iff.mpr hx.1
   have hb := span_le.mpr $ range_subset_iff.mpr hx.2
 
   refine ⟨?_, ?_, ?_⟩ <;> intro y <;> obtain ⟨a, h, b, k, e⟩ := hn y
-  all_goals try intro hy; have := smul_of_tower_mem _ n hy
+  all_goals try intro hy; have := nsmul_mem hy n
   all_goals grind [sgnRt, ha h, hb k, Submodule.add_mem_iff_left, add_comm]
