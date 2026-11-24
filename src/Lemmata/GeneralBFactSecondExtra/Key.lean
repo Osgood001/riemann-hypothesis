@@ -13,38 +13,25 @@ private lemma key {O : Type*} {Y : Type*} [CommRing O] [AddCommGroup Y] [Module 
     Module.length O (R ⧸ E.comap R.subtype) =
       Module.length O (R ⧸ S.comap R.subtype) + Module.length O (D ⧸ E.comap D.subtype) := by
   have hDR : D ≤ R := fun y hy => ((hD y).1 hy).1
-  have hES : E.comap R.subtype ≤ (S.comap R.subtype).comap LinearMap.id :=
-    fun x hx => ((hD x).1 (hE hx)).2
-  have hEE : E.comap D.subtype ≤ (E.comap R.subtype).comap (Submodule.inclusion hDR) :=
-    fun x hx => hx
-  let f := Submodule.mapQ (E.comap D.subtype) (E.comap R.subtype) (Submodule.inclusion hDR) hEE
-  let g := Submodule.mapQ (E.comap R.subtype) (S.comap R.subtype) LinearMap.id hES
+  have hDS : D.comap R.subtype = S.comap R.subtype := by
+    ext x
+    exact (hD x).trans (and_iff_right x.2)
+  have hES : E.comap R.subtype ≤ S.comap R.subtype := by
+    rw [← hDS]
+    exact Submodule.comap_mono hE
+  have hcomap : (E.comap R.subtype).comap (Submodule.inclusion hDR) = E.comap D.subtype := rfl
   rw [add_comm]
-  refine Module.length_eq_add_of_exact f g ?_ ?_ ?_
-  · refine (injective_iff_map_eq_zero f).2 ?_
-    intro x hx
-    obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
-    simp only [f, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hx ⊢
-    exact hx
-  · intro y
-    obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
-    exact ⟨Submodule.Quotient.mk y, rfl⟩
-  · intro y
-    obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
-    constructor
-    · intro hy
-      simp only [g, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hy
-      have hyD : (y : Y) ∈ D := (hD y).2 ⟨y.2, hy⟩
-      exact ⟨Submodule.Quotient.mk ⟨y, hyD⟩, rfl⟩
-    · rintro ⟨x, hx⟩
-      obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
-      rw [← hx]
-      simp only [f, g, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]
-      exact ((hD x).1 x.2).2
+  refine Module.length_eq_add_of_exact
+    ((E.comap D.subtype).mapQ (E.comap R.subtype) (Submodule.inclusion hDR) hcomap.ge)
+    (Submodule.factor hES) ?_ (Submodule.factor_surjective hES) ?_
+  · rw [← LinearMap.ker_eq_bot, Submodule.ker_mapQ, hcomap, Submodule.mkQ_map_self]
+  · rw [LinearMap.exact_iff, Submodule.range_mapQ, Submodule.ker_mapQ,
+      Submodule.range_inclusion, hDS, Submodule.comap_id]
 
 theorem goal1 :
   ∀ {O : Type u_1} {Y : Type u_2} [inst : CommRing.{u_1} O] [inst_1 : AddCommGroup.{u_2} Y]
-  [inst_2 : Module.{u_1, u_2} O Y] (R S D E : Submodule.{u_1, u_2} O Y),
+  [inst_2 : Module.{u_1, u_2} O Y]
+  (R S D E : @Submodule.{u_1, u_2} O Y inst.toCommSemiring.toSemiring inst_1.toAddCommMonoid inst_2),
   (∀ (y : Y),
       Iff (Membership.mem.{u_2, u_2} D y) (And (Membership.mem.{u_2, u_2} R y) (Membership.mem.{u_2, u_2} S y))) →
     LE.le.{u_2} E D →
