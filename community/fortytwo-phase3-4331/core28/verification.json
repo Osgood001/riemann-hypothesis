@@ -1,14 +1,14 @@
 {
   "core": 28,
-  "candidate": "core28-fastweightedforms31911a4dc6",
+  "candidate": "core28-fastduality697916fac1",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 153,
-  "local_normalized_tokens": 277239,
+  "local_normalized_tokens": 275300,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "5920ab32f4ce82f044ac69fb42fa89c7829731e1b762dedbd6c231387ef7bd56",
+  "proof_tree_sha256": "60687197264007b716e73e86c28d102abd27a1b2eec23a9b78181051f75412a4",
   "modified_files": {
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
       "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
@@ -48,7 +48,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsIntegralCc.lean": {
       "before": "4cd337eb6b66d51867d0e63df3790e9f2550f72cd64f4bd2212b0247f8b27b4c",
-      "after": "66aa70bff64fbb6821f2588683aff1d75f6be850962f6222c61d4ad4e4f5e8e3"
+      "after": "ea4e025cf237274e733c8372550d91eec2c1f51a3d965e21eef873b56bacc114"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/EmbeddingHermitianPairs.lean": {
       "before": "654f4fba35a98e499489ab4cbcbe0297b1e576d51a9aafa636e2bf76326c3514",
@@ -76,7 +76,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/HermLinApply.lean": {
       "before": "85f7b59e9cb2d1b22c7932f7a122416d3b6212c826bbf285b054819d7f40eb14",
-      "after": "df61a218d18f3029c2436825ff7fd0ac310f43968ab02285a63a2cb625b538ea"
+      "after": "dc84d9232c6d83c658639f27eff091ad2f3fb9a73c8f420e6bda2c0b2a63c8a0"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/KatoNormRelationTamePrime.lean": {
       "before": "97fa7d63014885f265aaae99b1b99ba92eae06dfa5dd8757003d1e720cc9cd51",
@@ -92,7 +92,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermitianPairingAlgebra.lean": {
       "before": "0f86ffab95077b6ce867bdbc1a407e2d1174d84455e8a51fe3e82f764bff8ec0",
-      "after": "e795966e72caf0bbb41e3905f5952eb77da18d2a2678a6dd58c63acd49bc9749"
+      "after": "fb8b5a1cbc915fb4829f1d84744c46ee88c9752d141832bcd280104da2463107"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermitianTraceFormVanishing.lean": {
       "before": "fdbfe5da990d4d464024f3ca36b67d4d84cd6ee45568f79ccf3804ae05c7f857",
@@ -104,7 +104,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LminorSubmatrixCastSucc.lean": {
       "before": "c1860d88b7ebb92cdfa72524bad79d69b4a6627f2fead7cd77e10a38924c78a8",
-      "after": "007f2ae58102670ab9baebbb86276e9b9fe5ac5820b2781acc17d3b52a0b4da0"
+      "after": "5b3a02e8550f593d297f268e57969f7feed7e7cc63cfb7027387424ab9a24346"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatMulVec.lean": {
       "before": "0c4c23cbd69f7697a9f299140033db8de3b1115ecee307fbca5e34ce9c3a3d1a",
@@ -112,7 +112,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpBasisExistence.lean": {
       "before": "212e81b4daaf54fbaeb710b31dd3b28241e7e34a9b4b73887c7e996b2d6fc9cc",
-      "after": "72e47090afe91506e4ed5ebcd69c7ac43aed6ba014a4e7ae86ebf20370d18295"
+      "after": "f4629f47e548428c6422bc8ac97ff5b64c80930721a398ac33ab25c546fa3b2e"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpComponentCombination.lean": {
       "before": "279f73e574038f0aa6695b9d57dccf0b247e9e5592fc3135c19298577befad74",
@@ -120,11 +120,11 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PositiveSpanMatrices.lean": {
       "before": "71c12c7d6ab35cd91d7116b0d5d06e6bac4281117d9649eaff917833378a3d36",
-      "after": "a31b084453345f9afd9b498592abc96c8ebf771dd7af0dae0a6d089873b5a565"
+      "after": "1cce51b283c68a696e168d907c625ca33d80c7cb6205eb3cda3c248012df3b0a"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealEmbeddingCharacters.lean": {
       "before": "906c8be7fe3a649b12c01ec6c2ee7227b4dfd2c007bb58fefe693a02fffa4687",
-      "after": "5c31d6dd7ccd691b81e9cd052bebec9ab40f3aafadb795ab59fc70d6975039d5"
+      "after": "26172da5382699226ef20925388a54b9c9f53b5116ba31000cf28086f882137f"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TraceIntegralBasis.lean": {
       "before": "4c4b15b6fa321f61357567fb6169d93d51d388f236876aa87989e07d65e3a617",
@@ -148,7 +148,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentOnHyperbolicComplement.lean": {
       "before": "28460692f30865da28ebb8cdaecff678708b9af78a4f8794b50bb0a234498e15",
-      "after": "189c94d8c88c63387fd13be6132018508f7a5fce5e4d72a379a61712deaf5a57"
+      "after": "61cf8278334ea539519613a91b66202884358f672215744bfb2ee411ae1fdf4a"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CuspCoefficientFlow.lean": {
       "before": "c60a3b46e44a0d6a46518da56a708017bb37b22c557983c80907107a0264136a",
@@ -180,7 +180,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpLatticeTransfer.lean": {
       "before": "b08b536dea8c0273095b3d4fd85f004e0b00e4b844393df17b773e3aef4f3c2d",
-      "after": "2e17c88e7d45a131760e8bb00518a48429c0ad52d62506a2721b631061971d4e"
+      "after": "6684cf5957a7156aca1abbdd0493848661f43c60c817c71dbd85425cff8e9249"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HolomorphicPeriodicityExtension.lean": {
       "before": "5b4a2ee0c32621aa03f0adf787e144f68b36e77e9eb0fdfda0b5b678ae08f6a7",
@@ -292,7 +292,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PosCoordNe.lean": {
       "before": "ded8a207a9cc3921a2fa61026c815f04fa8c0a3af340fa6ba17b516ce7380a3a",
-      "after": "417c609001f8304ce016cecf5d756f4a0cc50e07efb04f0ac0db2452131fc6d5"
+      "after": "eeddd8d9cadea2c69f1228e6ddb6e75559f62aa9691454ae311fb6604a0f8ede"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentVectorGroup.lean": {
       "before": "6854de6717e739a524ed0e2d18abde925a5b5876c53b37b3f2b0977a065207e8",
@@ -320,7 +320,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FinrankRieszBounds.lean": {
       "before": "f5b8269b1aee0965bd6072a277c42ed2f5d3ec733fa7983af10569214b129478",
-      "after": "9e8599431ba1acd09620641e96fd9ec025bdd73c53e4722e58148337ce1d3f94"
+      "after": "f1204ccd677bf08f44a6c7307a465f3254d4ca156fae5d61f331da70d71fe261"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UbasisAt.lean": {
       "before": "95a0bb50fe27b11a4793e59f0673b2cf0500c965f2bb20b95e830e0524dbe708",
@@ -336,7 +336,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpSpanRight.lean": {
       "before": "5ce3d8794ac2ea63c5d9433b4493b2effea521bca68afd57df1e1b141effe885",
-      "after": "a9daa4092541874c72bb424348939c786d378eb133986bd02c248731f58832a8"
+      "after": "3154bcf4ddfa6021f23c499b85a7009a827b4d708e88ddb05e0801757cb542fe"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ReducedLatticeShortBound.lean": {
       "before": "25853a470340945d012a3d46bd28136c33a969106764d6bd2a85ba173974f3e5",
@@ -368,7 +368,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscreteLatticeMinimum.lean": {
       "before": "6467e8aa2645d198410800e9b21077292421616f62be3822bc9855c391173cee",
-      "after": "585a6217851913c201a8f0f6a18e5dafbb56ccf373c8c2aee93ac35b7302b613"
+      "after": "9f0b43cfd3ea46e301e60ab22a16958c405ad027517bbdf7ac2cddbad93b0374"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PeriodLatticeCountable.lean": {
       "before": "00ee4ebe6490a6eb1607297f13243e29e9246474d5abeca9971da6cbb5b4f868",
@@ -416,11 +416,23 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/QuadraticCoefficientForms.lean": {
       "before": "23e6037609cfa0f786c21fd967155306953dbcff1ec1cee12e9c2e638669609d",
-      "after": "270b6faae7e2641fd5024577a7a65a703676dc8de3932d0d0f09d276e4caa8c3"
+      "after": "8633d6c0fff3a3151120c7ff7ff7917849933972a362e970def93393f8faf03d"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SpanColsMul.lean": {
       "before": "27f696eb5d923cf24b7b6682f0848608aafdb56f1af9fd61598a228aed589b71",
       "after": "707595f6af7dbf429118d4d63768c0d70073837d53a5196046b40b7ad3191cdf"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicCombinations.lean": {
+      "before": "01284413fc950bbc73650f3ef6781193434fa1b01413fe48c5cbec30429ea4c5",
+      "after": "6e71ff5c08739ff214a81fa779fbfd274d294cddcbd2628e727775beda41fd72"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FixedPointImaginarySpan.lean": {
+      "before": "9995020f76f22998df8508b8fbc145c52c5de4d257ad33650ec4b432962aa335",
+      "after": "8c5e75f6b13a399ae6ca7e3d8803ff035a1141b6023bffcf9c8d7904a1c39b28"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FinrankEqTwoMulHalfDegree.lean": {
+      "before": "cf1776fb062fac270870895a7fa6b3be15a53750fa53c4a62d697d453061737e",
+      "after": "4430e3a090d2d704c23b169e354013ba553f859cb2efb11efc4fb41347092b6a"
     }
   },
   "attribution": {
@@ -430,7 +442,7 @@
       "ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.GROWCountStatement": "e1c1816f9617b22a65d5da8fcff9f58bd8344496bee089b4e3b0d6cf503ac8a6"
     },
     "credit_detail": "Fortytwo supplied the parent proof edits. Codex revised the listed mathematical proof sources and checked the resulting proof.",
-    "new_contribution": "Original Lean formalization by Levent Alpöge. The unchanged FractionalSliceDomains proof is Fortytwo’s native edit. Codex contributed the following additional reductions. The pre-existing weighted first-slot pairing law directly supplies each lower-block rewrite. Use the same second-slot sum and conjugated scalar laws for the unitary matrix and its spanned vectors. Reuse the upstream Hermitian sum theorem with the same index universe and public argument order. Use the original global identity for embedding a Hermitian form into the complex field, replacing a duplicate expansion in coordinates. Use the original global identity for embedding a Hermitian form into the complex field, replacing a duplicate expansion in coordinates. Use the original global identity for embedding a Hermitian form into the complex field, replacing a duplicate expansion in coordinates. Use the original global identity for embedding a Hermitian form into the complex field, replacing a duplicate expansion in coordinates. Combine the weighted-sum reduction in the second argument. The existing matrix-product column identity gives the unipotent vector component. Use the matrix-product column identity directly when splitting the Gram calculation. Use openness of the Fourier domain directly for the neighborhood and parameter estimates. Apply additivity and conjugate homogeneity of the existing Hermitian form to each block directly, eliminating its local weighted-sum theorem. The orthonormal column argument uses the existing weighted finite-column pairing. Finite-set induction proves additivity in the other variable for arbitrary index universes. Use the signed Gram formula and the established finite-coordinate splitting theorem, removing two repeated derivations. Mathlib’s invertibility theorem for positive-definite matrices gives invertibility of the determinant and the inverse identity directly. State the existing finite sum splitting law with the named negative coordinate inclusion. Its values agree by definition and the block argument can share the public splitting lemma. The named negative-coordinate splitting theorem now matches the three block-matrix goals directly, eliminating their repeated expansions. The generic finite-coordinate splitting identity works for real norm squares, as well as for complex coordinates. Reuse the established positive and negative coordinate signs and Euclidean norm definiteness.",
+    "new_contribution": "Original Lean formalization by Levent Alpöge. The unchanged FractionalSliceDomains proof is Fortytwo’s native edit. Codex contributed the following additional reductions. The verifier’s kernel dependency graph and elaborated source reference graph both drop the second copy of the CM-conjugation product law. Apply the already-defined field-linear covector to the finite sum in one step. Use the original field-linear Hermitian covector for isotropic combinations. The lattice duality proof uses the original Hermitian conjugation identity directly and can omit its duplicate local statement. Finite linear independence identifies the coefficients of the two equal weighted period sums directly. The invertible complex frame spans all vectors at the selected place. Use that local determinant hypothesis to prove the signed orthonormal expansion, then specialize it to domain points. Compose finite linear-combination maps with an invertible coordinate matrix to preserve their ranges. The general signed Gram expansion proved upstream now supplies this matrix-frame formula directly. The transfer is the restriction of scalars of the coproduct of the coordinate synthesis map and the one-dimensional map along ξ. Its linearity moves lattice denominators through the coordinate sum directly. Use the trace decomposition’s existing orbit count to bound the rank of the real tangent space. The complex embeddings occur in conjugate pairs and the distinguished CM type picks exactly half of them. Use canonical coordinate synthesis for the linear covector and scale the already available Hermitian covector for the second functional. Reuse the existing covector associated to the first argument of the Hermitian form, including its linearity proofs. Reuse the existing covector associated to the first argument of the Hermitian form, including its linearity proofs. Use the proved preservation of two-vector independence by a complex embedding to rule out a zero orthogonal component. Positivity of the field half degree follows by counting its complex places. Reuse the injection from the CM type into its complex places to recover equality of two embeddings from equality on the conjugation-fixed field. A positive multiple of the norm detects the zero vector, giving injectivity of the majorant operator directly. Use the conjugate member of a split embedding pair as the representative of each missing complex place. Positivity follows from the retained nonemptiness proof for the same CM type. Read the real part of the matrix quadratic form directly from its positive-definite and positive-semidefinite dot product inequalities on conjugate coefficient vectors.",
     "shared_module_attribution": {
       "original_author": "Levent Alpöge",
       "inherited_native_module": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains",
@@ -451,7 +463,9 @@
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.DiscriminantTraceBounds",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.EmbeddingHermitianPairs",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ExponentialGrowthExclusion",
+        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FinrankEqTwoMulHalfDegree",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FinrankRieszBounds",
+        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FixedPointImaginarySpan",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowCoefficientBounds",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowCoefficientDecayHolds",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowIsotropicPairs",
@@ -482,6 +496,7 @@
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HolomorphicPeriodicityExtension",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IntegralTraceNormBounds",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsIntegralCc",
+        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicCombinations",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicIndexSums",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicOutsideLine",
         "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LatticeMinorExistence",
@@ -543,7 +558,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T02:51:48.637137+00:00",
+    "completed_utc": "2026-11-24T03:22:26.269146+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
