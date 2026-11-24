@@ -1,14 +1,14 @@
 {
   "core": 34,
-  "candidate": "core34-fastslicef11d2f2272",
+  "candidate": "core34-fastslice66e5b798f8",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 127,
-  "local_normalized_tokens": 106318,
+  "local_normalized_tokens": 106158,
   "published_baseline_tokens": 400204,
-  "proof_tree_sha256": "f46ec6c657aff75190e622f5e4054c11dd6a05e262bdfa5c8bdcfa31a53f0fab",
+  "proof_tree_sha256": "c0a99b4d61efe6d96684a4f869e675829432aa70733d7b9a8ca2359781afa72b",
   "modified_files": {
     "GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PDivCycleMul.lean": {
       "before": "7b44bb2bcc590eec8a8f5d98f60ece6da14a1bd5ef3746155ead419cab9fbace",
@@ -25,6 +25,10 @@
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/Assembly.lean": {
       "before": "65546131dcdc31380b13d727d919c2487603e2372b8792e5c30919dedf7b7013",
       "after": "879505c19d71a33c859342f12ce671bd2bb0b16c9cc9b1bef07245388418eee6"
+    },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/HilbEventuallyPolyQualified.lean": {
+      "before": "3b4bc3149597bde3b4e9330080222262d00b73c846e18cdbec021cc1b8b789a3",
+      "after": "4603c98fbe0a04df41f7130e307a99124f26b49c43007cf3317b6a11f653bb2d"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LengthSumLocalizations.lean": {
       "before": "bd85a7d81aa83c5d54e8a1d1a744ad7165b2305d03916fedc8ec070d99b8d6dc",
@@ -62,6 +66,10 @@
       "before": "0cecb3c9569821d15d47fd7ef6df25d25b15d441203385e7acbd44531a372ba0",
       "after": "957223277d5d23a08cf51e299471241d6e5950134860d7a0f100260d6e5de9a0"
     },
+    "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartHomog.lean": {
+      "before": "434835eae1c2f203955f30a5b4809a26e58a53164a60599decb8d59b36d5d345",
+      "after": "fe4d4bab4a413294af77bb64e028cd3c846bc3f2363a2e91cbebad1ccbcc4692"
+    },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartLocDim.lean": {
       "before": "cf8b713f5f9ca3464cfae712f2eedddc8e4b0d2546d4a0c960d17287feac0b42",
       "after": "61458d91423fdf69dd30f577b45293da72989ae83b18ca2262c00b5bfeeab5be"
@@ -84,7 +92,7 @@
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean": {
       "before": "ed3a729e65d80e69eeca0225865e79fc9bd95d869306ab17b5a757a023d555ea",
-      "after": "f746a8ac367a3f772eb709b44a5807fc7b8bf52fc4ecfce8fcba7d2d9b659635"
+      "after": "0c6724771ceb5aa049300a7e9dd2a67560692fc2a97e7e806f827f5596c658ab"
     },
     "GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDegZeroLocSeparate.lean": {
       "before": "4c9c0daee540563295eae49066df86c34158eb64f9dc80463eeb55a161c36f4c",
@@ -143,7 +151,7 @@
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T03:44:51.392959+00:00",
+    "completed_utc": "2026-11-24T03:54:53.843320+00:00",
     "permitted_axioms": [
       "propext",
       "Quot.sound",

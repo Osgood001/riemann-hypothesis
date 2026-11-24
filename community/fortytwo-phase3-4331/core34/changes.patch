@@ -713,6 +713,27 @@
 -theorem SplitRelDeg.full : SplitRelDeg.Statement.{u} := SplitRelDeg.proof
 -
  end GroundTheory.Heights₂.Heights.FieldNumbers
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/HilbEventuallyPolyQualified.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/HilbEventuallyPolyQualified.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+ set_option maxSynthPendingDepth 1
+@@ -59,12 +60,7 @@
+ theorem isMultiHomogIdeal_sup_span {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I)
+     {s : MRing ι F} {c : K → ℕ} (hs : IsMultiHomog s c) :
+     IsMultiHomogIdeal (I ⊔ Ideal.span {s}) := by
+-  rw [isMultiHomogIdeal_iff_isHomogeneous] at hI ⊢
+-  refine hI.sup (Ideal.homogeneous_span _ _ ?_)
+-  intro x hx
+-  rw [Set.mem_singleton_iff] at hx
+-  subst hx
+-  exact ⟨c, hs⟩
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PrimeFiltration.multiHomog_sup_span <;> assumption
+ 
+ theorem hilbFn_eq_zero_of_block {I : Ideal (MRing ι F)} (k : K)
+     (hk : ∀ i, (X ⟨k, i⟩ : MRing ι F) ∈ I) (m : K → ℤ) (hm : 1 ≤ m k) : hilbFn I m = 0 := by
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LengthSumLocalizations.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LengthSumLocalizations.lean
 @@ -15,10 +15,9 @@
@@ -1144,6 +1165,28 @@
  
  end HilbExactDivide
  
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartHomog.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartHomog.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PMChartLocDim
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsMChart
+ set_option maxSynthPendingDepth 1
+@@ -20,13 +21,7 @@
+ 
+ theorem chartMonomial_isMultiHomog (u : ∀ k, ι k) (c : K → ℕ) :
+     IsMultiHomog (chartMonomial u c : MRing ι F) c := by
+-  show IsWeightedHomogeneous (blockWeight ι) (∏ k, (X ⟨k, u k⟩ : MRing ι F) ^ c k) c
+-  have h := IsWeightedHomogeneous.prod (R := F) Finset.univ
+-    (fun k => (X ⟨k, u k⟩ : MRing ι F) ^ c k) (fun k => c k • blockWeight ι ⟨k, u k⟩)
+-    (w := blockWeight ι) (fun k _ => (isWeightedHomogeneous_X F (blockWeight ι) ⟨k, u k⟩).pow (c k))
+-  convert h using 1
+-  funext j
+-  simp [blockWeight, Finset.sum_apply, Pi.single_apply]
++  exact GroundTheory.Heights₂.Heights.FieldNumbers.MChartLocDim.chartMonomial_isMultiHomog u c
+ 
+ theorem finsuppProd_chartVar (u : ∀ k, ι k) (e : (Σ k, ι k) →₀ ℕ) :
+     (e.prod fun v n => (X ⟨v.1, u v.1⟩ : MRing ι F) ^ n) =
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartLocDim.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartLocDim.lean
 @@ -1,3 +1,4 @@
@@ -1427,14 +1470,15 @@
  
 --- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean
 +++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean
-@@ -1,5 +1,6 @@
+@@ -1,5 +1,7 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbExactDivide
  import Mathlib
  import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
 +
  set_option maxSynthPendingDepth 1
  
  namespace GroundTheory.Heights₂.Heights.FieldNumbers
-@@ -16,105 +17,34 @@
+@@ -16,116 +18,42 @@
  
  variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type u} [Field F]
  
@@ -1556,7 +1600,21 @@
  
  theorem component_mul_form {c : K → ℕ} {s : MRing ι F} (hs : IsMultiHomog s c)
      (t : MRing ι F) (b : K → ℕ) :
-@@ -151,8 +81,8 @@
+     weightedHomogeneousComponent (blockWeight ι) (b + c) (t * s) =
+       weightedHomogeneousComponent (blockWeight ι) b t * s := by
+-  have hs' : s ∈ weightedHomogeneousSubmodule F (blockWeight ι) c :=
+-    (mem_weightedHomogeneousSubmodule _ _ _ _).mpr hs
+-  have := DirectSum.coe_decompose_mul_add_of_right_mem
+-    (𝒜 := weightedHomogeneousSubmodule F (blockWeight ι)) (i := b) (a := t) hs'
+-  rw [← weightedDecomposition.decompose'_apply, ← weightedDecomposition.decompose'_apply]
+-  exact this
++  classical
++  have h : c ≤ b + c := fun i => Nat.le_add_left _ _
++  simpa [h] using (GroundTheory.Heights₂.Heights.FieldNumbers.HilbExactDivide.component_mul_form hs t (b + c))
+ 
+ omit [Fintype K] [DecidableEq K] in
+ theorem mem_colon_iff {J : Ideal (MRing ι F)} {s f : MRing ι F} :
+@@ -151,8 +79,8 @@
    obtain ⟨P, hP, hmax⟩ := set_has_maximal_iff_noetherian.mpr hnoeth 𝒮 hne
    obtain ⟨s, ⟨i, hsi⟩, hsJ, hPs⟩ := hP
    subst hPs
@@ -1567,7 +1625,7 @@
    have hmh := multiHomog_colon hJ hc
    have hcolon := isHomogeneous_of_multiHomog hmh
    have hprime : (J.colon (Ideal.span {s})).IsPrime := by
-@@ -183,7 +113,7 @@
+@@ -183,7 +111,7 @@
    refine multiHomog_of_isHomogeneous ((isHomogeneous_of_multiHomog hJ).sup ?_)
    refine Ideal.homogeneous_span _ _ ?_
    rintro x rfl
@@ -1576,7 +1634,7 @@
  
  end Lex
  
-@@ -191,111 +121,45 @@
+@@ -191,111 +119,45 @@
  
  variable {K : Type} {ι : K → Type} {F : Type u} [Field F]
  
