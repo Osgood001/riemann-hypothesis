@@ -1,0 +1,1367 @@
+--- a/Development/AbelianVarietyTheory/Proofs/DivisorProofs/EtaleHypercohomologyIsoOfInjectiveResolution.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DivisorProofs/EtaleHypercohomologyIsoOfInjectiveResolution.lean
+@@ -48,25 +48,5 @@
+   rw [h2, hg]
+   infer_instance
+ 
+-theorem hyper_iso_of_injective_resolution : ∀ (R : Type) [CommRing R] (M : Shv R) (C : Cx R) (ε : sgl M ⟶ C),
+-    C.IsStrictlyGE 0 → (∀ t, Injective (C.X t)) → QuasiIso ε → ∀ (K : Cx R) (n : ℤ),
+-    Nonempty (HK R K M n ≃+ CohomologyClass K C n) := by
+-  intro R _ M C ε hC hI hε K n
+-  haveI := hC
+-  haveI : ∀ t, Injective (C.X t) := hI
+-  haveI := hε
+-  haveI : C.IsKInjective := isKInjective_of_injective C 0
+-  haveI : (res R M).IsKInjective := (inferInstance : (injectiveResolution M).cochainComplex.IsKInjective)
+-  obtain ⟨u, hu⟩ := exists_quasiIso M C ε
+-  obtain ⟨e, -⟩ := (CochainComplex.IsKInjective.quasiIso_iff u).1 hu
+-  exact ⟨{ toFun := cpush K e.inv n
+-           invFun := cpush K e.hom n
+-           left_inv := fun x => by
+-             change cpush K e.hom n (cpush K e.inv n x) = x
+-             rw [← cpush_comp, cpush_homotopy K e.homotopyInvHomId, cpush_id]
+-           right_inv := fun y => by
+-             change cpush K e.inv n (cpush K e.hom n y) = y
+-             rw [← cpush_comp, cpush_homotopy K e.homotopyHomInvId, cpush_id]
+-           map_add' := map_add _ }⟩
+ 
+ end GlobalTheory.EtC.InjResCmp
+--- a/Development/AbelianVarietyTheory/Proofs/DivisorProofs/ExistsEtaleCocycleFirstChernClassTateTwist.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DivisorProofs/ExistsEtaleCocycleFirstChernClassTateTwist.lean
+@@ -220,11 +220,6 @@
+       rw [ha, ha, hs V _ _ ⟨ζ, rfl⟩, hs V _ _ ⟨ζ, rfl⟩]))
+   exact ⟨α, fun U x ζ => (hα U x).trans (hs U x _ ⟨ζ, rfl⟩)⟩
+ 
+-theorem exists_root {q : ℕ} (i : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) :
+-    ∃ α : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q i)) 0,
+-      ∀ (U : Scheme.{0}) (x : U ⟶ X), ev α.1 0 0 (by simp) U x = Sec.res x (resGen i ζ) :=
+-  exists_cocycle_zero (E := sch.obj X) (fun U (x : U ⟶ X) => Sec.res x (resGen i ζ)) (fun V U g x => res_comp g x _)
+-    (fun U (x : U ⟶ X) => by rw [← res_map, d_resGen, res_zero]) (fun U y => rfl)
+ 
+ abbrev umap {V U : Scheme.{0}} (g : V ⟶ U) : (Γ(U, ⊤))ˣ →* (Γ(V, ⊤))ˣ := Units.map g.appTop.hom.toMonoidHom
+ 
+@@ -234,8 +229,6 @@
+   rw [Scheme.Hom.comp_appTop]
+   rfl
+ 
+-theorem unit_res {q : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (h : IsUnit (q : Γ(U, ⊤))) : IsUnit (q : Γ(V, ⊤)) := by
+-  simpa using h.map g.appTop.hom
+ 
+ section Kum
+ variable {q : ℕ} {t : ∀ U : Scheme.{0}, (Γ(U, ⊤))ˣ → Sec ((res _ (tw q 1)).X 0) U}
+@@ -339,26 +332,6 @@
+       exact kum_two_eq ht (hq U x) (hv.trans hv'.symm) (hw.trans hw'.symm))
+   exact ⟨a, ha, fun U x v w hv hw => hs U x _ ⟨v, w, hv, hw, rfl⟩⟩
+ 
+-theorem exists_kum [NeZero q] (ht : IsKum q t) {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u : (Γ(X, ⊤))ˣ) :
+-    ∃ γ : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1,
+-    (∀ (U : Scheme.{0}) (x : U ⟶ X), ev γ.1 1 0 (by simp) U x = 0) ∧
+-    ∀ (U : Scheme.{0}) (x : U ⟶ X) (v : (Γ(U, ⊤))ˣ), v ^ q = Units.map x.appTop.hom.toMonoidHom u →
+-      ev γ.1 0 1 (by simp) U x = Sec.map ((res _ (tw q 1)).d 0 1) (t U v) := by
+-  obtain ⟨b, hb, hd, hv⟩ := exists_d_family ht (E := sch.obj X) (p := 0) (fun U (x : U ⟶ X) => unit_res x hX)
+-    (fun U (x : U ⟶ X) => umap x u) (fun V U g (x : U ⟶ X) => umap_comp g x u)
+-  obtain ⟨α, h₁, h₂⟩ := exists_single (I := res _ (tw q 1)) (n := 1) 0 1 (by simp) b hb
+-  refine ⟨Cocycle.mk α 2 rfl (δ_eq_zero (m := 2) rfl α (fun U x => ?_) (fun U p s t hs ht x => ?_)),
+-    fun U x => h₂ 1 0 _ U x one_ne_zero, fun U x v h => (h₁ U x).trans (hv U x v h)⟩
+-  · rw [h₁, hd]
+-  · rw [h₂ _ _ _ _ _ (Nat.succ_ne_zero p), smap_zero, zero_add]
+-    cases p with
+-    | zero =>
+-      obtain rfl : t = 1 := by omega
+-      have hf : b U (x.face 0) = b U (x.face 1) := rfl
+-      rw [Fin.sum_univ_two, h₁, h₁, hf]
+-      simp
+-    | succ p =>
+-      rw [Finset.sum_eq_zero fun i _ => by rw [h₂ _ _ _ _ _ (Nat.succ_ne_zero p), smul_zero], smul_zero]
+ 
+ end Kum
+ 
+@@ -507,27 +480,7 @@
+   exact pick_spec (P := fun c : Ht q E 0 0 => ∃ α : Cocycle _ _ 0, CohomologyClass.mk α = c ∧
+     ∀ (U : Scheme.{0}) (x : Sx E 0 U) (ζ : Prim q Γ(U, ⊤)), ev α.1 0 0 (by simp) U x = resGen 0 ζ) ⟨_, α, rfl, h⟩
+ 
+-theorem rootClass_spec {q : ℕ} (i : ℤ) {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) : ∃ α : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q i)) 0,
+-    CohomologyClass.mk α = rootClass i ζ ∧ ∀ (U : Scheme.{0}) (x : U ⟶ X), ev α.1 0 0 (by simp) U x = Sec.res x (resGen i ζ) := by
+-  obtain ⟨α, h⟩ := exists_root i ζ
+-  exact pick_spec (P := fun c : Ht q (sch.obj X) 0 i => ∃ α : Cocycle _ _ 0, CohomologyClass.mk α = c ∧
+-    ∀ (U : Scheme.{0}) (x : U ⟶ X), ev α.1 0 0 (by simp) U x = Sec.res x (resGen i ζ)) ⟨_, α, rfl, h⟩
+-
+-theorem kum_spec (q : ℕ) [NeZero q] {X : Scheme.{0}} (hX : IsUnit (q : Γ(X, ⊤))) (u : (Γ(X, ⊤))ˣ) :
+-    ∃ γ : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1, CohomologyClass.mk γ = kum q u ∧
+-    (∀ (U : Scheme.{0}) (x : U ⟶ X), ev γ.1 1 0 (by simp) U x = 0) ∧
+-    ∀ (U : Scheme.{0}) (x : U ⟶ X) (v : (Γ(U, ⊤))ˣ), v ^ q = Units.map x.appTop.hom.toMonoidHom u →
+-      ev γ.1 0 1 (by simp) U x = Sec.map ((res _ (tw q 1)).d 0 1) (kumT q U v) := by
+-  refine pick_spec (P := fun c : Ht q (sch.obj X) 1 1 => ∃ γ : Cocycle _ _ 1, CohomologyClass.mk γ = c ∧
+-    (∀ (U : Scheme.{0}) (x : U ⟶ X), ev γ.1 1 0 (by simp) U x = 0) ∧
+-    ∀ (U : Scheme.{0}) (x : U ⟶ X) (v : (Γ(U, ⊤))ˣ), v ^ q = Units.map x.appTop.hom.toMonoidHom u →
+-      ev γ.1 0 1 (by simp) U x = Sec.map ((res _ (tw q 1)).d 0 1) (kumT q U v)) ?_
+-  rcases kumT_cases q with h | h
+-  · obtain ⟨γ, hγ⟩ := exists_kum h hX u
+-    exact ⟨_, γ, rfl, hγ⟩
+-  · refine ⟨_, 0, rfl, fun U x => ev_zero (E := sch.obj X) _ _ _ _ _, fun U x v _ => (ev_zero (E := sch.obj X) _ _ _ _ _).trans ?_⟩
+-    rw [h]
+-    exact (smap_zero _).symm
++
+ 
+ theorem firstChernClassTateTwist_cocycle_representative (q : ℕ) [NeZero q] {E : Spc} (hE : Inv q E) (L : E ⟶ ofCat (glCat 1)) :
+     ∃ γ : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2, CohomologyClass.mk γ = c1 q L ∧
+--- a/Development/AbelianVarietyTheory/Proofs/DivisorProofs/ExistsIsTensorEtaleSheafComplexPairing.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DivisorProofs/ExistsIsTensorEtaleSheafComplexPairing.lean
+@@ -108,7 +108,6 @@
+ 
+ variable {R : Type} [CommRing R]
+ 
+-theorem smap_zero {F G : Shv R} {U : Scheme.{0}} (a : Sec F U) : Sec.map (0 : F ⟶ G) a = 0 := rfl
+ 
+ def D (I J : Cx R) (w : ℤ) : pre I J w ⟶ pre I J (w + 1) where
+   app U := ModuleCat.ofHom (dT I J U.unop w)
+--- a/Development/AbelianVarietyTheory/Proofs/DivisorProofs/GeneralLinearGroupDetMapFinOne.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DivisorProofs/GeneralLinearGroupDetMapFinOne.lean
+@@ -11,12 +11,7 @@
+ noncomputable section
+ namespace GlobalTheory.EtC.PicSpec
+ 
+-theorem sec_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
+-    Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) :=
+-  Eq.symm (NatTrans.naturality_apply φ.hom g.op x)
+ 
+-theorem sec_map_comp {R : Type} [CommRing R] {F G K : Shv R} (ψ : F ⟶ G) (φ : G ⟶ K) {U : Scheme.{0}} (x : Sec F U) :
+-    Sec.map φ (Sec.map ψ x) = Sec.map (ψ ≫ φ) x := rfl
+ 
+ theorem sec_eq_zero {R : Type} [CommRing R] {F : Shv R} (hF : IsZero F) {U : Scheme.{0}} (a : Sec F U) : a = 0 := by
+   have h := hF.eq_of_src (𝟙 F) 0
+@@ -26,23 +21,8 @@
+ theorem res_isZero {R : Type} [CommRing R] (F : Shv R) (s : ℤ) (hs : s < 0) : IsZero ((res R F).X s) :=
+   CochainComplex.isZero_of_isStrictlyGE ((injectiveResolution F).cochainComplex) 0 s hs
+ 
+-theorem resι_d {R : Type} [CommRing R] (F : Shv R) : resι R F ≫ (res R F).d 0 1 = 0 := by
+-  unfold resι res
+-  rw [Category.assoc, (injectiveResolution F).ι'.comm 0 1]
+-  simp
+ 
+-theorem unitSec_mul {U : Scheme.{0}} (u v : (Γ(U, ⊤))ˣ) : unitSec (u * v) = unitSec u + unitSec v := by
+-  unfold unitSec ofRings.sec
+-  exact map_add (((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)).hom)
+-    (show (Scheme.Γ ⋙ unitsF).obj (op U) from ULift.up (Additive.ofMul u)) (ULift.up (Additive.ofMul v))
+ 
+-theorem unitSec_res {V U : Scheme.{0}} (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
+-    Sec.res g (unitSec u) = unitSec (Units.map g.appTop.hom.toMonoidHom u) := by
+-  unfold unitSec ofRings.sec
+-  have := (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).naturality g.op
+-  have h2 := congrArg (fun f => f.hom (show (Scheme.Γ ⋙ unitsF).obj (op U) from ULift.up (Additive.ofMul u))) this
+-  simp only [ModuleCat.hom_comp, LinearMap.comp_apply] at h2
+-  exact h2.symm
+ 
+ theorem glMat_map {U V : Scheme.{0}} (g : V ⟶ U) (y : Sx (ofCat (glCat 1)) 1 U) :
+     glMat (((ofCat (glCat 1)).obj (op (SimplexCategory.mk 1))).map g.op y) =
+@@ -80,105 +60,18 @@
+   unfold lineUnit Sx.face
+   rw [face_nat, face_nat, face_nat, glMat_δ1, map_mul]
+ 
+-def fam {E : Spc} (L : E ⟶ ofCat (glCat 1)) :
+-    ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + 1 = s → ∀ U : Scheme.{0}, Sx E p U → Sec ((res ℤ Gm).X s) U
+-  | 1, s, h, _, x => Sec.map ((res ℤ Gm).XIsoOfEq (show (0 : ℤ) = s by omega)).hom
+-      (Sec.map (resι ℤ Gm) (unitSec (lineUnit L x)))
+-  | _, _, _, _, _ => 0
+ 
+-theorem fam_zero {E : Spc} (L : E ⟶ ofCat (glCat 1)) (s : ℤ) (h : -((0 : ℕ) : ℤ) + 1 = s) (U : Scheme.{0})
+-    (x : Sx E 0 U) : fam L 0 s h U x = 0 := rfl
+ 
+-theorem fam_add_two {E : Spc} (L : E ⟶ ofCat (glCat 1)) (p : ℕ) (s : ℤ) (h : -((p + 2 : ℕ) : ℤ) + 1 = s)
+-    (U : Scheme.{0}) (x : Sx E (p + 2) U) : fam L (p + 2) s h U x = 0 := rfl
+ 
+-theorem fam_one {E : Spc} (L : E ⟶ ofCat (glCat 1)) (h : -((1 : ℕ) : ℤ) + 1 = 0) (U : Scheme.{0})
+-    (x : Sx E 1 U) : fam L 1 0 h U x = Sec.map (resι ℤ Gm) (unitSec (lineUnit L x)) := by
+-  simp [fam, Sec.map]
+ 
+-theorem fam_nat {E : Spc} (L : E ⟶ ofCat (glCat 1)) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + 1 = s) (V U : Scheme.{0})
+-    (g : V ⟶ U) (x : Sx E p U) : Sec.res g (fam L p s h U x) = fam L p s h V (x.res g) := by
+-  match p with
+-  | 0 => simp [fam_zero]
+-  | 1 =>
+-    simp only [fam]
+-    rw [sec_map_res, sec_map_res, unitSec_res, lineUnit_res]
+-  | p + 2 => simp [fam_add_two]
+ 
+ theorem sec_map_zero {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} :
+     Sec.map φ (0 : Sec F U) = 0 := map_zero _
+ 
+-theorem sec_map_add {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
+-    Sec.map φ (a + b) = Sec.map φ a + Sec.map φ b := map_add _ _ _
+ 
+-theorem ev_zero_cochain {E : Spc} {I : Cx ℤ} {n : ℤ} (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0})
+-    (x : Sx E p U) : ev (0 : Cochain ((chains ℤ).obj E) I n) p s h U x = 0 :=
+-  ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties ℤ).1 0 0 p s h U x).2.2.1
+ 
+-theorem fam_cocycle {E : Spc} (L : E ⟶ ofCat (glCat 1)) (α : Cochain ((chains ℤ).obj E) (res ℤ Gm) 1)
+-    (hα : ∀ p s h U x, ev α p s h U x = fam L p s h U x) : δ 1 2 α = 0 := by
+-  apply (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties ℤ).2.2.1
+-  intro p t ht U x
+-  rw [ev_zero_cochain]
+-  match p with
+-  | 0 =>
+-    obtain rfl : t = 2 := by omega
+-    rw [(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values ℤ (by norm_num) α U).1 x, hα, fam_zero, sec_map_zero]
+-  | 1 =>
+-    obtain rfl : t = 1 := by omega
+-    have key : ev (δ 1 2 α) 1 1 ht U x = Sec.map ((res ℤ Gm).d 0 1) (ev α 1 0 (by simp) U x) +
+-        (2 : ℤ).negOnePow • ∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • ev α 0 1 (by simp) U (x.face i) :=
+-      (GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values ℤ (by norm_num) α U).2 0 0 1 (by simp) ht x
+-    rw [key]
+-    simp only [hα, fam_zero, fam_one, smul_zero, Finset.sum_const_zero, add_zero, sec_map_comp, resι_d]
+-    rfl
+-  | 2 =>
+-    obtain rfl : t = 0 := by omega
+-    have key : ev (δ 1 2 α) 2 0 ht U x = Sec.map ((res ℤ Gm).d (-1) 0) (ev α 2 (-1) (by simp) U x) +
+-        (2 : ℤ).negOnePow • ∑ i : Fin 3, (-1 : ℤ) ^ (i : ℕ) • ev α 1 0 (by simp) U (x.face i) :=
+-      (GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values ℤ (by norm_num) α U).2 1 (-1) 0 (by simp) ht x
+-    rw [key]
+-    simp only [hα, fam_one]
+-    rw [show fam L 2 (-1) (by simp) U x = 0 from rfl, sec_map_zero, zero_add, Fin.sum_univ_three, lineUnit_face,
+-      unitSec_mul, sec_map_add]
+-    simp only [Fin.val_zero, Fin.val_one, Fin.val_two]
+-    simp
+-  | p + 3 =>
+-    have key := (GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values ℤ (by norm_num) α U).2 (p + 2) (t - 1) t (by omega) ht x
+-    rw [key]
+-    simp only [hα, fam_add_two, sec_map_zero, zero_add, smul_zero, Finset.sum_const_zero]
+ 
+-theorem exists_cocycle {E : Spc} (L : E ⟶ ofCat (glCat 1)) :
+-    ∃ γ : Cocycle ((chains ℤ).obj E) (res ℤ Gm) 1, (∀ (U : Scheme.{0}) (x : Sx E 0 U), ev γ.1 0 1 (by simp) U x = 0) ∧
+-      ∀ (U : Scheme.{0}) (x : Sx E 1 U), ev γ.1 1 0 (by simp) U x = Sec.map (resι ℤ Gm) (unitSec (lineUnit L x)) := by
+-  obtain ⟨α, hα⟩ := GlobalTheory.T.exists_cochain_ev_eq_of_natural' ℤ (fam L) (fam_nat L)
+-  refine ⟨Cocycle.mk α 2 (by norm_num) (fam_cocycle L α hα), fun U x => ?_, fun U x => ?_⟩
+-  · exact (hα 0 1 _ U x).trans (fam_zero L 1 _ U x)
+-  · exact (hα 1 0 _ U x).trans (fam_one L _ U x)
+ 
+-theorem spec {E : Spc} (L : E ⟶ ofCat (glCat 1)) :
+-    ∃ γ : Cocycle ((chains ℤ).obj E) (res ℤ Gm) 1, CohomologyClass.mk γ = picClass L ∧
+-      (∀ (U : Scheme.{0}) (x : Sx E 0 U), ev γ.1 0 1 (by simp) U x = 0) ∧
+-      ∀ (U : Scheme.{0}) (x : Sx E 1 U), ev γ.1 1 0 (by simp) U x = Sec.map (resι ℤ Gm) (unitSec (lineUnit L x)) := by
+-  obtain ⟨γ, h0, h1⟩ := exists_cocycle L
+-  exact pick_spec (P := fun c => ∃ γ : Cocycle ((chains ℤ).obj E) (res ℤ Gm) 1, CohomologyClass.mk γ = c ∧
+-    (∀ (U : Scheme.{0}) (x : Sx E 0 U), ev γ.1 0 1 (by simp) U x = 0) ∧
+-    ∀ (U : Scheme.{0}) (x : Sx E 1 U), ev γ.1 1 0 (by simp) U x = Sec.map (resι ℤ Gm) (unitSec (lineUnit L x)))
+-    ⟨_, γ, rfl, h0, h1⟩
+ 
+-theorem cocycle_ext {E : Spc} (γ γ' : Cocycle ((chains ℤ).obj E) (res ℤ Gm) 1)
+-    (h0 : ∀ (U : Scheme.{0}) (x : Sx E 0 U), ev γ.1 0 1 (by simp) U x = ev γ'.1 0 1 (by simp) U x)
+-    (h1 : ∀ (U : Scheme.{0}) (x : Sx E 1 U), ev γ.1 1 0 (by simp) U x = ev γ'.1 1 0 (by simp) U x) : γ = γ' := by
+-  refine Cocycle.ext ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties ℤ).2.2.1 _ _ fun p s h U x => ?_)
+-  match p with
+-  | 0 =>
+-    obtain rfl : s = 1 := by omega
+-    exact h0 U x
+-  | 1 =>
+-    obtain rfl : s = 0 := by omega
+-    exact h1 U x
+-  | p + 2 =>
+-    have hZ := res_isZero Gm s (by omega)
+-    exact (sec_eq_zero hZ _).trans (sec_eq_zero hZ _).symm
+ 
+ end GlobalTheory.EtC.PicSpec
+--- a/Development/AbelianVarietyTheory/Proofs/DivisorProofs/SecEqZeroOfLoc.lean
++++ b/Development/AbelianVarietyTheory/Proofs/DivisorProofs/SecEqZeroOfLoc.lean
+@@ -49,8 +49,6 @@
+ theorem unitsP.map_mk {V U : Scheme.{0}} (g : V ⟶ U) (v : (Γ(U, ⊤))ˣ) :
+     unitsP.map g.op (unitsP.mk v) = unitsP.mk (Units.map g.appTop.hom.toMonoidHom v) := rfl
+ 
+-theorem tripP.get_map {q : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : (tripP q).obj (op U)) :
+-    tripP.get ((tripP q).map g.op x) = (tripP.get x).map g.appTop.hom := rfl
+ 
+ theorem smap_sum {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} {ι : Type} (c : ι →₀ ULift.{1} R) (f : ι → Sec F U) :
+     Sec.map φ (c.sum fun x r => r • f x) = c.sum fun x r => r • Sec.map φ (f x) := by
+@@ -69,8 +67,6 @@
+ theorem res_zero' {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) :
+     Sec.res g (0 : Sec F U) = 0 := map_zero _
+ 
+-theorem smap_zero {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} :
+-    Sec.map φ (0 : Sec F U) = 0 := map_zero _
+ 
+ theorem sec_eq_zero_of_loc {R : Type} [CommRing R] (F : Shv R) {U : Scheme.{0}} (s : Sec F U)
+     (h : Loc U fun _ g => Sec.res g s = 0) : s = 0 := by
+--- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/GeomPtGeomMap.lean
++++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/GeomPtGeomMap.lean
+@@ -32,9 +32,6 @@
+     Mor (probe H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n).L (modF (AcrEl M.P n)) (Int.castRingHom (Acris l)) :=
+   lcMor hN H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n
+ 
+-theorem eM_eq (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (n : ℕ) (i : ℤ) (j : ℕ)
+-    (x : Ht (l ^ n) (sch.obj (gb M)) j i) :
+-    eM hN H r M n i j x = (lcM hN H r M n).pull j ((pts H r M (𝟭 _) n).et i j x) := rfl
+ 
+ theorem cls_surj {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) (n : ℕ) (h : CH.H F n) :
+     ∃ (z : Cn F n) (hz : d F n z = 0), (cx F).cls z hz = h := by
+--- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/NatDegreeLgLe.lean
++++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/NatDegreeLgLe.lean
+@@ -174,7 +174,6 @@
+     rw [coeff_neg]
+     exact T.neg_mem (hp n)
+ 
+-theorem mem_TX {T : Subring S} {p : S[X]} : p ∈ TX T ↔ ∀ n, p.coeff n ∈ T := Iff.rfl
+ 
+ theorem dv_CX (k : ℕ) (x : S) : dv k (C x * X : S[X]) = C (dv k x) * X ^ k := by
+   unfold dv
+--- a/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/TotalComplexPairingSign.lean
++++ b/Development/AutomorphicSpectrum/Proofs/BlockDecomposition/TotalComplexPairingSign.lean
+@@ -10,136 +10,18 @@
+ 
+ variable {R : Type} [CommRing R] {K : DCx.{w} R} {L : DCx.{w'} R} {M : DCx.{w''} R}
+ 
+-theorem eq_sum_sgl (K : DCx.{w} R) {n : ℕ} {x : ∀ p q, K.X p q} (hx : x ∈ K.T n) :
+-    x = ∑ c ∈ Finset.HasAntidiagonal.antidiagonal n, K.sgl c.1 c.2 (x c.1 c.2) := by
+-  funext r s
+-  rw [Finset.sum_apply, Finset.sum_apply]
+-  by_cases h : r + s = n
+-  · rw [Finset.sum_eq_single (r, s)]
+-    · exact (K.sgl_self r s _).symm
+-    · rintro ⟨a, b⟩ _ hne
+-      refine K.sgl_ne _ ?_
+-      by_contra hc
+-      push_neg at hc
+-      exact hne (by rw [hc.1, hc.2])
+-    · intro hh
+-      exact absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 h) hh
+-  · rw [hx r s h, Finset.sum_eq_zero]
+-    rintro ⟨a, b⟩ hab
+-    have hab' : a + b = n := Finset.HasAntidiagonal.mem_antidiagonal.1 hab
+-    exact K.sgl_ne _ (by omega)
+ 
+-def cmp (K : DCx.{w} R) (p q : ℕ) : (∀ a b, K.X a b) →ₗ[R] K.X p q :=
+-  (LinearMap.proj (R := R) (φ := fun b => K.X p b) q).comp
+-    (LinearMap.proj (R := R) (φ := fun a => ∀ b, K.X a b) p)
+ 
+-theorem cmp_apply (K : DCx.{w} R) (p q : ℕ) (x : ∀ a b, K.X a b) : cmp K p q x = x p q := rfl
+ 
+-def gen (P : DPairing K L M) (p q p' q' : ℕ) : K.X p q →ₗ[R] L.X p' q' →ₗ[R] (∀ a b, M.X a b) :=
+-  (-1 : ℤ) ^ (q * p') • (P.μ (p := p) (q := q) (p' := p') (q' := q') rfl rfl).compr₂ (M.sgl (p + p') (q + q'))
+ 
+-theorem gen_apply (P : DPairing K L M) (p q p' q' : ℕ) (x : K.X p q) (y : L.X p' q') :
+-    gen P p q p' q' x y = (-1 : ℤ) ^ (q * p') • M.sgl (p + p') (q + q') (P.μ rfl rfl x y) := by
+-  simp [gen, LinearMap.smul_apply, LinearMap.compr₂_apply]
+ 
+-def fam (P : DPairing K L M) (a b : ℕ) :
+-    (∀ p q, K.X p q) →ₗ[R] (∀ p q, L.X p q) →ₗ[R] (∀ p q, M.X p q) :=
+-  ∑ c ∈ Finset.HasAntidiagonal.antidiagonal a, ∑ c' ∈ Finset.HasAntidiagonal.antidiagonal b,
+-    (gen P c.1 c.2 c'.1 c'.2).compl₁₂ (cmp K c.1 c.2) (cmp L c'.1 c'.2)
+ 
+-theorem fam_apply (P : DPairing K L M) (a b : ℕ) (x : ∀ p q, K.X p q) (y : ∀ p q, L.X p q) :
+-    fam P a b x y = ∑ c ∈ Finset.HasAntidiagonal.antidiagonal a, ∑ c' ∈ Finset.HasAntidiagonal.antidiagonal b,
+-      gen P c.1 c.2 c'.1 c'.2 (x c.1 c.2) (y c'.1 c'.2) := by
+-  simp only [fam, LinearMap.sum_apply, LinearMap.compl₁₂_apply, cmp_apply]
+ 
+-theorem fam_sgl (P : DPairing K L M) {p q p' q' a b : ℕ} (h : p + q = a) (h' : p' + q' = b)
+-    (x : K.X p q) (y : L.X p' q') :
+-    fam P a b (K.sgl p q x) (L.sgl p' q' y) = gen P p q p' q' x y := by
+-  rw [fam_apply, Finset.sum_eq_single (p, q), Finset.sum_eq_single (p', q')]
+-  · simp only [DCx.sgl_self]
+-  · rintro ⟨r, s⟩ _ hne
+-    have : L.sgl p' q' y r s = 0 := L.sgl_ne _ (by
+-      by_contra hc
+-      push_neg at hc
+-      exact hne (by rw [hc.1, hc.2]))
+-    simp only [this, map_zero]
+-  · intro hh
+-    exact absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 h') hh
+-  · rintro ⟨r, s⟩ _ hne
+-    have : K.sgl p q x r s = 0 := K.sgl_ne _ (by
+-      by_contra hc
+-      push_neg at hc
+-      exact hne (by rw [hc.1, hc.2]))
+-    simp only [this, map_zero, LinearMap.zero_apply, Finset.sum_const_zero]
+-  · intro hh
+-    exact absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 h) hh
+ 
+-theorem fam_mem (P : DPairing K L M) {a b n : ℕ} (h : a + b = n) (x : ∀ p q, K.X p q) (y : ∀ p q, L.X p q) :
+-    fam P a b x y ∈ M.T n := by
+-  rw [fam_apply]
+-  refine Submodule.sum_mem _ fun c hc => Submodule.sum_mem _ fun c' hc' => ?_
+-  have e := Finset.HasAntidiagonal.mem_antidiagonal.1 hc
+-  have e' := Finset.HasAntidiagonal.mem_antidiagonal.1 hc'
+-  rw [gen_apply]
+-  refine Submodule.smul_of_tower_mem _ _ ?_
+-  intro r s hrs
+-  exact M.sgl_ne _ (by omega)
+ 
+-theorem sgl_mu (P : DPairing K L M) {p q p' q' a b : ℕ} (h : p + p' = a) (h' : q + q' = b)
+-    (x : K.X p q) (y : L.X p' q') :
+-    M.sgl a b (P.μ h h' x y) = M.sgl (p + p') (q + q') (P.μ rfl rfl x y) := by
+-  subst h h'
+-  rfl
+ 
+-theorem sign_id {A : Type*} [AddCommGroup A] (e s t r : ℤ) (ht : t * t = 1) (A₁ A₂ A₃ A₄ : A) :
+-    e • (A₁ + s • A₂ + (s * r) • (A₃ + t • A₄)) =
+-      e • A₁ + (s * (e * r)) • A₃ + (s * t) • ((e * t) • A₂ + (r * e) • A₄) := by
+-  match_scalars
+-  · ring
+-  · linear_combination (-e * s) * ht
+-  · ring
+-  · linear_combination (-e * s * r) * ht + (e * s * r) * ht
+ 
+-theorem leib_gen (P : DPairing K L M) (p q p' q' : ℕ) (x : K.X p q) (y : L.X p' q') :
+-    M.D (gen P p q p' q' x y) =
+-      gen P (p + 1) q p' q' (K.dh p q x) y + (-1 : ℤ) ^ p • gen P p (q + 1) p' q' (K.dv p q x) y +
+-        (-1 : ℤ) ^ (p + q) • (gen P p q (p' + 1) q' x (L.dh p' q' y) +
+-          (-1 : ℤ) ^ p' • gen P p q p' (q' + 1) x (L.dv p' q' y)) := by
+-  have e₁ := sgl_mu P (p := p + 1) (p' := p') (a := p + p' + 1) (by omega) (rfl : q + q' = q + q') (K.dh p q x) y
+-  have e₂ := sgl_mu P (p := p) (p' := p' + 1) (a := p + p' + 1) (by omega) (rfl : q + q' = q + q') x (L.dh p' q' y)
+-  have e₃ := sgl_mu P (q := q + 1) (q' := q') (b := q + q' + 1) (rfl : p + p' = p + p') (by omega) (K.dv p q x) y
+-  have e₄ := sgl_mu P (q := q) (q' := q' + 1) (b := q + q' + 1) (rfl : p + p' = p + p') (by omega) x (L.dv p' q' y)
+-  simp only [gen_apply, map_zsmul, DCx.D_sgl, P.lh rfl rfl, P.lv rfl rfl, map_add, e₁, e₂, e₃, e₄]
+-  have ht : ((-1 : ℤ) ^ q) * ((-1 : ℤ) ^ q) = 1 := by
+-    rw [← mul_pow]; simp
+-  have s₁ : (-1 : ℤ) ^ (p + p') = (-1) ^ p * (-1) ^ p' := pow_add _ _ _
+-  have s₂ : (-1 : ℤ) ^ (p + q) = (-1) ^ p * (-1) ^ q := pow_add _ _ _
+-  have s₃ : (-1 : ℤ) ^ ((q + 1) * p') = (-1) ^ (q * p') * (-1) ^ p' := by rw [add_mul, one_mul, pow_add]
+-  have s₄ : (-1 : ℤ) ^ (q * (p' + 1)) = (-1) ^ (q * p') * (-1) ^ q := by rw [mul_add, mul_one, pow_add]
+-  rw [s₁, s₂, s₃, s₄, smul_smul, smul_smul]
+-  exact sign_id _ _ _ _ ht _ _ _ _
+ 
+-theorem leib_fam (P : DPairing K L M) {a b : ℕ} {x : ∀ p q, K.X p q} {y : ∀ p q, L.X p q}
+-    (hx : x ∈ K.T a) (hy : y ∈ L.T b) :
+-    M.D (fam P a b x y) = fam P (a + 1) b (K.D x) y + (-1 : ℤ) ^ a • fam P a (b + 1) x (L.D y) := by
+-  rw [eq_sum_sgl K hx, eq_sum_sgl L hy]
+-  simp only [map_sum, LinearMap.sum_apply, Finset.smul_sum, ← Finset.sum_add_distrib]
+-  refine Finset.sum_congr rfl fun c hc => Finset.sum_congr rfl fun c' hc' => ?_
+-  have e' := Finset.HasAntidiagonal.mem_antidiagonal.1 hc
+-  have e := Finset.HasAntidiagonal.mem_antidiagonal.1 hc'
+-  obtain ⟨p', q'⟩ := c
+-  obtain ⟨p, q⟩ := c'
+-  dsimp only at e e' ⊢
+-  rw [fam_sgl P e e', leib_gen, DCx.D_sgl, DCx.D_sgl]
+-  simp only [map_add, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply]
+-  rw [fam_sgl P (by omega) e', fam_sgl P (by omega) e', fam_sgl P e (by omega), fam_sgl P e (by omega), e]
+ 
+-def totP (P : DPairing K L M) : CxPairing K.tot L.tot M.tot where
+-  μ {a b n} h := LinearMap.mk₂ R (fun x y => ⟨fam P a b x.1 y.1, fam_mem P h _ _⟩)
+-    (fun x x' y => Subtype.ext (by simp))
+-    (fun r x y => Subtype.ext (by simp))
+-    (fun x y y' => Subtype.ext (by simp))
+-    (fun r x y => Subtype.ext (by simp))
+-  leib {a b n} h x y := Subtype.ext (leib_fam P x.2 y.2)
+ 
+ end GlobalTheory.CompanionTheory.TotPairing
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/AcrisKummerUnits/ConstantCoeffSurjective.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/AcrisKummerUnits/ConstantCoeffSurjective.lean
+@@ -95,9 +95,6 @@
+ 
+ def expand (c : ℕ →₀ A.A) : A.Acr 1 := c.sum fun k a => A.aTo1 a * A.dxi 1 (l * k)
+ 
+-def idemSum (n : ℕ) (e : ZMod (l ^ n) → A.A) : A.Wn n :=
+-  haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
+-  ∑ c : ZMod (l ^ n), (c.val : A.Wn n) * Ideal.Quotient.mk _ (WittVector.teichmuller l (e c))
+ 
+ def contR (Γ : Type) [TopologicalSpace Γ] : Subring (Γ → A.A) where
+   carrier := {f | ∀ k : ℕ, IsLocallyConstant fun γ => Ideal.Quotient.mk (Ideal.span {A.pi ^ k}) (f γ)}
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/AcrisKummerUnits/FiltrationSpanDividedPowers.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/AcrisKummerUnits/FiltrationSpanDividedPowers.lean
+@@ -1,71 +1,65 @@
+ import Mathlib
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectoidXiNonZeroDivisorStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SharpSurjectiveKerSpanStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UntiltAdicCompleteStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SharpMapCongruencePropertiesStatement
++import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.GaloisTwistIdentitySection
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompatibleRootsLiftToTiltStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TiltSequenceDeterminedBySharpStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CrystallineFiltrationMultiplicativeStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CrystallineGradedPiecesDescriptionStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CrystallineFiltrationSaturatedStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFiltrationGeneratedByDividedXiStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuotientMapsSurjectiveWithKernelsStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PrimePowAnnihilatorReductionStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExpansionSurjectiveAdditiveLinearStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExpansionEqZeroIffCoeffsMemStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctorialityOfPeriodRingMapsStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiltrationDividedPowerStructuresStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsDividedPowersOnReductionsStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsThetaKernelEqFiltrationOneStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralRingAdicCompletePrimeRegularStatement
+-import GroundTheory.PAdicHodge.TiltAlgClosed
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PeriodRingComparisonOfBaseStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorLiftKernelModPrimeStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TensorLiftSurjectiveKernelLevelStatement
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsPrimeRootValuationQuotientStatement
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUniqueIdempotentLiftTiltStatement
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitOfIsUnitSharpStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemFixedIffIdempotentSum
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentSumInjective
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentsOfPrimePowerRootOfUnityStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousFunctionsPerfectAdicRingStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistFrobeniusFiltrationCompatStatement
+-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.ConstantCoeffSurjective
+-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.GaloisTwistIdentitySection
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PerfectoidXiNonZeroDivisorStatement
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
+ set_option backward.isDefEq.respectTransparency false
+ open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison CrystallineSemistableComparison.PAlg
+ 
+ theorem CrystallineSemistableComparison.RL.u_tf : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), (l : A.U) ∈ nonZeroDivisors A.U ∧ A.xi ∈ nonZeroDivisors A.W ∧ ∀ (n : ℕ) (x : A.W), A.xi * x ∈ Ideal.span {(l : A.W) ^ n} → x ∈ Ideal.span {(l : A.W) ^ n} := GlobalTheory.T.perfectoid_xi_nonZeroDivisor
+ 
+-theorem CrystallineSemistableComparison.RL.u_mod : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), Function.Surjective A.aToU1 ∧ RingHom.ker A.aToU1 = Ideal.span {A.pi} := GlobalTheory.T.sharp_surjective_ker_span
+ 
+ theorem CrystallineSemistableComparison.RL.u_complete : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), IsAdicComplete (Ideal.span {(l : A.U)}) A.U := GlobalTheory.T.untilt_adic_complete
+ 
+-theorem CrystallineSemistableComparison.RL.sharp_cong : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), (∀ (a b : A.A) (n : ℕ), a - b ∈ Ideal.span {A.pi} → A.sharp (a ^ l ^ n) - A.sharp (b ^ l ^ n) ∈ Ideal.span {(l : A.U) ^ (n + 1)}) ∧ (∀ a b : A.A, A.sharp a - A.sharp b ∈ Ideal.span {(l : A.U)} ↔ a - b ∈ Ideal.span {A.pi}) ∧ ∀ e : A.A, IsIdempotentElem e → A.sharp (1 - e) = 1 - A.sharp e := GlobalTheory.T.sharp_map_congruence_properties
+ 
+ theorem CrystallineSemistableComparison.RL.tilt_ex : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (u : ℕ → A.U), (∀ i, u (i + 1) ^ l = u i) → ∃ a : ℕ → A.A, (∀ i, a (i + 1) ^ l = a i) ∧ ∀ i, A.sharp (a i) = u i := GlobalTheory.T.compatible_roots_lift_to_tilt
+ 
+-theorem CrystallineSemistableComparison.RL.tilt_inj : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (a b : ℕ → A.A), (∀ i, a (i + 1) ^ l = a i) → (∀ i, b (i + 1) ^ l = b i) → (∀ i, A.sharp (a i) = A.sharp (b i)) → a = b := GlobalTheory.T.tilt_sequence_determined_by_sharp
+ 
+-theorem CrystallineSemistableComparison.RL.filtration_multiplicative : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), A.Fil0 0 = ⊤ ∧ (∀ i j, A.dxi0 i * A.dxi0 j = ((i + j).choose i : A.Acr0) * A.dxi0 (i + j)) ∧ (∀ k, (k.factorial : A.Acr0) * A.dxi0 k = algebraMap A.W A.Acr0 A.xi ^ k) ∧ (∀ r s, A.Fil0 r * A.Fil0 s ≤ A.Fil0 (r + s)) ∧ (∀ n r, A.Fil n r = (A.Fil0 r).map (A.mkAcr n)) ∧ (∀ n, A.PFil n = A.PFil0.map (A.mkAcr n)) ∧ (∀ n, A.Fil n 0 = ⊤) ∧ ∀ n r s, A.Fil n r * A.Fil n s ≤ A.Fil n (r + s) := GlobalTheory.T.crystalline_filtration_multiplicative
+ 
+-theorem CrystallineSemistableComparison.RL.gr : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n r : ℕ), (∀ z ∈ A.Fil n r, ∃ w : A.W, z - A.toAcr n w * A.dxi n r ∈ A.Fil n (r + 1)) ∧ ∀ w : A.W, A.toAcr n w * A.dxi n r ∈ A.Fil n (r + 1) ↔ A.th w ∈ Ideal.span {(l : A.U) ^ n} := GlobalTheory.T.graded_filtration_generated_by_dividedXi
+ 
+-theorem CrystallineSemistableComparison.RL.uToQ : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ), Function.Surjective (A.uToQ n) ∧ RingHom.ker (A.uToQ n) = Ideal.span {(l : A.U) ^ n} ∧ Function.Surjective (A.uToPQ n) ∧ (n ≠ 0 → RingHom.ker (A.uToPQ n) = Ideal.span {(l : A.U)}) := GlobalTheory.T.quotient_maps_surjective_with_kernels
+ 
+-theorem CrystallineSemistableComparison.RL.expand_nat : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (B : PAlg l) (f : A ⟶ B), (∀ a, mapAcr f 1 (A.aTo1 a) = B.aTo1 (Hom.f f a)) ∧ (∀ c : ℕ →₀ A.A, mapAcr f 1 (A.expand c) = B.expand (c.mapRange (Hom.f f) (map_zero _))) ∧ (∀ a, mapU f (A.sharp a) = B.sharp (Hom.f f a)) ∧ (∀ a, mapUn f 1 (A.aToU1 a) = B.aToU1 (Hom.f f a)) ∧ (∀ n x, Ideal.Quotient.mk (B.Fil n 1) (mapAcr f n (A.toAcr n x)) = B.uToQ n (mapU f (A.th x))) ∧ ∀ x : Ainf l, algebraMap (Ainf l) (A.Acr 1) x = A.aTo1 (A.s (x.coeff 0)) := GlobalTheory.T.functoriality_of_period_ring_maps
+ 
+-theorem CrystallineSemistableComparison.RL.pdi : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), R.PdI (A.Fil0 1) ∧ R.PdI A.PFil0 ∧ ∀ x ∈ A.Fil0 1, ∀ (k : ℕ) (y : A.Acr0), (k.factorial : A.Acr0) * y = x ^ k → y ∈ A.Fil0 k := GlobalTheory.T.filtration_divided_power_structures
+ 
+-theorem CrystallineSemistableComparison.RL.pd_ex : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ), (∃ δ : DividedPowers (A.Fil n 1), R.IsPd (A.mkAcr n) (A.Fil0 1) δ) ∧ ∃ δ : DividedPowers (A.PFil n), R.IsPd (A.mkAcr n) A.PFil0 δ := GlobalTheory.T.exists_divided_powers_on_reductions
+ 
+-theorem CrystallineSemistableComparison.RL.theta_ex : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ), ∃ θ : A.Acr n →+* A.Un n, (∀ x : A.W, θ (A.toAcr n x) = Ideal.Quotient.mk _ (A.th x)) ∧ RingHom.ker θ = A.Fil n 1 := GlobalTheory.T.exists_theta_kernel_eq_filtration_one
+ 
+-theorem CrystallineSemistableComparison.RL.base_ex : ∀ {l : ℕ} [Fact l.Prime], IsAdicComplete (Ideal.span {pFlat l}) (Ob l) ∧ pFlat l ∈ nonZeroDivisors (Ob l) := GlobalTheory.T.integral_ring_adic_complete_prime_regular
+ 
+-theorem CrystallineSemistableComparison.RL.base_acr : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), IsBase l A → (Function.Bijective A.cris0 ∧ Function.Bijective A.oC) ∧ ∀ n, Function.Surjective (A.cris n) ∧ RingHom.ker (A.cris n) = Ideal.span {(l : Acris l) ^ n} := GlobalTheory.T.period_ring_comparison_of_base
+ 
+-theorem CrystallineSemistableComparison.RL.tens : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ), Function.Surjective (Algebra.TensorProduct.lift (IsScalarTower.toAlgHom (Ainf l) (Acris l) (A.Acr n)) (IsScalarTower.toAlgHom (Ainf l) A.W (A.Acr n)) (fun _ _ => Commute.all _ _)) ∧ ∀ z : TensorProduct (Ainf l) (Acris l) A.W, Algebra.TensorProduct.lift (IsScalarTower.toAlgHom (Ainf l) (Acris l) (A.Acr n)) (IsScalarTower.toAlgHom (Ainf l) A.W (A.Acr n)) (fun _ _ => Commute.all _ _) z = 0 ↔ z ∈ Ideal.span {(l : TensorProduct (Ainf l) (Acris l) A.W) ^ n} := GlobalTheory.T.tensor_lift_surjective_kernel_level
+ 
+ theorem CrystallineSemistableComparison.RL.untilt_valuation_mod_square : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), A.IsTest → ∃ ϖ : A.U, ϖ ^ l = (l : A.U) ∧ R.Val0 (A.U ⧸ Ideal.span {ϖ ^ 2}) ∧ R.Aic (A.U ⧸ Ideal.span {ϖ ^ 2}) := GlobalTheory.T.exists_prime_root_valuation_quotient
+ 
+@@ -73,8 +67,5 @@
+ 
+ theorem CrystallineSemistableComparison.RL.unit_lift : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (a : A.A), IsUnit (A.sharp a) → IsUnit a := GlobalTheory.T.isUnit_of_isUnit_sharp'
+ 
+-theorem CrystallineSemistableComparison.RL.mu_lc : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), R.Val (l : A.U) → ∀ (n : ℕ) (ζ : OC l), IsPrimitiveRoot ζ (l ^ n) → ∀ z : A.U, z ^ l ^ n = 1 → ∃ e : ZMod (l ^ n) → A.A, (haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩; CompleteOrthogonalIdempotents e) ∧ ∀ c, A.sharp (e c) * (z - A.oC ζ ^ c.val) = 0 := GlobalTheory.T.idempotents_of_prime_power_root_of_unity
+ 
+-theorem CrystallineSemistableComparison.RL.cont_ex : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (Γ : Type) [TopologicalSpace Γ], PerfectRing (A.contR Γ) l ∧ IsAdicComplete (Ideal.span {A.contC Γ A.pi}) (A.contR Γ) ∧ A.contC Γ A.pi ∈ nonZeroDivisors (A.contR Γ) ∧ ∀ (k : ℕ) (f : A.contR Γ), f ∈ Ideal.span {A.contC Γ A.pi ^ k} ↔ ∀ γ, f.1 γ ∈ Ideal.span {A.pi ^ k} := GlobalTheory.T.continuous_functions_perfect_adic_ring
+ 
+-theorem CrystallineSemistableComparison.RL.tw_fil : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (σ : Gal(PadicAlgCl l/K)), (∀ x ∈ (tw σ A).Fil0 1, (pdOk_twId σ A).acr0 x ∈ A.Fil0 1) ∧ (∀ x ∈ A.PFil0, A.pdOk_frob.acr0 x ∈ Ideal.span {(l : A.Acr0)}) ∧ (∀ n r, ∀ x ∈ (tw σ A).Fil n r, twAcr σ A n x ∈ A.Fil n r) ∧ (∀ n, Function.Bijective (twAcr σ A n)) ∧ ∀ n x, twAcr σ A n ((tw σ A).phi n x) = A.phi n (twAcr σ A n x) := GlobalTheory.T.twist_frobenius_filtration_compat
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/AcrisKummerUnits/Splits.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/AcrisKummerUnits/Splits.lean
+@@ -19,8 +19,6 @@
+ 
+ def Val0 : Prop := ∀ f g : S, ∃ e : S, IsIdempotentElem e ∧ e * f ∈ Ideal.span {g} ∧ (1 - e) * g ∈ Ideal.span {f}
+ 
+-def Val2 (ϖ : S) : Prop := ∀ f g : S, ∃ e : S, IsIdempotentElem e ∧ e * f ∈ Ideal.span {g, ϖ ^ 2} ∧
+-  (1 - e) * g ∈ Ideal.span {f, ϖ ^ 2}
+ 
+ def Dich (ϖ : S) : Prop := ∀ f g : S, (∃ N : ℕ, ϖ ^ N ∈ Ideal.span {f, g}) → g ∣ f ∨ f ∣ g
+ 
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/AcrisKummerUnits/TwistAcrisZeroPreservesFiltration.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/AcrisKummerUnits/TwistAcrisZeroPreservesFiltration.lean
+@@ -13,136 +13,42 @@
+ 
+ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
+ 
+-variable (l) in
+ 
+-def base : PAlg l where
+-  A := Ob l
+-  s := RingHom.id _
+-  perf := inferInstance
+-  compl := RL.base_ex.1
+-  tf := RL.base_ex.2
+-
+-theorem isBase_base : IsBase l (base l) := Function.bijective_id
+ 
+ variable (A : PAlg l)
+ 
+-def fromBase : base l ⟶ A := ⟨A.s, rfl⟩
+ 
+-theorem fromBase_comp {B : PAlg l} (f : A ⟶ B) : A.fromBase ≫ f = B.fromBase := Hom.ext (Hom.comm f)
+ 
+-def pdFil (n : ℕ) : DividedPowers (A.Fil n 1) := (RL.pd_ex A n).1.choose
+ 
+-theorem isPd_pdFil (n : ℕ) : R.IsPd (A.mkAcr n) (A.Fil0 1) (A.pdFil n) := (RL.pd_ex A n).1.choose_spec
+ 
+-def pdPFil (n : ℕ) : DividedPowers (A.PFil n) := (RL.pd_ex A n).2.choose
+ 
+-theorem isPd_pdPFil (n : ℕ) : R.IsPd (A.mkAcr n) A.PFil0 (A.pdPFil n) := (RL.pd_ex A n).2.choose_spec
+ 
+-def thetaN (n : ℕ) : A.Acr n →+* A.Un n := (RL.theta_ex A n).choose
+ 
+-theorem thetaN_toAcr (n : ℕ) (x : A.W) : A.thetaN n (A.toAcr n x) = Ideal.Quotient.mk _ (A.th x) :=
+-  (RL.theta_ex A n).choose_spec.1 x
+ 
+-theorem ker_thetaN (n : ℕ) : RingHom.ker (A.thetaN n) = A.Fil n 1 := (RL.theta_ex A n).choose_spec.2
+ 
+-theorem mkAcr_surjective (n : ℕ) : Function.Surjective (A.mkAcr n) := Ideal.Quotient.mk_surjective
+ 
+-theorem dpow_dxi (n k : ℕ) : (A.pdFil n).dpow k (A.dxi n 1) = A.dxi n k :=
+-  (A.isPd_pdFil n).2 k _ _ (Ideal.subset_span ⟨1, le_rfl, rfl⟩) (by
+-    have h1 := (RL.filtration_multiplicative A).2.2.1 1
+-    rw [Nat.factorial_one, Nat.cast_one, one_mul, pow_one] at h1
+-    rw [(RL.filtration_multiplicative A).2.2.1 k, h1])
+ 
+-theorem dpow_mem_fil (n k : ℕ) {x : A.Acr n} (hx : x ∈ A.Fil n 1) : (A.pdFil n).dpow k x ∈ A.Fil n k := by
+-  rcases Nat.eq_zero_or_pos k with rfl | hk
+-  · rw [(RL.filtration_multiplicative A).2.2.2.2.2.2.1]; trivial
+-  rw [(RL.filtration_multiplicative A).2.2.2.2.1] at hx
+-  obtain ⟨x, hx', rfl⟩ := (Ideal.mem_map_iff_of_surjective _ (A.mkAcr_surjective n)).1 hx
+-  obtain ⟨y, -, hy⟩ := (RL.pdi A).1 x hx' k hk.ne'
+-  rw [(A.isPd_pdFil n).2 k x y hx' hy, (RL.filtration_multiplicative A).2.2.2.2.1]
+-  exact Ideal.mem_map_of_mem _ ((RL.pdi A).2.2 x hx' k y hy)
+ 
+ variable {A} {B : PAlg l}
+ 
+-theorem PdOk.acris_positive_filtration {f : A.A →+* B.A} (h : PdOk f) (h1 : ∀ x ∈ A.Fil0 1, h.acr0 x ∈ B.PFil0) :
+-    ∀ x ∈ A.PFil0, h.acr0 x ∈ B.PFil0 := by
+-  have : A.PFil0 ≤ B.PFil0.comap h.acr0 := sup_le (by
+-    rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast]
+-    exact Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)) h1
+-  exact this
+ 
+-theorem twist_acrisZero_preserves_filtration (f : A ⟶ B) (r : ℕ) : ∀ x ∈ A.Fil0 r, (pdOk_hom f).acr0 x ∈ B.Fil0 r := by
+-  have : A.Fil0 r ≤ (B.Fil0 r).comap (pdOk_hom f).acr0 := by
+-    rw [Fil0, Ideal.span_le]
+-    rintro _ ⟨k, hk, rfl⟩
+-    exact Ideal.subset_span ⟨k, hk, Subtype.ext ((awayW_dpw (Hom.f f) k (A.isUnit_natCast k.factorial_ne_zero) A.xi).trans
+-      (congrArg (dpw k) (mapW_xi f)))⟩
+-  exact this
+ 
+-theorem dp_mapAcr (f : A ⟶ B) (n : ℕ) : DividedPowers.IsDPMorphism (A.pdFil n) (B.pdFil n) (mapAcr f n) :=
+-  RL.pd_mor _ _ _ _ _ _ (pdOk_hom f).acr0 _ (A.mkAcr_surjective n) (RL.pdi A).1 (A.isPd_pdFil n) (B.isPd_pdFil n)
+-    (twist_acrisZero_preserves_filtration f 1) fun _ => rfl
+ 
+-theorem dpP_mapAcr (f : A ⟶ B) (n : ℕ) : DividedPowers.IsDPMorphism (A.pdPFil n) (B.pdPFil n) (mapAcr f n) :=
+-  RL.pd_mor _ _ _ _ _ _ (pdOk_hom f).acr0 _ (A.mkAcr_surjective n) (RL.pdi A).2.1 (A.isPd_pdPFil n) (B.isPd_pdPFil n)
+-    ((pdOk_hom f).acris_positive_filtration fun x hx => Ideal.mem_sup_right (twist_acrisZero_preserves_filtration f 1 x hx)) fun _ => rfl
+ 
+ variable (A)
+ 
+-theorem dp_fil_pfil (n : ℕ) : DividedPowers.IsDPMorphism (A.pdFil n) (A.pdPFil n) (RingHom.id _) :=
+-  RL.pd_mor _ _ _ _ _ _ (RingHom.id _) _ (A.mkAcr_surjective n) (RL.pdi A).1 (A.isPd_pdFil n) (A.isPd_pdPFil n)
+-    (fun x hx => Ideal.mem_sup_right hx) fun _ => rfl
+ 
+-theorem dp_red {m n : ℕ} (h : n ≤ m) : DividedPowers.IsDPMorphism (A.pdFil m) (A.pdFil n) (A.red h) :=
+-  RL.pd_mor _ _ _ _ _ _ (RingHom.id _) _ (A.mkAcr_surjective m) (RL.pdi A).1 (A.isPd_pdFil m) (A.isPd_pdFil n)
+-    (fun x hx => hx) fun _ => rfl
+ 
+-theorem dpP_red {m n : ℕ} (h : n ≤ m) : DividedPowers.IsDPMorphism (A.pdPFil m) (A.pdPFil n) (A.red h) :=
+-  RL.pd_mor _ _ _ _ _ _ (RingHom.id _) _ (A.mkAcr_surjective m) (RL.pdi A).2.1 (A.isPd_pdPFil m) (A.isPd_pdPFil n)
+-    (fun x hx => hx) fun _ => rfl
+ 
+-theorem dpP_phi (n : ℕ) : DividedPowers.IsDPMorphism (A.pdPFil n) (A.pdPFil n) (A.phi n) :=
+-  RL.pd_mor _ _ _ _ _ _ A.pdOk_frob.acr0 _ (A.mkAcr_surjective n) (RL.pdi A).2.1 (A.isPd_pdPFil n) (A.isPd_pdPFil n)
+-    (fun x hx => Ideal.mem_sup_left ((RL.tw_fil A (1 : Gal(PadicAlgCl l/(⊥ : IntermediateField ℚ_[l] (PadicAlgCl l))))).2.1 x hx))
+-    fun _ => rfl
+ 
+-theorem dp_twAcr (σ : Gal(PadicAlgCl l/K)) (n : ℕ) :
+-    DividedPowers.IsDPMorphism ((tw σ A).pdFil n) (A.pdFil n) (twAcr σ A n) :=
+-  RL.pd_mor _ _ _ _ _ _ (pdOk_twId σ A).acr0 _ ((tw σ A).mkAcr_surjective n) (RL.pdi _).1 ((tw σ A).isPd_pdFil n)
+-    (A.isPd_pdFil n) (RL.tw_fil A σ).1 fun _ => rfl
+ 
+-theorem dpP_twAcr (σ : Gal(PadicAlgCl l/K)) (n : ℕ) :
+-    DividedPowers.IsDPMorphism ((tw σ A).pdPFil n) (A.pdPFil n) (twAcr σ A n) :=
+-  RL.pd_mor _ _ _ _ _ _ (pdOk_twId σ A).acr0 _ ((tw σ A).mkAcr_surjective n) (RL.pdi _).2.1 ((tw σ A).isPd_pdPFil n)
+-    (A.isPd_pdPFil n) ((pdOk_twId σ A).acris_positive_filtration fun x hx => Ideal.mem_sup_right ((RL.tw_fil A σ).1 x hx)) fun _ => rfl
+ 
+-def baseTw (σ : Gal(PadicAlgCl l/K)) : base l ⟶ tw σ (base l) := (tw σ (base l)).fromBase
+ 
+-def galBase (σ : Gal(PadicAlgCl l/K)) (n : ℕ) : (base l).Acr n →+* (base l).Acr n :=
+-  (twAcr σ (base l) n).comp (mapAcr (baseTw σ) n)
+ 
+-theorem galBase_cris (σ : Gal(PadicAlgCl l/K)) (n : ℕ) (a : Acris l) :
+-    galBase σ n ((base l).cris n a) = (base l).cris n (ACris.galCris σ a) := by
+-  rw [galBase, RingHom.comp_apply, mapAcr_cris, twAcr_cris]
+ 
+-theorem dp_galBase (σ : Gal(PadicAlgCl l/K)) (n : ℕ) :
+-    DividedPowers.IsDPMorphism ((base l).pdFil n) ((base l).pdFil n) (galBase σ n) :=
+-  DividedPowers.IsDPMorphism.comp _ (dp_twAcr _ σ n) (dp_mapAcr (baseTw σ) n)
+ 
+-theorem dpP_galBase (σ : Gal(PadicAlgCl l/K)) (n : ℕ) :
+-    DividedPowers.IsDPMorphism ((base l).pdPFil n) ((base l).pdPFil n) (galBase σ n) :=
+-  DividedPowers.IsDPMorphism.comp _ (dpP_twAcr _ σ n) (dpP_mapAcr (baseTw σ) n)
+ 
+-def cont (Γ : Type) [TopologicalSpace Γ] : PAlg l where
+-  A := A.contR Γ
+-  s := (A.contC Γ).comp A.s
+-  perf := (RL.cont_ex A Γ).1
+-  compl := (RL.cont_ex A Γ).2.1
+-  tf := (RL.cont_ex A Γ).2.2.1
+ 
+-def toCont (Γ : Type) [TopologicalSpace Γ] : A ⟶ A.cont Γ := ⟨A.contC Γ, rfl⟩
+ 
+-def evCont {Γ : Type} [TopologicalSpace Γ] (γ : Γ) : A.cont Γ ⟶ A :=
+-  ⟨(Pi.evalRingHom (fun _ => A.A) γ).comp (A.contR Γ).subtype, rfl⟩
+ 
+ end CrystallineSemistableComparison.PAlg
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/AcrisKummerUnits/ValuationSquareOfValuationMod.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/AcrisKummerUnits/ValuationSquareOfValuationMod.lean
+@@ -1,30 +1,46 @@
+ import Mathlib
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComparableQuotientOfValuation
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SurjectivePreservesClosednessComparabilityStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentLocalInductionStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MemIdempotentComplementIffStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentLocalizationDichotomyStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ValuationOfLocalDichotomyStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbsolutelyIntegrallyClosedOfNewtonStatement
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ComparableModSquareLocalizationStatement
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DichotomyOfComparableModSquareStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PolynomialRootsOfClosedQuotientStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbsolutelyClosedPolynomialSplitsStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbsolutelyClosedUnitCoefficientRootStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewtonPolygonSlopeExistenceStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewtonApproximationOfDichotomyStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewtonApproximationLocalToGlobalStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowerDivisibilityRootExtractionStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbsolutelyIntegrallyClosedOfNewtonStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EtaleSurjectiveLocalSectionStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IdempotentLocalizationDichotomyStatement
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralLocalizationAwayInRingStatement
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalizationPreservesClosednessStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewtonApproximationLocalToGlobalStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewtonApproximationOfDichotomyStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PowerDivisibilityRootExtractionStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionOrthogonalIdempotentSumStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionOverIdempotentPropertiesStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SurjectivePreservesClosednessComparabilityStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ValuationOfLocalDichotomyStatement
+ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ValuationPowerIffStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EtaleSurjectiveLocalSectionStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionOverIdempotentPropertiesStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SectionOrthogonalIdempotentSumStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerIdealTorsionFree
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerQuotientExistsStatement
+-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DividedPowerMorphismCompatibleStatement
+-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.Splits
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
+ open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison CrystallineSemistableComparison.R
+ 
+ theorem CrystallineSemistableComparison.RL.surj_pass : ∀ {S : Type} [CommRing S] {T : Type} [CommRing T] (φ : S →+* T), Function.Surjective φ → (Aic S → Aic T) ∧ (Val0 S → Val0 T) := GlobalTheory.T.surjective_preserves_closedness_comparability
+@@ -59,6 +75,4 @@
+ 
+ theorem CrystallineSemistableComparison.RL.sec_add : ∀ {S : Type} [CommRing S] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of S)) (e e' : S), IsIdempotentElem e → IsIdempotentElem e' → e * e' = 0 → SecOn f e → SecOn f e' → SecOn f (e + e') := GlobalTheory.T.section_orthogonal_idempotent_sum
+ 
+-theorem CrystallineSemistableComparison.RL.pd_quot : ∀ {S : Type} [CommRing S] , TF S → ∀ I J : Ideal S, PdI I → (∀ x ∈ I, x ∈ J → ∀ k : ℕ, k ≠ 0 → ∀ y : S, (k.factorial : S) * y = x ^ k → y ∈ J) → ∃ δ : DividedPowers (I.map (Ideal.Quotient.mk J)), IsPd (Ideal.Quotient.mk J) I δ := GlobalTheory.T.divided_power_quotient_exists
+ 
+-theorem CrystallineSemistableComparison.RL.pd_mor : ∀ {S : Type} [CommRing S] {S' E E' : Type} [CommRing S'] [CommRing E] [CommRing E'] (π : S →+* E) (π' : S' →+* E') (I : Ideal S) (I' : Ideal S') {J : Ideal E} {J' : Ideal E'} (δ : DividedPowers J) (δ' : DividedPowers J') (F₀ : S →+* S') (F : E →+* E'), Function.Surjective π → PdI I → IsPd π I δ → IsPd π' I' δ' → (∀ x ∈ I, F₀ x ∈ I') → (∀ x, F (π x) = π' (F₀ x)) → DividedPowers.IsDPMorphism δ δ' F := GlobalTheory.T.divided_power_morphism_compatible
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/CechPairings/CechAugRow.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/CechPairings/CechAugRow.lean
+@@ -14,112 +14,31 @@
+ 
+ variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
+ 
+-abbrev elF (E : C ⥤ Type t) (F : C ⥤ ModuleCat.{w} R) : E.Elements ⥤ ModuleCat.{w} R := CategoryOfElements.π E ⋙ F
+ 
+-def elMor {E' E : C ⥤ Type t} (p : E' ⟶ E) (F : C ⥤ ModuleCat.{w} R) : Mor (elF E F) (elF E' F) (RingHom.id R) where
+-  G := CategoryOfElements.map p
+-  τ _ := LinearMap.id
+-  nat _ _ := rfl
+ 
+-def elCoef (E : C ⥤ Type t) {F F' : C ⥤ ModuleCat.{w} R} (α : F ⟶ F') : Mor (elF E F) (elF E F') (RingHom.id R) :=
+-  Mor.ofNatTrans (Functor.whiskerLeft _ α)
+ 
+-def cech {E' E : C ⥤ Type t} (p : E' ⟶ E) (n : ℕ) : C ⥤ Type t where
+-  obj T := {y : Fin (n + 1) → E'.obj T // ∀ i j, p.app T (y i) = p.app T (y j)}
+-  map {T T'} φ := TypeCat.ofHom fun y => ⟨fun i => E'.map φ (y.1 i), fun i j => by
+-    rw [NatTrans.naturality_apply, NatTrans.naturality_apply, y.2 i j]⟩
+-  map_id T := by ext y i; simp
+-  map_comp φ ψ := by ext y i; simp
+ 
+-def cechMap {E' E : C ⥤ Type t} (p : E' ⟶ E) {m n : ℕ} (g : Fin (m + 1) → Fin (n + 1)) : cech p n ⟶ cech p m where
+-  app T := TypeCat.ofHom fun y => ⟨fun i => y.1 (g i), fun i j => y.2 _ _⟩
+ 
+-def cechAug {E' E : C ⥤ Type t} (p : E' ⟶ E) (n : ℕ) : cech p n ⟶ E where
+-  app T := TypeCat.ofHom fun y => p.app T (y.1 0)
+-  naturality T T' φ := by
+-    ext y
+-    exact NatTrans.naturality_apply p φ (y.1 0)
+ 
+-abbrev cechCos {E' E : C ⥤ Type t} (p : E' ⟶ E) (F : C ⥤ ModuleCat.{w} R) : CosCx.{max u v w t} R where
+-  K n := cx (elF (cech p n) F)
+-  δ n i := (elMor (cechMap p i.succAbove) F).hom
+-  rel n j i q x := by
+-    have e : (cechMap p (j.succAbove i).succAbove ≫ cechMap p (i.predAbove j).succAbove : cech p (n + 2) ⟶ cech p n) =
+-        cechMap p j.succAbove ≫ cechMap p i.succAbove := by
+-      ext T y
+-      exact Subtype.ext (funext fun k => congrArg y.1 (Fin.succAbove_succAbove_succAbove_predAbove j i k))
+-    exact congrArg (fun a => (elMor a F).pullC q x) e
+ 
+-def cechAugRow {E' E : C ⥤ Type t} (p : E' ⟶ E) (F : C ⥤ ModuleCat.{w} R) :
+-    DCx.AugRow (cx (elF E F)) (cechCos p F).dcx where
+-  ε q := (elMor (cechAug p 0) F).pullC q
+-  hε q x := by
+-    have e : (cechMap p (0 : Fin 2).succAbove ≫ cechAug p 0 : cech p 1 ⟶ E) = cechMap p (1 : Fin 2).succAbove ≫ cechAug p 0 := by
+-      ext T y
+-      exact y.2 _ _
+-    have e' : (elMor (cechMap p (0 : Fin 2).succAbove) F).pullC q ((elMor (cechAug p 0) F).pullC q x) =
+-        (elMor (cechMap p (1 : Fin 2).succAbove) F).pullC q ((elMor (cechAug p 0) F).pullC q x) :=
+-      congrArg (fun a => (elMor a F).pullC q x) e
+-    refine (Cos.d_apply ((cechCos p F).cos q) 0 _).trans ?_
+-    rw [Fin.sum_univ_two]
+-    change (-1 : ℤ) ^ 0 • (elMor (cechMap p (0 : Fin 2).succAbove) F).pullC q ((elMor (cechAug p 0) F).pullC q x) +
+-      (-1 : ℤ) ^ 1 • (elMor (cechMap p (1 : Fin 2).succAbove) F).pullC q ((elMor (cechAug p 0) F).pullC q x) = 0
+-    rw [e']; simp
+-  comm q x := (elMor (cechAug p 0) F).d_pullC q x
+ 
+ structure CxF (C : Type u) [Category.{v} C] (R : Type) [CommRing R] where
+   F : ℕ → (C ⥤ ModuleCat.{w} R)
+   δ : ∀ q, F q ⟶ F (q + 1)
+   dd : ∀ q T x, ((δ (q + 1)).app T).hom (((δ q).app T).hom x) = 0
+ 
+-abbrev CxF.obj (K : CxF.{w} C R) (T : C) : Cx.{w} R where
+-  X q := (K.F q).obj T
+-  d q := ((K.δ q).app T).hom
+-  dd q := K.dd q T
+ 
+-abbrev CxF.dcx (K : CxF.{w} C R) : DCx.{max u v w} R where
+-  X p q := Cn (K.F q) p
+-  dh p q := d (K.F q) p
+-  dv p q := (Mor.ofNatTrans (K.δ q)).pullC p
+-  hh p q := d_d (K.F q) p
+-  vv p q x := funext fun s => K.dd q _ _
+-  hv p q x := (Mor.ofNatTrans (K.δ q)).d_pullC p x
+ 
+-def CxF.augCol (K : CxF.{w} C R) {F : C ⥤ ModuleCat.{w} R} (η : F ⟶ K.F 0)
+-    (h : ∀ T x, ((K.δ 0).app T).hom ((η.app T).hom x) = 0) : DCx.AugCol (cx F) K.dcx where
+-  η p := (Mor.ofNatTrans η).pullC p
+-  hη p x := funext fun s => h _ _
+-  comm p x := (Mor.ofNatTrans η).d_pullC p x
+ 
+-def piF {ι : Type w} (F : ι → (C ⥤ ModuleCat.{w} R)) : C ⥤ ModuleCat.{w} R where
+-  obj T := ModuleCat.of R (∀ i, (F i).obj T)
+-  map φ := ModuleCat.ofHom (LinearMap.pi fun i => ((F i).map φ).hom.comp (LinearMap.proj i))
+-  map_id T := by ext x i; simp
+-  map_comp φ ψ := by ext x i; simp
+ 
+-def piProj {ι : Type w} (F : ι → (C ⥤ ModuleCat.{w} R)) (i : ι) : Mor (piF F) (F i) (RingHom.id R) where
+-  G := 𝟭 C
+-  τ T := LinearMap.proj (R := R) (φ := fun i => (F i).obj T) i
+-  nat _ _ := rfl
+ 
+ section Rel
+ 
+ variable {I : Type t} [Category.{t'} I] (π : C ⥤ I)
+ 
+-abbrev relF (F : C ⥤ ModuleCat.{w} R) (i : I) : StructuredArrow i π ⥤ ModuleCat.{w} R := StructuredArrow.proj i π ⋙ F
+ 
+-def relRes (F : C ⥤ ModuleCat.{w} R) {i i' : I} (a : i ⟶ i') : Mor (relF π F i) (relF π F i') (RingHom.id R) where
+-  G := StructuredArrow.map a
+-  τ _ := LinearMap.id
+-  nat _ _ := rfl
+ 
+-def relAug (F : C ⥤ ModuleCat.{w} R) (i : I) : Mor F (relF π F i) (RingHom.id R) := Mor.restrict F _
+ 
+-def relMor {R' : Type} [CommRing R'] {C' : Type u'} [Category.{v'} C'] {F : C ⥤ ModuleCat.{w} R} {F' : C' ⥤ ModuleCat.{w'} R'}
+-    {σ : R →+* R'} (m : Mor F F' σ) (i : I) : Mor (relF π F i) (relF (m.G ⋙ π) F' i) σ where
+-  G := StructuredArrow.pre i m.G π
+-  τ x := m.τ x.right
+-  nat φ x := m.nat φ.right x
+ 
+ end Rel
+ 
+@@ -127,10 +46,7 @@
+ 
+ variable {T : Type u'} [Category.{v'} T] (j : T ⥤ C)
+ 
+-abbrev pts (A : C) : T ⥤ Type v := j ⋙ coyoneda.obj (op A)
+ 
+-def ptsAug (F : C ⥤ ModuleCat.{w} R) (A : C) : F.obj A →ₗ[R] Cn (elF (pts j A) (j ⋙ F)) 0 :=
+-  aug (elF (pts j A) (j ⋙ F)) fun x => (F.map (show A ⟶ j.obj x.1 from x.2)).hom
+ 
+ structure Powers (A : C) where
+   B : C
+@@ -148,13 +64,7 @@
+   univ : ∀ n (t : T) (x : A ⟶ j.obj t) (y : Fin n → (B ⟶ j.obj t)), (∀ i, f ≫ y i = x) →
+     ∃! z : K n ⟶ j.obj t, a n ≫ z = x ∧ ∀ i, ι n i ≫ z = y i
+ 
+-def Powers.dK {A : C} (P : Powers j A) (F : C ⥤ ModuleCat.{w} R) (n : ℕ) : F.obj (P.K n) →ₗ[R] F.obj (P.K (n + 1)) :=
+-  ∑ k : Fin (n + 1), (-1 : ℤ) ^ (k : ℕ) • (F.map (P.δ n k)).hom
+ 
+-def Powers.Good {A : C} (P : Powers j A) (F : C ⥤ ModuleCat.{w} R) (I : Ideal R) : Prop :=
+-  (∀ (t : T) (x : A ⟶ j.obj t), ∃ y : P.B ⟶ j.obj t, P.f ≫ y = x) ∧
+-  (∀ s ∈ I, InjUpTo s (P.dK j F 0) ∧ ∀ n, ExactUpTo s (P.dK j F n) (P.dK j F (n + 1))) ∧
+-  ∃ (t₀ : T) (g : P.B ⟶ j.obj t₀), (∀ (t : T) (y : P.B ⟶ j.obj t), ∃! φ : t₀ ⟶ t, g ≫ j.map φ = y) ∧ Almost I (F.map g).hom
+ 
+ end Ind
+ 
+@@ -164,40 +74,11 @@
+ 
+ variable (R : Type) [CommRing R] (G : Type) [TopologicalSpace G] (M : Type w) [AddCommGroup M] [Module R M]
+ 
+-abbrev lcCos : Cos.{w} R where
+-  X n := LocallyConstant (Fin (n + 1) → G) M
+-  δ n i := LocallyConstant.comapₗ R ⟨fun x k => x (i.succAbove k), by fun_prop⟩
+-  rel n j i f := by
+-    ext x
+-    exact congrArg f (funext fun k => congrArg x (Fin.succAbove_succAbove_succAbove_predAbove j i k))
+ 
+ variable {R G M} [AddCommGroup G]
+ 
+-def eqv (ρ : Multiplicative G →* (M →ₗ[R] M)) (S : Set G) (n : ℕ) : Submodule R ((lcCos R G M).cx.X n) where
+-  carrier := {f | ∀ g ∈ S, ∀ x : Fin (n + 1) → G, f (fun i => g + x i) = ρ (Multiplicative.ofAdd g) (f x)}
+-  add_mem' {a b} ha hb g hg x := by
+-    change a _ + b _ = ρ _ (a x + b x)
+-    rw [ha g hg, hb g hg, map_add]
+-  zero_mem' g hg x := (map_zero _).symm
+-  smul_mem' c a ha g hg x := by
+-    change c • a _ = ρ _ (c • a x)
+-    rw [ha g hg, map_smul]
+ 
+-theorem lc_d_apply (n : ℕ) (f : LocallyConstant (Fin (n + 1) → G) M) (x : Fin (n + 2) → G) :
+-    (lcCos R G M).d n f x = ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • f fun k => x (i.succAbove k) := by
+-  rw [Cos.d_apply]
+-  exact (map_sum (LocallyConstant.evalₗ R x) _ _).trans (Finset.sum_congr rfl fun i _ => map_zsmul _ _ _)
+ 
+-abbrev grpCx (ρ : Multiplicative G →* (M →ₗ[R] M)) (S : Set G) : Cx.{w} R :=
+-  (lcCos R G M).cx.sub (eqv ρ S) fun n f hf g hg x => by
+-    change (lcCos R G M).d n f _ = ρ _ ((lcCos R G M).d n f x)
+-    rw [lc_d_apply, lc_d_apply, map_sum]
+-    exact Finset.sum_congr rfl fun i _ => by rw [map_zsmul]; exact congrArg _ (hf g hg _)
+ 
+-def grpAug (ρ : Multiplicative G →* (M →ₗ[R] M)) (S : Set G) (N : Submodule R M)
+-    (h : ∀ g ∈ S, ∀ x ∈ N, ρ (Multiplicative.ofAdd g) x = x) : N →ₗ[R] (grpCx ρ S).X 0 where
+-  toFun x := ⟨LocallyConstant.const _ x.1, fun g hg _ => (h g hg x.1 x.2).symm⟩
+-  map_add' _ _ := rfl
+-  map_smul' _ _ := rfl
+ 
+ end CrystallineSemistableComparison
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/CechPairings/CxPairing.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/CechPairings/CxPairing.lean
+@@ -24,32 +24,9 @@
+ 
+ def Cos.d (K : Cos.{w} R) (n : ℕ) : K.X n →ₗ[R] K.X (n + 1) := ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • K.δ n i
+ 
+-theorem Cos.d_apply (K : Cos.{w} R) (n : ℕ) (x : K.X n) : K.d n x = ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • K.δ n i x := by
+-  simp only [Cos.d, LinearMap.sum_apply, LinearMap.smul_apply]
+ 
+-theorem Cos.dd (K : Cos.{w} R) (n : ℕ) (x : K.X n) : K.d (n + 1) (K.d n x) = 0 := by
+-  rw [Cos.d_apply, Cos.d_apply]
+-  simp only [map_sum, map_zsmul, Finset.smul_sum, smul_smul]
+-  rw [← Fintype.sum_prod_type']
+-  refine Finset.sum_involution (fun p _ => (p.1.succAbove p.2, p.2.predAbove p.1)) ?_ ?_ ?_ ?_
+-  · rintro ⟨j, i⟩ _
+-    dsimp only
+-    rw [K.rel, GlobalTheory.CatH.DSq.sign_swap, neg_smul, add_neg_cancel]
+-  · rintro ⟨j, i⟩ _ _ h
+-    exact Fin.succAbove_ne j i (congrArg Prod.fst h)
+-  · intro _ _; exact Finset.mem_univ _
+-  · rintro ⟨j, i⟩ _
+-    simp only [Fin.succAbove_succAbove_predAbove, Fin.predAbove_predAbove_succAbove]
+ 
+-abbrev Cos.cx (K : Cos.{w} R) : Cx.{w} R where
+-  X := K.X
+-  d := K.d
+-  dd := K.dd
+ 
+-abbrev Cx.sub (K : Cx.{w} R) (S : ∀ n, Submodule R (K.X n)) (h : ∀ n x, x ∈ S n → K.d n x ∈ S (n + 1)) : Cx.{w} R where
+-  X n := S n
+-  d n := (K.d n).restrict (h n)
+-  dd n x := Subtype.ext (K.dd n x.1)
+ 
+ structure DCx (R : Type) [CommRing R] : Type (w + 1) where
+   X : ℕ → ℕ → Type w
+@@ -67,104 +44,21 @@
+ 
+ variable (K : DCx.{w} R)
+ 
+-abbrev row (q : ℕ) : Cx.{w} R where
+-  X p := K.X p q
+-  d p := K.dh p q
+-  dd p := K.hh p q
+ 
+-abbrev col (p : ℕ) : Cx.{w} R where
+-  X q := K.X p q
+-  d q := K.dv p q
+-  dd q := K.vv p q
+ 
+-abbrev flip : DCx.{w} R where
+-  X p q := K.X q p
+-  dh p q := K.dv q p
+-  dv p q := K.dh q p
+-  hh p q := K.vv q p
+-  vv p q := K.hh q p
+-  hv p q x := (K.hv q p x).symm
+ 
+-def Dh (x : ∀ p q, K.X p q) : ∀ p q, K.X p q
+-  | 0, _ => 0
+-  | p + 1, q => K.dh p q (x p q)
+ 
+-def Dv (x : ∀ p q, K.X p q) : ∀ p q, K.X p q
+-  | _, 0 => 0
+-  | p, q + 1 => K.dv p q (x p q)
+ 
+-def D : (∀ p q, K.X p q) →ₗ[R] (∀ p q, K.X p q) where
+-  toFun x p q := K.Dh x p q + (-1 : ℤ) ^ p • K.Dv x p q
+-  map_add' x y := by
+-    funext p q
+-    rcases p with _ | p <;> rcases q with _ | q <;> simp [Dh, Dv] <;> abel
+-  map_smul' r x := by
+-    funext p q
+-    rcases p with _ | p <;> rcases q with _ | q <;> simp [Dh, Dv, smul_comm r]
+ 
+-theorem D_apply (x : ∀ p q, K.X p q) (p q : ℕ) : K.D x p q = K.Dh x p q + (-1 : ℤ) ^ p • K.Dv x p q := rfl
+ 
+-theorem DD (x : ∀ p q, K.X p q) : K.D (K.D x) = 0 := by
+-  funext p q
+-  rcases p with _ | _ | p <;> rcases q with _ | _ | q <;>
+-    simp [D_apply, Dh, Dv, K.hh, K.vv, K.hv, pow_succ]
+ 
+-def T (n : ℕ) : Submodule R (∀ p q, K.X p q) where
+-  carrier := {x | ∀ p q, p + q ≠ n → x p q = 0}
+-  add_mem' ha hb p q h := by simp [ha p q h, hb p q h]
+-  zero_mem' p q h := rfl
+-  smul_mem' c x hx p q h := by simp [hx p q h]
+ 
+-theorem D_mem (n : ℕ) (x : ∀ p q, K.X p q) (hx : x ∈ K.T n) : K.D x ∈ K.T (n + 1) := by
+-  intro p q h
+-  rcases p with _ | p <;> rcases q with _ | q
+-  · simp [D_apply, Dh, Dv]
+-  · simp [D_apply, Dh, Dv, hx 0 q (by omega)]
+-  · simp [D_apply, Dh, Dv, hx p 0 (by omega)]
+-  · simp [D_apply, Dh, Dv, hx p (q + 1) (by omega), hx (p + 1) q (by omega)]
+ 
+-abbrev tot : Cx.{w} R where
+-  X n := K.T n
+-  d n := K.D.restrict (K.D_mem n)
+-  dd n x := Subtype.ext (K.DD x.1)
+ 
+-def sgl (p q : ℕ) : K.X p q →ₗ[R] (∀ p q, K.X p q) :=
+-  (LinearMap.single R (fun p => ∀ q, K.X p q) p).comp (LinearMap.single R (fun q => K.X p q) q)
+ 
+-theorem sgl_self (p q : ℕ) (x : K.X p q) : K.sgl p q x p q = x := by simp [sgl]
+ 
+-theorem sgl_ne {p q p' q' : ℕ} (x : K.X p q) (h : p' ≠ p ∨ q' ≠ q) : K.sgl p q x p' q' = 0 := by
+-  by_cases hp : p' = p
+-  · subst hp
+-    simp [sgl, Pi.single_eq_of_ne (h.resolve_left fun h => h rfl)]
+-  · simp [sgl, Pi.single_eq_of_ne hp]
+ 
+-theorem D_sgl (p q : ℕ) (x : K.X p q) :
+-    K.D (K.sgl p q x) = K.sgl (p + 1) q (K.dh p q x) + (-1 : ℤ) ^ p • K.sgl p (q + 1) (K.dv p q x) := by
+-  have h1 : K.Dh (K.sgl p q x) = K.sgl (p + 1) q (K.dh p q x) := by
+-    funext a b
+-    rcases a with _ | a
+-    · rw [K.sgl_ne _ (Or.inl (by omega))]; rfl
+-    · by_cases h : a = p ∧ b = q
+-      · obtain ⟨rfl, rfl⟩ := h
+-        simp only [Dh, sgl_self]
+-      · rw [K.sgl_ne _ (by omega)]; simp only [Dh]; rw [K.sgl_ne _ (by omega), map_zero]
+-  have h2 : K.Dv (K.sgl p q x) = K.sgl p (q + 1) (K.dv p q x) := by
+-    funext a b
+-    rcases b with _ | b
+-    · rw [K.sgl_ne _ (Or.inr (by omega))]; cases a <;> rfl
+-    · by_cases h : a = p ∧ b = q
+-      · obtain ⟨rfl, rfl⟩ := h
+-        simp only [Dv, sgl_self]
+-      · rw [K.sgl_ne _ (by omega)]; simp only [Dv]; rw [K.sgl_ne _ (by omega), map_zero]
+-  funext a b
+-  rw [D_apply, h1, h2, Pi.add_apply, Pi.add_apply, Pi.smul_apply, Pi.smul_apply]
+-  by_cases h : a = p
+-  · rw [h]
+-  · rw [K.sgl_ne (K.dv p q x) (Or.inl h), smul_zero, smul_zero]
+ 
+-def inj (p q n : ℕ) (h : p + q = n) : K.X p q →ₗ[R] K.tot.X n :=
+-  (K.sgl p q).codRestrict (K.T n) fun x a b hab => K.sgl_ne x (by omega)
+ 
+ structure AugRow (A : Cx.{w'} R) (K : DCx.{w} R) where
+   ε : ∀ q, A.X q →ₗ[R] K.X 0 q
+@@ -178,17 +72,7 @@
+ 
+ variable {K} {A : Cx.{w'} R}
+ 
+-def AugRow.edge (e : AugRow A K) : Cx.Hom A K.tot (RingHom.id R) where
+-  f n := (K.inj 0 n n (Nat.zero_add n)).comp (e.ε n)
+-  comm n x := Subtype.ext (by
+-    change K.D (K.sgl 0 n (e.ε n x)) = K.sgl 0 (n + 1) (e.ε (n + 1) (A.d n x))
+-    rw [D_sgl, e.hε, e.comm]; simp)
+ 
+-def AugCol.edge (e : AugCol A K) : Cx.Hom A K.tot (RingHom.id R) where
+-  f n := (K.inj n 0 n rfl).comp (e.η n)
+-  comm n x := Subtype.ext (by
+-    change K.D (K.sgl n 0 (e.η n x)) = K.sgl (n + 1) 0 (e.η (n + 1) (A.d n x))
+-    rw [D_sgl, e.hη, e.comm]; simp)
+ 
+ variable {R' : Type} [CommRing R']
+ 
+@@ -199,21 +83,8 @@
+ 
+ variable {L : DCx.{w'} R'} {σ : R →+* R'}
+ 
+-def Hom.row (φ : Hom K L σ) (q : ℕ) : Cx.Hom (K.row q) (L.row q) σ := ⟨fun p => φ.f p q, fun p => φ.ch p q⟩
+ 
+-def Hom.col (φ : Hom K L σ) (p : ℕ) : Cx.Hom (K.col p) (L.col p) σ := ⟨fun q => φ.f p q, fun q => φ.cv p q⟩
+ 
+-def Hom.tot (φ : Hom K L σ) : Cx.Hom K.tot L.tot σ where
+-  f n :=
+-    { toFun := fun x => ⟨fun p q => φ.f p q (x.1 p q), fun p q h => by
+-        change φ.f p q (x.1 p q) = 0
+-        rw [x.2 p q h, map_zero]⟩
+-      map_add' := fun x y => Subtype.ext (funext fun p => funext fun q => map_add (φ.f p q) _ _)
+-      map_smul' := fun c x => Subtype.ext (funext fun p => funext fun q => LinearMap.map_smulₛₗ (φ.f p q) _ _) }
+-  comm n x := Subtype.ext (by
+-    funext p q
+-    change L.D (fun p q => φ.f p q (x.1 p q)) p q = φ.f p q (K.D x.1 p q)
+-    rcases p with _ | p <;> rcases q with _ | q <;> simp [D_apply, Dh, Dv, φ.ch, φ.cv])
+ 
+ end DCx
+ 
+@@ -223,20 +94,7 @@
+   rel : ∀ n (j : Fin (n + 3)) (i : Fin (n + 2)) q x,
+     (δ (n + 1) (j.succAbove i)).f q ((δ n (i.predAbove j)).f q x) = (δ (n + 1) j).f q ((δ n i).f q x)
+ 
+-abbrev CosCx.cos (S : CosCx.{w} R) (q : ℕ) : Cos.{w} R where
+-  X p := (S.K p).X q
+-  δ p i := (S.δ p i).f q
+-  rel p j i := S.rel p j i q
+ 
+-abbrev CosCx.dcx (S : CosCx.{w} R) : DCx.{w} R where
+-  X p q := (S.K p).X q
+-  dh p q := (S.cos q).d p
+-  dv p q := (S.K p).d q
+-  hh p q := (S.cos q).dd p
+-  vv p q := (S.K p).dd q
+-  hv p q x := by
+-    rw [Cos.d_apply, Cos.d_apply, map_sum]
+-    exact Finset.sum_congr rfl fun i _ => by rw [map_zsmul]; exact congrArg _ ((S.δ p i).comm q x).symm
+ 
+ structure CxPairing (K : Cx.{w} R) (L : Cx.{w'} R) (M : Cx.{w''} R) where
+   μ : ∀ {p q n : ℕ}, p + q = n → (K.X p →ₗ[R] L.X q →ₗ[R] M.X n)
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/CechPairings/MapHComp.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/CechPairings/MapHComp.lean
+@@ -15,104 +15,9 @@
+   intro R R' _ _ σ K L φ n a ha hb
+   rfl
+ 
+-theorem CrystallineSemistableComparison.P.mapH_comp : ∀ {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {σ : R →+* R'} {σ' : R' →+* R''} {σ'' : R →+* R''} [RingHomCompTriple σ σ' σ''] {K : Cx.{w} R} {L : Cx.{w'} R'} {M : Cx.{w''} R''} (φ : Cx.Hom K L σ) (ψ : Cx.Hom L M σ') (n : ℕ) (x : K.H n), (φ.comp ψ : Cx.Hom K M σ'').mapH n x = ψ.mapH n (φ.mapH n x) := by
+-  intro R R' R'' _ _ _ σ σ' σ'' _ K L M φ ψ n x
+-  obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective _ x
+-  rfl
+ 
+-theorem CrystallineSemistableComparison.P.mapH_bij : ∀ {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K : Cx.{w} R} {L : Cx.{w'} R'} (φ : Cx.Hom K L σ), (∀ n, Function.Bijective (φ.f n)) → ∀ n, Function.Bijective (φ.mapH n) := by
+-  intro R R' _ _ σ K L φ h n
+-  have hz : ∀ a : K.X n, K.d n a = 0 → L.d n (φ.f n a) = 0 := fun a ha => by rw [φ.comm, ha, map_zero]
+-  constructor
+-  · rw [injective_iff_map_eq_zero]
+-    intro x hx
+-    obtain ⟨a, ha, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj K n).1 x
+-    rw [CrystallineSemistableComparison.P.mapH_cls φ n a ha (hz a ha), (CrystallineSemistableComparison.P.cls_surj L n).2.1] at hx
+-    rw [(CrystallineSemistableComparison.P.cls_surj K n).2.1]
+-    cases n with
+-    | zero =>
+-      have : φ.f 0 a = 0 := hx
+-      exact (h 0).1 (this.trans (map_zero _).symm)
+-    | succ n =>
+-      obtain ⟨y, hy⟩ := hx
+-      obtain ⟨b, rfl⟩ := (h n).2 y
+-      exact ⟨b, (h (n + 1)).1 (by rw [← φ.comm, hy])⟩
+-  · intro y
+-    obtain ⟨b, hb, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj L n).1 y
+-    obtain ⟨a, rfl⟩ := (h n).2 b
+-    exact ⟨K.cls a ((h (n + 1)).1 (by rw [← φ.comm, hb, map_zero])), rfl⟩
+ 
+-theorem CrystallineSemistableComparison.P.mapH_htpy : ∀ {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K : Cx.{w} R} {L : Cx.{w'} R'} (φ ψ : Cx.Hom K L σ) (h : ∀ n, K.X (n + 1) → L.X n), (∀ x, K.d 0 x = 0 → φ.f 0 x = ψ.f 0 x) → (∀ n x, K.d (n + 1) x = 0 → φ.f (n + 1) x - ψ.f (n + 1) x = L.d n (h n x)) → ∀ n x, φ.mapH n x = ψ.mapH n x := by
+-  intro R R' _ _ σ K L φ ψ h h0 h1 n x
+-  obtain ⟨a, ha, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj K n).1 x
+-  rw [CrystallineSemistableComparison.P.mapH_cls φ n a ha (by rw [φ.comm, ha, map_zero]), CrystallineSemistableComparison.P.mapH_cls ψ n a ha (by rw [ψ.comm, ha, map_zero]),
+-    (CrystallineSemistableComparison.P.cls_surj L n).2.2.1]
+-  cases n with
+-  | zero => rw [h0 a ha, sub_self]; exact Submodule.zero_mem _
+-  | succ n => exact ⟨h n a, (h1 n a ha).symm⟩
+ 
+-theorem CrystallineSemistableComparison.P.upTo_alg : ∀ {R : Type} [CommRing R] {M : Type w} {N : Type w'} {P : Type w''} [AddCommGroup M] [AddCommGroup N] [AddCommGroup P] [Module R M] [Module R N] [Module R P] (f : M →ₗ[R] N) (g : N →ₗ[R] P) (s s' : R), (UpTo s f → UpTo s' g → UpTo (s * s') (g ∘ₗ f)) ∧ (UpTo s f → UpTo s' (g ∘ₗ f) → UpTo (s * s') g) ∧ (UpTo s g → UpTo s' (g ∘ₗ f) → UpTo (s * s') f) ∧ (UpTo s f → UpTo (s * s') f) ∧ (UpTo (1 : R) f ↔ Function.Bijective f) := by
+-  intro R _ M N P _ _ _ _ _ _ f g s s'
+-  refine ⟨fun hf hg => ⟨fun x hx => ?_, fun z => ?_⟩, fun hf hg => ⟨fun y hy => ?_, fun z => ?_⟩,
+-    fun hg hf => ⟨fun x hx => ?_, fun y => ?_⟩, fun hf => ⟨fun x hx => ?_, fun y => ?_⟩, ⟨fun h => ⟨?_, fun y => ?_⟩, fun h => ⟨fun x hx => ?_, fun y => ?_⟩⟩⟩
+-  · rw [mul_smul]
+-    exact hf.1 _ (by rw [map_smul]; exact hg.1 _ hx)
+-  · obtain ⟨y, hy⟩ := hg.2 z
+-    obtain ⟨x, hx⟩ := hf.2 y
+-    exact ⟨x, by rw [LinearMap.comp_apply, hx, map_smul, hy, mul_smul]⟩
+-  · obtain ⟨x, hx⟩ := hf.2 y
+-    have := hg.1 x (by rw [LinearMap.comp_apply, hx, map_smul, hy, smul_zero])
+-    rw [mul_comm, mul_smul, ← hx, ← map_smul, this, map_zero]
+-  · obtain ⟨x, hx⟩ := hg.2 z
+-    exact ⟨s • f x, by rw [map_smul, mul_smul]; exact congrArg _ hx⟩
+-  · rw [mul_smul, hf.1 x (by rw [LinearMap.comp_apply, hx, map_zero]), smul_zero]
+-  · obtain ⟨x, hx⟩ := hf.2 (g y)
+-    have := hg.1 (f x - s' • y) (by rw [map_sub, map_smul, sub_eq_zero]; exact hx)
+-    rw [smul_sub, sub_eq_zero] at this
+-    exact ⟨s • x, by rw [map_smul, this, mul_smul]⟩
+-  · rw [mul_comm, mul_smul, hf.1 x hx, smul_zero]
+-  · obtain ⟨x, hx⟩ := hf.2 y
+-    exact ⟨s' • x, by rw [map_smul, hx, mul_comm, mul_smul]⟩
+-  · rw [injective_iff_map_eq_zero]
+-    intro x hx
+-    simpa using h.1 x hx
+-  · simpa using h.2 y
+-  · rw [one_smul]; exact h.1 (hx.trans (map_zero f).symm)
+-  · simpa using h.2 y
+ 
+-theorem CrystallineSemistableComparison.P.lim_upTo : ∀ {R : Type} [CommRing R] {S : Sys.{w} R} {S' : Sys.{w'} R} (φ : Sys.Hom S S' (RingHom.id R)) (s : R), (∀ n, UpTo s (φ.f n)) → UpTo (s ^ 2) φ.lim := by
+-  intro R _ S S' φ s h
+-  constructor
+-  · intro x hx
+-    refine Subtype.ext (funext fun n => ?_)
+-    have : s • x.1 n = 0 := (h n).1 _ (congrFun (congrArg Subtype.val hx) n)
+-    change (s ^ 2) • x.1 n = 0
+-    rw [pow_two, mul_smul, this, smul_zero]
+-  · intro y
+-    choose x hx using fun n => (h n).2 (y.1 n)
+-    refine ⟨⟨fun n => s • x n, fun n => ?_⟩, Subtype.ext (funext fun n => ?_)⟩
+-    · have := (h n).1 (S.r n (x (n + 1)) - x n) (by rw [map_sub, ← φ.comm, hx, hx, map_smul, y.2 n, sub_self])
+-      rw [smul_sub, sub_eq_zero] at this
+-      rw [map_smul, this]
+-    · change φ.f n (s • x n) = (s ^ 2) • y.1 n
+-      rw [map_smul, hx, pow_two, mul_smul]
+ 
+-theorem CrystallineSemistableComparison.P.pow_ideal : ∀ {R : Type} [CommRing R] (I : Ideal R), (∀ N : ℕ, I ≤ Ideal.span ((fun a => a ^ N) '' (I : Set R))) → ∀ (N : ℕ) (P : R → Prop), P 0 → (∀ a b, P a → P b → P (a + b)) → (∀ r a, P a → P (r * a)) → (∀ a ∈ I, P (a ^ N)) → ∀ s ∈ I, P s := by
+-  intro R _ I hI N P h0 hadd hmul h s hs
+-  refine Submodule.span_induction (p := fun x _ => P x) ?_ h0 (fun a b _ _ => hadd a b) (fun r a _ => hmul r a) (hI N hs)
+-  rintro _ ⟨a, ha, rfl⟩
+-  exact h a ha
+ 
+-theorem CrystallineSemistableComparison.P.pow_upTo : ∀ {R : Type} [CommRing R] (I : Ideal R), (∀ N : ℕ, I ≤ Ideal.span ((fun a => a ^ N) '' (I : Set R))) → ∀ (N : ℕ) {M : Type w} {M' : Type w'} {M'' : Type w''} [AddCommGroup M] [AddCommGroup M'] [AddCommGroup M''] [Module R M] [Module R M'] [Module R M''] (f : M →ₗ[R] M') (g : M' →ₗ[R] M''), ((∀ a ∈ I, InjUpTo (a ^ N) f) → ∀ s ∈ I, InjUpTo s f) ∧ ((∀ a ∈ I, SurjUpTo (a ^ N) f) → ∀ s ∈ I, SurjUpTo s f) ∧ ((∀ a ∈ I, UpTo (a ^ N) f) → Almost I f) ∧ ((∀ a ∈ I, ExactUpTo (a ^ N) f g) → ∀ s ∈ I, ExactUpTo s f g) := by
+-  intro R _ I hI N M M' M'' _ _ _ _ _ _ f g
+-  have h1 : (∀ a ∈ I, InjUpTo (a ^ N) f) → ∀ s ∈ I, InjUpTo s f :=
+-    CrystallineSemistableComparison.P.pow_ideal I hI N (fun s => InjUpTo s f) (fun x _ => zero_smul _ _)
+-      (fun a b ha hb x hx => by rw [add_smul, ha x hx, hb x hx, add_zero])
+-      (fun r a ha x hx => by rw [mul_smul, ha x hx, smul_zero])
+-  have h3 : ∀ y, (∀ a ∈ I, ∃ x, f x = a ^ N • y) → ∀ s ∈ I, ∃ x, f x = s • y := fun y =>
+-    CrystallineSemistableComparison.P.pow_ideal I hI N (fun s => ∃ x, f x = s • y) ⟨0, by simp⟩
+-      (fun a b ⟨x, hx⟩ ⟨x', hx'⟩ => ⟨x + x', by rw [map_add, hx, hx', add_smul]⟩)
+-      (fun r a ⟨x, hx⟩ => ⟨r • x, by rw [map_smul, hx, mul_smul]⟩)
+-  have h2 : (∀ a ∈ I, SurjUpTo (a ^ N) f) → ∀ s ∈ I, SurjUpTo s f := fun h s hs y => h3 y (fun a ha => h a ha y) s hs
+-  exact ⟨h1, h2, fun h s hs => ⟨h1 (fun a ha => (h a ha).1) s hs, h2 (fun a ha => (h a ha).2) s hs⟩,
+-    fun h s hs y hy => h3 y (fun a ha => h a ha y hy) s hs⟩
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/CechPairings/TotPairing.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/CechPairings/TotPairing.lean
+@@ -153,41 +153,6 @@
+     M.d n (Q.μ h a b) = 0 := by
+   rw [Q.leib, ha, hb]; simp
+ 
+-theorem cx_bilin {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (Q : CxPairing K L M)
+-    {p q n : ℕ} (h : p + q = n) : ∃ b : K.H p →ₗ[R] L.H q →ₗ[R] M.H n, ∀ x y, b x y = Q.cup h x y := by
+-  have cc : ∀ (a : K.X p) (b : L.X q) ha hb, Q.cup h (K.cls a ha) (L.cls b hb) = M.cls (Q.μ h a b) (closed Q h a b ha hb) :=
+-    fun a b ha hb => CrystallineSemistableComparison.P.cxcup_cls Q h a b ha hb _
+-  refine ⟨LinearMap.mk₂ R (fun x y => Q.cup h x y) ?_ ?_ ?_ ?_, fun x y => rfl⟩
+-  · intro x x' y
+-    obtain ⟨a, ha, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj K p).1 x
+-    obtain ⟨a', ha', rfl⟩ := (CrystallineSemistableComparison.P.cls_surj K p).1 x'
+-    obtain ⟨b, hb, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj L q).1 y
+-    have hs : K.d p (a + a') = 0 := by rw [map_add, ha, ha', add_zero]
+-    rw [← (CrystallineSemistableComparison.P.cls_surj K p).2.2.2.1 a a' ha ha' hs, cc, cc, cc]
+-    simp only [map_add, LinearMap.add_apply]
+-    exact (CrystallineSemistableComparison.P.cls_surj M n).2.2.2.1 _ _ _ _ _
+-  · intro r x y
+-    obtain ⟨a, ha, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj K p).1 x
+-    obtain ⟨b, hb, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj L q).1 y
+-    have hs : K.d p (r • a) = 0 := by rw [map_smul, ha, smul_zero]
+-    rw [← (CrystallineSemistableComparison.P.cls_surj K p).2.2.2.2 r a ha hs, cc, cc]
+-    simp only [map_smul, LinearMap.smul_apply]
+-    exact (CrystallineSemistableComparison.P.cls_surj M n).2.2.2.2 _ _ _ _
+-  · intro x y y'
+-    obtain ⟨a, ha, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj K p).1 x
+-    obtain ⟨b, hb, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj L q).1 y
+-    obtain ⟨b', hb', rfl⟩ := (CrystallineSemistableComparison.P.cls_surj L q).1 y'
+-    have hs : L.d q (b + b') = 0 := by rw [map_add, hb, hb', add_zero]
+-    rw [← (CrystallineSemistableComparison.P.cls_surj L q).2.2.2.1 b b' hb hb' hs, cc, cc, cc]
+-    simp only [map_add]
+-    exact (CrystallineSemistableComparison.P.cls_surj M n).2.2.2.1 _ _ _ _ _
+-  · intro r x y
+-    obtain ⟨a, ha, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj K p).1 x
+-    obtain ⟨b, hb, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj L q).1 y
+-    have hs : L.d q (r • b) = 0 := by rw [map_smul, hb, smul_zero]
+-    rw [← (CrystallineSemistableComparison.P.cls_surj L q).2.2.2.2 r b hb hs, cc, cc]
+-    simp only [map_smul]
+-    exact (CrystallineSemistableComparison.P.cls_surj M n).2.2.2.2 _ _ _ _
+ 
+ end CrystallineSemistableComparison.Auxff
+ 
+@@ -196,10 +161,6 @@
+   exact ⟨CrystallineSemistableComparison.Auxff.closed (CrystallineSemistableComparison.Auxff.toCx P) h a b ha hb,
+     (CrystallineSemistableComparison.Auxff.cup_eq P h _ _).trans (CrystallineSemistableComparison.P.cxcup_cls (CrystallineSemistableComparison.Auxff.toCx P) h a b ha hb _)⟩
+ 
+-theorem CrystallineSemistableComparison.P.cup_bilin : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F₁ : C ⥤ ModuleCat.{w} R} {F₂ : C ⥤ ModuleCat.{w'} R} {F₃ : C ⥤ ModuleCat.{w''} R} (P : Pairing F₁ F₂ F₃) {p q n : ℕ} (h : p + q = n), ∃ b : H F₁ p →ₗ[R] H F₂ q →ₗ[R] H F₃ n, ∀ x y, b x y = P.cup h x y := by
+-  intro R _ C _ F₁ F₂ F₃ P p q n h
+-  obtain ⟨b, hb⟩ := CrystallineSemistableComparison.Auxff.cx_bilin (CrystallineSemistableComparison.Auxff.toCx P) h
+-  exact ⟨b, fun x y => (hb x y).trans (CrystallineSemistableComparison.Auxff.cup_eq P h x y).symm⟩
+ 
+ namespace CrystallineSemistableComparison.Auxff
+ open CategoryTheory CrystallineSemistableComparison CrystallineSemistableComparison.CH
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/KummerCupProducts/CupLeib.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/KummerCupProducts/CupLeib.lean
+@@ -1,5 +1,5 @@
++import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing
+ import Mathlib
+-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.Imports
+ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.KummerCupProducts.FirstChernCompatibleSystem
+ 
+ set_option backward.isDefEq.respectTransparency false
+--- a/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/KummerCupProducts/FirstChernCompatibleSystem.lean
++++ b/Development/WeilBound/CoreStatements/PadicHodgeComparison/EtaleCohomologyComparison/KummerCupProducts/FirstChernCompatibleSystem.lean
+@@ -90,10 +90,6 @@
+   ∀ (E' : Spc) (f : E' ⟶ E) (x : Sx E' p U),
+     ev ((Cochain.ofHom ((chains R).map f)).comp α (zero_add n)) p s h U x = ev α p s h U (Sx.map f x)
+ 
+-def EvMk : Prop := ∀ (R : Type) [CommRing R] (E : Spc) (I : GlobalTheory.EtC.Cx R) (n : ℤ)
+-  (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U : Scheme.{0}, Sx E p U → Sec (I.X s) U),
+-  (∀ p s h (U V : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U), a p s h V (Sx.res g x) = Sec.res g (a p s h U x)) →
+-  ∃ α : Cochain ((chains R).obj E) I n, ∀ p s h U x, ev α p s h U x = a p s h U x
+ 
+ def EvDel : Prop := ∀ (R : Type) [CommRing R] (E : Spc) (I : GlobalTheory.EtC.Cx R) (n m : ℤ) (hm : n + 1 = m) (β : Cochain ((chains R).obj E) I n)
+   (U : Scheme.{0}),
