@@ -3,6 +3,7 @@ module
 public import Mathlib
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CanonicalFamilyPeriodsInCoordinatesStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitTauScaledGeneratorTorusMonomialStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRigidOfBase
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAbelianSchemeOfGrpPullbackStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianPartIdentificationsAgreeConstantTangentStatement
@@ -65,14 +66,51 @@ theorem val_const_of_fromBase : ∀ {R : Type} [CommRing R] [IsDomain R] (Q : De
   rw [e1, e2, hW, hW, hW, hW]
   exact commGroup_fourfold_cancellation _ _ _ _ _ _ _ _ _ _
 
+end GlobalTheory.TorRigid
+
+namespace GlobalTheory.RigChart
+
+open GlobalTheory.ToricData GlobalTheory.TautRigid
+
+variable {R S k : Type} [CommRing R] [IsDomain R] [CommRing S] [Field k]
+    {Q : DegPre R} {m : ℕ} {t : Fin m → R} {gam : Fin m → LinearMap.BilinForm ℤ Q.X}
+    {τ : Gens Q} {iBase : S →+* R} {ρ : R →+* DualNumber k} {a : Fin m → k}
+
+/-- A calibrated monomial period records its logarithmic boundary rate, without requiring a canonical chart. -/
+theorem map_period_unit_of_constAlong (hbase : FromBase Q τ iBase) (hρ : ρ.comp iBase = constHom (ρ.comp iBase))
+    (h : IsConstAlong Q t gam ρ a) (y z : Q.X) (v : Rˣ)
+    (hv : IsUnitTau Q t gam y z (UU.scaleGen (unitOn v) (τ y z))) :
+    Units.map ρ.toMonoidHom v = onePlus (∑ i, a i * (gam i y z : k)) *
+      Units.map (constHom ρ).toMonoidHom v := by
+  obtain ⟨B', iG, π₁, π₂, w, c', h₁, h₂, h₃, h₄, h₅, h₆⟩ := h
+  let s : k := ∑ i, a i * (gam i y z : k)
+  have hcomp := TorRigid.val_const_of_fromBase Q τ iBase hbase k ρ hρ B' iG π₁ π₂ w c' ⟨h₁, h₂, h₃, h₄, h₅⟩
+  apply unitOn_inj.1
+  apply unit_ext
+  intro zz _
+  obtain ⟨J, hJ⟩ := UU.exists_good_pt Q.P.isLB zz
+  have hp := h₆ y z _ hv (onePlus s) rfl zz J hJ
+  have e (f : R →+* DualNumber k) : gm (spMap f) zz ⊤ (unitOn v) =
+      gm (𝟙 _) zz ⊤ (unitOn (Units.map f.toMonoidHom v)) := by
+    rw [UU.gm_top]; exact congrArg _ (pullTop_unitOn f v)
+  rw [UU.val_scaleGen _ _ _ hJ, UU.val_scaleGen _ _ _ hJ, e, e, hcomp y z zz J hJ] at hp
+  change _ = lamC Q w c' y z zz J * _ * _ at hp
+  rw [unitOn_mul, map_mul]
+  exact mul_right_cancel (hp.trans ((congrArg (· * _) (mul_comm _ _)).trans (mul_mul_mul_comm _ _ _ _)))
+
+end GlobalTheory.RigChart
+
+namespace GlobalTheory.TorRigid
+
+open GlobalTheory.RigChart GlobalTheory.ToricData
+
+-- Preserve the legacy signature, whose domain and local-ring instances both imply nontriviality.
+set_option linter.overlappingInstances false in
 theorem snd_eq_zero_of_isConstAlong : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : MonoFam Xo c φ R) (Cn : Canon C), ∀ (k : Type) [Field k] (ρ : R →+* DualNumber k) (a : Fin C.m → k), GlobalTheory.RigChart.IsConstAlong C.P.D.toPre C.s (fun i => (l.M' : ℤ) • C.δ i) ρ a → ρ.comp (Cn.ψ.comp MvPolynomial.C) = GlobalTheory.RigChart.constHom (ρ.comp (Cn.ψ.comp MvPolynomial.C)) → ∀ j, (ρ (Cn.ψ (MvPolynomial.X (.inr j)))).snd = 0 := by
   classical
   intro E _ _ _ H Dw l Xo c φ R _ _ _ hB C Cn k _ ρ a hC hconst j
   obtain ⟨ε', τ₀, hε', hFB, hτ⟩ := GlobalTheory.T.canonicalFamily_periods_in_coordinates Xo c φ R hB C Cn
-  obtain ⟨B', iG, π₁, π₂, w, c', h₁, h₂, h₃, h₄, h₅, h₆⟩ := hC
-  have hA : GlobalTheory.TautRigid.AbConst C.P.D.toPre ρ B' π₁ π₂ w c' := ⟨h₁, h₂, h₃, h₄, h₅⟩
-  have hB1 := val_const_of_fromBase C.P.D.toPre τ₀ (Cn.ψ.comp MvPolynomial.C) hFB k ρ hconst B' iG π₁ π₂ w c' hA
-  haveI : CharZero k := by
+  have : CharZero k := by
     let f : c.F →+* k := (TrivSqZeroExt.fstHom k k k).toRingHom.comp (ρ.comp C.b)
     exact (f.charZero_iff f.injective).1 inferInstance
   set M : ℕ := l.M' with hMdef
@@ -96,41 +134,9 @@ theorem snd_eq_zero_of_isConstAlong : ∀ {E : Type} [Field E] [NumberField E] [
       ∑ i, a i * ((((M : ℤ) • δ i) y z : ℤ) : k) := by
     intro y z
     set v : Rˣ := ∏ j, u j ^ ((M : ℤ) * ε j y z) with hvdef
-    let f : Rˣ →* (FractionRing R)ˣ := Units.map (algebraMap R (FractionRing R)).toMonoidHom
-    obtain ⟨hg, kk, hk, hv⟩ := hτ y z
-    have hU' : GlobalTheory.RigChart.IsUnitTau Q C.s (fun i => (M : ℤ) • C.δ i) y z (GlobalTheory.UU.scaleGen (unitOn v) (τ₀ y z)) := by
-      refine ⟨GlobalTheory.UU.scaleGen_isGen _ hg, kk * (f v)⁻¹, ?_, fun zz J hJ => ?_⟩
-      · have hfv : ((f v : (FractionRing R)ˣ) : FractionRing R) =
-            ∏ j, algebraMap R (FractionRing R) (u j : R) ^ ((M : ℤ) * ε j y z) := by
-          simp only [f, v, map_prod, map_zpow, Units.coe_prod, Units.val_zpow_eq_zpow_val, Units.coe_map,
-            MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]
-        have hne : ((f v : (FractionRing R)ˣ) : FractionRing R) ≠ 0 := (f v).ne_zero
-        rw [Units.val_mul, hk, Units.val_inv_eq_inv_val, Fin.prod_univ_add]
-        simp only [finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, LinearMap.smul_apply, smul_eq_mul,
-          Cn.bd, hδ, ← hu]
-        rw [← hfv, mul_inv_cancel_right₀ hne]
-      · have e : gm (toUnit (TK R)).left zz ⊤ (unitOn v) = gm (𝟙 (TK R).left) zz ⊤ (unitOn (f v)) := by
-          rw [GlobalTheory.UU.gm_top]
-          exact congrArg _ (pullTop_unitOn (algebraMap R (FractionRing R)) _)
-        rw [hv zz J hJ, GlobalTheory.UU.val_scaleGen _ _ _ hJ, e, ← _root_.mul_assoc, ← map_mul, ← unitOn_mul,
-          inv_mul_cancel_right]
-    set s : k := ∑ i, a i * ((((M : ℤ) • δ i) y z : ℤ) : k) with hs
-    have hE : ∀ zz : Sp (DualNumber k), gm (𝟙 _) zz ⊤ (unitOn (Units.map ρ.toMonoidHom v)) =
-        gm (𝟙 _) zz ⊤ (unitOn (GlobalTheory.TautRigid.onePlus s * Units.map (GlobalTheory.RigChart.constHom ρ).toMonoidHom v)) := by
-      intro zz
-      obtain ⟨J, hJ⟩ := GlobalTheory.UU.exists_good_pt C.P.D.toPre.P.isLB zz
-      have hp := h₆ y z _ hU' (GlobalTheory.TautRigid.onePlus s) rfl zz J hJ
-      have hb := hB1 y z zz J hJ
-      have e₁ : gm (spMap ρ) zz ⊤ (unitOn v) = gm (𝟙 _) zz ⊤ (unitOn (Units.map ρ.toMonoidHom v)) := by
-        rw [GlobalTheory.UU.gm_top]; exact congrArg _ (pullTop_unitOn ρ v)
-      have e₂ : gm (spMap (GlobalTheory.RigChart.constHom ρ)) zz ⊤ (unitOn v) =
-          gm (𝟙 _) zz ⊤ (unitOn (Units.map (GlobalTheory.RigChart.constHom ρ).toMonoidHom v)) := by
-        rw [GlobalTheory.UU.gm_top]; exact congrArg _ (pullTop_unitOn (GlobalTheory.RigChart.constHom ρ) v)
-      rw [GlobalTheory.UU.val_scaleGen _ _ _ hJ, GlobalTheory.UU.val_scaleGen _ _ _ hJ, e₁, e₂, hb] at hp
-      change _ = GlobalTheory.TautRigid.lamC Q w c' y z zz J * _ * _ at hp
-      rw [unitOn_mul, map_mul]
-      exact mul_right_cancel (hp.trans ((congrArg (· * _) (_root_.mul_comm _ _)).trans (mul_mul_mul_comm _ _ _ _)))
-    have hv2 := unitOn_inj.1 (unit_ext fun x _ => hE x)
+    have hU' := GlobalTheory.T.isUnitTau_scaledGenerator_torusMonomial Xo c φ R C Cn.N
+      (fun i => Cn.ψ (MvPolynomial.X i)) ε' τ₀ Cn.bd hδ hτ u hu y z
+    have hv2 := map_period_unit_of_constAlong hFB hconst hC y z v hU'
     have h3 := congrArg (fun x => Multiplicative.toAdd (GlobalTheory.TautRigid.dlog k x)) hv2
     rw [map_mul, toAdd_mul, GlobalTheory.TautRigid.dlog_onePlus] at h3
     have hc0 : Multiplicative.toAdd (GlobalTheory.TautRigid.dlog k (Units.map (GlobalTheory.RigChart.constHom ρ).toMonoidHom v)) = 0 := by
