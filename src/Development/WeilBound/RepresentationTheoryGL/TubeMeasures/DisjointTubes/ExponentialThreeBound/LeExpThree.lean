@@ -1,5 +1,6 @@
 module
 
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasureLevelRealBoxEqIndexMul
 public import Development.WeilBound.RepresentationTheoryGL.TubeMeasures.DisjointTubes.LowSt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasureTranslateLevelRealBoxLeIndexMulStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinitePartMemFullLevelOfKeepsSelfDualLatticeStatement
@@ -93,26 +94,75 @@ theorem bound (f r d : ℕ) (L n v M rd : ℝ) (hd : (d : ℝ) = 2 * f) (hL : 1 
       _ = _ := by rw [← Real.exp_add, ← Real.exp_add]; congr 1; ring
 
 
+/-- Retain the actual level index instead of charging every level the worst allowed index. -/
+theorem level_mass_bound (f r d : ℕ) (L n v M rd : ℝ) (hd : (d : ℝ) = 2 * f)
+    (hfr : 2 * ((f : ℝ) * (r : ℝ) ^ 2) ≤ Real.exp L) (hrd : 0 < rd)
+    (hrdL : Real.log rd ≤ 2 * L) (hn : 0 ≤ n) (hv : 0 ≤ v) (hv' : v ≤ 13 ^ (r ^ 2))
+    (hM : M ≤ (3 * ((d : ℝ) ^ 2 * (r : ℝ) ^ 4 * rd ^ 2)) ^ (3 * d * r ^ 2)) :
+    n * (v ^ f * M) ≤ n * Real.exp ((f * (r : ℝ) ^ 2) *
+      (36 * L + 6 * Real.log 3 + Real.log 13)) := by
+  have hrd' := (Real.log_le_iff_le_exp hrd).mp hrdL
+  have hX : 3 * ((d : ℝ) ^ 2 * (r : ℝ) ^ 4 * rd ^ 2) ≤ Real.exp (6 * L + Real.log 3) := by
+    have he : Real.exp (6 * L + Real.log 3) = 3 * (Real.exp L ^ 2 * Real.exp (2 * L) ^ 2) := by
+      rw [Real.exp_add, Real.exp_log (by norm_num : (0 : ℝ) < 3),
+        ← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add]
+      push_cast
+      ring_nf
+    rw [he, hd]
+    calc _ = 3 * ((2 * ((f : ℝ) * r ^ 2)) ^ 2 * rd ^ 2) := by ring
+         _ ≤ _ := by gcongr
+  have hmass : M ≤ (Real.exp (6 * L + Real.log 3)) ^ (3 * d * r ^ 2) :=
+    hM.trans (pow_le_pow_left₀ (by positivity) hX _)
+  have hvf : v ^ f ≤ ((13 : ℝ) ^ (r ^ 2)) ^ f := pow_le_pow_left₀ hv hv' _
+  apply mul_le_mul_of_nonneg_left _ hn
+  calc v ^ f * M ≤ v ^ f * (Real.exp (6 * L + Real.log 3)) ^ (3 * d * r ^ 2) :=
+         mul_le_mul_of_nonneg_left hmass (pow_nonneg hv _)
+       _ ≤ ((13 : ℝ) ^ (r ^ 2)) ^ f * (Real.exp (6 * L + Real.log 3)) ^ (3 * d * r ^ 2) :=
+         mul_le_mul_of_nonneg_right hvf (by positivity)
+       _ = _ := by
+         rw [← Real.exp_log (by norm_num : (0 : ℝ) < 13), ← pow_mul, ← Real.exp_nat_mul,
+           ← Real.exp_nat_mul, ← Real.exp_add, Real.log_exp]
+         congr 1
+         push_cast
+         rw [hd]
+         ring
+
+private theorem fixed_loss_le (L : ℝ) (hL : (120 : ℝ) ≤ Real.exp L) :
+    6 * Real.log 3 + Real.log 13 ≤ 2 * L := by
+  have h : Real.exp (6 * Real.log 3 + Real.log 13) ≤ Real.exp (2 * L) := by
+    rw [Real.exp_add, show (6 : ℝ) = ((6 : ℕ) : ℝ) from rfl, Real.exp_nat_mul,
+      Real.exp_log (by norm_num : (0 : ℝ) < 3), Real.exp_log (by norm_num : (0 : ℝ) < 13),
+      show (2 : ℝ) = ((2 : ℕ) : ℝ) from rfl, Real.exp_nat_mul]
+    calc (3 : ℝ) ^ 6 * 13 ≤ 120 ^ 2 := by norm_num
+         _ ≤ _ := pow_le_pow_left₀ (by norm_num) hL _
+  exact Real.exp_le_exp.mp h
+
 open GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes in
-theorem up_core (hV : VolSt) (hS : StabSt) (hN : NumSt) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0)
+theorem measure_eq_index_mul_mass (hV : VolSt) (hS : StabSt) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0)
     (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ) (μ : MeasureTheory.Measure (GA D (Wc D i))) (𝓕 : Set (GA D (Wc D i)))
-    (hF : IsMeasFD (Wc D i) (levW C i P) μ 𝓕) (L : ℝ) (hL : Sizes D L) (hIB : IndexBound C i P) :
-    Real.log (μ 𝓕).toReal ≤ D.R.f * (D.R.r : ℝ) ^ 2 * Real.log ((D.R.r : ℝ) + 3) + (38 + 81) * (D.R.f * (D.R.r : ℝ) ^ 2 * L) := by
-  obtain ⟨hn, hnl⟩ := hIB
+    (hF : IsMeasFD (Wc D i) (levW C i P) μ 𝓕)
+    :
+    μ 𝓕 = ((levW C i P).relIndex (levW C i (LevelP.full _ _ _)) : ℝ≥0∞) *
+      ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU D.R.r ^ D.R.f *
+        Formalism.MainNotions.StandardLattice.massI D D.R.r) := by
+  have hfull : levW C i (LevelP.full _ _ _) = parLev D.sp.cm (Wc D i).gram (C.βW i) (C.datWp i P) := by
+    have e : C.datWp i (LevelP.full _ _ _) = { C.datWp i P with P := LevelP.full (C.datWp i P).Pg (C.datWp i P).r ℂ } := by
+      simp only [LevCh.datWp, datY, ite_true]
+    rw [← GlobalTheory.CovTop.LevelIndex.lev_full, ← e]
+  have hn := (GlobalTheory.CovTop.LevelIndex.relIndex_lev_le D.sp.cm (Wc D i).gram (C.βW i)
+    (C.datWp i P) _ hfull).1
   have hrk : (Wc D i).rank = D.R.r := D.sp.W_rank _ (Nat.le_add_left _ _) i.2
-  have hr : 2 ≤ D.R.r := Formalism.L2.Geo.two_le_r D
-  have hSig := D.sp.W_sig ((i : ℕ) + 1)
-  haveI := hF.1.1
+  have := hF.1.1
   obtain ⟨⟨θ, hθ⟩, H1⟩ := hF.1.2
   obtain ⟨⟨A, hA⟩, H2⟩ := H1 θ hθ
   obtain ⟨⟨m, hm⟩, -⟩ := H2 A hA
   obtain ⟨rp, hrpc, hrp⟩ := GlobalTheory.T.exists_continuous_realComponentHom_unitaryAdelic D (Wc D i) θ A (D.sp.W_sig _) hθ hA
-  haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1
-  haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.1
-  haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.1
-  haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1
-  haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1
-  haveI : ∀ ρ, (m ρ).IsHaarMeasure := fun ρ => (hm ρ).1
+  have := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1
+  have := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.1
+  have := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.1
+  have := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1
+  have := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1
+  have : ∀ ρ, (m ρ).IsHaarMeasure := fun ρ => (hm ρ).1
   obtain ⟨B, hBm, hB0, hBt⟩ := MainStatements.Tam.A.exists_box m
   have hvol := hV D (Wc D i) _ _ (D.sp.W_sig _) (D.sp.W_sigval _ (Nat.le_add_left _ _) i.2) μ 𝓕 hF.2 θ A m rp hθ hA hm
     hrpc hrp B hBm
@@ -124,65 +174,106 @@ theorem up_core (hV : VolSt) (hS : StabSt) (hN : NumSt) (D : D7) (Tu : Type) (C 
     rw [inv_one, one_mul]
     have hk : h ∈ KM (Wc D i) 1 := (hS.1 D (Wc D i)).1 ▸ hh
     exact GlobalTheory.T.finitePart_mem_fullLevel_of_keeps_selfDualLattice D (Wc D i) (C.βW i) (C.ΛW i) _ (hC.βW i) hrk.le rfl h hk
-  have h44 := GlobalTheory.T.measure_translateLevel_realBox_le_index_mul D (Wc D i) θ A m rp (levW C i P) K₀ μ (D.sp.W_sig _) hθ hA hm hrpc hrp
-    (fun k hk => ⟨hk.1, Subgroup.mem_top _⟩) hn (GlobalTheory.ParahoricCompact.isOpen_comap_lev _ _ _) hF.1 1 (GfC _).one_mem B hBm
-  set c := ReciprocityTheory.ChartRestriction.DS.volU (Wc D i).rank ^ D.R.f * Formalism.MainNotions.StandardLattice.massI D (Wc D i).rank with hc
-  have hkey : μ 𝓕 * Measure.pi m B ≤ ((n : ℝ≥0∞) * ENNReal.ofReal c) * Measure.pi m B := by
-    rw [hvol]
-    calc μ {h | h ∈ Stab (Wc D i) ∧ rp h ∈ B} * ENNReal.ofReal c ≤ ((n : ℝ≥0∞) * Measure.pi m B) * ENNReal.ofReal c := by
-          gcongr; exact (measure_mono hsub).trans h44
-      _ = _ := by ring
-  have hμ := (ENNReal.mul_le_mul_iff_left hB0 hBt).1 hkey
+  have rev : {h | finE (Wc D i) (1⁻¹ * h) ∈ K₀ ∧ rp h ∈ B} ⊆
+      {h | h ∈ Stab (Wc D i) ∧ rp h ∈ B} := by
+    intro h hh
+    refine ⟨hS.2 D Tu C t0 hC i (LevelP.full _ _ _) h ?_, hh.2⟩
+    simpa [K₀] using hh.1
+  have heq := GlobalTheory.CovTop.VolBox.meas_level_eq_index_mul (Wc D i) θ A m rp (levW C i P) K₀ μ
+    (D.sp.W_sig _) hθ hA hm hrpc hrp (fun k hk => ⟨hk.1, Subgroup.mem_top _⟩) hn
+    (fun _ hk => lev_le_UA hk) (GlobalTheory.ParahoricCompact.isOpen_comap_lev _ _ _) hF.1 B hBm
+  have hstab : μ {h | h ∈ Stab (Wc D i) ∧ rp h ∈ B} = (n : ℝ≥0∞) * Measure.pi m B := by
+    rw [Set.Subset.antisymm hsub rev]
+    simpa [n] using heq
+  have hc := congrArg (fun r : ℕ => ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU r ^ D.R.f *
+    Formalism.MainNotions.StandardLattice.massI D r)) hrk
+  apply (ENNReal.mul_left_inj hB0 hBt).mp
+  rw [hvol, hstab, hc]
+  ring
 
-  haveI : IsCMField D.host.E := D.host.isCMField_hostE
+open GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes in
+theorem log_measure_le_log_index_add (hV : VolSt) (hS : StabSt) (hN : NumSt) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0)
+    (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ) (μ : MeasureTheory.Measure (GA D (Wc D i))) (𝓕 : Set (GA D (Wc D i)))
+    (hF : IsMeasFD (Wc D i) (levW C i P) μ 𝓕) (L : ℝ) (hL : Sizes D L)
+    (hn : (levW C i P).relIndex (levW C i (LevelP.full _ _ _)) ≠ 0) :
+    Real.log (μ 𝓕).toReal ≤ Real.log ((levW C i P).relIndex (levW C i (LevelP.full _ _ _))) +
+      38 * (D.R.f * (D.R.r : ℝ) ^ 2 * L) := by
+  let n := (levW C i P).relIndex (levW C i (LevelP.full _ _ _))
+  have hμ := (measure_eq_index_mul_mass hV hS D Tu C t0 hC i P μ 𝓕 hF).le
+  have hr : 2 ≤ D.R.r := Formalism.L2.Geo.two_le_r D
+  have : IsCMField D.host.E := D.host.isCMField_hostE
   have hfin : Module.finrank ℚ D.host.E = 2 * D.R.f := by
     rw [show Module.finrank ℚ D.host.E = 4 * D.R.ord from D.host.finrank_cmField]
     unfold Ranks.f Ranks.n; ring
   have hu : Formalism.MainNotions.StandardLattice.massI D D.R.r ≤ (3 * ((Module.finrank ℚ D.host.E : ℝ) ^ 2 * (D.R.r : ℝ) ^ 4 * D.host.rdE ^ 2)) ^
       (3 * Module.finrank ℚ D.host.E * D.R.r ^ 2) := GlobalTheory.mass_stdLat_le D.host.E (fun _ => rfl) D.R.r
   obtain ⟨hN1, hN2⟩ := hN D.R.r hr
-  have hnV : D.R.r ≤ D.R.nV := Nat.le_add_right _ _
-  obtain ⟨h1, -, h3, h4⟩ := hL
-  have hfr : (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 ≤ Real.exp L := by
-    refine le_trans ?_ h1
-    have hnR : (D.R.r : ℝ) ≤ D.R.nV := by exact_mod_cast hnV
-    rw [sq, ← mul_assoc]; gcongr
-  have hL1 : 1 ≤ L := by
-    have hf : 2 ≤ D.R.f := by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) D.R.ord_pos; omega
-    have hfR : (2 : ℝ) ≤ D.R.f := by exact_mod_cast hf
-    have hrR : (2 : ℝ) ≤ D.R.r := by exact_mod_cast hr
-    have : Real.exp 1 ≤ Real.exp L := by
-      have := Real.exp_one_lt_d9
-      nlinarith
-    exact Real.exp_le_exp.1 this
+  have hfv : (2 : ℝ) ≤ D.R.f := by
+    exact_mod_cast (show 2 ≤ D.R.f by
+      unfold Ranks.f Ranks.n
+      have := D.R.ord_pos
+      omega)
+  have hrv : (6 : ℝ) ≤ D.R.r := by
+    exact_mod_cast (show 6 ≤ D.R.r by
+      unfold Ranks.r
+      have := D.R.two_le_m
+      have := D.R.m_add_three_le_k
+      omega)
+  have hnv : 2 * (D.R.r : ℝ) ≤ D.R.nV := by
+    exact_mod_cast (show 2 * D.R.r ≤ D.R.nV by
+      have h := D.R.rank_add_five_le
+      unfold Ranks.nV Ranks.r
+      omega)
+  have hfr : 2 * ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2) ≤ Real.exp L := by
+    apply le_trans _ hL.1
+    calc _ = ((D.R.f : ℝ) * D.R.r) * (2 * D.R.r) := by ring
+         _ ≤ _ := mul_le_mul_of_nonneg_left hnv (by positivity)
+  have h120 : (120 : ℝ) ≤ Real.exp L := by
+    apply le_trans _ hfr
+    calc (120 : ℝ) ≤ 2 * (2 * 6 ^ 2) := by norm_num
+         _ ≤ _ := by gcongr
   have hd1 : (1 : ℝ) ≤ |(discr D.host.E : ℝ)| := by
-    have := Int.one_le_abs (discr_ne_zero D.host.E)
-    exact_mod_cast this
-  have hrd1 : 1 ≤ D.host.rdE := Real.one_le_rpow hd1 (by positivity)
-  have hrdL : Real.log D.host.rdE ≤ 2 * L := by linarith [abs_nonneg (dlogL D 1)]
-  have hn1 : (1 : ℝ) ≤ n := by exact_mod_cast Nat.one_le_iff_ne_zero.2 hn
-  have hgL : Real.log (n : ℝ) ≤ 60 * (D.R.f * (D.R.r : ℝ) ^ 2 * L) := by
-    have ha : 0 ≤ 2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 := by positivity
-    calc Real.log (n : ℝ) ≤ 2 * D.R.f * (D.R.r : ℝ) ^ 2 * Real.log ((D.host.g 0 : ℝ) * D.host.g 1) := hnl
-      _ ≤ 2 * D.R.f * (D.R.r : ℝ) ^ 2 * (30 * L) := mul_le_mul_of_nonneg_left h3 ha
-      _ = _ := by ring
-  have hv0 : 0 ≤ ReciprocityTheory.ChartRestriction.DS.volU D.R.r := le_trans (by positivity) hN1
-  have hb := MainStatements.Tam.A.bound D.R.f D.R.r (Module.finrank ℚ D.host.E) L n _ _ D.host.rdE (by rw [hfin]; push_cast; ring) hL1 hfr
-    hrd1 hrdL hn1 hgL hv0 hN2 hu
-  have hc' : (n : ℝ) * c ≤ Real.exp (117 * (D.R.f * (D.R.r : ℝ) ^ 2 * L)) := by
-    rw [hc, hrk]; exact hb
-  have hle : (μ 𝓕).toReal ≤ Real.exp (117 * (D.R.f * (D.R.r : ℝ) ^ 2 * L)) := by
-    refine ENNReal.toReal_le_of_le_ofReal (Real.exp_pos _).le (hμ.trans ?_)
+    exact_mod_cast Int.one_le_abs (discr_ne_zero D.host.E)
+  have hrd : 0 < D.host.rdE := Real.rpow_pos_of_pos (zero_lt_one.trans_le hd1) _
+  have hrdL : Real.log D.host.rdE ≤ 2 * L := by linarith [hL.2.2.2, abs_nonneg (dlogL D 1)]
+  have hvol := level_mass_bound D.R.f D.R.r (Module.finrank ℚ D.host.E) L n _ _ D.host.rdE
+    (by rw [hfin]; push_cast; ring) hfr hrd hrdL (Nat.cast_nonneg _) (le_trans (by positivity) hN1) hN2 hu
+  have hnpos : 0 < (n : ℝ) := Nat.cast_pos.mpr (Nat.pos_of_ne_zero hn)
+  have hlt : (μ 𝓕).toReal ≤ (n : ℝ) * Real.exp ((D.R.f * (D.R.r : ℝ) ^ 2) *
+      (36 * L + 6 * Real.log 3 + Real.log 13)) := by
+    apply ENNReal.toReal_le_of_le_ofReal (by positivity)
+    apply hμ.trans
     rw [← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity)]
-    exact ENNReal.ofReal_le_ofReal hc'
-  have h0 : 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * Real.log ((D.R.r : ℝ) + 3) :=
-    mul_nonneg (by positivity) (Real.log_nonneg (by linarith))
-  have h5 : Real.log (μ 𝓕).toReal ≤ 117 * (D.R.f * (D.R.r : ℝ) ^ 2 * L) := by
-    rcases (ENNReal.toReal_nonneg (a := μ 𝓕)).eq_or_lt with h | h
-    · rw [← h, Real.log_zero]; positivity
-    · exact (Real.log_le_iff_le_exp h).2 hle
-  have h6 : 0 ≤ D.R.f * (D.R.r : ℝ) ^ 2 * L := by positivity
-  linarith
+    exact ENNReal.ofReal_le_ofReal hvol
+  have hL0 : 0 ≤ L := Real.one_le_exp_iff.mp (by linarith : 1 ≤ Real.exp L)
+  have hb := mul_le_mul_of_nonneg_left (fixed_loss_le L h120)
+    (show 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 by positivity)
+  rcases ENNReal.toReal_nonneg (a := μ 𝓕) |>.eq_or_lt with hz | hz
+  · rw [← hz, Real.log_zero]
+    have hln := Real.log_nonneg ((Nat.one_le_cast).mpr (Nat.one_le_iff_ne_zero.mpr hn) : (1 : ℝ) ≤ n)
+    positivity
+  · have hh := Real.log_le_log hz hlt
+    rw [Real.log_mul hnpos.ne' (Real.exp_pos _).ne', Real.log_exp] at hh
+    dsimp [n] at *
+    linarith only [hh, hb]
+
+open GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes in
+theorem up_core (hV : VolSt) (hS : StabSt) (hN : NumSt) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0)
+    (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ) (μ : MeasureTheory.Measure (GA D (Wc D i))) (𝓕 : Set (GA D (Wc D i)))
+    (hF : IsMeasFD (Wc D i) (levW C i P) μ 𝓕) (L : ℝ) (hL : Sizes D L) (hIB : IndexBound C i P) :
+    Real.log (μ 𝓕).toReal ≤ D.R.f * (D.R.r : ℝ) ^ 2 * Real.log ((D.R.r : ℝ) + 3) + (38 + 81) * (D.R.f * (D.R.r : ℝ) ^ 2 * L) := by
+  have hh := log_measure_le_log_index_add hV hS hN D Tu C t0 hC i P μ 𝓕 hF L hL hIB.1
+  have h₁ := mul_le_mul_of_nonneg_left hL.2.2.1 (show 0 ≤ 2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 by positivity)
+  have h₂ := hIB.2
+  have hlogg : 0 ≤ Real.log ((D.host.g 0 : ℝ) * D.host.g 1) := by
+    apply Real.log_nonneg
+    exact one_le_mul_of_one_le_of_one_le ((Nat.one_le_cast).mpr (D.host.g_prime 0).one_le)
+      ((Nat.one_le_cast).mpr (D.host.g_prime 1).one_le)
+  have hL0 : 0 ≤ L := by linarith [hL.2.2.1]
+  have hA : 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L := by positivity
+  have hB : 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * Real.log ((D.R.r : ℝ) + 3) :=
+    mul_nonneg (by positivity) (Real.log_nonneg (by have := Nat.cast_nonneg (α := ℝ) D.R.r; linarith))
+  linarith only [hh, h₁, h₂, hA, hB]
 
 end MainStatements.Tam.A
 
