@@ -16,7 +16,7 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
     (∀ y ∈ lat hP $ sgnRt H true, n • y ∈ 𝒮 x ∘ inl) ∧
     ∀ y ∈ lat hP $ sgnRt H false, n • y ∈ 𝒮 x ∘ inr := by
 
-  intro hx hn
+  rintro ⟨⟩ hn
   have := disjoint_lat hP (show H.rt0 ≠ -H.rt0 by cases H; grind [cast_eq_zero])
 
 
@@ -25,6 +25,6 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
     intro y
     intros
     specialize hn y
-    simp_all [IsPure, ← mem_coe, ← range_subset_iff, ← span_le, range_eq, comp_def]
+    simp_all [← mem_coe, ← range_subset_iff, ← span_le, range_eq, comp_def]
     simp_all [SetLike.le_def, mem_sup, disjoint_def]
     grind [nsmul_mem, sgnRt, add_mem_cancel_left, add_mem_cancel_right]
