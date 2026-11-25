@@ -112,8 +112,20 @@ end GlobalTheory.BallGram
 
 namespace GlobalTheory.BallGram
 
-theorem count_ball_gram : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ (P : Pair p) (ω : ∀ σ, VolDens p σ D) (a b : ℤ) (r : ℕ) (f : Fin r → X.functionField), (∀ i, f i ∈ P.H a b) → LinearIndependent ℤ f → ∀ (M Vv ρ R : ℝ), 1 ≤ M → 1 ≤ Vv → (∑ᶠ σ, ((ω σ).meas Set.univ).toReal) ≤ Vv → 0 ≤ ρ → 0 < R → (∀ (c : Fin r → ℂ) σ y, cmb (vals P a b f) c σ y ≤ M * l2 (fun σ => (ω σ).meas) (vals P a b f) c) → AddSubgroup.closure (Set.range f) ≤ AddSubgroup.closure (ballIn P (AddSubgroup.closure (Set.range f)) a b ρ) → 2 * r * ρ * (M * Vv) ≤ R → |Real.log ((ballIn P (AddSubgroup.closure (Set.range f)) a b R).ncard : ℝ) - (r * Real.log R - Real.log (gram (fun σ => (ω σ).meas) (vals P a b f)).det.re / 2 + Real.log (volume {x : Fin r → ℝ | ∑ i, x i ^ 2 ≤ 1}).toReal)| ≤ 2 * r * Real.log (2 * (M * Vv)) := by
-  intro k _ X _ p D hX hS P ω a b r f hf hli M Vv ρ R hM hV hvol hρ hR hsup hgen hRρ
+/-- A finite Gram estimate at every positive counting radius. Only the upper loss
+grows when the generating radius is large compared with the counting radius. -/
+theorem count_ball_gram_of_radius (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
+    (p : X ⟶ Sp k) (D : ℕ) (hX : IsArithVar p D) (hS : GenSmooth p D)
+    (P : Pair p) (ω : ∀ σ, VolDens p σ D) (a b : ℤ) (r : ℕ) (f : Fin r → X.functionField)
+    (hf : ∀ i, f i ∈ P.H a b) (hli : LinearIndependent ℤ f) (M Vv ρ R : ℝ)
+    (hM : 1 ≤ M) (hV : 1 ≤ Vv) (hvol : (∑ᶠ σ, ((ω σ).meas Set.univ).toReal) ≤ Vv)
+    (hρ : 0 ≤ ρ) (hR : 0 < R)
+    (hsup : ∀ (c : Fin r → ℂ) σ y, cmb (vals P a b f) c σ y ≤ M * l2 (fun σ => (ω σ).meas) (vals P a b f) c)
+    (hgen : AddSubgroup.closure (Set.range f) ≤ AddSubgroup.closure (ballIn P (AddSubgroup.closure (Set.range f)) a b ρ)) :
+    |Real.log ((ballIn P (AddSubgroup.closure (Set.range f)) a b R).ncard : ℝ) -
+      (r * Real.log R - Real.log (gram (fun σ => (ω σ).meas) (vals P a b f)).det.re / 2 +
+        Real.log (volume {x : Fin r → ℝ | ∑ i, x i ^ 2 ≤ 1}).toReal)| ≤
+      2 * r * Real.log (max 2 (1 + Real.sqrt r * ρ / (2 * R)) * (M * Vv)) := by
   obtain ⟨hfam, hpd, hbd⟩ := GlobalTheory.T.gram_posDef_l2_le_sup_of_lin_indep k X p D hX hS P ω a b (Fin r) f hf hli
   have hl2 := (gram_isHermitian_and_l2_eq_quadratic_form _ _ (Fin r) _ _ hfam).2
   set μ : ∀ σ, Measure (CxPts p σ) := fun σ => (ω σ).meas with hμ
@@ -192,23 +204,10 @@ theorem count_ball_gram : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegr
   have hR2 : 0 < R2 := mul_pos hR hsV
   have hρ' : 0 ≤ ρ * √Vv := mul_nonneg hρ hsV.le
   have hcardr : (Fintype.card (Fin r) : ℝ) = r := by simp
-  have hsq : √M * √Vv ≤ M * Vv := by
-    rw [← Real.sqrt_mul hM0.le]
-    calc √(M * Vv) ≤ √(M * Vv) * √(M * Vv) :=
-          le_mul_of_one_le_right (Real.sqrt_nonneg _) (Real.one_le_sqrt.mpr hκ)
-      _ = M * Vv := Real.mul_self_sqrt (by positivity)
-  have h2rρ : 0 ≤ 2 * (r : ℝ) * ρ := by positivity
-  have hb1 : 2 * (Fintype.card (Fin r) : ℝ) * (ρ * √Vv) ≤ R1 := by
-    rw [hcardr, hR1d, le_div_iff₀ hsM]
-    calc 2 * (r : ℝ) * (ρ * √Vv) * √M = 2 * r * ρ * (√M * √Vv) := by ring
-      _ ≤ 2 * r * ρ * (M * Vv) := mul_le_mul_of_nonneg_left hsq h2rρ
-      _ ≤ R := hRρ
-  have hb2 : 2 * (Fintype.card (Fin r) : ℝ) * (ρ * √Vv) ≤ R2 := by
-    rw [hcardr, hR2d]
-    calc 2 * (r : ℝ) * (ρ * √Vv) = (2 * r * ρ) * √Vv := by ring
-      _ ≤ R * √Vv := mul_le_mul_of_nonneg_right (le_trans (le_mul_of_one_le_right h2rρ hκ) hRρ) hsV.le
-  have c1 := GlobalTheory.T.log_lattice_points_quadratic_ball_estimate (Fin r) A hApd T (ρ * √Vv) R1 hρ' hR1 hTtop hTQ hb1
-  have c2 := GlobalTheory.T.log_lattice_points_quadratic_ball_estimate (Fin r) A hApd T (ρ * √Vv) R2 hρ' hR2 hTtop hTQ hb2
+  set rad := Real.sqrt (Fintype.card (Fin r)) * (ρ * √Vv) / 2 with hrad
+  have c1 := GlobalTheory.HSAmp.log_ellCount_lower (Fin r) A hApd R1 hR1
+  have c2 := GlobalTheory.HSAmp.log_ellCount_upper_of_cover (Fin r) A hApd rad R2
+    (by positivity) hR2 (exists_int_near_of_closure_short_sqrt (Fin r) A T _ hρ' hTtop hTQ)
   set B := {z | φ z ∈ ballIn P Λ a b R} with hB
   have hsub1 : {z : Fin r → ℤ | ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ R1 ^ 2} ⊆ B := fun z hz => by
     refine hin z R hR.le ?_
@@ -221,10 +220,10 @@ theorem count_ball_gram : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegr
     have := hout z R hz
     simp only [hQ] at this
     linarith
-  have hfin : B.Finite := c2.1.subset hsub2
+  have hfin : B.Finite := (EllCount.finite_pts hApd _).subset hsub2
   have hn1 : ellCount A R1 ≤ B.ncard := Set.ncard_le_ncard hsub1 hfin
-  have hn2 : B.ncard ≤ ellCount A R2 := Set.ncard_le_ncard hsub2 c2.1
-  have hpos : 0 < ellCount A R1 := (Set.ncard_pos c1.1).2 ⟨0, by simp; positivity⟩
+  have hn2 : B.ncard ≤ ellCount A R2 := Set.ncard_le_ncard hsub2 (EllCount.finite_pts hApd _)
+  have hpos : 0 < ellCount A R1 := (Set.ncard_pos (EllCount.finite_pts hApd _)).2 ⟨0, by simpa [EllCount.bf] using sq_nonneg R1⟩
   rw [hcard R]
   have l1 : Real.log (ellCount A R1) ≤ Real.log B.ncard :=
     Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hn1)
@@ -234,26 +233,42 @@ theorem count_ball_gram : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegr
     rw [hR1d, Real.log_div hR.ne' hsM.ne', Real.log_sqrt hM0.le]
   have lr2 : Real.log R2 = Real.log R + Real.log Vv / 2 := by
     rw [hR2d, Real.log_mul hR.ne' hsV.ne', Real.log_sqrt hV0.le]
-  have c1b := c1.2
-  have c2b := c2.2
-  rw [hcardr, lr1] at c1b
-  rw [hcardr, lr2] at c2b
+  have hrat : rad / R2 = Real.sqrt r * ρ / (2 * R) := by
+    rw [hrad, hcardr, hR2d]; field_simp
+  rw [hcardr, lr1] at c1
+  rw [hcardr, lr2, hrat] at c2
   rw [hcardr] at hdet
-  have hx : M * Vv ≤ 2 * (M * Vv) := le_mul_of_one_le_left (by positivity) (by norm_num)
-  have hlM : Real.log M ≤ Real.log (2 * (M * Vv)) :=
-    Real.log_le_log hM0 ((le_mul_of_one_le_right hM0.le hV).trans hx)
-  have hlV : Real.log Vv ≤ Real.log (2 * (M * Vv)) :=
-    Real.log_le_log hV0 ((le_mul_of_one_le_left hV0.le hM).trans hx)
-  have hlt : Real.log 2 ≤ Real.log (2 * (M * Vv)) :=
-    Real.log_le_log (by norm_num) (le_mul_of_one_le_right (by norm_num) hκ)
-  have hr0 : (0 : ℝ) ≤ r := Nat.cast_nonneg r
-  have m1 := mul_le_mul_of_nonneg_left hlM hr0
-  have m2 := mul_le_mul_of_nonneg_left hlV hr0
-  have m3 := mul_le_mul_of_nonneg_left hlt hr0
-  obtain ⟨c1x, c1y⟩ := abs_le.1 c1b
-  obtain ⟨c2x, c2y⟩ := abs_le.1 c2b
+  set U := max 2 (1 + Real.sqrt r * ρ / (2 * R))
+  have h2U : 2 ≤ U := le_max_left _ _
+  have hUV : M * Vv ≤ U * (M * Vv) := le_mul_of_one_le_left (by positivity) (by linarith)
+  have hU : U ≤ U * (M * Vv) := le_mul_of_one_le_right (by linarith) hκ
+  have hlog (x : ℝ) (hx : 0 < x) (hle : x ≤ U * (M * Vv)) :
+      (r : ℝ) * Real.log x ≤ r * Real.log (U * (M * Vv)) :=
+    mul_le_mul_of_nonneg_left (Real.log_le_log hx hle) (Nat.cast_nonneg r)
+  have hm := hlog M hM0 ((le_mul_of_one_le_right hM0.le hV).trans hUV)
+  have hv := hlog Vv hV0 ((le_mul_of_one_le_left hV0.le hM).trans hUV)
+  have h2 := hlog 2 (by norm_num) (h2U.trans hU)
+  have he := hlog (1 + Real.sqrt r * ρ / (2 * R)) (by positivity) ((le_max_right _ _).trans hU)
+  have hd := hlog (2 * (M * Vv)) (by positivity) (mul_le_mul_of_nonneg_right h2U (by positivity))
   obtain ⟨dx, dy⟩ := abs_le.1 hdet
   rw [abs_le]
   constructor <;> linarith
+
+theorem count_ball_gram : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ (P : Pair p) (ω : ∀ σ, VolDens p σ D) (a b : ℤ) (r : ℕ) (f : Fin r → X.functionField), (∀ i, f i ∈ P.H a b) → LinearIndependent ℤ f → ∀ (M Vv ρ R : ℝ), 1 ≤ M → 1 ≤ Vv → (∑ᶠ σ, ((ω σ).meas Set.univ).toReal) ≤ Vv → 0 ≤ ρ → 0 < R → (∀ (c : Fin r → ℂ) σ y, cmb (vals P a b f) c σ y ≤ M * l2 (fun σ => (ω σ).meas) (vals P a b f) c) → AddSubgroup.closure (Set.range f) ≤ AddSubgroup.closure (ballIn P (AddSubgroup.closure (Set.range f)) a b ρ) → 2 * r * ρ * (M * Vv) ≤ R → |Real.log ((ballIn P (AddSubgroup.closure (Set.range f)) a b R).ncard : ℝ) - (r * Real.log R - Real.log (gram (fun σ => (ω σ).meas) (vals P a b f)).det.re / 2 + Real.log (volume {x : Fin r → ℝ | ∑ i, x i ^ 2 ≤ 1}).toReal)| ≤ 2 * r * Real.log (2 * (M * Vv)) := by
+  intro k _ X _ p D hX hS P ω a b r f hf hli M Vv ρ R hM hV hvol hρ hR hsup hgen hRρ
+  have hκ := one_le_mul_of_one_le_of_one_le hM hV
+  have hsr : Real.sqrt r ≤ (r : ℝ) := Real.sqrt_le_self_iff.2 (by
+    rcases Nat.eq_zero_or_pos r with h | h
+    · exact .inl (by simp [h])
+    · exact .inr (by exact_mod_cast h))
+  have hlim : (r : ℝ) * ρ ≤ R := calc
+    _ ≤ 2 * r * ρ := by nlinarith [mul_nonneg (Nat.cast_nonneg (α := ℝ) r) hρ]
+    _ ≤ _ := (le_mul_of_one_le_right (by positivity) hκ).trans hRρ
+  have hmax : 1 + Real.sqrt r * ρ / (2 * R) ≤ 2 := by
+    have hx := (mul_le_mul_of_nonneg_right hsr hρ).trans hlim
+    have := (div_le_one (by positivity : 0 < 2 * R)).2 (by linarith : Real.sqrt r * ρ ≤ 2 * R)
+    linarith
+  simpa only [max_eq_left hmax] using
+    count_ball_gram_of_radius k X p D hX hS P ω a b r f hf hli M Vv ρ R hM hV hvol hρ hR hsup hgen
 
 end GlobalTheory.BallGram
