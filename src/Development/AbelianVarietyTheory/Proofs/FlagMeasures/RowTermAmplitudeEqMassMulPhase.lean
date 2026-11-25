@@ -69,6 +69,61 @@ end GlobalTheory.AmpTerm
 namespace GlobalTheory.AmpTerm
 
 
+open scoped ComplexConjugate in
+open Formalism.L2.SG Formalism.L2.SG.Pf Formalism.L2.SG.RealObj Formalism.L2.SG.PairVal in
+/-- A relevant term has the Hilbert–Schmidt norm of its canonical pinned operator,
+multiplied by the strictly positive stabilizer covolume of any measurable transversal. -/
+theorem orbital_norm_at_point {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
+    (ν : X.B.I.Ginf → Measure X.B.I.Ginf) (hν : NuQPin X u u' ν)
+    (t : TauC Y u u') (hr : t.relevant) (hG : t.G ≠ 0) :
+    let w := ptOf t.toTerm
+    have := FiniteDimensional.completeSpace ℂ (X.Vpi u)
+    ∃ μ : Measure X.B.I.Ginf, VolPin.IsPinnedR t w μ ∧ ∀ K, LoopTerm.IsFundR t K →
+      0 < (μ K).toReal ∧ ‖PackageTie.hsEmb (OOt t)‖ = (μ K).toReal *
+        ‖PackageTie.hsEmb (OO (ν (gamW X u u' w)) Set.univ (X.Wu u) (X.Wu u') (gamW X u u' w))‖ := by
+  have := FiniteDimensional.completeSpace ℂ (X.Vpi u)
+  have hAt := LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u'
+  obtain ⟨w₀, hw₀⟩ := hAt t.toTerm hG hr
+  have hw := ptOf_spec _ ⟨w₀, hw₀, hr⟩
+  obtain ⟨hpt, g, hg, g', hg', hdec⟩ := RowForm.realDecompC_gamW X Y u u'
+    (RowForm.RealDecompL.realDecompC_of X Y u u' hAt) t hr hG
+  obtain ⟨μ, hp, hform⟩ := formTransp_pinned X Y u u' ν hν t
+    (RelChar.relCharC_holds D X Y u u' t hr) _ hpt g hg g' hg' hdec
+  refine ⟨μ, hp, fun K hK => ?_⟩
+  have hpos := LoopBPin.covolPos_holds u u' t hr hG _ μ K hw hp hK
+  refine ⟨hpos, ?_⟩
+  have hphase : ‖X.psiInfU u g * conj (X.psiInfU u' g')‖ = 1 := by
+    rw [norm_mul, Complex.norm_conj, Vanish.psiInfU_norm, Vanish.psiInfU_norm, one_mul]
+  have move := RowForm.ClassFrameNormal.oo_map_mulLeft (ν (gamW X u u' (ptOf t.toTerm))) (X.Wu u) (X.Wu u')
+    (gamW X u u' (ptOf t.toTerm)) g g' (X.psiInfU u g) (X.psiInfU u' g')
+    (InfCut.piIso X u g hg) (InfCut.piIso X u' g' hg')
+    (fun x => (X.Wu_spec u).1 g hg x) (fun x => (X.Wu_spec u').1 g' hg' x)
+  have h := hform K hK.1 hK.2
+  rw [hdec, move] at h
+  rw [h, ← Complex.coe_smul, map_smul, norm_smul, Complex.norm_real, Real.norm_of_nonneg hpos.le]
+  exact congrArg (fun n : ℝ => (μ K).toReal * n)
+    (GlobalTheory.CosetOrbital.norm_hsEmb_unitary _ hphase (InfCut.piIso X u g hg) (InfCut.piIso X u' g' hg') _)
+
+open Formalism.L2.SG Formalism.L2.SG.Pf Formalism.L2.SG.RealObj Formalism.L2.SG.PairVal in
+/-- Among relevant terms with nonzero G invariant, whether the orbital operator vanishes
+depends only on the canonical point, not on the row or double coset. -/
+theorem orbital_eq_zero_iff_of_ptOf_eq {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
+    (t s : TauC Y u u') (ht : t.relevant) (hs : s.relevant) (hGt : t.G ≠ 0) (hGs : s.G ≠ 0)
+    (hpts : ptOf t.toTerm = ptOf s.toTerm) : OOt t = 0 ↔ OOt s = 0 := by
+  have := FiniteDimensional.completeSpace ℂ (X.Vpi u)
+  choose ν hreg _ hpin using NGPin.exists_at X u u' (NGPin.pinHaarEx_of_place NGPin.placeHaar_holds)
+  have hν : NuQPin X u u' ν := ⟨hreg, fun w hw => hpin _ w hw rfl⟩
+  have hz (a : TauC Y u u') (hr : a.relevant) (hG : a.G ≠ 0) :
+      OOt a = 0 ↔ ‖PackageTie.hsEmb (OO (ν (gamW X u u' (ptOf a.toTerm))) Set.univ
+        (X.Wu u) (X.Wu u') (gamW X u u' (ptOf a.toTerm)))‖ = 0 := by
+    obtain ⟨μ, _, hform⟩ := orbital_norm_at_point Y u u' ν hν a hr hG
+    obtain ⟨hpos, hn⟩ := hform _ (LoopBPin.isFundR_fundOf a)
+    have hzero : ‖PackageTie.hsEmb (OOt a)‖ = 0 ↔ OOt a = 0 :=
+      ⟨fun h => KExpCut.hsEmb_injective (by simpa only [map_zero] using norm_eq_zero.mp h), fun h => by simp [h]⟩
+    rw [← hzero, hn, mul_eq_zero, or_iff_right hpos.ne']
+  rw [hz t ht hGt, hz s hs hGs, hpts]
+
+
 open Formalism.L2.SG.PairVal in
 theorem amp_eq_mass_phase : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (D.sp.Y 0) D.R.rS (((D.mem u).A.T : ℕ) : D.host.E)) (F'0 : LFlag (D.sp.Y 0) D.R.rS (((D.mem u').A.T : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ ν, Formalism.L2.SG.RealObj.NuQPin X u u' ν → ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → t₀.relevant → Formalism.L2.SG.PairVal.ptOf t₀.toTerm = w → ∃ T : X.Vpi u' →L[ℂ] X.Vpi u, ‖Formalism.L2.SG.PackageTie.hsEmb T‖ = ‖Formalism.L2.SG.PackageTie.hsEmb (Jw Y u u' ν w)‖ ∧ ∀ (t : TauC Y u u') (n m : ((VS D).V ≃ₗ[D.host.E] (VS D).V)), (Y.tO u u').rowOf t = (Y.tO u u').rowOf t₀ → n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ t.lin = n⁻¹ * t₀.lin * m → ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = ((((((X.B.g : ℝ) ^ (D.R.f * Fintype.card (Formalism.L2.SG.RealObj.FreeE w)))⁻¹) * G.mu (c.lat (ρ * n) t.lam) : ℝ) : ℂ) * G.om (G.datOf (c.lat ρ t₀.lam)) (c.lat (ρ * n) t.lam)) • T := by
   intro D X Y u u' hS hk w F00 F'0 FP hZ hG hAt G c ν hν t₀ ρ U U' hmv hrel hpt
