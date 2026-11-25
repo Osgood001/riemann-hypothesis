@@ -1,0 +1,854 @@
+{
+  "core": 30,
+  "candidate": "core30-fastslice69e74a970d",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 340,
+  "local_normalized_tokens": 840988,
+  "published_baseline_tokens": 1438064,
+  "proof_tree_sha256": "cc73f8a156502500c49febb9e32aa71dd66419808ba783a71254cd817783bd85",
+  "modified_files": {
+    "Development/AbelianVarietyTheory/Definitions/AbelianSchemeLaws/IsScalarTowerOfAlgebraMapEq.lean": {
+      "before": "f514ec4dab52714edc7c07b90c88b9093d43d70a75f2bef151fe1469f4f0eb0d",
+      "after": "c4f124a60cd4a4fd5128d2627e4989ee6be528506462eae9ad7496bef1098531"
+    },
+    "Development/AbelianVarietyTheory/Definitions/QuasicoherentCohomology/BijectiveSmulChartSec.lean": {
+      "before": "64c434efcd7f0db08919683379962a381fb38ad14fd02d6b0dae37d1a52cec4c",
+      "after": "02f2636358300724dd9ca9424e0155bd99495d18f3ae9cee5cdb1d445de97182"
+    },
+    "Development/AbelianVarietyTheory/Definitions/QuasicoherentCohomology/ExistsAwayFracOfMemHomLoc.lean": {
+      "before": "8dd114cdaf556d2a8754c80426e9c47a2027121ff2a8e7be75f4ecd9ebd4bb36",
+      "after": "958c23c09b5bccd4408987ffa99c27afebfb8ab3888228283da583fb211fca24"
+    },
+    "Development/AbelianVarietyTheory/Definitions/QuasicoherentCohomology/IsGradedMapLinearCombination.lean": {
+      "before": "a16206bb4fc30568ad42dcaa74016179accf9885b8f2756f331393639e202d96",
+      "after": "d9ab7dd6aa881d7afb9d9751d283e211ae00d88ab2f5a11308dee3ec28374b45"
+    },
+    "Development/AbelianVarietyTheory/Definitions/QuasicoherentCohomology/IsIsoTermComparisonRestrictScalars.lean": {
+      "before": "d08b8ee1bdd997b04bb81bbe7dea4976d7cf081ebe65975937fd798bd1ccb89f",
+      "after": "626d33d1c9bfa2965431be2c539dfbced318279de014a0e935074641f76b6bc0"
+    },
+    "Development/AbelianVarietyTheory/Definitions/QuasicoherentCohomology/IsQuasiRegularSeqSelfIffLocalizationMaximal.lean": {
+      "before": "50a0cd1f23fc080020f8422b6ada2e9a4be1bc782dcce46d8de1a0877e0be631",
+      "after": "6db82b79123219effdb3c59643ae2e89cb8a812186fde24d302a5ea696444029"
+    },
+    "Development/AbelianVarietyTheory/Definitions/ShimuraVarieties/IsOpenOfMemIrreducibleComponentsOfFinite.lean": {
+      "before": "161e118d461b19bad8e17e33392eb908c78a280ff44c8bd67fc20fb762b3b37d",
+      "after": "e16af79a5026cdddefb4de75c24a881feeaa895d039889141c94d0c4484a29ab"
+    },
+    "Development/AbelianVarietyTheory/Definitions/ThetaMetrics/ExistsSecNonzeroLocusEqOfLbIso.lean": {
+      "before": "5c691840a9b91a3fdae97e8cb65c502187c61b5d1964eb9a22cc6d754d71cae2",
+      "after": "1d5a1868d1a45cc13a0f23211ecc4cedfd05a42129aed77e9dad4572fee3c7b7"
+    },
+    "Development/AbelianVarietyTheory/Definitions/ThetaMetrics/IsRegularFnIffOfIsAffineOpen.lean": {
+      "before": "26287673a85f42953166fb17d5c69237527d1eb413ecf4145721dfdcee9829f4",
+      "after": "a94fda3697dfa8360575f44bdb9a9f323b624b154cc82352d3121c0c79e8daa5"
+    },
+    "Development/AbelianVarietyTheory/Definitions/ThetaMetrics/MemNonzeroLocusIffPowFn.lean": {
+      "before": "fe403ef22e3c52d871b9866c4945b23d26c9db79f79f3a6c4df3da4ea865163a",
+      "after": "bcf06a97c5ca7266395bda501009f1172bac1d87ad3a8129a036a81158dd9ad1"
+    },
+    "Development/AbelianVarietyTheory/Definitions/Uniformization/ExistsInKNeOne.lean": {
+      "before": "897fc6ed55aee8e913640e60f90373a0d3f4ee62e9fd9c1c3f830bcf1d6d6d4b",
+      "after": "91067cf9745e7cbb9a4258af418e31e51c9f868e4cd2e7659205e6c9fec1c321"
+    },
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/AbelianSchemeLawsOfCubeBundleGenerator.lean": {
+      "before": "56023958f58f3640091c1de67bc1e81e08a174a111761586dc956f08a38ae239",
+      "after": "8148f3c1298d5d938243ff0351a66fdd574bf91451ddd713e739b08b4677677c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/CechHOneVanishesOnOpenOfIsAffineOpen.lean": {
+      "before": "e4928cf456bf5631e1e59e572beaecc9c9ffeecb25f4d2c34c1f70a579353230",
+      "after": "e12e1784574780ed6636f65cb5a5d3c09221ed34d3271da260cfe4ef99bcac18"
+    },
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/CubeTotalComplexAcyclicOfSlicesInductionOnCard.lean": {
+      "before": "89763d0e2b1176916b8e767839e4cf273824bd8fe9f823519e82abd61ce4b3c2",
+      "after": "5a82d1ae6a7170da13bea8db00828cc3407d6c1d7bb4c313e8434a1d6cace302"
+    },
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/IsIntegralOfSmoothFieldOfConnectedSpace.lean": {
+      "before": "4a75998f5b15ff04b6d7f04c2524043fdb9b392b1bb39fc71481ef921e257aa0",
+      "after": "20439eaba8eea06867a8914b64144a5a4c7ca15cd081ab5bec563d849bfdd58d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/IsLocalizedModuleResBasicOpenOfQcqs.lean": {
+      "before": "f9eb9c19ded1b4c9cccd7cc82dda1b043d03e93223d8831132fec9a05e84e300",
+      "after": "ca1becf024eab91357d5a140bc8abe81254d5bf15d8784631d48c287b5f03f61"
+    },
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/NonemptyPerfectSectionsComplexOfSmoothProj.lean": {
+      "before": "3527f30bf46932e769ccef5c2968f894be031736ec2081b857175a504c8b5907",
+      "after": "22190d718375116ce483fb6cbe2e944712a413f68e47b2a31ec1de577b4e4e4c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/RangeRestrictCompSubtypeOfOrthogonalOfNe.lean": {
+      "before": "699f39c1c3b1e399d06dfcaa43f5386614ea26c784003f056c934dd9acab1ee1",
+      "after": "01d7df08e5381ea4664ca0e2de841e9b5c5ddf0692033565e0550ade65f7f9ad"
+    },
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/VeryAmpleByOfRelAmple.lean": {
+      "before": "df2bc9d30394b602f177bb8d8deec94bdcb3ea70102cf81c36be35de4687cb4f",
+      "after": "132fae54db69566896c80bf75598cee4fa6e281b18969bf5411b9bdb6b93c084"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/BijectiveToPushforwardComp.lean": {
+      "before": "0455d6079b756df1b885c042ad70138533ed5e9a0241f64c8b32320f096a17de",
+      "after": "eded3d3bed86a7b6aca9b33954049c68f92464a271ce1b002ad54d637d3fa152"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CubeComplexAcyclicIffQuasiIsoCechAug.lean": {
+      "before": "b4acbfc36b2a0c278d8542e950487d1e2b6f7b8a406d670745449b067b603091",
+      "after": "b046ef7009cdfd38a73681f8729a9d556baea136fd61a9db5b8612aa35eb531b"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CubeComplexExactAtOfIsLocalizedModuleRes.lean": {
+      "before": "ac0d311ad48e46500d7c428824645eb89f022149eba7c59dfa5d5dcd7d392559",
+      "after": "cb2568e8863b9be30e9fb414e5efe12af74711c648cbdde77be88b327ebc50af"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExactAndKerBaseChangeOfForallResidueField.lean": {
+      "before": "2f47279857121fd579f22c3220c21253b81cb7532e599811e241869e5cb6e41c",
+      "after": "a4bee848d0a30734319a55521fde0efd50d36dfe001377f4a34ddfa694a5f0a9"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsFiniteProjectiveComplexQuasiIso.lean": {
+      "before": "24540250b4ba81759c49f05c52a839bfda8d23176492fa34323d40af29d8430b",
+      "after": "7a0355b2e3287212628c39abf791b5f6cab9c58abf7328df4d6242282b2d9694"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsIsGenOfUniqueFactorizationMonoid.lean": {
+      "before": "cdbccdf65c066a15c14e421e2c47ed3db22810e27b26654237f4df8fd7f51050",
+      "after": "79f9a8cc68989394da970d4e26f38c88ab164d5be8a79ad9c4e114cc6cfbdf20"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsSmulEqMapOfIsCompactOfIsQuasiSeparated.lean": {
+      "before": "0decd9961dc00df15806e233db428f1efcffed752f175963f01732714d7e5c3c",
+      "after": "6a7c77c1c6af7429f0d5a128f40670b606f01849a68e6e745386158a154ecf37"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsUniqueLbIsoPullEqOfCoheightLeOne.lean": {
+      "before": "359c880c65a800fc522a44b947934208c5151e4307af7cd381fff15b732447a2",
+      "after": "38a3f94206be4ca74ba6013570207533c4b6382ee45fe929823201c8084756ea"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsUnitSmulEqOfBijectiveToSpanSingleton.lean": {
+      "before": "0275ca9024d55b4d8de646ac1293006702b1a6cf7341f564c51e633e0233db65",
+      "after": "9dc974fb6a955febbd815796f20a94687da909dc6eae13a8d6fbe4ab82d2717b"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsQuasicoherentOfForallExistsAffine.lean": {
+      "before": "9cfbda497b461c4cf3a29cfef4e8a48020495d321ea197d2c3f49893526a3e23",
+      "after": "9e42741b75d6cc0fb604f00c815799e40e55816ddb40ae37e1e0f7ec673e5e2f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsRegularOfSupportDimQuotientAddLengthLe.lean": {
+      "before": "bf262f5e6f069ba83babccf45b860f37ff2c5062ea34d2f2a26b121fb4d4ccc1",
+      "after": "bde790d3a54481bf7706d5ea7404c3c230b6c37e1b8f2053f6d77c7fb89af2f0"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsWeaklyRegularIffIsQuasiRegularSeqOfIsLocalRing.lean": {
+      "before": "e4407fc766cbe8b836f517b8a9017ad0ecae34cc2a0b34323020b56cd6ae94d0",
+      "after": "42a760118d20eb8ff5b375780b92cffd70a6f0092d0ed2ea6c95c35026d74f44"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechFiniteVanishesOffOrigin.lean": {
+      "before": "b6d5fd728e9ee8cd88496fc8975febdaac8f83cd9cd7f66cd40c8061c6849524",
+      "after": "b98ba4b000db6e8cd2cf6a1863510b119e22529905f12345cb2a6a20c9fbddae"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleFibreCechAcyclicOffOrigin.lean": {
+      "before": "44f6e202ab4b821a61acd9d9546a00e9a30ac8a659e73741b2768a1d63980eb6",
+      "after": "e79fe4a559b902aa80343efe035b28a40e5daccafebd8c6daac7aefea51dc5e3"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/RestrictPullbackIsoHomAppPullbackSections.lean": {
+      "before": "79d00b8a7416099e6776e69e1922d8bb024b88cf1a6b6d2ca2b9509da8421c37",
+      "after": "e834eee6a476b5ecab8fc11ee9f169a7e5d6d178754a4a6c97179ce0d6da943e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/RingKrullDimQuotientEqOfMemMinimalPrimes.lean": {
+      "before": "f4b14da75f91f4ce42b91c7469615872e9a9336f2292c5965b8b5246342be768",
+      "after": "f29fd7a30af6694d7263513a97f473037e8d3df8c0102902a35d6fbe9b597baa"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SpanSingletonEqTopIffIsUnitOfIsBaseChange.lean": {
+      "before": "08802d746a46e222acdc4babddcdf09cf0cd3ee7446404ac03c0234b7422876d",
+      "after": "7f0cd5688568052bd2697ff9fc0afd9e9f375f1c826a9a7554a6d3bc528f99f2"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SubsingletonOfPoints.lean": {
+      "before": "043b8a023cd29bea665640f28af0a847aa43182ba626f8a136038ca642c52f6f",
+      "after": "f8774c4a2138ead09fa0eecd21f771f9a8791aaac98fb7beeef0fb1fc25adeab"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/WeightAddLeOfMemSupportDividedContraction.lean": {
+      "before": "99a07505e3a4dfeae5904e078af79e550fda83d22d3bb67d78f3973bfb197900",
+      "after": "57e25b026967adc791a1b6379d68c639492fc127058d24353f40d34854681646"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/XSmulMemWeightedHomogeneousSubmodule.lean": {
+      "before": "99f6bbff21fb711f1fe29deaa7f607c2da0eda1a0b2d367b26c9588ea4566e69",
+      "after": "47b9a6c1e462c6c5b3f7f3b674e2038d3a6a8a4c90e932411c33af526fd4f607"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CovolumeBounds/DifferentiableOnOfTendstoLocallyUniformlyOn.lean": {
+      "before": "c15e6bef828059d8e9d746a78ba56b5447545a3f4a0dd6ea5f5715dd9077eb87",
+      "after": "ff7847ef6a46e2b4c991bc7cce958f250c76c250f8eedeb3b87aa21f887d22ee"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CovolumeBounds/DualRestrictSurjectiveOfIsTorsionFreeQuotient.lean": {
+      "before": "d41620ee29df61804c2999016b3defb4c06eb2ee396d9637a0f23cc79b4cd3a7",
+      "after": "f3ffef6c894cfc18876816f88f0aa65417ae620ee68b6485c741526a68ba6eeb"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CovolumeBounds/EntireApplyEqOfPeriodicOfSpanReal.lean": {
+      "before": "2309fc442055b321d52fc67e3227e3d7aa05eaeae067f3af2baf7240d0679159",
+      "after": "3a0d4b537732cbe8724589effea3037d1832b8cb7bbcf7bca18818847f2c5156"
+    },
+    "Development/AbelianVarietyTheory/Proofs/CovolumeBounds/FderivIntegralApplyOfHolomorphicOfDominated.lean": {
+      "before": "ec5bcb37e7bedc71bf421de54c13335c7b0ac509cf01be5b4c7685b542449ae1",
+      "after": "c0574dd48468b5d7fbf9f389d756b14aa27bf6b4a7053f3396eabb8fe021580e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/EqZeroOfForallPowDvdGerm.lean": {
+      "before": "6f6e5a2e7c244f120261eb6d84c62b4493c351ae22fb9ec43b8e1865bb7bc9db",
+      "after": "4de73a4a3f0551a033ec0cf603f503c3a7a0ca1887d9186eb8f0c225c9e54d8c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/ExistsUniqueZpowMulAppLE.lean": {
+      "before": "8c6458b3e5ea1179dd50b9f73b3e45f61556b788cc917c5d3336cd91b6285815",
+      "after": "099d185c6da5134f81b69f9e3af53b4fd8507ed80f83411bd57ba890c933531b"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/ExistsUnitAlgebraMapEqOfValuationEqOne.lean": {
+      "before": "e794175cc50192df626f58c5b717e1a7afb02c6ab315359637ebedb5131c9b38",
+      "after": "5a61a44656ecbdf757711655460379cf86fca21c2ab5af4d58de7560d1879c32"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/IdealEqBotOfFlatQuotientOfMapMaximalIdeal.lean": {
+      "before": "eb416a6c8c0b60a2ce2e2e9bbb27c1fa4e8c492e0246f4bb76c11aa6bac9faa5",
+      "after": "bd8827927101878a99c66513cfa2b162030b293a4702922f7ff3a2bd2a36b8eb"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/IsDiscreteValuationRingStalkGeneric.lean": {
+      "before": "3bca5d1e9b235e99d8aae06483a5257c1142cd720c44488014fadd630b488dba",
+      "after": "6f0b23a8ca28caeef52ecf8280902ee7dc3fbde329bcd6315077c51dae539e5a"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/BijectiveRestrictPointsOfEtaleOfHenselian.lean": {
+      "before": "c3a204cf0e36d965c12344c5c805e6a9a48f88d7ec5fb54ad343104494e8e627",
+      "after": "2ac65bb094a55723f9fb1595c4ef9f00b1e6aca8e6c59a8f8dc06e3bcac71389"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/ContinuousAevalMvPolynomial.lean": {
+      "before": "7b64b40e8238f64b43bfc90203dfd5f26cd603f667dae57f024191a760932827",
+      "after": "15dca956d096b29e041bf059c1273e2d36f3504ee9e390f7ef53f21f0ba6293f"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/ExistsAppTopEqOfEffectiveEpi.lean": {
+      "before": "45413838e70f4d405f67faf13f05d617db29381005f09eb48881900b94cde37e",
+      "after": "54a9ca081a48a533b2b5525b61d90b1923d1793c021bc4d6f3dc6d8b1a24f5f3"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/ExistsNeZeroIsStandardSmoothOfRelativeDimension.lean": {
+      "before": "c74b480b3ea7822d1368afe1d9c025b4373b12e9cdc09ee24406502b9c1faa5a",
+      "after": "153f214183b8b9e1521e47314bfc4c60ca11ee2a24f5042e2f644ee7c1cc9e7d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/ExistsOpenPartialHomeomorphAnalytic.lean": {
+      "before": "cc2033ed39a4a247e56e3ce8b11cb99d3010655f21cf8b26637fcc57a72f460d",
+      "after": "da3bd9122377f4c343607da9457003ff6ebd676d6c75da3043470598fce4f2a4"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/IsDomainAndIsIntegrallyClosedAtPrimeOfSmoothOfCo.lean": {
+      "before": "2abfbdf40b94e76d42516f223911599a3e9d223e60ad7901b43fb439728278a8",
+      "after": "273b843e24e3f168915a61751c53f47fe1ee78a698f7f0fecd88b32cc9d22dbc"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/IsIsoAppTopOfIsPullbackOfSurjective.lean": {
+      "before": "94f103ad6a45744a6b084b7d7c058db3e208fe9d2e70aa9bc3a23545c8b24195",
+      "after": "3f91890c8bdc34d6e0acf361d81cbec4714c565d95ab407e194b5d9f7cf53e56"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/IsLocalHomeomorphAddMonoidHomOfEventuallyEq.lean": {
+      "before": "52591aa1f02781a8532aa9744cc7279f34940864506a7c000fe222cbed533676",
+      "after": "8f0ae2b83c2e681b441fe77110629cec62398bf84e466e93ae3ac565dd72a56d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/TendstoUniformlyOnDoublingLogOfContraction.lean": {
+      "before": "6a20494f8d8a661fb0fe86f721e7090f80eb7929aa79c37841decb86b8775f91",
+      "after": "c4ecb5105526500155fc44352dd53094a5f27908ee8da4a821d08d307760ae44"
+    },
+    "Development/AbelianVarietyTheory/Proofs/ModuliProofs/ClsLinCombSingle.lean": {
+      "before": "3a12e655a01cdf1a48130a404ca2a07a280aa2e19d85fd00aa51db8a331e023e",
+      "after": "cdfe760de0122731187d4b2d8858df4c6f9cc379b91910b7230d28bd5aa520c5"
+    },
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/AppellHumbertNormalFormOfLinearExponent.lean": {
+      "before": "c182185bf0eaac1c195d7cfe5ad0e618b32a47f04ac2efafa705b7d3dd2d933f",
+      "after": "39d858f52b638eee33c1b220384a3d180192239d938cbd331ee1e3bc0efba32b"
+    },
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ReFormPosOfThetaNeZero.lean": {
+      "before": "6d3ff60f0ec9f8cd1bbcdb850a6421717046cf270e4d5e950168121cc88f0e0a",
+      "after": "2552dc86cee7128d0d4d8a0d2bd23faa8a96cc0ca35165bb2c433afd5ce16061"
+    },
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/RiemannFormBijectiveOfWeilNondeg.lean": {
+      "before": "efdac99df8cc094269f6827f1c2f23f26bfca66f932ddcffcc65fce1be76e929",
+      "after": "78a18ca74b5ce3d075dec91263d87c381c55f2cd4462e2ba8f9fd0683459be10"
+    },
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ThetaUnifAVOfLaws.lean": {
+      "before": "f4c1765a28493a6a9f4101ff5975c34c2cf003e93ae6633fbd1104cfa8cd521a",
+      "after": "1d0a1e46e0eceef7a4808476e7e85a9c90787c23cd73968ddd15f207df43ea92"
+    },
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/TopLePreimageOfValAtNeZero.lean": {
+      "before": "0d8ad6bb1d2d7b2e47820f675e5654734aa1a2eb1a4d4b1ee0c702d433878438",
+      "after": "3a625a969e19eba06828b5c45309ba4159edb48f297db6b67a072764ce9adc65"
+    },
+    "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/CyclicIdeal.lean": {
+      "before": "a9faa221a30c2c3a1f3c6d86d3179534d706c51410305cc2da10ac5e911f5c9b",
+      "after": "e1bedc0642f16dca9757d7e9d2bb4860dde0b6a892b7e866a602dcc22ffdf2f3"
+    },
+    "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/ThetaUniformisationComplexAbelianVariety.lean": {
+      "before": "91158571f2caf87b21a62237a1724411175f9ca48f7aab30c74435b2a5227b0e",
+      "after": "fa3849fed28ae8ed75ca0c09e0602704ae3af827696aeb92376a9444d7e69c8e"
+    },
+    "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/ExistsLiftOfSchemeTheoreticallyDominant.lean": {
+      "before": "c32752a88f21d13b556abb03158574394a393a6f923ac4cd67ed695ada0985a1",
+      "after": "82d2439f4148c48e6154742cdb4c2b51d02dfe022998cad59b4277c232c4c08d"
+    },
+    "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/FlatOfFlatFibresDvr.lean": {
+      "before": "4fca6ab48832edc9bf957d52c0ea2765e5757b65920df0e6f323c807bed94bf2",
+      "after": "37c06b6d0d7e143365febb0daeca91921ecd30e15c7c15d84ecba0d957406d42"
+    },
+    "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/RingHomFlatCodescendsAlongFaithfullyFlat.lean": {
+      "before": "c0d64652272f85d30314c3e0452b1446a8a93e9f4a2b59ec79613ca24e614005",
+      "after": "97c101150e4e29d5f50568b1187a5a576e93996c963cd68f10120a7b047a397a"
+    },
+    "Development/AbelianVarietyTheory/PublishedTheorems/RelativeAmpleness/RelAmpleAndKTrivIff.lean": {
+      "before": "867395382178cb226fdf6ee71f332a8a2ba98544a8fc247583fc3c1b20c98cd6",
+      "after": "fd0be51cb12855d5df2eeac0049a3e49f7d45935f89863a6bdc4fe2907fb32ee"
+    },
+    "ReciprocityTheory/CommutativeAlgebra/ChainConnInDim.lean": {
+      "before": "2c19f5bb845e831f3bf30fae0f7a0897cbaeac0dfa88584ef522b8a9cac47366",
+      "after": "9aaf6a0ac01c03b5eeb66e85cfb398820e9bdc76c20564012682cb80e247e500"
+    },
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/AssDim.lean": {
+      "before": "2ff8e6b79dd8a219f74e97b3ca7e28f4065b734e9db4c65b579b317e362e7c7b",
+      "after": "687bcd5bd3d23c4ddfd38e7731cf3e5d0b44c7dfa51c1ea27b39a7cbc93c614b"
+    },
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/Bridge.lean": {
+      "before": "d2bd6114206a9bf452d92b98ac7052cea75dbb7b8778f6d499683e8c804540e3",
+      "after": "ce41453ed8338ecbdde8b5fadb996b45236c52882ae66ec23bd4161279546894"
+    },
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/ExistsIsRegularAppendOfModDepthGE.lean": {
+      "before": "dc2f017147c681c2993ea19e513b7942f4f4a11e02d768100080008616b656ee",
+      "after": "97c16c03961a3cf061a56c3ee239de97dbea54419e14d9149ee4b28301fe6e5a"
+    },
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/LocDim.lean": {
+      "before": "78e1d87b579ddcc17b73aac0d4d4bab53acfca69cb39718cff55fee531fa4bf2",
+      "after": "7a6d1664e76d575a3462852957e47625931adad5aedfa2904c01449ab604dfa3"
+    },
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/RingKrullDimQuotientOfMemAssociatedPrimes.lean": {
+      "before": "b8fc0b11f09c95c490460cd7a3afb954fcbf570a34eb08b34a67fd88b97d5312",
+      "after": "1cacf798e9bd216d4c90718744695a6eeb1a3b40f889f7a10b19763d548456b7"
+    },
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/Unmixed.lean": {
+      "before": "2005ef439e7bb5756965d3ef724aadbcd510d480d10f1765139f528206cb298d",
+      "after": "182b9be4a935d41f5ca341a9a63f556331c226a9e5e5469dcbb8512e8fecf5e2"
+    },
+    "ReciprocityTheory/CommutativeAlgebra/SaturatedChains/Integral.lean": {
+      "before": "aff9aaa499187e6d85d0213df972385ae844fc9b2face591f6ddfb8be2f7a4db",
+      "after": "7c9829d0aa631cbc54ea95236582d5c9d4b05a4d3b2791e360acf17ab4a5b558"
+    },
+    "ReciprocityTheory/CommutativeAlgebra/SaturatedChains/IsSaturatedChain.lean": {
+      "before": "ffb5ed5c2e5e628b0697c3c2267c9224ac3adebdddb1f51aaeb06fadc70ea400",
+      "after": "12b7eed06d3ed6e8c1214b6887dde71a8ace06139bfaf6e3cee4906c601dbb54"
+    },
+    "ReciprocityTheory/CommutativeAlgebra/SaturatedChains/RingKrullDimLocalizationQuotientEqHeight.lean": {
+      "before": "56cff47c3453bd926cee40edc541f40c8ebacff2bbbffbec74f174e6bd6d246d",
+      "after": "0e1a70760cb3fbf9c66531edad5d571ca5ddad8fbe7120f3bea2cc580dbf924f"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/AbelianSchemeGerms.lean": {
+      "before": "2188051d8f4aaf88f92249a9efbb69ffaa9c4f640159be1d832e9affac41d098",
+      "after": "e76318e00829e71fbc1300059c1d46006c8732975b62446f9ee8ff5582ca65f1"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/AmplePt.lean": {
+      "before": "b3d41fe110e8e64f1d967c9e9d9b128dc7324f68fb799427441e5f67012594ab",
+      "after": "448c4315a9a060bf9f64de19ed884be67f2d4b395970ae9850f2113b4bec2b13"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/CubeVal.lean": {
+      "before": "58eb5c963e15bb2cfec6dbbf1db3523e038d17a1dbe666e8e73e399a970aea43",
+      "after": "4b20b46073b0c1d1b8b805cf30b9485b28de4dc785f0a68794c4349d21a7f144"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/DivCalc.lean": {
+      "before": "b6cae062a52099c47d529d229d7a0413a35df9d0542acd5a331a427d8ce9e62a",
+      "after": "daf13f608089d17a406287d9fb25e78bed389a459316bbdc910d290665d88185"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/DvrData.lean": {
+      "before": "1371bed651f459bd521523d0445289a53a4b40fa66f34de5acf14751bbb03686",
+      "after": "88fb9fe976e0aad2a1d98c6d5f251d493025a16ee3529e263ef6cd4b6961b319"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/ExistsZeroGt.lean": {
+      "before": "5bdbe7d58afe44abc8db04caa916cdfd6a46245d861d2d65572ce52de4e83f72",
+      "after": "6eda37355eb84979597e0d5ada7dda140c745c0bcd1e9147f7a2bf9eadf8fc23"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/FlagBasis.lean": {
+      "before": "63c71e96a5de90f8f096ed70886241e542dc3f2495dcfc7b09b7a559e0620bab",
+      "after": "ea2112dfe6bd8e7eaaae1d3a8c42b69ac9213e41eded31a0a243d0b94f38c6c5"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/HasArcDataIff.lean": {
+      "before": "a772d53be95d605c5d348e44ff14cd1a08a5bf894d9b3b1e1325785ee73956f1",
+      "after": "d3884b29783d2d4d8261cf96d51e86d7e9af1ccf37a779de2014ffd317c947d2"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/IsHolPeriods.lean": {
+      "before": "9edfccbfe75f5c40e167fb1712f9e4edb17143833ea339b96f5d02d1df1cde9e",
+      "after": "c6324b47ee8d8fee4141a42cd434383c0edca48f711b484f9c951bf98439ec32"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/IsMonHomOfMul.lean": {
+      "before": "e3aba22ebb4065b24e7abc2cccdd116d2f6efa52b96efd47b3b7e5c933427ae6",
+      "after": "5231ac98e0a98d8627469b6b7766a2576ba5f95eb99ae07c9d6a57aa979dc678"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/OneArc.lean": {
+      "before": "ecb13fb53d829f328b22017b43c1842506652cc9f7dbb8df40a7095bba3a4b4e",
+      "after": "c70d33c05811ad087d4520b1e08b200ee4a05b9633e0b49df94694f77a3932ca"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/OneArcSt.lean": {
+      "before": "8d732cb8552c62dda5f93b5d098eed116cef06ec6511b8bee70b466b745d1286",
+      "after": "c50033b6fe39983c6c3c36089dca930b658ca5a2b63c3248d3081a9ee89d581b"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/PullCub.lean": {
+      "before": "861122f07ec5ebe6a3a1c848756e7a58469a96007b56f51a429a134058ed7379",
+      "after": "02dc37f02b7c5251404f64278b379d7bcb958199662064426fe8b6a64d90c938"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/RigidArc.lean": {
+      "before": "44bfd7cb9335ef0088cdfb27d6ec920afbd4f92d8301773d0d441cb6ced86b35",
+      "after": "df1d3092ea27d819ab4c10b9058d17da5d5cbc0210b20381c10810fb20ab539f"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/SABBaseChangeSt.lean": {
+      "before": "8b02bda6397e91093d8d3783cb9e3be925b04100ba9348d6dd7abf42ad5fb272",
+      "after": "9132b9e3f0794eff0f59b8f199346dc400f282d71c167dcea03942eb220294e8"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/SabComp.lean": {
+      "before": "1a4643e5df38a63b1b803e9e154751f794aea5b877c67c598557a51ff9b76c18",
+      "after": "eadcdcb744afe358ec05436487b9f77495cb4730fa5165c33f560966c73b4070"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/Splits.lean": {
+      "before": "eff9e3fbe3e481cbcc1860d38b3d7f6adf8c893e9799f1d323826af9f4b43004",
+      "after": "147a1e84a778ce04cf5aaecc5c1606d9ec7c1904d9af1b79b7e45402130d7479"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/ThetaCore.lean": {
+      "before": "337f319445d526cbab0c27d6e0f472910f04de8e9ecf111751634c5c42557641",
+      "after": "497966e1fa74e7251cdda798612daca15d544197d77218b476a20a72dfbb2df8"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/ValCalc.lean": {
+      "before": "e8631b33fe9229664c6f7f4365e329b87754185b477a9402368144c86075e029",
+      "after": "9271b422d69cff05a9b7b195caf7c36b57720ceab149e5429e0f221e5b418374"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/AppCompatGeneric.lean": {
+      "before": "c93805aeaca7e0bf4bf32e8711f298ef541346dff60562d135aa5e83af80f854",
+      "after": "64d1d3a8f48e35305cdac7dd4fb7b6f76f054f7e8968aec6a68919fc9d58fa6b"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/FamMod.lean": {
+      "before": "45e2d5a724bfc10ab44103dda2ac0df6adf243ac727188846159eb90a35fe598",
+      "after": "4bd53c42b49d63497ff118ab3f093c7cc7366f5e4b252e048cfb5ff640a9261b"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/LBLocalC.lean": {
+      "before": "2a3e4733b20a64c4f6f1186f74270fd227760319c6e6cb6a6d9f69688977e824",
+      "after": "8a647def6478825f0355ba55058dcae19aca7bb66410bbfca1b7b52312244da5"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/LBTransport.lean": {
+      "before": "82c055a1890f6d3c19549ed706a1ffe918237fff4ddb12b209042ef78150232b",
+      "after": "4cfaf3d396c891c47f008a7330bbab63fa17123dddb41605a4d4dfaa38bb7f3b"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/PhiGen.lean": {
+      "before": "34cb3ef9f537b60703d5d688faa5b23dfc73d8f3474741a95ab1122c297db2dd",
+      "after": "03fc4ff82609ae419b277d7681cb753aa491a7ae05e45bb4b1608ce3ea5d8286"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/PhiGenPf.lean": {
+      "before": "5b5b7228090fb64ed868a695edfc5786643bdb43ee7cc3a387a2ec12d75f7cbf",
+      "after": "b9db7943055ff73baaaf38f4862f804c7bb8c3dd30f9921608cf3aad2687eb21"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/ProdIso.lean": {
+      "before": "1bab430729f930dea2da217f9cc0cc63f41bb57edd3c84f88d6b34c7c7fb868e",
+      "after": "04698e76e5d03007f35e76eafe637b323b62c783ba278702f41ab3e1c8f0614b"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/WchartLePreimage.lean": {
+      "before": "24c27c9b034f79fe3339429a89eb60de884a7394dfa5696b1f5f79ad85cc4667",
+      "after": "1a69eeaddff62f9f61e4bcabafe5e4e4ade702b3fb89bf0638221678c5307caf"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/ChartPullbacks/TangentLinearity/ConstPullback.lean": {
+      "before": "04bdc920a845c423266693296d428e528531008c19949b536bb646b92604e491",
+      "after": "1b0b7f5da65ea7dc5954547994edd4a60d4615317c4985639d1b0ea0164f9577"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/ChartPullbacks/TangentLinearity/FnOfComp.lean": {
+      "before": "af48170c632d385dc44a9d22e4c4eb21740b24e5a680c415c4342e1aaab59e64",
+      "after": "674d24635bd77846ada155b9b8661fdcf8e7b150c584c53a5e6057601fd094c2"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/ChartPullbacks/UniformBaseChange/Transport.lean": {
+      "before": "18e7355a27bb495bfcecddf8844141f929fe6539f75bf7a61c54c980ee317fac",
+      "after": "c482da1ccb9fa56adb252fe20307dfb4e3ff0d8155261d5ee00aa778ca90e501"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/DegProd.lean": {
+      "before": "f1337622dee3f524773fd92e2cd46276efa1f356b413dbbe9796e4a6209ff594",
+      "after": "8c3f9dcc4797c19c677d31737a5bb9fdc92b71c2e71d560b806687d3b5a3f7ed"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/IsNsmul.lean": {
+      "before": "9f9b9b31f190b809d45b86eee0f718e8d9840033f5de3501f664e3b4748ff06f",
+      "after": "41613052f242106f1dc22c5e9044415f170e259da8aeff5c784dd90d85336244"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/MapsAtLeA.lean": {
+      "before": "b9a1eb690b548df7f3c7dbd2e75c621325d9bab5aa0235908558cb0347807f9a",
+      "after": "b1b2d69dc0425c1c22d92aa64bf459d24252d2b83bb7b66440e362c8613117c0"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FirstCohomology/GenMove.lean": {
+      "before": "563febc9b8a8d4a2f6c24ad9abc70cac70f0ed826ae598daeb78f58acab671c6",
+      "after": "637d90fca330b99527e1b0d514b9eaff4a1b620f872d75434f1d273f850c34fa"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FirstCohomology/SectionArithmetic.lean": {
+      "before": "8ec39c5a3b8402c0e3d529897445bdf8fbf2266092aa2563682cf6257be8e0bf",
+      "after": "31e320d5d06ef3473cfe418bbbc02a20e5d6f545bf07c91845007d7e29205e2c"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FirstCohomology/SectionDivision.lean": {
+      "before": "682384bf4cc1583bebab115c7fdbaa1205f3da0bb5641fe1d53bb3d5627195e1",
+      "after": "e94bb161bd4dfaa4e69f432163acfab7368f8d76b1d242f92d6261d4ccfc7cee"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FirstCohomology/SquareUnits.lean": {
+      "before": "e0aabfad283ac2b0edcf1ef8a5630693a79aaf2570f12156acdfbd1a6df7d30a",
+      "after": "7966f1ab56577083c338c570e766ae554e0080a5c275c5adc6ccc6c67d75b99d"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FirstCohomology/ThetaMove.lean": {
+      "before": "1f9c9dd96513d60343e88bd90eb8f3c1c9b541fabacdc213a88b7ed78bc7630d",
+      "after": "8041e761c7a5d0f96dd176e4962bb60b1191492942e74a319fae9b3023556c5a"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/PlaceDivisors/SiegelPullbackTransfer/AdelicGL2ExtOfLocalComponents.lean": {
+      "before": "f5ba4f56839a1ebaaf337f11b22abe4ae8385bc64ec04a7f2224abdd83ed1b39",
+      "after": "eb036427ab18b95115bc688cab25b6cc33ec94451d41ae558e4523b7430983be"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/PlaceDivisors/SiegelPullbackTransfer/ExistsGenTransfer.lean": {
+      "before": "b67ad41dfa3eaaaa39c56a564aeb648166b97002200ed811dcd367bd08f80888",
+      "after": "0f847d5031eb9093d7b309e3ec76e8f327de04060bf434eff6d3b9b5f13b364b"
+    }
+  },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
+    "codex_proof_source_sha256": {
+      "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaUniformisationComplexAbelianVariety": "fa3849fed28ae8ed75ca0c09e0602704ae3af827696aeb92376a9444d7e69c8e"
+    },
+    "credit_detail": "Fortytwo supplied the parent proof edits. Codex revised the listed mathematical proof sources and checked the resulting proof.",
+    "new_contribution": "Codex incorporated the source replacement in Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.SubsingletonOfPoints from the independently verified core23-arithtransfer59a98676b2 campaign proof. The retained Fortytwo source contributions are in Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CyclicIdeal. Codex assembled the proof and checked the full import closure. Original proof by Levent Alpöge. Codex used the compiled target dependencies to simplify the retained Lean source."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-24T09:10:20.092656+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null,
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
+  "source_kind": "pinned_git_checkout",
+  "target_sha256": "2691ce36e37e6f6413d8dd98c52192186c048436371808c015e8606227ab7063",
+  "pinned_source_files": {
+    "Development/AbelianVarietyTheory/Definitions/AbelianSchemeLaws/IsScalarTowerOfAlgebraMapEq.lean": "f514ec4dab52714edc7c07b90c88b9093d43d70a75f2bef151fe1469f4f0eb0d",
+    "Development/AbelianVarietyTheory/Definitions/QuasicoherentCohomology/BijectiveSmulChartSec.lean": "64c434efcd7f0db08919683379962a381fb38ad14fd02d6b0dae37d1a52cec4c",
+    "Development/AbelianVarietyTheory/Definitions/QuasicoherentCohomology/ExistsAwayFracOfMemHomLoc.lean": "8dd114cdaf556d2a8754c80426e9c47a2027121ff2a8e7be75f4ecd9ebd4bb36",
+    "Development/AbelianVarietyTheory/Definitions/QuasicoherentCohomology/IsGradedMapLinearCombination.lean": "a16206bb4fc30568ad42dcaa74016179accf9885b8f2756f331393639e202d96",
+    "Development/AbelianVarietyTheory/Definitions/QuasicoherentCohomology/IsIsoTermComparisonRestrictScalars.lean": "d08b8ee1bdd997b04bb81bbe7dea4976d7cf081ebe65975937fd798bd1ccb89f",
+    "Development/AbelianVarietyTheory/Definitions/QuasicoherentCohomology/IsQuasiRegularSeqSelfIffLocalizationMaximal.lean": "50a0cd1f23fc080020f8422b6ada2e9a4be1bc782dcce46d8de1a0877e0be631",
+    "Development/AbelianVarietyTheory/Definitions/ShimuraVarieties/IsOpenOfMemIrreducibleComponentsOfFinite.lean": "161e118d461b19bad8e17e33392eb908c78a280ff44c8bd67fc20fb762b3b37d",
+    "Development/AbelianVarietyTheory/Definitions/ThetaMetrics/ExistsSecNonzeroLocusEqOfLbIso.lean": "5c691840a9b91a3fdae97e8cb65c502187c61b5d1964eb9a22cc6d754d71cae2",
+    "Development/AbelianVarietyTheory/Definitions/ThetaMetrics/IsRegularFnIffOfIsAffineOpen.lean": "26287673a85f42953166fb17d5c69237527d1eb413ecf4145721dfdcee9829f4",
+    "Development/AbelianVarietyTheory/Definitions/ThetaMetrics/MemNonzeroLocusIffPowFn.lean": "fe403ef22e3c52d871b9866c4945b23d26c9db79f79f3a6c4df3da4ea865163a",
+    "Development/AbelianVarietyTheory/Definitions/Uniformization/ExistsInKNeOne.lean": "897fc6ed55aee8e913640e60f90373a0d3f4ee62e9fd9c1c3f830bcf1d6d6d4b",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/AbelianSchemeLawsOfCubeBundleGenerator.lean": "56023958f58f3640091c1de67bc1e81e08a174a111761586dc956f08a38ae239",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/AbelianSchemeLawsWithoutCohomology.lean": "3f8d7d6faae5b05b812d558121edf22a056323dddd92bcec85de8996486bf4a3",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/AbelianSchemeLawsWithoutCohomologyStatement.lean": "4a91976e07a05c89b4ecaa94e671ad9d3eaee8bb4bdf0f7dbfc7584fad2465db",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/AbelianVarietyLineBundleSectionsFinite.lean": "cabb2f744b003a68f12ae412a16b013f6437d428ac34d623b82df2d6d890dd83",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/AbelianVarietyLineBundleSectionsFiniteStatement.lean": "1cc035aad3355b5058fdf51ff056aca85b1c4a76d8f5f388b1a629efd32607b5",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/AcyclicityLemmaDepthDifferentialCokernelsFiniteL.lean": "8e258128addb97bbd6ec55e58163472bd2a7817882242744b5dc8b21389abe0f",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/CechHOneVanishesOnOpenOfIsAffineOpen.lean": "e4928cf456bf5631e1e59e572beaecc9c9ffeecb25f4d2c34c1f70a579353230",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/CubeTheoremAndSectionsFiniteGrowthAbelianVariety.lean": "e9fb748d261fb2be9d1704aad2d4418228c75e37d51da7d27ee77deb6ebb6973",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/CubeTotalComplexAcyclicOfSlicesInductionOnCard.lean": "89763d0e2b1176916b8e767839e4cf273824bd8fe9f823519e82abd61ce4b3c2",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/CubicalExtendsAndExtendGen.lean": "ae48f481b17690291e74c1a7253ec675317bd809e07676e0b9fcad01a88ca0b1",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/CubicalOfNormalised.lean": "266535b18428d6a0259a47561ab398a10dc5249f458dfc459c4f4f4943c08416",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/EqCompSectionOfSurjectiveAppTop.lean": "0bab479365b78f3741c51d7267aebf2f2819aa97c00bf44ff9c901091b96e636",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsCommVOfLe.lean": "a4752f84e3c5c060b20ed700ef9101355bc456d74993f6b55d6c86ecee635081",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsFiniteGradedModuleLineBundleSections.lean": "9060fdff87f2d038d80d116421a2973877a2b2146503a0ec163a4233b37f2936",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsFiniteGradedModuleLineBundleSectionsStatement.lean": "41d6efabed7a104a2e310a81961a378cb6773988604b9f69408dafe02e8d83a1",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsGenOfLocalOnBase.lean": "b4e9b840149a28f324817d28619f631e859fd6085ff425349c70bd298b025dfb",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsGenOfMemChart.lean": "d610deb79192d19bace7d96ad17caf475d6b856b0abdc36102ed0efe4550f6b0",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsGenOfSmallExtension.lean": "f408579eb7d7a2e9e5146c5c7756929ba1ec9016dd14058e08d85baf90066e8b",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsGenTranslEqPairing.lean": "0ec911d8d513911aed7025fba9c48060efbf03d87bab07615b2c1b3f9b4e19a7",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsIsGenOfInvariant.lean": "8183b9217dddd1ed117648e575dddb7bb915a8de7a489724f27ebb2411c4a9a7",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsKerIffMinors.lean": "f15c0cee03ba7c518cb1f15aed6081426528ca90b939fedcc916de2a513d04c9",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsKernelVector.lean": "0a2ce132ef0d4ff458602bb9349f6f264da906c36d79f15688177dc8c6105be5",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsNoetherianModelOfSmooth.lean": "0bdc9d8d6bd74a58666f8ce06bb8f8d394dd602835a46d3e95f188d473864475",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsOneAddKill.lean": "562693e80646078d8acb25c508a8ecd39d7d9d45303a9fd2279577d594abd1f2",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsSplitsOfIsAffineOpen.lean": "8e913082c4471b829a33d5933e59430747aadd1542584b6faadc4be67376e9c0",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsUniqueDescendOfTorsionInvariant.lean": "6cb5c71fd9dce9adc31749d4439f7b7221dd05809261d2af44ec5a381a2a2d47",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsUniqueGeneratorExtendDiscreteValuationRing.lean": "b4171e9b05801fe7b763f781dcaf077fbee0085d9f96be70514d703b11b2f764",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsUniqueGeneratorExtendDiscreteValuationRingStatement.lean": "5fecd92c3ff634ea99b1cf1b4390b456592516a5cc77098e7fd7d8910f2934e8",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ExistsUniqueWeilIs.lean": "383dca9e45365e8f095235625092fa4b0fe218ab1e36f851f94f3148aeec1c12",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/FiniteOfNotLinearIndependent.lean": "4a7f10312be74ebe6b79105231d3abfd30adc825deefc7153f4690581802aa6b",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/FinrankSectionsLineBundlePowEqPow.lean": "97629a3b4c51c04e3238c9504a4adfb20cbd9740b127d690ee5e764e8d1756af",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/FinrankSectionsPrincipalPolarisationEqOne.lean": "59abbc983d8651c0c3e9a8e5d30969dae640f7575dc8169ab529b2a44395a034",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/FinrankTotalDegreeImageGrowth.lean": "f8c0c191e7822a1e6192a9a6cba8f9c18ca4444d50d3131d61ee188d75f1bcb7",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/FlatAndSurjectiveOfIsFiniteAbelianEnd.lean": "5d27c8e65699d31d5abd0c1c76caf5b972107297e08f13af103ae97658e6c670",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/FlatOfIsFiniteOfFlatGeometricFibres.lean": "61b6f87d88ba771d7f61e164db5e6c0d75f210c91218faad6585fb1b9c90e0e2",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/ForallGeometricallyIntegralOfSmoothOfGeometrical.lean": "6a2da8a2b0513ee84bea568d38780c3e1d34027367da3017f05ab639010d7703",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/FormallyUnramifiedMulInvertibleInteger.lean": "981d2104c79c8b91e038fe6c53045e2ae281f2c7f82651ecabe3bd5e14c27951",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/GlobalFnsHolds.lean": "f6558e42faa8a99a98cc1813f1bc7402b8615a7c92b9bf70d59dc4ba1679ae3a",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/HasEnoughRootsOfUnityGlobalSections.lean": "12411096df9f4168356a2a15172b31023846e34f87a9dbc46d5a7b248fdc9f72",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/IsAffineHomFromSpecResidueField.lean": "77b4f63c94a6afd0d882fc25076ca7b59bd9c24100c9f84c5d8e5c3b91e47a54",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/IsAffineOpenInfOfIsSeparated.lean": "5754441bbf06a0c681f215fa54b06083da234951540256257cacc0eb7d84cd26",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/IsIntegralOfSmoothFieldOfConnectedSpace.lean": "4a75998f5b15ff04b6d7f04c2524043fdb9b392b1bb39fc71481ef921e257aa0",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/IsIsoAppTopOfIsAffine.lean": "1a1acc43c339f0b1c562c1b49ce664d734e20d3ddb5ffd1e415d06903ebfaca1",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/IsLocalizedModuleResBasicOpenOfQcqs.lean": "f9eb9c19ded1b4c9cccd7cc82dda1b043d03e93223d8831132fec9a05e84e300",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/IsProjByOfIsPullback.lean": "85df03753af4ecad5ce73e9cac4171fb089696d2a5f8c2dbc2f53bdcf3d59d88",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/IsRegularRingOfSmooth.lean": "49726dfd24e6fbd9fbcef39eef6c76319d1b12d0b5363d63a60f261207e421b6",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/LocGenOfTrivial.lean": "313af827194401323bf9b9d326b0e2784f291de4e36f672b51f3b1007eb95b37",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/MemRangeRTensorOfForallDual.lean": "40f6d8d77b1491dd1b9913fdcb7188a414f6b90ff9235191c7bd7b88a6730d0f",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/MulAFiniteFlatSurjectiveEtale.lean": "6af11f7be9390edb122af882f986a492e67dc944c2eeb3ffc75a46d97b9068d6",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/MulPullOfCubeOfSymm.lean": "d30d6428e0dfa3965e7d658fd1770db7b15ec524ebe902980a358a5a8b824081",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/NatCardEqOfEquivPiField.lean": "20fe46f63682367c49f46b32a6c0f942f12a07edf5c897d64afb5ef86744d9e5",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/NonemptyEquivPiOfWeights.lean": "1fe060d75e840ac5ddef25fd50ace09b4512f34661874ad78bdacdbcb87c4fd8",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/NonemptyPerfectSectionsComplexOfSmoothProj.lean": "3527f30bf46932e769ccef5c2968f894be031736ec2081b857175a504c8b5907",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/NonemptyPerfectSectionsComplexOfSmoothProjStatement.lean": "f787e47045e267b19748070862e32e61288df2660d28e5ac6b8fd0061b954980",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/OneTmulNeZeroOfDomain.lean": "1499720094ca1e3b13549669d9b4cdc8810c80b1a2bfc8e5bd05ebf579cfb7e9",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/PolBaseChangeOfRelAmpleLocal.lean": "c3bd76562975428dc4232117321de6359c088af82c6e5e9cea1352d6a3243ca3",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/RangeRestrictCompSubtypeOfOrthogonalOfNe.lean": "699f39c1c3b1e399d06dfcaa43f5386614ea26c784003f056c934dd9acab1ee1",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/RelAmpleOfLocallyOnBase.lean": "6331bb28302dc9b9163df1d234c3c9d2ba595c6a34e3243111c64382a2e9cc22",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/RelAmpleOfLocallyOnBaseStatement.lean": "300cd9485f1caa7c7c6768402e76c3dc991bf1337cb8c545298d268ed924e0ca",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/RingKrullDimLeOfQuasiFinite.lean": "2335a76c35d6129fb98b8ae67ff93a2579728f5efd2653f4fdc29d441405b811",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/SecEqZeroOfDvdPowUniformiser.lean": "a7636b91826c4cc3dbb570ca1dc11ba54392148517b8138a6cf3f7265b17e3aa",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/SerreVanishingVeryAmple.lean": "36ebd908ade1476f7839a3e44932bf1a3f5b0f0a39c706dbe7c508860aa07d2d",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/SerreVanishingVeryAmpleStatement.lean": "ac8013779873c8e5ebd86fc66f55be1ff8b2dc737295fbc48afbf52b401798b4",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/SurjectiveAppOfIsAbelianScheme.lean": "e4ffba6c26811bd0631597aea5781e748718ce12f089fed79806275820409ec4",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/SymmetricLiftOddOrderExistsUnique.lean": "272ca51530a358502812e4345e09154f6377a90447ccee33d5c705fd9d9a72fe",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/TrdegEqOfLocallyIsStandardSmoothOfRelativeDimens.lean": "452ee7e0f1f00cf2830e1928dff302168e361ba6e8d99ac494eb91efb4a72afd",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/TrivBasicOpenOfTrivFibre.lean": "6d94b02b7139fde16a10e61e9f33fc36d032f1f3a82034bbadbb55805bbbe7a6",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/TrivPullCompIff.lean": "69ebeb27d4fe26ad839d4d3d29ea603e58d2b4523c7e04e8a0beb04a15ed6635",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/TwistedPowTranslate.lean": "48f508d8a757a45c61554dd8b7f620f8ce71b495ebb0b82bc27f358dcadfaf80",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/VeryAmpleByOfRelAmple.lean": "df2bc9d30394b602f177bb8d8deec94bdcb3ea70102cf81c36be35de4687cb4f",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/WeilIsAlternatingSkewNatural.lean": "b1646e3821414f4d46c719303e205f6f3d6631191d02d9517a1cf6d6e633ffc2",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/WeilIsIffCommIsOfAndLiftSubsingleton.lean": "5969d937aee008210d0d87e330c11455e6526673c0adb33489033ed66ee641eb",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/WeilIsValueEq.lean": "f3aa071a5d5cceecb64e46d23aa385ca4490e8be211dd3052540a7d2b9a17fb6",
+    "Development/AbelianVarietyTheory/Proofs/AbelianSchemeLawProofs/WeilStOfParts.lean": "fc852ffa88f599b1b9ca14d4766faed50547a493dc1f657611f0995d6bf3396b",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/AbelianProjectiveBaseChange.lean": "42db97d207ae1af04552119cd0056e7efd10f7172b3616772e1364059ac6c8db",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/AcyclicSliceSecCubeOfIsAffineOpen.lean": "7522c23b95a534f22ed7c1411c0f26bc04216c8a4ba79c2e555a34d651ec8fb2",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/BijOnKerAndExactOfQuasiIsoBaseChange.lean": "f2e1db42a5e39a562a09801d07cbb8ba3f5893c8858ccb51e0084929e380a764",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/BijectiveToPushforwardComp.lean": "0455d6079b756df1b885c042ad70138533ed5e9a0241f64c8b32320f096a17de",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechComplexAcyclicAdditiveLineBundleNoSections.lean": "80a953fa782693bf4f5a68cfebaaa72cc57152d2f7c739e9f034bf99b709e061",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBHomologyEquivOfAffineCovers.lean": "eb3689e90a0b62377fdb31ca44a4f04353cbf0e7640e245bcda3ebc38d1684c7",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBHomologyEquivOfAffineCoversStatement.lean": "9ad86f04e717fa09edb00b796a2da4249122b1bc67480aa683084c103bf5ffbd",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBHomologyFiniteOfAffineCover.lean": "e2c0ce558ace049272c8ff9f4cf64734ad4b4deb3ab0424d541039b886d68584",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBHomologyZeroEquivSections.lean": "3912b9743ed1d39075c8921d5f999fac0d507aa82cf06cb0f42d5e02ce52f02e",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CechLBPullIsoOfIsOpenImmersion.lean": "d46e4a981f6882c85f6f22297f58d3add79793b9147816b6b0f17827aef87fc7",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CokerDualMapEquivResidueFieldOfOrigin.lean": "e8696fcb3eed29df2e9c8933b52aa1b9ac0bc1eaa16ec2533983fd012fef50e2",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CstSmoothAndFlat.lean": "cde15fd72d12023f8b2168af0db9d1f4b171ba26ef597de359f1c2f6f19c1806",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CubeComplexAcyclicIffQuasiIsoCechAug.lean": "b4acbfc36b2a0c278d8542e950487d1e2b6f7b8a406d670745449b067b603091",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CubeComplexExactAtOfIsLocalizedModuleRes.lean": "ac0d311ad48e46500d7c428824645eb89f022149eba7c59dfa5d5dcd7d392559",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CubeComplexExactAtOfMonomialBasis.lean": "2c4572388cb1024043431da5c4f2df62a83ac472530bdbfd8376c9450b89068f",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CubeComplexGrFreeFiniteAndExactAt.lean": "b509b86a8cd11978e907e64cbf2a792c559cbb5d403d5b15cf9168ae191704f7",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CubeComplexGradedModuleExactAtOfLargeDegree.lean": "5ea6a37497c530e7a33ff2eca62d7db89566efac5f57549121cce283ddc7f01e",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CubeComplexGradedModuleExactAtOfLargeDegreeStatement.lean": "10fbd694d83d553c8ec2c49f95384f2f8de48f12c0853713d28b559f94aea569",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CubeComplexPolyGradingFiniteExact.lean": "9434d9b06cdbce0a23227d1617c85ee092f2cd5306f970179ff544138972340b",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/CubeComplexPolyGradingFiniteExactStatement.lean": "cc80934793edb44ef269f9ea0ca62dc4641041eed99c31c8ce551816a058d818",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/DehomogenisingCompOfSaturating.lean": "104ba777156bc85add5ba766ddda25caf324cf66f6468934c70eee55a16e333a",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/DehomogenisingEqZeroIff.lean": "9df5a445f387f557a5154e8a7da4233adb2762c79af18f95403dc9353ff87b7d",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExactAndKerBaseChangeOfForallResidueField.lean": "2f47279857121fd579f22c3220c21253b81cb7532e599811e241869e5cb6e41c",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExactCechOneOfH1Zero.lean": "e3b0727a50def997faf4046fb1acb65ac2b9b9d129ab9d63e4509f7da74d2b4e",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsDehomogenisationTwistedChart.lean": "cc5df9c927763676e46bb0181622bea8ac508a1953f1a32ce9fd0cc36f7516de",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsDehomogenisationTwistedChartStatement.lean": "d9e3e05f92fc2ed720511728d579857b1fed1f76c4d24561cd7e49cf37ea027f",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsFiniteProjectiveCechComplexLineBundle.lean": "5c5017362fb9bcef4c5f38d0b8f07352cd7228f8411c7711bd95eb4e86715e0a",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsFiniteProjectiveComplexOfNoetherianModel.lean": "5359f86d711abb32b772c8cfdace30e9fc3998b8354651e2657f0237eac8f354",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsFiniteProjectiveComplexQuasiIso.lean": "24540250b4ba81759c49f05c52a839bfda8d23176492fa34323d40af29d8430b",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsGradedPresentationSaturating.lean": "6e8912e8fa8dc77ab484d7e08c7cf23e151d8ba5b9fd2ac996dbbbe950c70859",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsHighTwistSectionNeZero.lean": "51f679060f4c53188529754629be77769a6ddabc155078c26a677e78292ba9a9",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsHighTwistSectionNeZeroStatement.lean": "c9904ba6841326fea03cfccdb69a3e2ff8860ee831b69de0c73743cded77fbb8",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsHomLocBijectiveGrSum.lean": "f8e941d09d4fa8092d96d33ba910fa461f292862fffe1a4750c05175839938bc",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsHomogeneousFamilySaturating.lean": "1c0116f72945f4ac705173073321ec91f07338e7c56d0c7761aed8e172fb77f8",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsHomogeneousFormEqHighPowerSection.lean": "6d284e7466bbe5b8a43f8256349c66249d5ae8b37be1666aeeeae749158a5591",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsHomogeneousFormEqHighPowerSectionStatement.lean": "5223368d0e66a49750fc7a38bf64ff15904f0aa8e584b86b118e45ab3f000384",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsIsGenOfUniqueFactorizationMonoid.lean": "cdbccdf65c066a15c14e421e2c47ed3db22810e27b26654237f4df8fd7f51050",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsIsRegularQuotSMulTop.lean": "dac86b9a8ea99a65dfbf82b415954e8affa406777a68384b4d19478eec20f96e",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsMatricesOfProjectiveComplex.lean": "b2a4c67dc02ccccd665dc9e3adf2e4438f51be134def5545430c85af9285f234",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsMonomialBasisCechCubePolynomialGrading.lean": "492cb28bded54be8a6670408ece9afc2d7cf438aba866a0900626b01e138cfae",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsMonomialBasisCechCubePolynomialGradingStatement.lean": "509b96fc5fd972f15359c4fd6f769cc09664c9aeaf41765406d8541863c9bb9b",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsNhdsPowMulTwCoordEqZero.lean": "848b84b13887d31b9b5f10c3a4a892caec84fc8e6075b6b003e7b67ed703cb73",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsNoetherianSubringHomogeneousMatrixFlatChar.lean": "2aeb888d584700b9254f4a6e8c40932eeca1d6d6864a3bd7e8caf3e16ffebce8",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsPowSmulEqAddSubOneSmul.lean": "3ba9f56b6293fc54b690306252398a29f344f3f0c80fd2cff757e67589924c76",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsSecOnRTensorEquiv.lean": "caf614db2a4d5667912defd3c91a8984469f049796c08ac4c5bc170ce00d7d36",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsSmulEqMapOfIsCompactOfIsQuasiSeparated.lean": "0decd9961dc00df15806e233db428f1efcffed752f175963f01732714d7e5c3c",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsSmulHomologyEqZeroOfAcyclicFibre.lean": "defbd66808ad07a8425db2573c9c55059142e600434cb591c1cbd5c05af87b9c",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsSmulOfTwCoord.lean": "67f943357767af61f22e048b36eb1aebfe104a73d58f1f500127d1fab3b07073",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsTwExtendPowMul.lean": "d4773907ab0d33939427da5a7cc50a1daedb0df6845f78ed7970340a86bf4888",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsTwistedSectionsCubeBijective.lean": "82155110e87738278cf65768aaaa5dd1ee955e56d396db0b91f251d75e7afeea",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsTwistedSectionsCubeBijectiveStatement.lean": "b9c4477a45358fc1c39b1b5fe87a488f68f5c450de211421e4e59eab2bb0d1d3",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsUniqueLbIsoPullEqOfCoheightLeOne.lean": "359c880c65a800fc522a44b947934208c5151e4307af7cd381fff15b732447a2",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsUnitSmulEqOfBijectiveToSpanSingleton.lean": "0275ca9024d55b4d8de646ac1293006702b1a6cf7341f564c51e633e0233db65",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsWitnessesOfFormallySmoothQuotient.lean": "a0e7867ab1b2b7704a04a19d53e33774029a8a6db6b1e3fdec3d67c34519b201",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsXPowSmulEqZeroOfEqXSubOneSmul.lean": "19201c759d74497bec317b2f15f78d80fc8e9a82b302e8a0807af5dfc91b7d69",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsXPowSmulMemSpanOfFiniteQuot.lean": "3fa260c67ef26899f1df217fd21a4e44903c5dfb6b331c3105e0aaf73320ac44",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ExistsXPowSmulMemSpanOfFiniteQuotStatement.lean": "cacea4385598295f3e33a594cbd19a4aecce88965fba5f18887eb258b2b5aed1",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FiniteCechHomologyOfFiniteCubeHomology.lean": "1acd1903bd48ba4877323ba3209a305d0c16d40fe8f7447a569d0ac238d98477",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FiniteCechLineBundleHomology.lean": "b61e2897e384b19c660d6a40cb01b963fe696e9fbf769d8be3b8e8a0fa049269",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FiniteCechLineBundleHomologyStatement.lean": "d06b0017bfc6c05a162b9bcf005a31ea7b72c45730abe696ac8e0e4386e79061",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FiniteGrCechHomology.lean": "11a7f47c1f057075f8c92c2ec5c1588fa0fb8873d8bba8c16a70955f18bb12c7",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FiniteHomologyCubeComplexGradedModule.lean": "6c464ad0f5e7549692762c24870febabe3d58d5f53029346faed068a2ccd38f7",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FiniteHomologyCubeComplexGradedModuleStatement.lean": "e05edf3e4672ecd4785d1f1bb089fbed9ca65bf918ed1d6f52c940ba25a82360",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FinitePieceOfPolyGradedSMul.lean": "7843583ab6b5799a438f0b96d4dc91228595a74403a19cf6f3b6417f92812857",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FiniteQuotSMulTopXSubOneOfChart.lean": "4be86f773ffb8da4115e97861a10680d93cb2b15134105cef8521a39a55f4e80",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FinrankCechLBHomologyExtProd.lean": "dff38d8566d2f98b5b2f7b67e2f4abfed6bfe19309de632078e51afece38b39f",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FinrankCechLBHomologyExtProdStatement.lean": "f8560b5275cb0fca1512163bba191ae1cfb52a8308c3936492a5d71b04a19056",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FinrankMumfordBundleCechHomologyOrigin.lean": "c09f8dcb1a84bdc240958e275a3c785d6562c54110ac93356e10d38e2c751d36",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FinrankMumfordBundleCechHomologyOriginStatement.lean": "6d68d2ffe5ebfc2685bde503e2adb896ce4e0d71a5a16fcafe5c66656055491c",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FinrankPrincipalPolarisationSectionModuleLeOne.lean": "54de1141a09329fa262292b90ae2ecbe2b2ebadd845bf21937afe7dbebd45a08",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FinrankPrincipalPolarisationSectionModuleLeOneStatement.lean": "342efe3bc7d4462ce984c621c79d1bdfc4e94eabf12c208427c942148d8869ca",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FirstCohomologyVanishesOfExactSecCube.lean": "bdb8ca230155b536a5099b6299c256435e0cc58ffde5a1700328797be1e01bfa",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FlatHomLocOfFlatHomLocSingleton.lean": "702874a2ba7461c120c17668f69cbc9517b4b57083fddeeae42bb93db83c6d11",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/FlatQuotSMulTopCokerOfMatrixWitnesses.lean": "138719e2c7d296d2e564512e0a060dfcdc90237edc91317fc62ff13fad6f2df5",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsAffineOpenBiInfOfLe.lean": "ee24cbe72ccf827ab55af16ba62f8f97ab09c1461af43ebe1556ec3c0e7bfcfb",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsBaseChangeAwayOfIntertwine.lean": "e8bca7a97cc9caaccb79d0da2e27d2a1bc9d95d4db14e18d04e5eab82e8084fb",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsBaseChangeCokerMatrixMvPolynomial.lean": "eb15c6695af4ec7f1721bef76c42dc2126c89f2a9bc24752536eec8a4719c4f0",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsBaseChangeGradedPiece.lean": "114026e831a6300361856aad592a8735574ba98f8b675e2d7dd580f255a389cb",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsHomogeneousRangeMulVecLin.lean": "779ae7dfb510eb74dfd1dabe679cd205b107617cefe95af8fa22dab0a1e829a1",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsQuasicoherentOfForallExistsAffine.lean": "9cfbda497b461c4cf3a29cfef4e8a48020495d321ea197d2c3f49893526a3e23",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsRegularLocalRingAndRingKrullDimEqOfPolAV.lean": "60c9a1804c76300c56df61f177d1ccb642a1683b7996d94706586243e8b712f0",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsRegularOfSupportDimQuotientAddLengthLe.lean": "bf262f5e6f069ba83babccf45b860f37ff2c5062ea34d2f2a26b121fb4d4ccc1",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/IsWeaklyRegularIffIsQuasiRegularSeqOfIsLocalRing.lean": "e4407fc766cbe8b836f517b8a9017ad0ecae34cc2a0b34323020b56cd6ae94d0",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/LengthBallQuotientEqSumMulFdeg.lean": "452cbfe9ce7b8da2510e61ba8a17d7a89e2cc1e2d2278a2fe5e6f3ae6f83e90f",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/LinearIndependentLaurentMonomial.lean": "ecf28400556aa04a5d94718025e439d71a1f257353503b0607c38f5952714e79",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MemNonzeroLocusIffMemBasicOpenChart.lean": "efd8d0a55d6ec6681979b6b0c4bf27bff5479da2b894b2f197f2593e5d3e14c0",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MemSpanOfSaturatingOfLe.lean": "f23f2c913e36f6a44d13d95d3997e08fca7bbb4cec38dbf59bf27458c3807381",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechCohomologyFinrank.lean": "df552ee96e6b0638bd6d881d1732a66343666ab7423c01895a7327226f3948c3",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechCohomologyFinrankStatement.lean": "9c44e3d97f86c50f01e3be0397f54a9f9921693f2e3b3c4a8e11ab1b2e35beba",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleCechFiniteVanishesOffOrigin.lean": "b6d5fd728e9ee8cd88496fc8975febdaac8f83cd9cd7f66cd40c8061c6849524",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/MumfordBundleFibreCechAcyclicOffOrigin.lean": "44f6e202ab4b821a61acd9d9546a00e9a30ac8a659e73741b2768a1d63980eb6",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/NonemptyBaseChangeGrCubeIso.lean": "1d6fd993c8452fc9cf95aee72d9767438686d7cbd68ce788a4b0b89dd6d9ad85",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/NonemptyHomLocSingletonEquivQuotSMulTop.lean": "146135e969cae13e75564daa494bfc4a7461f69d9ebd208395f298685f25fe75",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/OneLeFinrankSecM.lean": "379c54a15f954c08cf48ed5ff822fa41a3b4bf8c19c2d701aa44509a11287074",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/OneLeFinrankSecMStatement.lean": "8b3b23b266f4279959b53c694c238cd0f632df2103b320de09dac1b605a7cb99",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/RestrictPullbackIsoHomAppPullbackSections.lean": "79d00b8a7416099e6776e69e1922d8bb024b88cf1a6b6d2ca2b9509da8421c37",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/RingKrullDimQuotientEqOfMemMinimalPrimes.lean": "f4b14da75f91f4ce42b91c7469615872e9a9336f2292c5965b8b5246342be768",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SecOnBasicOpenLocalization.lean": "ce34cf9e1a026662baa831eed9aa7d8b02c34849d6bcbdd6c3e2f6889c3d05c1",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SecOnFinitePresentationProjective.lean": "b1887c6acd7fdc5b18b123d67ab6d2d417fb7e6379622aaaa3291ed288de3ba6",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SectionsTranslationDifferenceEqZero.lean": "63bda5a6767103d374c3e7cc0ed0a59ecec760f2337a4099ed89b2b2404dc7cd",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SerreVanishingH1Twist.lean": "5d1e26b7cb16a9f99d5e73089a311aacf8d8efae4dd416ef15cf19aaaea22112",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SerreVanishingH1TwistStatement.lean": "2092415624498220b4105a90e82a842456ac2aa7a50cec580fe98d36959ac187",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SpanLaurentMonomialEqHomLoc.lean": "d0c3d1ca99d1080df7c07283344b2b2d3492fe024d07ca077f280c675032a5a6",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SpanSingletonEqTopIffIsUnitOfIsBaseChange.lean": "08802d746a46e222acdc4babddcdf09cf0cd3ee7446404ac03c0234b7422876d",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/SubsingletonOfPoints.lean": "043b8a023cd29bea665640f28af0a847aa43182ba626f8a136038ca642c52f6f",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ThreeTermComplexOfProjectiveCechModel.lean": "7a3aa7d1f2a052e2e0e19565221dbc7a978fdc3e48262ace3638c1608d2dfc1e",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/ThreeTermComplexOfProjectiveCechModelStatement.lean": "ace90a50b9785064259b731d17b04dbcc34323029625fca77a5ddaf145e8b2b5",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/TopClassSurjective.lean": "8958b7c4dcfe6890e02f7251eaf21f088176af28b715a3710b8b1dc717e9cf77",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/TranslateDivAdditive.lean": "dee042274bd1df4298fe0071bd31163ef8f81481a1a8b7b1383cd6c757147af1",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/TwistedSectionsLocaliseToCharts.lean": "bdfda2fa54eb3c81d00c30ced4bcfc535e01b83c9c0b0c45c955fc5e4ec936c5",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/TwistedSectionsLocaliseToChartsStatement.lean": "9c7531995d1c7aa59b5c5227cd1b1b0a5562a38e367470d572ff42ef442d22dc",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/VeryAmpleCompactQuasiSeparatedAffineCharts.lean": "7765ebfe6eb848691d0aa77ef13f14f06c3ba0fb9eaed3e5de73ea50b7770551",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/WeightAddLeOfMemSupportDividedContraction.lean": "99a07505e3a4dfeae5904e078af79e550fda83d22d3bb67d78f3973bfb197900",
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/XSmulMemWeightedHomogeneousSubmodule.lean": "99f6bbff21fb711f1fe29deaa7f607c2da0eda1a0b2d367b26c9588ea4566e69",
+    "Development/AbelianVarietyTheory/Proofs/CovolumeBounds/DifferentiableOnOfTendstoLocallyUniformlyOn.lean": "c15e6bef828059d8e9d746a78ba56b5447545a3f4a0dd6ea5f5715dd9077eb87",
+    "Development/AbelianVarietyTheory/Proofs/CovolumeBounds/DualRestrictSurjectiveOfIsTorsionFreeQuotient.lean": "d41620ee29df61804c2999016b3defb4c06eb2ee396d9637a0f23cc79b4cd3a7",
+    "Development/AbelianVarietyTheory/Proofs/CovolumeBounds/EntireApplyEqOfPeriodicOfSpanReal.lean": "2309fc442055b321d52fc67e3227e3d7aa05eaeae067f3af2baf7240d0679159",
+    "Development/AbelianVarietyTheory/Proofs/CovolumeBounds/EventuallyIteratedFDerivEqZeroOfRealSubspace.lean": "77d5ef7d21c2748a9772c4dac6a664f1966cacb60d00fc950c326037652548c3",
+    "Development/AbelianVarietyTheory/Proofs/CovolumeBounds/FderivIntegralApplyOfHolomorphicOfDominated.lean": "ec5bcb37e7bedc71bf421de54c13335c7b0ac509cf01be5b4c7685b542449ae1",
+    "Development/AbelianVarietyTheory/Proofs/DegenerationProofs/CharSumInv.lean": "d71bf87603eb7de62af33b7a1ec962b8e0136cf7a4dbb5f7175dd2009e5962d2",
+    "Development/AbelianVarietyTheory/Proofs/DegenerationProofs/FiniteAbelianWeightDecomposition.lean": "dd3dd633649a034e998ebc866f6ea15f1d3655b3892415b8c4fecb464edb4173",
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/EqZeroOfForallPowDvdGerm.lean": "6f6e5a2e7c244f120261eb6d84c62b4493c351ae22fb9ec43b8e1865bb7bc9db",
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/ExistsMemPowSubMemPowSucc.lean": "9bf262a731169e6dda0d05dc15af373841e8d50f1c4aec56b2dddd89f0fb7902",
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/ExistsUniqueZpowMulAppLE.lean": "8c6458b3e5ea1179dd50b9f73b3e45f61556b788cc917c5d3336cd91b6285815",
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/ExistsUnitAlgebraMapEqOfValuationEqOne.lean": "e794175cc50192df626f58c5b717e1a7afb02c6ab315359637ebedb5131c9b38",
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/IdealEqBotOfFlatQuotientOfMapMaximalIdeal.lean": "eb416a6c8c0b60a2ce2e2e9bbb27c1fa4e8c492e0246f4bb76c11aa6bac9faa5",
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/IsDiscreteValuationRingStalkGeneric.lean": "3bca5d1e9b235e99d8aae06483a5257c1142cd720c44488014fadd630b488dba",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/BijectiveRestrictPointsOfEtaleOfHenselian.lean": "c3a204cf0e36d965c12344c5c805e6a9a48f88d7ec5fb54ad343104494e8e627",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/ContinuousAevalMvPolynomial.lean": "7b64b40e8238f64b43bfc90203dfd5f26cd603f667dae57f024191a760932827",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/ExistsAppTopEqOfEffectiveEpi.lean": "45413838e70f4d405f67faf13f05d617db29381005f09eb48881900b94cde37e",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/ExistsNeZeroIsStandardSmoothOfRelativeDimension.lean": "c74b480b3ea7822d1368afe1d9c025b4373b12e9cdc09ee24406502b9c1faa5a",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/ExistsOpenPartialHomeomorphAnalytic.lean": "cc2033ed39a4a247e56e3ce8b11cb99d3010655f21cf8b26637fcc57a72f460d",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/IsDomainAndIsIntegrallyClosedAtPrimeOfSmoothOfCo.lean": "2abfbdf40b94e76d42516f223911599a3e9d223e60ad7901b43fb439728278a8",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/IsIrreducibleGeneralizations.lean": "b9dc008dc2a706bd3323b88f021c5cd2217693ed4bfb53c16d545ce4b916420e",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/IsIsoAppTopOfIsPullbackOfSurjective.lean": "94f103ad6a45744a6b084b7d7c058db3e208fe9d2e70aa9bc3a23545c8b24195",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/IsLocalHomeomorphAddMonoidHomOfEventuallyEq.lean": "52591aa1f02781a8532aa9744cc7279f34940864506a7c000fe222cbed533676",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/TendstoUniformlyOnDoublingLogOfContraction.lean": "6a20494f8d8a661fb0fe86f721e7090f80eb7929aa79c37841decb86b8775f91",
+    "Development/AbelianVarietyTheory/Proofs/ModuliProofs/ClsLinCombSingle.lean": "3a12e655a01cdf1a48130a404ca2a07a280aa2e19d85fd00aa51db8a331e023e",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/AppellHumbertNormalFormOfLinearExponent.lean": "c182185bf0eaac1c195d7cfe5ad0e618b32a47f04ac2efafa705b7d3dd2d933f",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/AutomorphyFactorExpLinearOfCube.lean": "5659974dcbec59314c7473cb2f2050489815136c9ed506f4e2f93385d1a0a2b7",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/BilinFormBijectiveOfNondegenerateMod.lean": "73033c756fe83b5ff88422100281740814af4f440ceffacc4f520f395dcb5084",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/CardLePowOfLinearIndependent.lean": "b8ebe55d36b816996db485a7ce34d202f4aef0146800a44127c865bc27c5769f",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/CardLePowOfLinearIndependentThetaPrincipal.lean": "68c6d0e0f735d8952cf21c5f414127e4b0ffcb44cf66e61e1acff65d9da3490e",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/CompactSpacePointsPolAV.lean": "982afb8398fad4c43e52598d69d0402649ab51e68b5ee8b173fed8d451ee1b90",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ContinuousOnValue.lean": "f0d2ee8b656c63ffe9eccd83678c6491e81789a85b168af5858afe9f8b2998aa",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/CubeSectionFacesAndDoubling.lean": "b0998d1d1770e4ff9cbde0d844e8aaa5c968ed6568f603c8aecdb7ccd87ada12",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/CubeTrivialisationOnUniformisingSpace.lean": "99c648bc1bd142e13c21a717dd08f4a0eb455bddf46e874c752f14e5757e81f5",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/DifferentiableOnDoublingIterate.lean": "ea3f4a2260fd05c8a185c6e082bb31b750702ea0814047449ef18d91342848e1",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/EntirePeriodicEqZeroOfFourierCoeffEqZero.lean": "0275a24dcc85e5ee80e111c4d2f064a7803fcb4f0d03bd17b133a45ac65ff048",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/EqZeroOfForallAlgHomComplex.lean": "f9e538b1935fc9d685312d4b9127b0a4c0fabb6e9f2c174ef7b3b1db238264a0",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/EventuallyEqZeroOfIsBigOCubeOfDoubling.lean": "47c59080ad6007f3e37c51fde48bb7e54361255be62b480ffe55f500a84cf861",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ExistsAppellHumbertFrameIsRig.lean": "5eec9ab58c70eb22d59b4f2c65621b8e18ddde12cce023436a3add8767450188",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ExistsConstOfCover.lean": "8cfe6219126260360a34cd59d18b9841a27db266cc62ed06131c4ffc1d15d51e",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ExistsEtaleCoordsVanishing.lean": "0dae3e0580826763bb829fe76a0cca77a08fd37da9cb5b544bc9f4c38491b8f3",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ExistsGlobalFrameOfLocal.lean": "6b1aa38e267bcc4438523069ef4b06db23f7234c48fefd1620dfa5f6d04f3773",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ExistsIndepSections.lean": "1c272006b7c08b18add3cf35655865900f1bd17013a4d19ee7965518d11cd26e",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ExistsLinearLift.lean": "79536ed9bc5cb675c3adcbdfaa2a3edb4e3b89fa16f804b66b1f49ced545d4a5",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ExistsLocalFrameCompatibleCube.lean": "3c8be54c0058e9c359167e851881fc46eebb3bf0c48e524624fbc6f8b3ded2be",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ExistsTestFunctionsSubsetOfMemNhds.lean": "419672c20fdd91f45e54eba67457c032931f912b0a862c67cb04c8712243c528",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ExistsUniquePointOfRingHom.lean": "4b954857b6708bc221917856989edd908d8f1c83c033be7b733dbe20c8a57063",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/FourierCoeffUnitCubeTranslateOfEntirePeriodic.lean": "189aa04a347eaffa5dd6e8030dfdf9ec4b0c851e0fe2186f4fbf6b6ef7dfb39a",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/HolFamilyOfIsPullback.lean": "ff0583a148bdf6766e9c7bb5f613ddc6ca8175c6a71ab7ec7e71179d72b935cf",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/IsAHOfPolarisation.lean": "08c97d959d32e55c5148e7591e16da5024138121de9a43dcddd3815b9dfe493b",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/IsReducedSchemeOfSmoothOfIsIntegrallyClosed.lean": "43c164aa5fe41468d4d734211d01f0ab368fdfdfc1e8114b82458c9dd9f57491",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/IsTopologicalGroupComplexPoints.lean": "54a603badee1753be6ffba875e431467c824ab70e4acf983958d0025a45ee147",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/IsUnitOfLagrangian.lean": "59366c9cd4e05b491a6ee819deee975874e67b92f4910de41f673ba498697565",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/MemSpanOfCardLe.lean": "e5a8f2de32c31cd9990615abb87a9d95c20f06df4c15b208cda78400dfb91cd4",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ReFormPosOfThetaNeZero.lean": "6d3ff60f0ec9f8cd1bbcdb850a6421717046cf270e4d5e950168121cc88f0e0a",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/RiemannFormBijectiveOfWeilNondeg.lean": "efdac99df8cc094269f6827f1c2f23f26bfca66f932ddcffcc65fce1be76e929",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/SectionsPowThetaFunctions.lean": "bcc496670c10437275deb111a1723f1b2e9310a7cb252e7ee687427cf90f1d0c",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/SeriesApplyEqZeroOfFace.lean": "98accedb113129b225cab14ebbf9dabb4df109ba641e6110e85ff5340514f08a",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ShiftSingleInt.lean": "9fb6787229eeb683472e4439db9c5d6bd445d914f00dcb9f3baaf9964723fbb2",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/TangentBijectionOfValues.lean": "f532f7cef58bca4a8341f7002685ab283172de713ae6c8e891918d443098dd55",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/ThetaUnifAVOfLaws.lean": "f4c1765a28493a6a9f4101ff5975c34c2cf003e93ae6633fbd1104cfa8cd521a",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/TopLePreimageOfValAtNeZero.lean": "0d8ad6bb1d2d7b2e47820f675e5654734aa1a2eb1a4d4b1ee0c702d433878438",
+    "Development/AbelianVarietyTheory/Proofs/ToricGeometry/WeilIsExpRiemannForm.lean": "c5383b33d3200a941e7fa15c4ab944b8aab9a4c817893703e731bf3e76b1310e",
+    "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/CyclicIdeal.lean": "a9faa221a30c2c3a1f3c6d86d3179534d706c51410305cc2da10ac5e911f5c9b",
+    "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/ThetaUniformisationComplexAbelianVariety.lean": "91158571f2caf87b21a62237a1724411175f9ca48f7aab30c74435b2a5227b0e",
+    "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/ExistsLiftOfSchemeTheoreticallyDominant.lean": "c32752a88f21d13b556abb03158574394a393a6f923ac4cd67ed695ada0985a1",
+    "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/FlatOfFlatFibresDvr.lean": "4fca6ab48832edc9bf957d52c0ea2765e5757b65920df0e6f323c807bed94bf2",
+    "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/FlatOfFormallyUnramifiedGrpEnd.lean": "b085a89127ca540a7221401a59de56d534850b54c02248f5176e0aa63f8dd8c7",
+    "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/FormallyUnramifiedMulN.lean": "e7c42661493e202ce8b70847014f332c2952c39e85efce9ccf134d316ee673d5",
+    "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/RingHomFlatCodescendsAlongFaithfullyFlat.lean": "c0d64652272f85d30314c3e0452b1446a8a93e9f4a2b59ec79613ca24e614005",
+    "Development/AbelianVarietyTheory/PublishedTheorems/RelativeAmpleness/RelAmpleAndKTrivIff.lean": "867395382178cb226fdf6ee71f332a8a2ba98544a8fc247583fc3c1b20c98cd6",
+    "Lemmata/GeneralBFactRest/Imports.lean": "a357d46590a9e79d0771c9de863fe951afac588869c085de1e4f4e535aaca21a",
+    "Lemmata/GeneralBFactSide/Imports.lean": "941a5b69214292042b3e272e59520cc5fe627a6f4e36d04c9751d12c6d09c7a7",
+    "ReciprocityTheory/CommutativeAlgebra/ChainConnInDim.lean": "2c19f5bb845e831f3bf30fae0f7a0897cbaeac0dfa88584ef522b8a9cac47366",
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/AssDim.lean": "2ff8e6b79dd8a219f74e97b3ca7e28f4065b734e9db4c65b579b317e362e7c7b",
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/Bridge.lean": "d2bd6114206a9bf452d92b98ac7052cea75dbb7b8778f6d499683e8c804540e3",
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/ExistsIsRegularAppendOfModDepthGE.lean": "dc2f017147c681c2993ea19e513b7942f4f4a11e02d768100080008616b656ee",
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/ExistsIsRegularOfLeHeight.lean": "03799d9ddcfe7a529d55b822061327fbf367f2a681187f47774294c07f723074",
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/LocDim.lean": "78e1d87b579ddcc17b73aac0d4d4bab53acfca69cb39718cff55fee531fa4bf2",
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/ModDepthGE.lean": "469b9a1143f0f430585baa068fadadab5749fa254d1e47e73b187bdd04b82dfc",
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/RingKrullDimQuotientOfMemAssociatedPrimes.lean": "b8fc0b11f09c95c490460cd7a3afb954fcbf570a34eb08b34a67fd88b97d5312",
+    "ReciprocityTheory/CommutativeAlgebra/CohenMacaulay/Unmixed.lean": "2005ef439e7bb5756965d3ef724aadbcd510d480d10f1765139f528206cb298d",
+    "ReciprocityTheory/CommutativeAlgebra/PolynomialHeights/HeightAddRingKrullDimQuotientMvPolynomialField.lean": "5c9507dfbc8e5a0e52021f1bf7f09b499ddab6eadebaf8bc509747311d59403c",
+    "ReciprocityTheory/CommutativeAlgebra/PolynomialHeights/PolyCM.lean": "e5eda7b8b72112526a445c8be13d056e7176932c31b27b48a649284a5c00318c",
+    "ReciprocityTheory/CommutativeAlgebra/PolynomialHeights/PolyMax.lean": "489366388734d050273b41cdeae5a8009e955a8c97eb05bcd34fd2f685fe8a3f",
+    "ReciprocityTheory/CommutativeAlgebra/PolynomialHeights/PolySeq.lean": "d45e9071e27f84b484f15527b385ed7c1e48829e76375f29a7b293a859acf9dc",
+    "ReciprocityTheory/CommutativeAlgebra/PolynomialHeights/PolyStep.lean": "a77511b9813a9e637df90477d39bcc44d932b0498199e876e8fbe28b0805cfb2",
+    "ReciprocityTheory/CommutativeAlgebra/SaturatedChains/Integral.lean": "aff9aaa499187e6d85d0213df972385ae844fc9b2face591f6ddfb8be2f7a4db",
+    "ReciprocityTheory/CommutativeAlgebra/SaturatedChains/IsSaturatedChain.lean": "ffb5ed5c2e5e628b0697c3c2267c9224ac3adebdddb1f51aaeb06fadc70ea400",
+    "ReciprocityTheory/CommutativeAlgebra/SaturatedChains/RingKrullDimLocalizationQuotientEqHeight.lean": "56cff47c3453bd926cee40edc541f40c8ebacff2bbbffbec74f174e6bd6d246d",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/AbelianSchemeGerms.lean": "2188051d8f4aaf88f92249a9efbb69ffaa9c4f640159be1d832e9affac41d098",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/AmplePt.lean": "b3d41fe110e8e64f1d967c9e9d9b128dc7324f68fb799427441e5f67012594ab",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/BCTools.lean": "7af49b9d846c2f7c11f34edd54becbf3c7fa11a485e80aad45cf54347cfed380",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/CubeVal.lean": "58eb5c963e15bb2cfec6dbbf1db3523e038d17a1dbe666e8e73e399a970aea43",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/DivCalc.lean": "b6cae062a52099c47d529d229d7a0413a35df9d0542acd5a331a427d8ce9e62a",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/DvrData.lean": "1371bed651f459bd521523d0445289a53a4b40fa66f34de5acf14751bbb03686",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/ExistsZeroGt.lean": "5bdbe7d58afe44abc8db04caa916cdfd6a46245d861d2d65572ce52de4e83f72",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/FlagBasis.lean": "63c71e96a5de90f8f096ed70886241e542dc3f2495dcfc7b09b7a559e0620bab",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/HasArcDataIff.lean": "a772d53be95d605c5d348e44ff14cd1a08a5bf894d9b3b1e1325785ee73956f1",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/IsHolPeriods.lean": "9edfccbfe75f5c40e167fb1712f9e4edb17143833ea339b96f5d02d1df1cde9e",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/IsMonHomOfMul.lean": "e3aba22ebb4065b24e7abc2cccdd116d2f6efa52b96efd47b3b7e5c933427ae6",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/OneArc.lean": "ecb13fb53d829f328b22017b43c1842506652cc9f7dbb8df40a7095bba3a4b4e",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/OneArcSt.lean": "8d732cb8552c62dda5f93b5d098eed116cef06ec6511b8bee70b466b745d1286",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/PullCub.lean": "861122f07ec5ebe6a3a1c848756e7a58469a96007b56f51a429a134058ed7379",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/RigIsoCongr.lean": "36d978166ae6fcc3165fbb961151ed20b87ba9cd63c509bdf5babf1d094b994a",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/RigidArc.lean": "44bfd7cb9335ef0088cdfb27d6ec920afbd4f92d8301773d0d441cb6ced86b35",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/RosVal.lean": "80777c8b9bf93241c1c4ec6e06d7b11750dc856c95b0f02b1e9eb0fea4367cff",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/SABBaseChangeSt.lean": "8b02bda6397e91093d8d3783cb9e3be925b04100ba9348d6dd7abf42ad5fb272",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/SabComp.lean": "1a4643e5df38a63b1b803e9e154751f794aea5b877c67c598557a51ff9b76c18",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/SabPull.lean": "8bba4a8bd7f614255bbea4a5484040031a5f0f84513a750703c5d1a5613b988d",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/Splits.lean": "eff9e3fbe3e481cbcc1860d38b3d7f6adf8c893e9799f1d323826af9f4b43004",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/ThetaCore.lean": "337f319445d526cbab0c27d6e0f472910f04de8e9ecf111751634c5c42557641",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/BirationalGeometry/ToroidalCompactification/ValCalc.lean": "e8631b33fe9229664c6f7f4365e329b87754185b477a9402368144c86075e029",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/AppCompatGeneric.lean": "c93805aeaca7e0bf4bf32e8711f298ef541346dff60562d135aa5e83af80f854",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/FamMod.lean": "45e2d5a724bfc10ab44103dda2ac0df6adf243ac727188846159eb90a35fe598",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/LBLocal.lean": "3bbb4f445015ab92f0d2960e5dfed0bec475de2f486e88afe9f4803954344f21",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/LBLocalC.lean": "2a3e4733b20a64c4f6f1186f74270fd227760319c6e6cb6a6d9f69688977e824",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/LBPull.lean": "bf491a2c7eb882262969cf354fea375d5af875a69dfed9b1abeb2cd5ba2e1a65",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/LBTransport.lean": "82c055a1890f6d3c19549ed706a1ffe918237fff4ddb12b209042ef78150232b",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/PhiGen.lean": "34cb3ef9f537b60703d5d688faa5b23dfc73d8f3474741a95ab1122c297db2dd",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/PhiGenPf.lean": "5b5b7228090fb64ed868a695edfc5786643bdb43ee7cc3a387a2ec12d75f7cbf",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/ProdIso.lean": "1bab430729f930dea2da217f9cc0cc63f41bb57edd3c84f88d6b34c7c7fb868e",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/DiscreteValuationRings/WchartLePreimage.lean": "24c27c9b034f79fe3339429a89eb60de884a7394dfa5696b1f5f79ad85cc4667",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/ChartPullbacks/TangentLinearity/ConstPullback.lean": "04bdc920a845c423266693296d428e528531008c19949b536bb646b92604e491",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/ChartPullbacks/TangentLinearity/FnOfComp.lean": "af48170c632d385dc44a9d22e4c4eb21740b24e5a680c415c4342e1aaab59e64",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/ChartPullbacks/UniformBaseChange/Transport.lean": "18e7355a27bb495bfcecddf8844141f929fe6539f75bf7a61c54c980ee317fac",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/DegProd.lean": "f1337622dee3f524773fd92e2cd46276efa1f356b413dbbe9796e4a6209ff594",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/GtBaseChangeSt.lean": "60c33f0dffc73aff94185d963b57a767ac9f203b72c9c99118afa458fd0dbd00",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/IsNsmul.lean": "9f9b9b31f190b809d45b86eee0f718e8d9840033f5de3501f664e3b4748ff06f",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/MapsAtLeA.lean": "b9a1eb690b548df7f3c7dbd2e75c621325d9bab5aa0235908558cb0347807f9a",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/OLinBaseChangeSt.lean": "efb8496b442fe7aa43c8b9d52012f5e38332f7455a2d4a91e503605d9dca50ed",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/UnifBaseChangeSt.lean": "69a1e7c6176de3c8f1974ff6e42f14ab88abe89cf6c68c6fbd9db9d9af1357c0",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ExtensionDescent/UnifUniqSt.lean": "3ef68efc470e35deac49a28ba73571e0ca922c9b3388236bdf4f9d1ed82c4552",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FirstCohomology/GenMove.lean": "563febc9b8a8d4a2f6c24ad9abc70cac70f0ed826ae598daeb78f58acab671c6",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FirstCohomology/SectionArithmetic.lean": "8ec39c5a3b8402c0e3d529897445bdf8fbf2266092aa2563682cf6257be8e0bf",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FirstCohomology/SectionDivision.lean": "682384bf4cc1583bebab115c7fdbaa1205f3da0bb5641fe1d53bb3d5627195e1",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FirstCohomology/SquareUnits.lean": "e0aabfad283ac2b0edcf1ef8a5630693a79aaf2570f12156acdfbd1a6df7d30a",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FirstCohomology/ThetaMove.lean": "1f9c9dd96513d60343e88bd90eb8f3c1c9b541fabacdc213a88b7ed78bc7630d",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/PlaceDivisors/SiegelPullbackTransfer/AdelicGL2ExtOfLocalComponents.lean": "f5ba4f56839a1ebaaf337f11b22abe4ae8385bc64ec04a7f2224abdd83ed1b39",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/PlaceDivisors/SiegelPullbackTransfer/ExistsGenTransfer.lean": "b67ad41dfa3eaaaa39c56a564aeb648166b97002200ed811dcd367bd08f80888",
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/PlaceDivisors/StSiegPull.lean": "03844d93d10a862a52d29dd81941db47ead3a62cd525dfbfcd9245fe676fe5e5"
+  }
+}

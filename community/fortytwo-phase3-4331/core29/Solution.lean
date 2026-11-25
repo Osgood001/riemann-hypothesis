@@ -1,0 +1,9 @@
+import Development.AutomorphicSpectrum.Proofs.GlobalProofs.PartialZetaFunctionalEquation
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PartialZetaFunctionalEquation
+
+namespace AlpogeRHCore29
+
+theorem partialZetaFunctionalEquation : GlobalTheory.Published.PartialZetaFunctionalEquation :=
+  GlobalTheory.CompanionTheory.Hypotheses₂.partialZetaFunctionalEquation
+
+end AlpogeRHCore29

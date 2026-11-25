@@ -1,0 +1,90 @@
+--- a/Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/FourierCoefficientFitOfJoin.lean
++++ b/Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/FourierCoefficientFitOfJoin.lean
+@@ -9,12 +9,10 @@
+ section
+ section
+ namespace GlobalTheory.BigTop.Fun.Close
+-theorem fourier_coefficient_fit_of_join_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → _root_.GlobalTheory.BigTop.LambdaLowerBound₂ → _root_.GlobalTheory.BigTop.Fun.ConstantFunctionFits @GlobalTheory.BigTop.Fun.Fld := by
+-  intro hP hJ hHT hTheta hLoc hSep hLam
+-  obtain ⟨hTD, hTr, hTw, hZD, hRefl⟩ :=
+-    hJ
+-  exact _root_.GlobalTheory.BigTop.Fun.Close.fittedFunction_at_zero_close_alt hP (GlobalTheory.Published.HeckeTateFunctionalEquation.abs hHT) hTD hTr hTw hZD hRefl
+-    hTheta hLoc hSep hLam
++theorem fourier_coefficient_fit_of_join_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → _root_.GlobalTheory.BigTop.LambdaLowerBound₂ → _root_.GlobalTheory.BigTop.Fun.ConstantFunctionFits @GlobalTheory.BigTop.Fun.Fld :=
++  fun hP hJ hHT hTheta hLoc hSep hLam =>
++    fittedFunction_at_zero_close_alt hP (GlobalTheory.Published.HeckeTateFunctionalEquation.abs hHT)
++      hJ.1 hJ.transport hJ.twisted hJ.zeta hJ.2.2.2.2 hTheta hLoc hSep hLam
+ end GlobalTheory.BigTop.Fun.Close
+ end
+ end
+--- a/Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/ReadTwisted.lean
++++ b/Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/ReadTwisted.lean
+@@ -1,7 +1,39 @@
++import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ToricSymbols
++import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.VpBounds
++import Development.AbelianVarietyTheory.Definitions.Divisors.BasePlaceNotMemChiGridBadPlaces
++import Development.AbelianVarietyTheory.Definitions.Divisors.EntireEqOfHalfPlane
++import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
++import Development.AbelianVarietyTheory.Definitions.Divisors.IsFinSetSplitPlacesCoprimeConductor
++import Development.AbelianVarietyTheory.Definitions.Divisors.LeastSplitAuxiliaryPrimeThetaChainSpec
++import Development.AbelianVarietyTheory.Definitions.Divisors.TieTest
++import Development.AbelianVarietyTheory.Definitions.Divisors.TupleReadBaseTupleEqFamily
++import Development.AbelianVarietyTheory.Definitions.Divisors.TwistedPlaceChoiceLiesOverPair
++import Development.AbelianVarietyTheory.Definitions.Foundations.StrictInterlaceIffDescEnum
++import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsAuxiliaryHeckeCharacter
++import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NuHTwisted
+ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ToricRatioFieldDataAbelian
++import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsHeckeLOfHasInf
++import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PlacesBelowSplitCoprimeConductorOfAdmissible
++import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightExceedsCenterBound
+ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CohomologicalCsdTempered
+ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.Realised
+-import Development.AutomorphicArithmetic.Foundations.UnitarySphericalFixing.SatakeParameters.AbsCentralAlt
++import Formalism.LocalRingCardinality.DataDIV
++import Formalism.LocalRingCardinality.DataExtra
++import Formalism.LocalRingCardinality.DataGatTies
++import Formalism.LocalRingCardinality.DataNChoice
++import Formalism.LocalRingCardinality.DataParams₂
++import Formalism.LocalRingCardinality.DataRows
++import Formalism.LocalRingCardinality.Params
++import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
++import Formalism.LocalToGlobal.Divisibility.HeckeRI
++import Formalism.LocalToGlobal.Divisibility.LiftLat
++import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
++import Formalism.LocalToGlobal.UnitaryNorms.CharTied
++import Formalism.SharpRestriction.GrowthBounds.IsResidueClassZero
++import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases
++import Formalism.SharpRestriction.LevelLetterCocycles.DataN
++import Formalism.SharpRestriction.LevelLetterCocycles.TwGood
++import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.ConjEMemHostFIff
+ 
+ set_option synthInstance.maxHeartbeats 200000
+ 
+--- a/Development/WeilBound/RepresentationTheoryGL/EisensteinSeries/SiegelEisensteinHalfPlane/IntegralUnitCoefficients/CoefND.lean
++++ b/Development/WeilBound/RepresentationTheoryGL/EisensteinSeries/SiegelEisensteinHalfPlane/IntegralUnitCoefficients/CoefND.lean
+@@ -1,8 +1,23 @@
+-import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.SiegelWeilSchrodingerOfDilation
++import Development.AbelianVarietyTheory.PublishedTheorems.SiegelWeil₂.SiegelWeilUnitarySchrodinger
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AnisotropyOfRangeStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DictionaryMaximalCompactPartsStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FockSplittingMaximalCompactStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NondegenerateOfWhittakerStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaCoefficientOfConvergenceStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnfoldingHoldsStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerAdditivityStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerMaximalCompactGeneralStatement
++import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerNondegenerateOfIwasawaStatement
++import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.CoefDataExists
+ import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.SchrodingerMatching.MatchMono
++import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.SphericalBigCell.IfrBAddOfWeilThetaConvergence
++import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.WhitGenLt
+ import Development.WeilBound.CoreStatements.PublishedTheorems.SiegelWeilSchrodinger.Bridge
++import Development.WeilBound.CoreStatements.PublishedTheorems.SiegelWeilSchrodinger.SiegelWeilUnitarySchrodingerLit
++import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinHalfPlane.IntegralUnitCoefficients.GenAHf
++import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.GlobalGaussLaws.Top7
+ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.GlobalGaussLaws.WlocTop
+-import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinHalfPlane.IntegralUnitCoefficients.GenAHf
++import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.GlobalGaussLaws.Wtc
+ 
+ noncomputable section
+ 

@@ -1,0 +1,10 @@
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.BernsteinZelevinskyGL.TopStd
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.StandardFunctorsFiniteLength
+
+namespace AlpogeRHCore37
+
+theorem bernsteinZelevinskyStandardFunctorsFiniteLength :
+    GlobalTheory.Published.StandardFunctorsFiniteLength :=
+  PositivityTheory.Tls2.BZGL.standardFunctorsFiniteLength_top
+
+end AlpogeRHCore37

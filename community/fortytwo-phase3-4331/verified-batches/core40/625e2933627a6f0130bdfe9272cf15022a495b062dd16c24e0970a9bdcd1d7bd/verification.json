@@ -1,0 +1,20 @@
+{
+  "core": 40,
+  "proof_id": "625e2933627a6f0130bdfe9272cf15022a495b062dd16c24e0970a9bdcd1d7bd",
+  "candidate": "core40-coordinates625e2933627a",
+  "tokens": 347,
+  "characters": 2325,
+  "editable_files": 1,
+  "original_files": 0,
+  "source_changes": 1,
+  "source_database_sha256": "38d219a6d3f8173f616ffc59a7694057cfd5db10576c2d4ccde0285ecfcbc2ba",
+  "original_repository": "https://github.com/tamnd/riemann-lean",
+  "original_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "original_directory": "lean/src",
+  "per_file_hashes_sha256": "22b1037831996864981a3c4bc190ff0f08f6052c631669a49e999c3869030c82",
+  "replacement_archives": [],
+  "full_comparator_log_sha256": "794056bb8f8438c7ef83dbffc9310eeac30afd521247306fc04463db99798622",
+  "linux_raw_receipt_sha256": "b6350dd291b9a5509bac2a614653df8444d7bfbaccad5e37ac8f7d27c4ac26f9",
+  "reference_kind": "published_statement_with_pinned_original_imports",
+  "proof_author_and_contributors": "Levent Alpöge and the original authors supplied the formalization. The proof retains the Fortytwo fundamental-domain witness and dependent existential elimination from the earlier campaign. MarvinDontPanic generalized the torus identity in public PR 43, crediting Mikko Nyman and collaborators (#103701) and the Fortytwo proofs #103322 and #104025. Jinhyeok Jeong (#106877) supplied the diagonal case split and evaluated the integral on the supplied domain before rescaling the Haar measure. Codex integrated those steps in #107157. In this descendant Codex removed the unused UnitaryBC namespace, let Lean infer the torus-function domain and the measurable-space type, and proved equality of the unipotent maps as functions by extensionality. In #108057’s successor, Codex omitted the binder name in finite-place extensionality, introduced the final constructor arguments as a separate proof goal, and let Lean infer both Haar measures in the absolute continuity calculation. The complete source passed the organizer Comparator and Lean 4.33.1 default kernel on Linux."
+}

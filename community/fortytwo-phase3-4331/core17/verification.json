@@ -1,0 +1,32 @@
+{
+  "core": 17,
+  "candidate": "core17-inline01",
+  "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core17.tar.zst",
+  "shard_sha256": "53debcffa3899c50276c1db1f9419aafbf34c3e5bf153a6962115f2119920136",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 30501,
+  "local_normalized_tokens": 48885898,
+  "published_baseline_tokens": 48886000,
+  "proof_tree_sha256": "64ddbd07490e82014897ebc398fb1085bdcbb9289320732dd2d966d6ec4d5c73",
+  "modified_files": {},
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "public_method_context": "Original proof by Levent Alpöge; structural pruning context supplied from Keith Adler rh-trim, not a copied proof or new mathematics claim.",
+    "new_contribution": "DeepSeek inlines two VWin wrapper layers into the exact target proof; compile receipt0 recorded before independent verification."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-23T12:19:13.094414+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null
+}

@@ -1,0 +1,675 @@
+{
+  "core": 32,
+  "candidate": "core32-fastcurve0f109849bfef",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 370,
+  "local_normalized_tokens": 554450,
+  "published_baseline_tokens": 607551,
+  "proof_tree_sha256": "e69b2d39e71d71f271d3269bfe0246f7ce840e1b4227f3ad540fdb2d03006ead",
+  "modified_files": {
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/PredMulSumPadicValNatFactorialAddCardLe.lean": {
+      "before": "b7ea91e9b2ac52f229e062a3167f675acc85a42ac838bf741e27cab54baab87a",
+      "after": "d685629d10fe742ab2f82952729eed10b01b80483e65ca7b17fb790a7b5f4ed7"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DegenerationProofs/ExistsRingEquivPowerSeriesOfComplete.lean": {
+      "before": "2d40857df348dc349653a221f747716ce9f9673eed2c41cc8df2e7c364232664",
+      "after": "029b518c2f18853dbc594dce45139163a87a33bd48697741ec4df7f9bc83b0b2"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/ExistsUniqueFixedPointOfAdicContraction.lean": {
+      "before": "680f4e399e4b502b65f6ff0dd440274e025cc174193a2172f70645bdb328f3b5",
+      "after": "0ee5fb37337d8b5def518b0b246a6c14344557142c4163dce3a66b5b25f55d64"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/IsDiscreteValuationRingIntegralClosure.lean": {
+      "before": "da3a112cd239e6b6a971bc09b88ace9d51968a6813d02ae180f1992e3915f12c",
+      "after": "54cfe7e3d4284e0431f2e13d97af741b9af5248b1f7541d3cd1c3d237a655825"
+    },
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/RangeAlgebraMapEqIInfDiscreteValuationSubring.lean": {
+      "before": "d66be74be2c6b2ce18463b1662315d9c7e6a2bf017c59d8dfd16348242cef71f",
+      "after": "cfcbaf719510bf4211320156cb2b5950a3f8b57dfa038a298dc42081ed924004"
+    },
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/StalkGenericPointSpecializesOfSpecializes.lean": {
+      "before": "7931032ba9543a3e6c3461055fbe0ef8d7355d797137d6ceb2bdef7302894cd4",
+      "after": "3933ba4a014778ada128b3d22c9f7dafa105bd464685ff2b1497c724e039f17c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/ExistsCompleteDvrFiniteSubalgebra.lean": {
+      "before": "22a30d78590c4e49d293b00cbde4d70d8ae7b90e55ec25d28b9386d5bea2daca",
+      "after": "dbb354c1afc4d771523217da397c4b9bd1bf9265cce2a318ad468ebdf918f16c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/ExistsGradedRingKernelLift.lean": {
+      "before": "fbb341af52d62ca684408cc0e27c613b150ef398dce63e8a32b06b3b75c768e2",
+      "after": "0d414be988e9de7e73015449bd5c9b924c419499256fe617c377514efe05c8f8"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/IsWeaklyRegularPairModOneLeft.lean": {
+      "before": "c06ff03cb0568bf83a3a6d67641d144663a5bba3abaf5f3ff603f91212578608",
+      "after": "9fcee57e8fc7c7ae1338fa0ec07bb9a6cc917e0c3bb79104c08cfd60efa29859"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/IrrIffSpan.lean": {
+      "before": "e2feeda99e121a305fecbb9e42ef68fb02d68483d09e89cd589895ebc09a351a",
+      "after": "f407e300eea11f7fedb529edbdad527b4c57a5a15d46c069b1d2ab9eff3db36a"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/MapApi.lean": {
+      "before": "3193e13b090328a14b403c1691df77947b9fa74e68323a38ab80c5709a64188e",
+      "after": "484170317983b729633eadb3bb9a3545a9a27050b7e5d4e7e5c94d1a61379be4"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/RepApi.lean": {
+      "before": "4f26b533f170fdcb94300a1c86b5c893a55ecd259c865446496b849e464442f9",
+      "after": "36e7337f57692b2f11ea3da2d28555b97f9d989929351039a0522831131249ab"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/SignLemma.lean": {
+      "before": "a7e48989416e32214c4910cad30f8035861d73cd600df5209220ccf531c34072",
+      "after": "af227d7ea377c0863cbe4290586ff4aadadcf53821564beb5416f1e780c2c0dd"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/EqLagIff.lean": {
+      "before": "32ef14c43894cbcdd0bc051aaa5cb494ea40cfaf89985d0afe6e5af2e1ad1dc3",
+      "after": "fbdc4c8c24fe3f73ee4de25259d4360d271fc703b1c992a26ffcbe03f11f3d17"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoCaten.lean": {
+      "before": "33f2bfcd49e6c0afbd920a4c4c7acd0066471c02209a17aec7c2a10864728715",
+      "after": "24a5959e8639573f418bae370cab026ea49893b3c15d2a77b7b7b5fafe835268"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoSpan.lean": {
+      "before": "16aebe293db23fe735c65996a2fcc337816c239c54b5523ca22296f536d3294e",
+      "after": "03d838c059174489090e0c5d401ae0445d69bfcbc3021f6216113d29ce973863"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/GrNoeth.lean": {
+      "before": "e3155bf4d9d5d9355a65530440ac8a4aae8dd5c64c19e9544e84aa0e8fdf1f0a",
+      "after": "e53bdfc96647d880160afe023676c16ef4f9e712be80805f8af9cb1a879f9171"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/WPresGrZeroIsCOOfMemMaximalIdeal.lean": {
+      "before": "c40a84b42122be9bd63b5f296bfe2495ba9ca5230d9350e2aff6c32ede9c9c2c",
+      "after": "ef1debf66d7f951282a8f0827e90943caca139502ac5d7bef7133d82ca9f34cc"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ChEltOne.lean": {
+      "before": "5f47e4712a0eb2edbd5ab0cc441e26db5f4d861a1d795d969e9ae22863f9943a",
+      "after": "31c705fe5c5d0b9ef9f51a8fec689e4012db1fe06b969fd69fbcebabf1c30d37"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/CmOfRegular.lean": {
+      "before": "85c93cef8f1b3518f5de3e075d1fd7f4710ddc734de1692f4808dc9ecf0c0175",
+      "after": "f50105775936e87d259a453bc03fdc3d17c1882f932a7724cffc925b68f1291c"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DChKer.lean": {
+      "before": "cba1fff34c6039c765407bef42c9250c44060ecfb436e2a64ffc814c01f76dee",
+      "after": "08971514d3174aae9473996a8cb8c54377a8ab0b1c0f529c039c9b85a229c422"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ExistsAdjoinCoeffCharacterSubMemMaximalIdealPow.lean": {
+      "before": "66fd3ccc662fbf8709b781a225dea3dad586f7a416430c83b7e108e5bd55b6ac",
+      "after": "e9888094622781b4c99ffd9d05b2bbfa003f30ccf9d24b74de1df346e6101820"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/IsLocalHom.lean": {
+      "before": "e30f96768cfbea7b12a05b0dce9c678e930e4e94dcdbe49568a9dd7c377f9625",
+      "after": "658d6531b604543d0d2d02670e7c56528ca01870d1983dede88f52b6c695c2e3"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/OfDetToDet.lean": {
+      "before": "d43af07eaef2fd79c414f687fadc9d310ec1cd149e731216f4078354d42a35a9",
+      "after": "6b969eb08f82cdcdf9e12d9dde2e7ce53d077edfeec0276f4c7169543e109a68"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/PairMap.lean": {
+      "before": "2071f45b1503d09d5eeb6d4eb040682dcc260af48ad2d566b62ec9ea630e85b3",
+      "after": "c2160c1921f17c13f986e4fee125e328f03fe429ff02d77902f951f85bdab3ab"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/StableField.lean": {
+      "before": "401c7ce710a551a25d3b6c99ac362b5a0a474f87a97912261528dda28d899c1c",
+      "after": "bbb486afdc9794c8adc5932dd5da859b889a86f109205806e386536c1f0e2de0"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/UGenApprox.lean": {
+      "before": "9b99eb78c311e14a60d92d0a490a8b585218cacba91b5e4332c2e1adc75f66d2",
+      "after": "02d46419ce3ca404b512d1128c918c4cf7e194c206fbebbb8fe21605f62d9466"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/FullEx.lean": {
+      "before": "b64e1ec84ce64bb162b52c16ce7babff1e763e8e524410ea4477d1c55f847fd7",
+      "after": "2085d057d8b9745bf5fe96f7367fc31e0aedd261734e3e071dd5faac29b327c2"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/PointEx.lean": {
+      "before": "a5889985a3f1e132d1a928badfb49f5fcd79486aec71060f8ad5b2fb92202269",
+      "after": "dd314393c8eb1be7fc943125d67a1810bf827720903160682360f8a92b7a755d"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/PropagationTheoremGL3.lean": {
+      "before": "f59088c632d032c69906e71f94475385c1333aaecfde77e635e92a3272dc5132",
+      "after": "327866501e04fd52a9c53dc81f3a03d49204a6bd95537c2def82b7cd9dc0a94b"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/StableOf.lean": {
+      "before": "7e5ef06a105f1567a68fa916175740917e69e182d7586dca0e9f0e2cd089fce0",
+      "after": "8c23dd3ee1ccbf7e3c6e0d8c5ae7e1bf5c85e66dd7551ed637c08a736c7ffecc"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/ThickAlg.lean": {
+      "before": "89b4bafd6867732cbaf014185c3a930fce7753c7b100ae8b901c90bea3cc8272",
+      "after": "074c12d90ac631c50888fe54ee2c5950051d46cdb9b7297c9f2df82226f3a029"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgDefs.lean": {
+      "before": "bcd77bbf52465ce53a39955a3d8308e0d3d9ff5fabafaf8cc94af47011af66f1",
+      "after": "aa0fadb199e432993424708566a8bead04b7fed8afdaa11c284607532a952e3a"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgQuot.lean": {
+      "before": "dc77e2fa59ff21964e79b65af0abcc1367feb6274a95d15b1aa82555ce36e08a",
+      "after": "bf3c42cbd12e8d9f599e915e5806f5e3a20742dacce41e67f348e6ced889a158"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgTwist.lean": {
+      "before": "0e299ddd392aa8e8dbe700c930b79be2cc43d68dcdce2689cce80102c709a306",
+      "after": "2f4f88b0c89d2b919d792cffba37a0e85fcb5b26d0cb969b4e6c9b00f22a5ad5"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ArtinRees.lean": {
+      "before": "5be17cff74dc4ea42c1fbe4463de4f9d82befff9a6f0ec7c199a42000aaf2d10",
+      "after": "590ac279af42f7d8d3427c7bac071c3f8ea3a1d0c574309f7b35e0ddbcb9eb76"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ContMap.lean": {
+      "before": "bd87cb81668274ef633767cf4d0e8aad37534954da13eaeb868031b20710b3c6",
+      "after": "632c9205ee0b1c276b4eae95bf3951e26bb2a10b23030e2f6ee72b726bcc8855"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/CornerUnits.lean": {
+      "before": "65e7d3eb770bd0973b97e2f0572c4f94a951254d158760b66be084a325979fc4",
+      "after": "e4f3dd5c363b8dd2c2499bf2aef23ae200249b31828b99cc9169210688b95caa"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/DefIso.lean": {
+      "before": "05c1ed65e26d0989db2782c8fa12985883dbcd7c623aad01c80eef925e3681e0",
+      "after": "a106d6a60073ccd9c90b21237aa12a73cd283380d29ce4fccd7a17013f61a8e0"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpDproj.lean": {
+      "before": "788a5c51e6a8e71ccb6c688bd5a4a0e83976b06fb81ee9bb51fc768214aeb45c",
+      "after": "a3c9918d129de216940730b3a8bbcfa5a2ca6d27421b847eb78fab2b1fb259df"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpGflag.lean": {
+      "before": "349c8fee624ccd1b28c1f892f4c74571c3db601a456d0415ba3f2c6ca6f78d89",
+      "after": "246dad4e05626d7932a9bc7c10be11442f63e333903f88cf137ef421605ea5df"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpGlift.lean": {
+      "before": "fe06904c9955b8838e90d438c30d835da2203b615992f8ef329961fdab1febd0",
+      "after": "6c1a959b34dab1bf6b5dea2878c158c808299597deb1d77f1fa42544fda69af5"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FibDim.lean": {
+      "before": "99045170ae0b4f3ae9f2b2975a5dea6d0699efdad25bd0e3ebcf17df6ba2d0d6",
+      "after": "d6f92cdf24d7893d972b55face843f24f0cb52e7afbce4590c05f33df273a79a"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerConeMap.lean": {
+      "before": "2e0c6a5321fb1f3d44f007ca1d8bdac2d7e9f77aa2c7c86084ca6f9f6de2d930",
+      "after": "47599073778b39edfb9d5d8dc7098834d0b8c93f8d0cf495fe1e90e2793eebc9"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerLiftTwoToThree.lean": {
+      "before": "62c683e61189d01a26eed987b0f29e3f8a62623b8194e85102745dc3defbae30",
+      "after": "50f07e8e946e636f1eff62b775e5cdff545c828bb0970b008732733b9274bd43"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/GgMapOfGL.lean": {
+      "before": "c55d76247ee8760c38d41d0be5061bc8d1cbcf7fa847ace529da365acaaacf50",
+      "after": "cbf78e92263248a30c5da647cbfabc850fe864afbeafecb60cf7be4bdf4e6073"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/GrMIff.lean": {
+      "before": "df83efeebc40e2bbbdd3ae86c1368c3b8439338f1259431dad049aec8c088bbf",
+      "after": "2c7cedadbc7007cbb17f2bac19ac723ae359875c4a3ab350f75558fb7c74dc32"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/IrrOfConn.lean": {
+      "before": "c5b343995fae1972f708fdfac16e939ad4653f4ca7257dc761e0b3fc4b4216ab",
+      "after": "a724884a318c45a0288145f8f00be94093bf13f218e3e871b2cd0418d1c68061"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/JconjApply.lean": {
+      "before": "4a7a70b5825383782fef2f904a9f6ddef13b3882331aef9592c924574520be0c",
+      "after": "0c6d01703a2b0a992c9ca3a409294cdf5d05aca77be9599ab37879aa036588f2"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/KrullDimLtOfNotLeTriangular.lean": {
+      "before": "370ae8afd2ebec813c1141208417641c6685c878ee8e8938d33c490bfce14340",
+      "after": "70e0c29121ba08daddd09f504e22138d9ca02031fc6e657b2ecdd8f1906311e3"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LocCpl.lean": {
+      "before": "95cd52fefd3b42438c33312717903b82188e957eaab0c982931a4c191bb884c4",
+      "after": "67d73dd3540bb6e2dc2c8ea53f7df5d349944de9c2a26ee9e33e4acaa29657b2"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LowerTriangularConjAntidiag.lean": {
+      "before": "79081599c4a66b7e0f3c31150dfa0feeefc3e869675f4ad7d2d1d85d6773478b",
+      "after": "96f51057a7ca06d03d72cfb7f253a81fad92ab129f6a7bac96e6b5c3667e0014"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/NegOneZpowSg.lean": {
+      "before": "1a72debde4e0e5b721ce71a6c06eabfeb7deb08a9280512fc47a6874e9730823",
+      "after": "bc5baf939a50d4d268b851800ffbf29b333181df78008d79f3985c35eda2b36c"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PointLoc.lean": {
+      "before": "3b7d405fc01f58f2305518c70d218e20ae52167d410859355c2164f65e2e2a45",
+      "after": "f73944e7462dcfaf28e2ee7ae852f91868a302e506520a112b6538790a5d8d15"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrBrig.lean": {
+      "before": "714c3b92cb135a62247d9156941bcbffbc583b65114da6cdd4e72de72135019b",
+      "after": "56f6e948d1340402a254d0a32b8d32ed2bed5deb215db8eefb548988ec8b13be"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrBstab.lean": {
+      "before": "77b030227fe9bdef389b2400283a3e5564663860de3d34df2914fe573095f7b5",
+      "after": "30c86b207fed6dd3352c1a8d711cce11d49a27362e9808b3cfffcff789760947"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrNorm.lean": {
+      "before": "263bc2282bd2193eb7004cc70e02f44ae30209bcc1d895cee593aed47d3dbd42",
+      "after": "29b03ce2c71136234105b595648914988d05b7425b3dd36e439056fbae80423e"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrRes.lean": {
+      "before": "45918174b108d78a46584597e2650f0cbf8c8f9d65ded32ef0b1deaf522bd437",
+      "after": "7a279e80669dd2670b915a59cad76e9cc1e8195b989b4477a7fbbbdf7e1490ce"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ResDual.lean": {
+      "before": "9110b15a84a7781e40cb07e13a9d19d061c659c111777c0915c147cb74ecabf6",
+      "after": "b327ec8f77be5f6d9abfcb6768205c2c4b0cbe8ecaed4d92f6c11e567de7e713"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ResEqOf.lean": {
+      "before": "c3ae1dc61809ee46c45e42b27b7cfa9940cab85caf7a84297bb32e964f936114",
+      "after": "4ce270a1bbed4186b3ab5a87bd8473eb34ec3468c3681fafa35465cb8519d498"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SgWeight.lean": {
+      "before": "ac39795a907429b596177bb7c892917f95ee65ddd37cd8094ff81b0c600f350f",
+      "after": "c98609c0a3d9ba3d76b303766a58fb4a3ff2f2d6ca5b00fbc9d3fc9db074e121"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SgZero.lean": {
+      "before": "a9f76cfe8ac3ff7282ecfc90971f672fc27e0e3595f98d7566418b589151df22",
+      "after": "fb72157cb18ade93e433b646e349302bbcec44dadffc370385fe962ca020a30e"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/GaloisLibrary/LocalRingsCompletion/MemMaxPow.lean": {
+      "before": "582898804fe348b5571377a2165bfda067c1f82df90f3b61eb5ae73bf7da89d6",
+      "after": "cbd4c42c3b5db174d0268f65d053ba27f96e28a39af060fdd5b35a7d9f5c0796"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/GaloisLibrary/LocalRingsCompletion/adicComplete.lean": {
+      "before": "a0e8a95476d9fd4f1a2d3bf9a3a1a322773e3bb77582f443b3a8f36ae2022cf6",
+      "after": "628b65befd6e17656cb5835817a4beca6977c3c1b148c54a33d922953caa4ca5"
+    },
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/WeilGroupCharacters/ExistsDeterminantPairMapOfAlgHom.lean": {
+      "before": "1e46ae66fb36d6d9e1c32aa26ade8fe8fdd1faeb843d06b9b13635534588a02d",
+      "after": "e09711ed35c0f999506ca669307c581513a1af90fbf565f4bea07af397a8426d"
+    },
+    "Development/AutomorphicArithmetic/CyclotomicBounds/ClassNumberBounds/CyclotomicTotient/SkolemNoether.lean": {
+      "before": "4bbd3f39c523cc24a527693e23a99ee1d86f4bf04d51a7d59d4431c63f977b9a",
+      "after": "95e8dcaa4cf742b6846f1a807b06714eb02ca8e5f4dfada782832082fc4761e5"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/RegularLocalRegularSequence/RingKrullDimQuotientSpanSingletonAddOne.lean": {
+      "before": "e5f784ffcc441114bc531de3d82a074301adc7aed0b0987d9108f73847b37f00",
+      "after": "5e76a26d21b35c0cefa1030c8031d3f2d990ff063f02d931f6197f26bba3e274"
+    }
+  },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
+    "new_contribution": "The native Fortytwo session unified the GL3 sharpness and prime-chain argument with the propagation theorem. Codex used the compiled specialization theorem to remove unused support and share equal mathematical lemmas on inverse representations, determinant characters, local constancy, residue maps and complete rings. Original proof by Levent Alpöge.",
+    "native_contribution_draft_sha256": "fbb5ab33f752de5139de97034588440ef4ace16b289c578470f9f9872c088aca",
+    "adapted_gl3_sha256": "327866501e04fd52a9c53dc81f3a03d49204a6bd95537c2def82b7cd9dc0a94b",
+    "credit_detail": "Fortytwo combined the GL3 propagation proof with the sharpness and prime-chain arguments. The native session wrote the original 354-line draft. Its shell could not launch the draft compiler. Codex repaired the imports, commutative-algebra instances and specialization proof, reduced further support, and verified the complete submission."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-24T09:45:39.421318+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null,
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
+  "source_kind": "pinned_git_checkout",
+  "target_sha256": "9a872e64672ff0be6d49f5cdda221512b6e26259a049445e4500627b408278a4",
+  "pinned_source_files": {
+    "Development/AbelianVarietyTheory/Proofs/CoherentCohomologyProofs/PredMulSumPadicValNatFactorialAddCardLe.lean": "b7ea91e9b2ac52f229e062a3167f675acc85a42ac838bf741e27cab54baab87a",
+    "Development/AbelianVarietyTheory/Proofs/DegenerationProofs/ExistsRingEquivPowerSeriesOfComplete.lean": "2d40857df348dc349653a221f747716ce9f9673eed2c41cc8df2e7c364232664",
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/ExistsUniqueFixedPointOfAdicContraction.lean": "680f4e399e4b502b65f6ff0dd440274e025cc174193a2172f70645bdb328f3b5",
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/IsDiscreteValuationRingIntegralClosure.lean": "da3a112cd239e6b6a971bc09b88ace9d51968a6813d02ae180f1992e3915f12c",
+    "Development/AbelianVarietyTheory/Proofs/FoundationProofs/RangeAlgebraMapEqIInfDiscreteValuationSubring.lean": "d66be74be2c6b2ce18463b1662315d9c7e6a2bf017c59d8dfd16348242cef71f",
+    "Development/AbelianVarietyTheory/Proofs/HomogeneousIdeals/StalkGenericPointSpecializesOfSpecializes.lean": "7931032ba9543a3e6c3461055fbe0ef8d7355d797137d6ceb2bdef7302894cd4",
+    "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/IsNoetherianRingAdicCompletionOfNoetherian.lean": "9889797bcc2200822242dde2e3eb84293b0f79cfc68053af333483c98c999d7a",
+    "Development/AbelianVarietyTheory/Proofs/ModuliProofs/IsNoetherianRingOfIsAdicComplete.lean": "597c6c6163ab3c0af71cd5d655d300f824cc6b905eb54c0f9cccae03441e0f9a",
+    "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/ExistsCompleteDvrFiniteSubalgebra.lean": "22a30d78590c4e49d293b00cbde4d70d8ae7b90e55ec25d28b9386d5bea2daca",
+    "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/ExistsGradedRingKernelLift.lean": "fbb341af52d62ca684408cc0e27c613b150ef398dce63e8a32b06b3b75c768e2",
+    "Development/AbelianVarietyTheory/Proofs/UniformizationProofs/IsPrecompleteOfLeOfPowLe.lean": "232aa66109c5457f03ba4ca605c3ccc970f34b9e96e6a64980c3340f42890a7a",
+    "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/IsIntegrallyClosedPowerSeries.lean": "1f885e376963af69abbc1f2928d6943d314536fa5ca5b7a46ea09eca7ba9fa01",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/CoiConjSingle.lean": "235a05f0d7bf9fdab4f9f8bc7a5b89f100a6f672d5e1bb6d2f6fb95871bd3a8c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/Adjoin.lean": "3223b9f85b105368c8e43dfa579d1dbce164393c2d5af040d3b23ae77e465f29",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/BaseExistsPrime.lean": "124b217870dab806c9d303c5e9922c6d3c7f7d9dc393c3c66aaf55465b91bdce",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/Bridge.lean": "34c9d2f330ff85ca3730fabf05822e1062f5f1bf1a150f7f32734841891810ea",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/ClChain.lean": "0e06df29fa3fd0bbb8d3304ed61868a8759c43769c1fff00bcdaa82660a97b12",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/ClComp.lean": "716c153293876f5bf4dc82f7dd37262af909989aefccb1a616c7e431c355fb1e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/ClConn.lean": "6345f71fdaf2956f5836de571f4b08cc5d2047708063c363e2dab28b33f2d1ba",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/CmFree.lean": "62561af9589243c60f7fa8e782643fc786c0d07597c471ce94a03b313d122b2f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/Cohen.lean": "717b9e4568d6c5fdb55bd4eabc0eec10f85dab469f47c81df931e77a0f25cc90",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/CompDim.lean": "07e6882a5bc9c99bdeeab61feceb0fc0915eec47da804dbfe60d346c4991c302",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/CorePowMem.lean": "e01a729b0dae4cee77c4f47cadcf358f34bbbcbc9f45f6e3f23e2d6a75626195",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/CplFinite.lean": "9e8e0c6531ee353065a85f14d184b105edd8cfa08a02eb7dfa1bb5b65003320a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/CutDimCongr.lean": "a257088f3c2823114331283d03d495b4d0565405572ca2cf9dcd074c718ff30e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/DimFormula.lean": "a2c15d0f403ddd0a9e735d1dd239a015d70924ad3d8beddd6ad50f4ed07e4518",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/DimLeOfForall.lean": "1cc66c4ea5fbef24611647458e323948868062d06a3130febacbeff03a75ed26",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/DimOfUniv.lean": "77a0c900cd5d209be31bec9927f8da66fc6c65fd004a4e09f2f7056bef0db403",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/DvrBase.lean": "b8a6f831cec0d05a24549b62b3a19ed3a59085eba4fc65683310525646044b86",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/ExistsSystemOfParameters.lean": "9b23e122c935c1095c7997be294c701f837a5a1bbd93ebee16397604a057dc1f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/FormsAR.lean": "90021c46baf7e077364ae61b5743c8823f921aff772ccd0e29b661b7f6c5498e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/Imports.lean": "5c14fa97c96e137912be1f01a57080632682aea790579d5e1e62a56c177d5e02",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/ImportsVariant.lean": "ed655c046c16e7dbeffd75091d90054ff27e7323599f8d64057f700642401e1d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/IsWeaklyRegularPairModOneLeft.lean": "c06ff03cb0568bf83a3a6d67641d144663a5bba3abaf5f3ff603f91212578608",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/IterCancel.lean": "39c6d5f83c7f1b8e4d63eca6af77286220bad55a3d8549444bf379578b833d29",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/LatticeDuality.lean": "2b117908e4ffd8f9dc3db719e48059ebcd69d68795dd538a53eb712b8d9c53e0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/LimitPowMem.lean": "62be2e0985daf263029a57f9d7ceabf6884dc2c51461a8c33acba902c6d15e55",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/MaxNotMemMinimalPrimes.lean": "2117f12930eceea6e31170a8a06ea69650d04507a573e87b6d7b36df04416eee",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/PsBase.lean": "c9cf576573fa64b1debb013a14451984fd7b43e83e7b59e5d15966c7f4d83733",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/StepArith.lean": "1dda8bd0bbf26f60443c86b343e8af83e1b603bd5d7c11096d9fad05b2479032",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/ConnectedPrimeFields/WithBotAddOneLeAddTwo.lean": "b2ad962dac77661bce1678a2d4d0258ae39fb8b66a541f61fce31139b617c2ab",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/ExtGen.lean": "cbb62bd9a4a0e5c1533fb92042301d3b20e0675b12e8d2a496b7794f47ccd6a0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/GenEval.lean": "e5f0d66666985e67e245c75d8db10609e82f5c28c3edc0fb542d1574d96d6b42",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/GenSpan.lean": "230274fd702d225806c01fb5fdf6cabca4fdd8f0adbd19f8506194c127ba21b1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/GramIff.lean": "c9d3daf26fece7d8f6557fceb6abbee9ee0d9a301305a59087afbe03bd30713f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/InjTest.lean": "2fbcf290125221710b23a4ef528eee688054a37bb0bd69a26b9ba03d82936ea6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/IrrIffSpan.lean": "e2feeda99e121a305fecbb9e42ef68fb02d68483d09e89cd589895ebc09a351a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/IrrOpen.lean": "36810ccfffa6f315ac9e1706dc72cce06e569ebd445b5d3f24f56696f7ccd9e4",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/IrrOpenDet.lean": "50ef1579d620ca69233f6676e35d41e7568da1608469114f15286a50687b554e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/MapApi.lean": "3193e13b090328a14b403c1691df77947b9fa74e68323a38ab80c5709a64188e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/MatIrrIff.lean": "8dd34b6c9d547110e3be19fcfd0e4858e8cfc5084a2715bd68b061d3bd03c8ad",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/RepApi.lean": "4f26b533f170fdcb94300a1c86b5c893a55ecd259c865446496b849e464442f9",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/DeterminantRepresentations/SignLemma.lean": "a7e48989416e32214c4910cad30f8035861d73cd600df5209220ccf531c34072",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/EqLagIff.lean": "32ef14c43894cbcdd0bc051aaa5cb494ea40cfaf89985d0afe6e5af2e1ad1dc3",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/LagCoi.lean": "cd7d6307a44ead7adc782bd95e15f1d8800c81c5dfeeca5879a7469009d62eae",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/LagMap.lean": "dd4fd46e4a9941d9d1406846a1f2800f54a24894e0316eeccb9dae1708d9a1b9",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/LagNeZero.lean": "7a529a58e19a40c7df3fec36d680ff7a79b48083f334dd0aee0d05451c1923bb",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/LagTriangular.lean": "955bbf9bfbe783925c61a27720ded90593ce24df599cbface188b253d8a50011",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/OrdExt.lean": "46a36961a056a3c31203bc868d588b43ba06ee7cc55ac1b7ac680f9a096070e6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/AlgebraTools/SqrtOneAdd.lean": "5fe923ba6041309f16e69fe0fff34e9d79c1b0855ebbb756285531521b11c171",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoCaten.lean": "33f2bfcd49e6c0afbd920a4c4c7acd0066471c02209a17aec7c2a10864728715",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoEvLow.lean": "9027c9689f6cefb078743471052a716c63ebc4d1328455b886e0e8ef9fb4d9f8",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoMvps.lean": "8b0554df4e766e5988ef1044b63da5a2fa5e4ea4654e4330f0de1e2c50cebddb",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoQuot.lean": "da65041dafcc336f356d3b57be207580675115a4cac2eff90f61bff605d6f20e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoRes.lean": "58404c3d7f1372ef22c7afe5a332eef2671ca450de7959b2f24f4f18d1ada941",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoSpan.lean": "16aebe293db23fe735c65996a2fcc337816c239c54b5523ca22296f536d3294e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoSurj.lean": "ce03d4e906486a19de06ba110ec96e00abcc9d6fa0edfdcd4c66a1d921c04a8b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/CoordGrading.lean": "f86d4e46a86004da28386cadc4140af20ac7cc26c37a7f85fd0a9976fddb656a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/EigenMem.lean": "ac9991313eac8d748ba2943079752a6ff5a631de8dada3cd914bf1bf0c38bf9b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/Gordan.lean": "e1e584cb0a065e4433f2e284197c250fb8d95712ed1b076f31afc9b448ea51b0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/GrGen.lean": "7ca630ba97af19152f3088d8b89a7b95797ccf60a4e9f0b73bc1bf8dbf479e2d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/GrInternal.lean": "fb8671ebfb06287326fad01d65fc0d8f32371088412510ea343839c964df1b9a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/GrNoeth.lean": "e3155bf4d9d5d9355a65530440ac8a4aae8dd5c64c19e9544e84aa0e8fdf1f0a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/HomogOfStable.lean": "805c586b7ae8b24efa606db9690cfab8ea9d34462dd64b72db4186117c177cea",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/ObsPres.lean": "104b5b70254fd457906a86b6caa7d72edbe10f0f8762d421357a6c5a55796cb8",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/PartClosed.lean": "25d60215cacd9f83e88cdce1f13f16b58d5f5fd9e8f5eb14c39dadaff9906a18",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/PartFilt.lean": "051a68318e9b058536785b48a87e975b3c61ab42bb0997c9b42fd1459e2311f9",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/PartSpan.lean": "96a70e23f19377afc3e847d86b9049a0e8400bdd3818b632a83f294e6ce3f7cd",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/TactVanish.lean": "996a44cb1ecca1a9c0bc498b58cd5e25afc5d86afe3a25e29ffbe1e416d2444e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/TchPoly.lean": "51b1fdf78ea7a96d055e765d3598c3f3666033deb1d4d02f7650bf591cab021a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebra/WPresGrZeroIsCOOfMemMaximalIdeal.lean": "c40a84b42122be9bd63b5f296bfe2495ba9ca5230d9350e2aff6c32ede9c9c2c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/BcChiTmul.lean": "d93861a6419b93a473ba03efdc407bd492400a0db70d7d28697665efc08ce9e3",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ChEltOne.lean": "5f47e4712a0eb2edbd5ab0cc441e26db5f4d861a1d795d969e9ae22863f9943a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ClCmquot.lean": "ded6271e4097a6717fe977944814cc259384d0f7f5154f7dc008d3d17c5538f0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ClFin.lean": "78423fad924c001ad4782d5a26b4f525936dfffd3db0b25d2a6ae1ab782173c2",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ClMvps.lean": "7a5b79694a404749e53dc71360cbeebd952337ff7b31670901c05fe85aeb21ba",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ClQuot.lean": "9801f35caed2cc86d7a263375a7ec58728077e850f6882097ec101e59c57f594",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ClSub.lean": "313d6a1be160876c4e657a88f4c4ca79beb854112ca963a9ab21aa9965af6ad0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/CmOfRegular.lean": "85c93cef8f1b3518f5de3e075d1fd7f4710ddc734de1692f4808dc9ecf0c0175",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/CplCm.lean": "c8e80154465bb12842e66c5e8de73a0b10ec8dcb6b523efafdbd7380312c52a4",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/CplIs.lean": "097e146b4679dfbac475500c4b2032b917e709f812a8f50e4bc5400d59d59d35",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/CplQuot.lean": "b03f80e5c89fdaaac1fe4bcb2d2b87d304345dbb9a47a5588e2cc03bc159c592",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/CplUniq.lean": "b3cbb89486a16daf488e8ee8cdabbfb3c90b448e5532121e3c21c9036a58e204",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DAmitsur.lean": "0e846130679ddb0e4977302b04bd315ad2b4a1c61327a320eddd2ec8a17c3624",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DChKer.lean": "cba1fff34c6039c765407bef42c9250c44060ecfb436e2a64ffc814c01f76dee",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DComm.lean": "c9ce38d7a2c2426649014fa917b5cda099ec75b6c5ab1c72e53b325c37bd9fac",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DExtPoly.lean": "75bdb43f287097d90839a6df994872c7420af045fd832a6dbbe62875013cec20",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DFactor.lean": "869b57e49a5870749dfa87c752c7cb032f62fb1f12d098400300395d2bfe6ed2",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DFaithfulSs.lean": "fe70f7c2ecd24e74fdb3675dcc140874468970485207e1a12e1fdc4169d2a82d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DGext.lean": "5988a8369ae91c46769d70906b2575f0f27d55f72ee1f1791fd9ca3c4ed8eedb",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DGmap.lean": "ded04d80ad7afca9e779013a2989a348daf64a1f4848e38f96678fa6302d0e6c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DIdemRank.lean": "5499de7b9df66ba1b24c559b76eb4eca32c9befde818e75b7316e87754243fad",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DKerSs.lean": "532ac19d308d1a3c4e2ad62b0f98b36606de5914d73afad8395af60b16733208",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DKillsPoly.lean": "0653c1112cc6757b5ae40fa272fd763d063a399259948158dcd613270d3eda59",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DMatrix.lean": "26e2076101d784e5149b614f307a351c26ec02ce4d1c85897ba8c4dad1afa0c0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DOfRep.lean": "4b62e3c309d3507df03ab41de879d248669c5e676d67b1e98f84de069913fe09",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DPoly.lean": "55318e6aecc47be69cb500554534d63f62bd6cef1f07f50f6fe407bd8aea3264",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DPolyExt.lean": "71b8a3abd2358367f11db5c66a1ee681b391e8d95d84e3012328443ebe3b49e8",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DProd.lean": "ccdf6ef49aae3dd37f93a5200b09c0d37d43b79a667b690a64e2a9424ce86ed2",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DPull.lean": "616515f0c107617cb49e45c122a1918ed3c87c4108810cb3f142aba7a967038e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DToDet.lean": "0c207d1c32e7682a19e1f69d57adb8c82a99ea3446dfa8c2d955fb4ec1773147",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DToDetOfRep.lean": "2f41a2740a06684fa89e64b845f64f268a1dafe070d6c7d81734aa0e46021e49",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DUnit.lean": "4e04282049e7a947d2f6039dcadfd5467ccd959a8a00962f7adfd00478d0b03f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/DkerOfKills.lean": "04e6b25d5724007c861fac84484a6566bbf58ac1d7752dd5d52b66fe792dc262",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ExistsAdjoinCoeffCharacterSubMemMaximalIdealPow.lean": "66fd3ccc662fbf8709b781a225dea3dad586f7a416430c83b7e108e5bd55b6ac",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/ExistsSemisimpleRepOfDetLawOfIsAlgClosed.lean": "2a30e9d8c4b924be5d4a2971c629d3c768db6d482dd49ef8c93c987d09b3ada1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GDetps.lean": "e3f96434d412f229e42bc177b7f1574154305ce5990b3dbb1681613f7a45f542",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GDetrad.lean": "147f3a809713d423063a79f24cb1c9db8b9d29382cbf123ac8b710982d132bc1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GDimform.lean": "4f228ce15c61b2a0129ce6fd7da9fe12eebc97ce6c6767b1c88dfda9147e1f00",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GGram.lean": "edea24a6adc51013167be6c61e706050240b879957687575311be7d2ba9b125b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GHommem.lean": "e5111768f76a6b26fecd3017e65ec09c4dd908821bd1a32891481a907851324c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GHomprime.lean": "6542e7a44f6bec40e732ad057a137852c0eb775b94d7b27bc275fdd2bee24bb3",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GRatliff.lean": "a5eebc2058547cdc4c4e65b6cb03d609e4d2c938ed2e08735e4f044e15cc19a4",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/GroupDetExistsSemisimpleRepresentation.lean": "d82a8870df23017381e0ca8927260a869aba82866105a3af354e3f5d01a483f1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/HighestWeightIntegral.lean": "a1379bbfacaab8b8983ddc50ace128ad9efa739ccb0234ed07fcc2db2b907830",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/HighestWeightSpaceFinite.lean": "fe8706c82ff7ff4a33cfcda331b2ca079cd93409d0931dd70224237187fbbfb2",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/HomTwo.lean": "a6977a6a90d6e166dbc5ce418330585f41941bfbdf6f60dfe9bf0b82eb346bc5",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/InjDim.lean": "b8f0bfcf6d7ae3fbcc4f31b11304f91de1604bcd4ec788c84888f8aa1981c74f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/InjOfFinite.lean": "6938a53e4b8b102f7fa98ed9249c2432a85e0dfef9da28842f0ecb98b585d5ce",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/IsLocalHom.lean": "e30f96768cfbea7b12a05b0dce9c678e930e4e94dcdbe49568a9dd7c377f9625",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/KStableHighestWeightVector.lean": "292f4e7e06268c031e9e72c525b335ebf5603d58f0f340a4dc5f5d76549a1d83",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/KTypesBoundedFinite.lean": "b3e4cd4b2fc41e4eed402a3d8e760651a036736851933238d5d1dcab70accd5d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/LeftInvOfJac.lean": "89751b1cfb3c0c79272c9627cc4f746cf4385e0153b10dffd5b39ab4bf685343",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/OfDetToDet.lean": "d43af07eaef2fd79c414f687fadc9d310ec1cd149e731216f4078354d42a35a9",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/PairMap.lean": "2071f45b1503d09d5eeb6d4eb040682dcc260af48ad2d566b62ec9ea630e85b3",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/StableField.lean": "401c7ce710a551a25d3b6c99ac362b5a0a474f87a97912261528dda28d899c1c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CommutativeAlgebraHeight/UGenApprox.lean": "9b99eb78c311e14a60d92d0a490a8b585218cacba91b5e4332c2e1adc75f66d2",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/AbsMain.lean": "357fe8e7fd1a9bc53aed59add4e3d200b66fd02d2a166a58270fd6f6619c3c18",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/CharPerm.lean": "cb4cd3e358c86c33379cf14754959815daa49055abe65cf87298f6408ae975ff",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/ChartOfFlat.lean": "b54fd54b5cd2b1245ee2e4dc3c89cbcacd3f4184f923c23ead1daa90dd08264d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/CliffPrime.lean": "3e34debb8507ea563028fa6f8e9dab50bc2d8820dfe37a734db7d4cc527fa830",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/CommonFree.lean": "84d99e816b97ad4829d07fae339522855ad577affb33fef6b845dbe4085dfe63",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/ComponentsGoodRankTwo.lean": "5c7872c7ed0b051819bc05127683aa979a9d15d1aca9e261e328ed49e1d07102",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/ExistsNicePrimeAboveOfLargeDim.lean": "809fdb2d6b28e15c655a3f862cae23a8e79a094da02163d7f4fb445c35146182",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/ExpSums.lean": "c4815a89a159dfe222bf255a530fd50f2f742cd584b126f034416d9769f866a4",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/FinLamOf.lean": "1e123f14332ea342e83057d76780af4ad3ee5bb43a2c61ac87c3822234cd3113",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/FinPtOf.lean": "26b802d29cabf60941138bac7bf79abd538f57968b3cb886b25e8793199752b2",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/FirstPrimeConditionTransfer.lean": "68786cfd622bef620f68e1af2130452a516f38e1723d40bd3aea953413d45b2c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/FullEx.lean": "b64e1ec84ce64bb162b52c16ce7babff1e763e8e524410ea4477d1c55f847fd7",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/GlobOfCharts.lean": "134001d422f6396c7b21a6a9e894eef66ea15114fcda408ed71a596032caf574",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/GlobProp.lean": "1363c4db136fb262902705fb6e1cd640560e685a2f94917b43c9f0440d7af45a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/GoodPtOf.lean": "d740a071e3de6d0603d108d504bff3460ec330d8d0efdd5a3c317418d6e7d12e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/IrrNormal.lean": "14df9bb949c09c2123c7beabb2bd05230e6325a6f17a7937a4d079ebf2e35273",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/LinClosedOfAdic.lean": "0400eacf077a7b346268a08665e68775392881d0ce5115bc617acb48d167fd4f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/LocProp.lean": "334452770def9a8aa28d6c7357bb3aab3071d93cc95256b60174f0c5deef8a71",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/NiceIrr.lean": "e87655cf8e4bb91b12cde94c2cebcea67f09c3ea6ed5f476d40c4300ef8190c8",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/NiceIrrE.lean": "e4b288ab861874e8a320f283ab018430e1b1565f19c4f906e681d542e1b83765",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/NiceOf.lean": "4ba2611bf8d78af4933c6549a49b0196c8c3bd27fe29219a7e6a1bdf3fd9b213",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/NicePrimeEx.lean": "c03ebc2ff78cb78205375dcc6c0626715697e6e233b5f879941e8140926695b4",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/NiceSep.lean": "9fd3e1b3d4b60c1fdfaac9626db0d38288fe1089fcfb5f1abbbea708eddfb5bf",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/NiceSpecializationTwistSatisfiesFirstCondition.lean": "5b6e5e7077edee06d9e397888f3e1b81be4379ee5f83dd650c62d21df72e59ec",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/NiceSpecializationTwistSatisfiesThirdCondition.lean": "5630e65b3d6e33f53473ad5131e964fa8dc1cf3b1530bc42f7f9530fa61ffc9c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/NiceTypeE.lean": "85e5e6b699db233f5e3a00339a649e8f1aa28025d31bbc1c3d652cec502b40a4",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/PhiMaps.lean": "40a8928ff4c240deb87c642f01a321088a19300f2344e1739fc945f490f74930",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/PointEx.lean": "a5889985a3f1e132d1a928badfb49f5fcd79486aec71060f8ad5b2fb92202269",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/PropagationTheoremGL3.lean": "f59088c632d032c69906e71f94475385c1333aaecfde77e635e92a3272dc5132",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/PxIsCont.lean": "9b7ef192e828eea786e798c4ef729568b28de374443f28b1b5cdb98b02e8350d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/RegCoset.lean": "270fb3b4d5d0711131457e31d7466637eebd05fc2a9957ebf79cfe884aa76bcb",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/RegCosetE.lean": "962781f051b3f8a1577401e9245cc8b8eb0a5b73178628ba9ada19424c117e44",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/SecondThirdPrimeConditionTransfer.lean": "efa5fc44dbde54ec641abfa02e4fcf3dde020528c0c7fbaa7b45b96e7fb97a11",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/SeedOf.lean": "d390f2bc32b9422d61ea4da3c61094e14c27216b77c96756bc7e1579ddf6f302",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/SelfTwistEigenvalues/CompleteDVRExt.lean": "9e642eb4a5e38ada9d563ebb89e62546550c7efed57175d828a16d6223e96c35",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/SelfTwistEigenvalues/CurveDVR.lean": "c021a8ce17eb694a5aa23b8fd400c697bd3aeb69b5767b057b876aa8e7b9fd5a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/SelfTwistEigenvalues/CurveNorm.lean": "8ebf397e2cb7d1a32bb02feaf6d2767de8c87e8bcf79518806d7d6a1ba270938",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/SelfTwistEigenvalues/CurveOverSeries.lean": "7b7e87cc6721343321cee69002c6f6a5fd6cae0358ad12984d3935a1656a6f6b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/SelfTwistEigenvalues/OneUnitTF.lean": "20a27f1a26267a7888975ef2405a660eeb00eb84b649092bb3d037590cc1239e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/SelfTwistEigenvalues/UnipTorsion.lean": "9de83bdacc75f02fe489d2892f1ae273109ba6c7dfd46360cb1fb2a3a8df8ab7",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/SepOfMinors.lean": "2bf92fcf3f2ea4b09c3f7e8b30f6dff211c277ca1cda23faaf4b4ed87eefaccc",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/StableOf.lean": "7e5ef06a105f1567a68fa916175740917e69e182d7586dca0e9f0e2cd089fce0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/StrongIrrOfOpen.lean": "9888d25653040dfce8b794af5037a2722467adc3171b552122f9fd78fa868a41",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/ThickAlg.lean": "89b4bafd6867732cbaf014185c3a930fce7753c7b100ae8b901c90bea3cc8272",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/CurveDVRSpecialization/ThickOf.lean": "6591edae228b11618c664c7edf71f79e9bfeb67a3f80fcb1d0f8854fc8f61665",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AbEval.lean": "f186be583e1351c007dd734d80259c36dbca5b4ddfb48bc9a478de3d419b903f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AddMulSelfEqOfOrthogonalIdempotents.lean": "f1ec836a5841696ed4cb88533d5352bdb0401975fae81e8d868b1e9dca9384a0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AdicCharUnipotentPgroupQuotient.lean": "6dbc5fc01ec4982b4ddd7ed117431197af39f442eff0bd60eeb660a881e01a25",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgClosed.lean": "fe3124465dcc6f940876c7317b6fa498996742463494a8498ab3c5304b55a93c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgCont.lean": "04bff772586f893ac9b174b7c9bf9cd97dbce8e5bd6c05a84846994817e40ce1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgDefs.lean": "bcd77bbf52465ce53a39955a3d8308e0d3d9ff5fabafaf8cc94af47011af66f1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgFamily.lean": "1df4b8cbbbe6672bfde1e5248e4263a2f56caf09a232368001897fdb82a9ca9b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgGlue.lean": "c3a19da43e67f675121e0c21bb601a2c9938478b96e3ec79da6ac0ed6477f13c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgHomog.lean": "a041177a709c4139dd9b87e68d6089af750f6e2b59abb63a271c6a162d11def3",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgLau.lean": "01a1f19a55b62c066f97d147d1abe58058f1ff115726e01a5969ac6d3a9e0b01",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgLift.lean": "e7fdd78143d6b4f264b0d4fa7bc4311c61819cdb4e504db525c5c58cb049b77b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgLimit.lean": "3831e12a165106ab624769743c8cc6074947ca6b296eb11c920a4b7245e3092b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgModel.lean": "4023f4aab2109c00a91bccbd5b3a8ead054ff4c0fb7e3a8462d19f320fc97a2b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgQuot.lean": "dc77e2fa59ff21964e79b65af0abcc1367feb6274a95d15b1aa82555ce36e08a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgSep.lean": "dcc592b3e4f360517634f4a42e7ddedb1af3ff50cf145fec362b83456d60a17d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgTwist.lean": "0e299ddd392aa8e8dbe700c930b79be2cc43d68dcdce2689cce80102c709a306",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgVertex.lean": "77418d2d3f6982064b9380c4f81267b3f11645db50f7fcd05b8443ce84d8730b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgVring.lean": "2ab5a0ca68ea3fff2ac0abdac4cd3bd8d3ddd74b979b67f69d58f1968ac3309c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AlgebraMapRangeSpanEqTopOfFiniteGenerators.lean": "80f7559992029076e85ade4478b67951c135372267a13bf3cc36cb8ca05898a6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/AnnOfFlat.lean": "12e42f5fb3cadf0072785a34a284c2af7b2b55e34f6c8ce50da4f7abc810b86b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ArtinRees.lean": "5be17cff74dc4ea42c1fbe4463de4f9d82befff9a6f0ec7c199a42000aaf2d10",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/BorelProjectionIsTwoCocycle.lean": "7ec420a00b0b68712b31349fcc55af63b0dce035af870949d9812887a9400dac",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ChainedBot.lean": "4c63908c172d65bf08ab6d00b7d9444105f8267bd07d599246304655471c8f49",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/CharpolyCoeffsInSubalgebra.lean": "8c4c486606072636da223fb4be0aced6a571d3db002314b487b534cf8978d2a9",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/CharpolyFlag.lean": "33a8bcc906ddd4c82eac3db8349726518dbe92271148a95e9dc93fddf031561a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/CoB.lean": "11e154d70c075ae1b771c4d08a69b0adb9dfbabf5dd4fa64e577bde77e2cb912",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ConjVal.lean": "a60d70ad275bbeddf79c428cc22f29070ee64069a07decd2f78f0afe805f51e7",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ContMap.lean": "bd87cb81668274ef633767cf4d0e8aad37534954da13eaeb868031b20710b3c6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/CornerUnits.lean": "65e7d3eb770bd0973b97e2f0572c4f94a951254d158760b66be084a325979fc4",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/CwZero.lean": "6863e6f98077d9ab5592e0ff8724dd54e2aedd1aabe36c2b7e30e07ab0886a99",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/DefIso.lean": "05c1ed65e26d0989db2782c8fa12985883dbcd7c623aad01c80eef925e3681e0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/DetMem.lean": "35056245bdc04bffc4815e820cfbdae7f4255e01f2c3ecc426d08d1ab61e99dd",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/Detsec.lean": "3709c7066864a9e44de83b6c4de3b64c3044ba321bd945c0d178f163a2ea12a0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EnnrealVolumeRatioStepCancel.lean": "0c7ae906e5b4dd199ecf9a5d2f219fde887bb73b9ce830f55cbcf2aff16e4587",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EntryMod.lean": "3973cc39585033bc7bc163d2f90aaacf6678d36e44a73bbb7673806463674b96",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpBasis.lean": "3d0d2c8f2943d210d8999d7b0fc6d5c55dec9e3cf6f978d01a6b228f276d7765",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpDimb.lean": "ddcd6b1f7c279e9a050ad3d435d50d33b6429c0cb81cc1afefaddcb3b723a416",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpDproj.lean": "788a5c51e6a8e71ccb6c688bd5a4a0e83976b06fb81ee9bb51fc768214aeb45c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpGbox.lean": "30eed5b748d3796b4af768623ecf9ca8d263d1ede95a9bea9a521bc636b7591e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpGco.lean": "356628e6ae1121486582204dddfaa2c80e1d1acc31bf37974f4935bd670f2463",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpGflag.lean": "349c8fee624ccd1b28c1f892f4c74571c3db601a456d0415ba3f2c6ca6f78d89",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpGlift.lean": "fe06904c9955b8838e90d438c30d835da2203b615992f8ef329961fdab1febd0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpHasobs.lean": "5dca9f4db1d7a7c4910d36a191659b69cc00334ae0aa720aa7353ddf2b2bd81c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpMazur.lean": "d56160200bc73439352184bfd5376582ceb60c53203e2619806f3a1e2e6c85aa",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpNosec.lean": "418193415e1fa9fa93d26681dd04bc91470f38ef76cd8c8374688938939f6d2f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpOddSpanX.lean": "9d9622c60b3fb92e3fca618ca06dc8dea482f48ae427cce5d52d68d58523ef6d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpRels.lean": "55ebeb2f9c52156fda4565360ceaf7ac8a6e22afe83fb599fa86ff2612156d17",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpUpt.lean": "9256d31e1eb6b4101ffae330679998bb457edc29509efba9b731a951d2e7e1f0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpVars.lean": "a7bdc2ced86a3fa13f2e718fefaabb18292abb97f8e0434c999949979f42f24c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpresDefs.lean": "bb52cdd9ea374e775b998398603cb6323ce705c1f4a1355fd38c617858f9133a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EpresGr.lean": "7f81a93e4d0117d772bbc59bf1f2a9e33ffdcfe634827655592c9599ecf3f914",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/EqIdempotentCutOfComplementKills.lean": "fa6ebc13de9efc43b0811282b86221bc54fe14a08bca590df834404029bc01f6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ExistsFrobeniusCorner.lean": "a57f315f44ea9810e4bbce7ff81220ad76417341672eb9f89ac8ac914c5095a0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ExistsLocallyConstantTwistedCocycleNeZeroOfFrameOk.lean": "c2f3077eaab1e5e92268f9716f11f33cba1568af419dbee47e446fc9526f57bf",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ExistsMemStrSNeZeroOfFrameOk.lean": "21751486344f156ad5e0652d1175fa8e47872dc5908568516bc2a66972f33ed9",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ExistsNonzeroLowCocycle.lean": "a8fcaeb1cf511d9b4bad1e1916eacd071e79bc00a92d226d0ffdcb2d8bdef92e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ExistsPaddedFamily.lean": "18995039a1641f9329b3c0aabfa7c8e262d96a4d6ba6b45d99db1d1fee315ae9",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ExtA.lean": "124f28d090ae70b03f5ce3245dab299874360541e2ae0e6e4c584f4ce0ec175d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FibDim.lean": "99045170ae0b4f3ae9f2b2975a5dea6d0699efdad25bd0e3ebcf17df6ba2d0d6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FibreClosed.lean": "4200e6cd5fb708123baa12acb203e3e8c2070e383500c3b89172044e349281d1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FinrankFrameSpaceEq.lean": "2fa76e6a064b271672bb9892515b41ba3269750c605bc3078bd75dfca753840b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FinrankStructMapSRange.lean": "4fe52e409778bb29796bed1d02a4b167b20092b0893a60960158c70935f9d4c8",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FinrankStructMapYRange.lean": "b3ccd799b9602af216b3feff24d36df9f17a7b3f02ab333349fce4a02b16565e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FlagLoc.lean": "7fe7559efe5827628a828c34f6e9e2efa8ea712aa124fb06d43ef39a771c8d17",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrameExtensionOfLocallyConstant.lean": "279f1269c40c203f031bc2010a9d3b9202affcf5e969c99abc604e429550a262",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrameFiberEq.lean": "f13199e9267a543c5fa76f623803ba03c95ac8513aad8634668dec7094d92d3b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FramePointAlgCoordEq.lean": "1bc58f41216c6e69f889f14147eb20c8b6dc30d4f2babaf8565a6e683b3f29a1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FramePointFiberNonempty.lean": "069df75655c7c2f4bd98f7f8383627b5da989476ffee53f086953369c1360b31",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FramePointYCoordEq.lean": "42b2f2a849430c58f0bf09b5168911483525791cd3899b06bb615e3bde7e6871",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerConeMap.lean": "2e0c6a5321fb1f3d44f007ca1d8bdac2d7e9f77aa2c7c86084ca6f9f6de2d930",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerLiftTwoToThree.lean": "62c683e61189d01a26eed987b0f29e3f8a62623b8194e85102745dc3defbae30",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerMaximalIdealLe.lean": "77d63fd4904e1c9dfa0865768cb441f46940a6544ec0b89ab94e23c83a572691",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerMemCone.lean": "67f424b5df14e209bd56303e309c94bcea8db99d7d4ce3d6bc90ad6822df8106",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerMiddleMem.lean": "490ac2660429853c32725f3e96c73427ccabfb7aa45d9ba24d08d3f30354ae60",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerMiddleTrivial.lean": "f9f7cc2a731aaf66f5c5b5c31e2f70f766fc287f118ef9fff9e2f75af67c248c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerMonomial.lean": "e53099640827d0fa77f7cbe5a3e88ae25baed4c5dd6edef75a7d611ac71db6ef",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerOrderSkips.lean": "7026c7a20f9b67591f8ff03abaa3df16be52d506a2ed2f329a76f751b4bdca25",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/FrobeniusCornerUnits.lean": "7f09dd3f1d79680463651186f38e3274b7a2324eab1f4d843f4a7ea2305e7af1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/GgMapOfGL.lean": "c55d76247ee8760c38d41d0be5061bc8d1cbcf7fa847ace529da365acaaacf50",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/GrMIff.lean": "df83efeebc40e2bbbdd3ae86c1368c3b8439338f1259431dad049aec8c088bbf",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/HasObs.lean": "6328b127f65607cfa0dd2bba7690566d4cb0562f9957819796b2b9c2c7eb0d2b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/Imports.lean": "555a79b3cfaf8c882514f77504f14e47911fc994550e1e6a6b17e7ca6219a79c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/InfPowBot.lean": "bab8d0f2fd025fabae9efabe37c8abbab759b28b6b44aca71c1ef797bf2b9675",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/Integral.lean": "db7dc838714168256755ed54914315361ad464309c95e5636a88064d43ed5494",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/IrrOfConn.lean": "c5b343995fae1972f708fdfac16e939ad4653f4ca7257dc761e0b3fc4b4216ab",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/IsInternalCongr.lean": "9c605ecd7aee6f6c514aabf736c82fd5b92b86b7f6dd6dc44093a5df2fdfc65b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/IwahoriFactorizationLowerDiagUpper.lean": "72663457393f167abfdee53ab443d14388938e9bc222bdc94a0a49f7eb333575",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/JconjApply.lean": "4a7a70b5825383782fef2f904a9f6ddef13b3882331aef9592c924574520be0c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/KrullDimLtOfNotLeTriangular.lean": "370ae8afd2ebec813c1141208417641c6685c878ee8e8938d33c490bfce14340",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/KrullDimQuotientBound.lean": "fca2e1c8bfc41f9c6581b905432434b8036ee28972244f5fbc09be791ac8ac0c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LcMatrix.lean": "07d3c21e0959ab85792c44ccda2db16697b4035741292ff9ad24bdece029f790",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LieTMem.lean": "a4e7191fd6e84e6077c53ce83376480c633d67fe7bbee8f4217478f8bb186dc1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LocCpl.lean": "95cd52fefd3b42438c33312717903b82188e957eaab0c982931a4c191bb884c4",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LocDim.lean": "2dca0bf2abdf7721edc14b317ee15f0afc9dbfb77159ea73948e6c4af5483954",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LocFlat.lean": "c3fe87703d8180a98f179f0e2ff794ab4725f2f2b57e69cd1bb3d49bc807ea20",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LocRho.lean": "a4a8e766286319eb447ca328d3971938159197b5fc7adb363cb26601ed5b834c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LocalDeformationTraceModMaximal.lean": "fcb148ead185cf2e49af35fb46e92eab8fb88f01a1467263a6dde47ea61e7347",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/LowerTriangularConjAntidiag.lean": "79081599c4a66b7e0f3c31150dfa0feeefc3e869675f4ad7d2d1d85d6773478b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/MapThetaLie.lean": "23ec203323e16c3834c7204d494d1068b8674452c3a720877653ed76f0d07e4f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/MaximalIdealImageKills.lean": "89f6f57935a70a8361f9e962b607fcfa724b6d90eb5ad3ee0b5c199600bc413b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/MemPowSmulLe.lean": "d493a3d1e5e0b0d2a5d472ce8fa37daf8cc48143e32a174377f03e8edf2cc3df",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/MemSpanX.lean": "147a1ef1ea3962eb822bc1583082a2a15d434e744ee15e2da29188dae70f59cc",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/MinHom.lean": "a19b07348256ec332d12e4cd7d4f8b57f447edfc24c242869c7d95deb383889d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/MonMemPow.lean": "0e45256dff361a6495b8565efd484b090157395cedb204d9cb260142cba00ba4",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/NegOneZpowSg.lean": "1a72debde4e0e5b721ce71a6c06eabfeb7deb08a9280512fc47a6874e9730823",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/Oddm.lean": "623ae4fc3292b54f9e4f91b73dcf83ea56114b70807eee6b2c689fe3f86ccc26",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/OfForm.lean": "d31c4ed705483afff4a46844a36ae52f28642380315bf63ac93f2a2cb03b598c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/OfTrace.lean": "62024e9f299cc14cd049cf5f002997457d610b5671b7a68ecc9cc583b319ef90",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/OneAddMaximalIdealSubsetUnits.lean": "c8b49ecbadc86f99400c9a4e35e766773a722a46c5c5189cdf8f4145377aff77",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/OrdOfFlag.lean": "e27e364993ccffefe068dd75f09460e0e5e3125c6bdbb2181b54ac98f6429b6d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PointField.lean": "e70536a93c8aa80795f07a440eb3e5153578358fd7e34000dbe2f91788922b47",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PointLoc.lean": "3b7d405fc01f58f2305518c70d218e20ae52167d410859355c2164f65e2e2a45",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrBdim.lean": "41788ff2ea3ee85a52a8da5e74a845df9a8839c6ffdd664a6bfe083c7dc5284c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrBrig.lean": "714c3b92cb135a62247d9156941bcbffbc583b65114da6cdd4e72de72135019b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrBstab.lean": "77b030227fe9bdef389b2400283a3e5564663860de3d34df2914fe573095f7b5",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrCfix.lean": "28ff0b9121a10f9766cd49a572ef0915262316244b4806d728eb521be30fd048",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrCocv.lean": "6ba88b3220ecbc260f90d30985a0422e50308eba4250704ed50f016b3779d8da",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrCorrect.lean": "4182afbdde72c2d7e436fb75f2a0d43df912af172a127ba22fecf27d216fad3c",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrCount.lean": "cedd01cf20fec818520f6e12a4952da4de4125a318dfa37290400ce08b02e652",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrDual.lean": "74d7ffef65b244f3d8f730b5713d237a5377ae24e9989c3075b4858eac84e3c6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrDualb.lean": "5387dd0e737bcd347198f4ae1a5aaff10c42472247180f18cc5babe9161f1a8f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrExt.lean": "cb5bc99818df6818bde9016398477f9b9bc1aa5263ed63701d9dfe3e185e0069",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrGood.lean": "d768a6b8af70148df362bca8b713c58d6f65568d45c6e33f6aa088e28ab95d9b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrMazur.lean": "6b1c8785a29fc6aab2826cf4081e431175f1bf348346c294604f97fe564984db",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrMu.lean": "43527012b1fb6d77d16a0d68ee337aba22008f39e72f080d5b64bd6806ef641e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrNorm.lean": "263bc2282bd2193eb7004cc70e02f44ae30209bcc1d895cee593aed47d3dbd42",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrNorm1.lean": "8d8cb884e2a61faae7e8c9b09fa706ec08ace5612119b850b71b7b560d7e2d10",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrOfbox.lean": "108e7565c5b8e3bdbd027b0e2eec7b6889da06975ff31e7c8ece10c3ec476169",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrOpen.lean": "c9fe901784475679341a62a609107400ddd36c08190b0df372ee1b5029b6c2df",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrRes.lean": "45918174b108d78a46584597e2650f0cbf8c8f9d65ded32ef0b1deaf522bd437",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrSetlift.lean": "bd4ca76d1d7cbc68c3dde0176085ff05afb442c0beeef50db6cca61a73045221",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrSqz.lean": "7dfa975be54b839f4b05ca7a00fedab29eed193d302138f3cb11f2e0de7e3471",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrTbox.lean": "106da40653d348e7b02bdbba87f1a5025df483808bbcde7d384afb78400e7934",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrTsurj.lean": "ee6b7ff38e95a13e035220ba3cd1415956b5a3936a88ce5e70501eeeb62101fd",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PreconnectedRankTwo.lean": "4fcd7b9db97a13509d9c1a77b4ba5ec2782ec525ee65754d59b43b87cde64896",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PresDefs.lean": "a562da07260c3c7ad22850752bc9813b203296fa4894ebab7ad7922dcfa87a8f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/PrpOfMemSucc.lean": "96b1506205869101c09eae42b72654fc1051d6161655bd647eb06918e748c260",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/QuotientHomNonvanishingBound.lean": "b30a93bee419aa084039bea529ce8593dcaafccce3d29cb5f4f514dfaca86a9b",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ResDual.lean": "9110b15a84a7781e40cb07e13a9d19d061c659c111777c0915c147cb74ecabf6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ResEqOf.lean": "c3ae1dc61809ee46c45e42b27b7cfa9940cab85caf7a84297bb32e964f936114",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ResiduallyDiagonalRepresentation.lean": "3829522bb35c1cde7a09f3d4681de835e3b6b4be629d764ad76d589c616dfb3d",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/Seedpt.lean": "37969a488a2c7f0c77c899302849c63e55d3c03184e289ccde0a0dfe412ccb65",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SgWeight.lean": "ac39795a907429b596177bb7c892917f95ee65ddd37cd8094ff81b0c600f350f",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SgZero.lean": "a9f76cfe8ac3ff7282ecfc90971f672fc27e0e3595f98d7566418b589151df22",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SingleMemOfSpan.lean": "910984442a86bddf16f2773bd918cd62c4e08037d2e02074658a940400b280ce",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SmoothCharacterExtendsToOpenSubgroup.lean": "92a2f318cd1a79c4741217aad23dfca65001e28374779b3c26b18f6f9512d254",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SmoothDualExact.lean": "19f0cc66f17cac482834b2bbfdbe2b968ab3252223d465589819a3ae83587e60",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SmoothHomWeightSumNeg.lean": "008534bc9052e3004d7ab049dd5a51bfb5a6b8900cf3ac6d400f1889dbb7612a",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SmoothVectorFixedByOpenSubgroup.lean": "6aa559cf65d6967035ec025a2a0c8335ea3f6b46cd7023c15e6e3f4a0ca75cac",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/StrSMul.lean": "5b7826f3183cf729d41cd9329ab04d84eaeac4663f33c4943ff3899ca8a03534",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/StrYMap.lean": "1520892c9fece059c7d9747ded8d96e2c58c7cce62834633aac343d552e9780e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/SumLe.lean": "7391b5aa2c0543d8a084e249c361432969ba07c2e465e38aadb455ed0d271bf6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/TameInertiaCondition.lean": "d5e192bc3495e029cf3eb375e525c6a9357fb0399d5894747221cd05e8aead83",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/TanFinite.lean": "bf65cabf8e3a53a230d83a33ace0af2083d264f0846f7e1e0acc5bd83b36cb07",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ThickOfDer.lean": "ea52bc31f09144e9156a4d0e30bdf5080f486ab53e7b16f346ac12e7f8d5b0d1",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/TraceMem.lean": "9185baba0603b1748bc43c0a16ef98713ec1da462286e868cb5d3ff1aa720e59",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/TrdegQuotLeOne.lean": "9c1d5741ad3743a8f31127b5b59f604a3d5b3f77bdf54a274f9996905af49a58",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/TriangularRepresentationDiagonal.lean": "1ca8e7b37a8cf1192480443b74868d5af569a8427e669e688612b5b982163de0",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/TwoDim.lean": "8e1a280f7b78c245683322ef75374325abcd6b726014e3e5ec8dfa8fe0a362cc",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ValSubOneMap.lean": "729215359ad9d708d6149a535c9c233058c12f8f7962fa1b5ea23082c43fa775",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ZeroOfNeg.lean": "b0812ba01551b1afbd94d8c02370b5126102825d8ce98b59f2d31c66b9915cd9",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/FrobeniusSmoothVectors/ZpowWNe.lean": "b5bebee2f585fbb3df6387cc9acf56ee045f7913a2925e121b767ecfb217827e",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/GaloisLibrary/LocalRingsCompletion/MemMaxPow.lean": "582898804fe348b5571377a2165bfda067c1f82df90f3b61eb5ae73bf7da89d6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/GaloisLibrary/LocalRingsCompletion/adicComplete.lean": "a0e8a95476d9fd4f1a2d3bf9a3a1a322773e3bb77582f443b3a8f36ae2022cf6",
+    "Development/AutomorphicArithmetic/AutomorphicVarieties/WeilGroupCharacters/ExistsDeterminantPairMapOfAlgHom.lean": "1e46ae66fb36d6d9e1c32aa26ade8fe8fdd1faeb843d06b9b13635534588a02d",
+    "Development/AutomorphicArithmetic/CyclotomicBounds/ClassNumberBounds/AdditiveValuation/UnramExtY.lean": "4f638410f6a7ac94b0a8acab3c65c7be66ae2d19f0e9986717bd1e83d04c9a11",
+    "Development/AutomorphicArithmetic/CyclotomicBounds/ClassNumberBounds/CyclotomicTotient/SkolemNoether.lean": "4bbd3f39c523cc24a527693e23a99ee1d86f4bf04d51a7d59d4431c63f977b9a",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/AbEval.lean": "1e43269df3b2bc66be0750b285f1b2dbced7f7bcc2b9373d069722e539d644ec",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/CurveDVRPrecompleteFinite.lean": "1f825f2991ae45163206584d6dc60d837d25d26dd2c0239e810f719b6d74e269",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/DiagonalEntries.lean": "02f6e17f013889d1a2aea0763160e232f1b64f84d4d7af06c4928692410d6074",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/DiagonalizationExistence.lean": "22380f361fcdb08da76cc8401eb6c157042d75de3c70201fd0d748f53f47126a",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/EvDecomp.lean": "ce8b1eb36a156fa0fb6dc4b6259d49eea38487024686363b5508e2de97693cdb",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/ExtIntegral.lean": "913b7aa44cd35e7c582bb865fcd43f176f8d87314c60b19e31e5a9bc4ea7f3f3",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/ImportsFurtherTer.lean": "34a4198e7a7792f5886f321fda31b6167839a73df154746e59e7bdee9ffa9a95",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/IrrIffSpan.lean": "f72ee45a7266b73d68b3200493daa07917fdf9ed5cf223dda267dc5d27c7965e",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/IrreducibleCoverForms.lean": "2242be7461ce07e99adecc98bd3098db51b823d2d50e479995ff80df351b1b6f",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/LayerApproximation.lean": "be42ea9056167aa4f55506accccdadc2accb25d7505cd1bf6147c911731d9197",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/LevelOfCongruence.lean": "d2fd115962b2770dbe555c1eb7d39985b90d5b6da27d0c8a10b239091a60840f",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/LocallyConstantOfKernel.lean": "976a4001202c232bc55e1480410594cc7da3105eb6c88a0de36446b86ea11ec2",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/MapSurj.lean": "cbee7bf0a8177ca066e850c04ab9733bace32fd1f363f7313607e9aede0f1b33",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/MemSpanVariable.lean": "486db42b775e224e1bfcdec93ce24ffda67194a1c37b7217172254d05bae3a22",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/OddSpanVariable.lean": "2dc377e00456a1a9dc7f0285e2f171e193824e02f35d2b9f7368d3c58afe527b",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/PartialFiltrationCoeff.lean": "4376097ca232bb4f0704b183a5d00b515f11b5a605ec17b753323294d6513567",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/SpanOfVariable.lean": "884ebb30dbd541fdffdab636e8a81e8ba2d70918544a4ac17292575e21bf4132",
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/StronglyIrreducible.lean": "3f1fb44cb0b2b90e3d52ac4f2f91e5717beda37ed217927511183702a4827340",
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/RegularLocalRegularSequence/ExistsIsRegularOfListEqMaximalIdeal.lean": "15da941bad533efd61cb1bba42d57146bfae225c2d95e9cef99686847fe135d6",
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/RegularLocalRegularSequence/RingKrullDimQuotientSpanSingletonAddOne.lean": "e5f784ffcc441114bc531de3d82a074301adc7aed0b0987d9108f73847b37f00"
+  }
+}

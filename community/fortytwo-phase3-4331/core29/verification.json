@@ -1,0 +1,265 @@
+{
+  "core": 29,
+  "candidate": "core29-fastrayclass9e3f8c6f04e3",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 59,
+  "local_normalized_tokens": 89033,
+  "published_baseline_tokens": 831319,
+  "proof_tree_sha256": "b7131cef7b0ddd547e6e57630332fd5f97bc789921bbb4ae8ae84a027ebdb163",
+  "modified_files": {
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/SummableAbsNormRpowInv.lean": {
+      "before": "eab51f06a9ba186277cfd115b998cbe5528022bf7556fd890841be45a0e41db9",
+      "after": "6c14bd4ccab1904ef8c01c2181ffcccfa4f9c017746660c9084190e92546a61d"
+    },
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ExistsHeckeCharacterOfClassGroup.lean": {
+      "before": "4df8c562ee5594e2996f0097d1f3140354e07b98c908b5ca0d5128f9691be0c0",
+      "after": "9e5f429b8d4d769254aef1d8d85c019a3b64da7620ff1ce26f5d41149ba9dd76"
+    },
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean": {
+      "before": "38bea0a8be8b648482565fd3ec40ccfe299c495a45e06a005176683d2d7e8309",
+      "after": "5a7f16a8f52b9b3babb651c691f7971218feb1116e083a8f62ded9fa4687e78e"
+    },
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ModuleSectionMemStandardOpenSubgroup.lean": {
+      "before": "20b79750bc37a9fbcdeb61cb5cc374e75693780a476bf9bc2ca6d66711690cf5",
+      "after": "2e98cf35e5a96d14e857d51db673c9d2fc0f51d8567290a592a9d955fc021900"
+    },
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean": {
+      "before": "909345232b14c949b84d270ae1ae8e8d7fdafd59af5b2154dc060755e45977e5",
+      "after": "8d6a0655d719e1ec7d78b590daa444b6c68767b9d8cb6ded3eabf7246bfa829c"
+    },
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/SumAddCharOfMulMulOfMulInv.lean": {
+      "before": "917ad92505e98ef7d2c68651adc5a09298385b1718a628d20821b942cd1c4adf",
+      "after": "0e7a1780fe42eaca3a7201d787fcdc0d1617e76280509b74443f8c121dd9ad84"
+    },
+    "Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean": {
+      "before": "5e3bf1687e825702c08ae63e4c451fc6f897eab82e6b2b8ee1249f4f7776fed1",
+      "after": "966f107d1040d1e78d34dff67a4b866a6f68485179800cf50fb4ae81fcc85bfe"
+    },
+    "GroundTheory/GlobalFields/AnalyticClassNumber/HeckeContinued.lean": {
+      "before": "76aede10518bf5faf3ced25bc7d3f97357c9d69865874ba3a24bf68d882b2d29",
+      "after": "ec6cc6f9092abde847c4747f11fab2a6f307103052044310f6ad7db5fa08aa9b"
+    },
+    "GroundTheory/GlobalFields/IdeleGroups/IdeleNorms.lean": {
+      "before": "c3c4299496b4db89261c42bf2a602a08973563247bb87a76e20724d6977a9b38",
+      "after": "40c535c2234801434b3484c333081cc296b52438a560a0f15d929bbfcaf6b9d4"
+    },
+    "GroundTheory/GlobalFields/TateThesis/AdeleMeasure.lean": {
+      "before": "c67e439228e8e4e3033aad6d975f0d2e6ee1d9da725fa2c83a8d1d3f30612c74",
+      "after": "e82ec8b557cd6a1b74cde8929299ec2ed9f2c720bf576dd5595e919e46b1a8fe"
+    },
+    "GroundTheory/GlobalFields/TateThesis/AdelePoisson.lean": {
+      "before": "867738ab4ad3509d97299785ae812036037dcb20b5b7724599b95bd8fc446b5f",
+      "after": "bdd40a50d3681365010875f62df74a302d52f7dae9fd0299526498a990aabf8e"
+    },
+    "GroundTheory/GlobalFields/TateThesis/AdelePoissonUniform.lean": {
+      "before": "a067912d515b30bd3d288be5c8146c6d84cf7e36ec9047ceee7adc29ffe0fd3e",
+      "after": "2d2d9acd14c9000286b9f0b4a2548d7e1ca2935e0d3c19c78fe49a6da7f29796"
+    },
+    "GroundTheory/GlobalFields/TateThesis/AdeleScaling.lean": {
+      "before": "5bf7de443a83f107f02f221a0abfb166f14b72f10cb1bb97045187aa34dca570",
+      "after": "76358143311b4a1f6d573f339b5fcc85c9ac611531f84dd46efa378c157677e4"
+    },
+    "GroundTheory/GlobalFields/TateThesis/ArchCharsUnitary.lean": {
+      "before": "07eab07357ec3fca6c5927c52f9514ec6ee1a1898385f129da21f89d7a672df5",
+      "after": "42588388aae9dfcd24e155e884af888d7f40d576f8361792e5719bbc889ad5f8"
+    },
+    "GroundTheory/GlobalFields/TateThesis/Conductor.lean": {
+      "before": "a783615fecced0302e7832be8f25a36525a513e5418422c35b9e6a71f7c7be04",
+      "after": "f0a48a9b3fc285b8174c79f07d8d2f98ea1caed59fa4056fa9ef7b8bbe5be9c8"
+    },
+    "GroundTheory/GlobalFields/TateThesis/ConductorIdeal.lean": {
+      "before": "e4e37c6b919e3624eb773a2e868896ef34c1edf4228a2c9f2fa3d2f463aff4ad",
+      "after": "a7bf124050a609bff5099f530b75f00cf61ba33ca6da9529151150bd8c96ff57"
+    },
+    "GroundTheory/GlobalFields/TateThesis/EulerFactors.lean": {
+      "before": "6221123d5f2b20524545d17b1647a4de847f0c655b4af7cc7d9bd5b47fc724ee",
+      "after": "62e2af857cf5bd9117f8ddbf554377715673d8039177d8bf8e53a3b665b39d78"
+    },
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsArch.lean": {
+      "before": "74f42b8629bacf7e2e571fcff04d238afaa17dda3679ab9a21f3309f0f6db9f1",
+      "after": "48f769efb9e84e23dc66d74955ac94671ace1a8c52d3807cca75b86a604fdd67"
+    },
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsFinite.lean": {
+      "before": "7d0a33060c115a699675529b1ac8ea1930694ff85e122a8ef24c63712b5e13a9",
+      "after": "972210a2eb6e5b8477927bf887eae6d0a49ae62dea9d8521e5036ecefe8b2df7"
+    },
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourier.lean": {
+      "before": "c4535e5cc8f2e495c2498ea88aaf409305ede95af74fe60161f5d590ed2bbd2a",
+      "after": "6d701f250c1df75f115381b377b7a8c070e03355df5cf29214a1f114e8b1e87a"
+    },
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierInfinite.lean": {
+      "before": "0f1b634d67760eb31ad4b4fa0b565f67c5b9d5e1e4409b3c89dede373ecbc10f",
+      "after": "1f078cb2725fc35c4257f221a24044584b1cceeb42b8b957a8cd1b428829b684"
+    },
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsInfinite.lean": {
+      "before": "7b76eaa86e387dc72e7d995ae371edc52859e648359f5ce2fce71dd43f99f6f6",
+      "after": "d4f7c1cbdd4ca1d912701292c5ae5824ad9cad74d74890fa113d9f08d3ebeab6"
+    },
+    "GroundTheory/GlobalFields/TateThesis/Gaussian.lean": {
+      "before": "7dcc685d847bb445ea07010d26c3a3cf2674da8f021c05000b4dbf2f4d789db1",
+      "after": "4af2a4a467918ab709693c740b6355a4fd082fa22fc671b94266ff6e42900fcb"
+    },
+    "GroundTheory/GlobalFields/TateThesis/GlobalZeta.lean": {
+      "before": "a2c21ea0f36d35705df95cba0bd0659e37556690fe94192eb05f40b8ef7c3528",
+      "after": "6b21e9a42823353b5850eee6ec7e849b6f8c4f5bb083e0328b6ef8cc087588e2"
+    },
+    "GroundTheory/GlobalFields/TateThesis/HeckeChar.lean": {
+      "before": "a8f3d3def7fd99dbb3c37ac605e0694837087cffb156e21889744fb01528f19b",
+      "after": "945a9a4627712591eb9264db75e257a8200e784d05e3d5fe5fa3d9b0316b2c45"
+    },
+    "GroundTheory/GlobalFields/TateThesis/HeckeCharRayClass.lean": {
+      "before": "26e128284ce7860bbd69a4e3dc8bab211220c012760e70fade937841900ddca9",
+      "after": "9753b9fc94a132ad81ba5b7110bd1668203337c310ac04b74bb246401ba155ec"
+    },
+    "GroundTheory/GlobalFields/TateThesis/HeckeLFunction.lean": {
+      "before": "e551c3d57e1e8ca1541d17838261b1b14452b86d13a55b3e62b4cf458cca9c8e",
+      "after": "ffca8883818523aa8278fe7f9ef32a1a5870272f6898a048d3ccd2e3ef85cddb"
+    },
+    "GroundTheory/GlobalFields/TateThesis/HeckeTheorem.lean": {
+      "before": "72b1a93c64cc307d070454699dc5ad9821fd762c0cd3220e8c8fa5b85ed6066a",
+      "after": "97d0cbb9e3e78706a1a34a6d994da48c6205f394c66e3820b845d6374779f9d0"
+    },
+    "GroundTheory/GlobalFields/TateThesis/HeckeTheoremConj.lean": {
+      "before": "6fcf98c6e60a6d49f23ddddde6abfb2b8c93bbf9d086283e57ca73dead974262",
+      "after": "1a916aecbc98c248d22c7000d3e12a1f15d41ed56f366092506f29382dd78f5d"
+    },
+    "GroundTheory/GlobalFields/TateThesis/HeckeTheoremFE.lean": {
+      "before": "2aa01187e9524961a88ca6edf68919521efeec96b44ba3e2b4d0e0679208a269",
+      "after": "8edd3a88a8c9edc0482ccf23994ff5ad55981ed194103e2c79c8ac2cb5d54bd4"
+    },
+    "GroundTheory/GlobalFields/TateThesis/HeckeTheoremScaling.lean": {
+      "before": "323e561e14c1df2a6ee4f4c5b93f41e8dace8c020ba5d24bc6a7cc40f894c237",
+      "after": "0cbe83bc349edc8b878842406844778cc3f9977b2e39e849dfb6a6806616fa69"
+    },
+    "GroundTheory/GlobalFields/TateThesis/IdeleMeasure.lean": {
+      "before": "fd4cd07ef8b0e26e1b3df263bd91632aa88b62cd04100def5c6cdaad3c05d366",
+      "after": "d154d472205ef3d6a32411d7a2a7c8b53dbbafd4cc46a6a3818853f7f25c1483"
+    },
+    "GroundTheory/GlobalFields/TateThesis/IdeleMeasureNormOne.lean": {
+      "before": "0272d9a8eebb7dba271e5a9566a7b6fd907e71651e5ea303f6fbde6d2077098f",
+      "after": "3df1dfa59f325ec5614bb0712b492a3f8af17175e2808ca0f36a7aeb4ad3a28d"
+    },
+    "GroundTheory/GlobalFields/TateThesis/IdeleMeasureQuotient.lean": {
+      "before": "7016a9794a34faa0035b7b11d732101bd53b2c69dacb866412555d9ee8011f31",
+      "after": "849b388e42a5336296a8bff48ac84be3bc8375057c239be78182560f5d6feebe"
+    },
+    "GroundTheory/GlobalFields/TateThesis/LatticePoisson.lean": {
+      "before": "cd3da49139f49ac541864e23373b7683097b69d6bbce07375ee0e93ee7b41c6b",
+      "after": "634185e63fe21ab01055a52fec280a777de6b52c46b96fcfee0fcf53c351725a"
+    },
+    "GroundTheory/GlobalFields/TateThesis/LocalConductor.lean": {
+      "before": "1ae3de288a2ff585f3d5b8d57c566ce6fe3cbfd0a8cef88579e40acfe2ef5c37",
+      "after": "850e53ea521327434ca11f9f1e2a528ba22039d3062895e0ebf0b195b240930f"
+    },
+    "GroundTheory/GlobalFields/TateThesis/SchwartzBruhatDual.lean": {
+      "before": "b26853f134c46f2cffcfc584d79a49500cc21347a96001c03c93db9098267def",
+      "after": "46119ee470d9b547d90086986551c9b1a1505f4e1d366a974e8c0a09e8f2ba60"
+    },
+    "GroundTheory/GlobalFields/TateThesis/SchwartzBruhatFinite.lean": {
+      "before": "7ca4beea26f6c16704920c95735ad4ae42f3d148915b2ac4dac1525bbefc8b5a",
+      "after": "279e8857c04898175348961eca971583096af76aca9a8989da6969b2a83cbb31"
+    },
+    "GroundTheory/GlobalFields/TateThesis/TateMain.lean": {
+      "before": "2393fa3f7cb2cec951ab5d70f2e3d66373d6d77b6e349f27ac2f9e06f6bcbd9f",
+      "after": "145951decedbc21d3803e9ea38b84c8e95b355cc456eacf0bbaf5c53b30d8e1d"
+    },
+    "GroundTheory/GlobalFields/TateThesis/TateMainUnique.lean": {
+      "before": "6a5c319c6a1642a4a5a35b17da00eea187f457c55560486faa1ffd606ebdb362",
+      "after": "b2728ff9d6eb54e9df2be6ec4f732efb1aa47263e1ad758835bc58eae0a58d5f"
+    },
+    "GroundTheory/GlobalFields/TateThesis/TateTheta.lean": {
+      "before": "67d2055b0f1fbe151957aea61fe7273e12bc4ef3bddcf93170e465d25e891049",
+      "after": "9afc59deb3f4eff90f303605dc59edc9f281e34d946f468ab25436479881f4e5"
+    },
+    "GroundTheory/GlobalFields/TateThesis/TateThetaDecay.lean": {
+      "before": "cf0e6a357c9fc00efd36049c3ef1e979b464abbcc48d971f4df500589e117450",
+      "after": "94e26d44888fd70c2eb7ff97898213def62f604306b9a9f50c20c525a5192b7f"
+    }
+  },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
+    "new_contribution": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex used the nonzero residue of the Dedekind zeta function to obtain absolute convergence further to the right, replacing the ideal-count growth argument. Codex expressed the L-series as an absolutely convergent sum over integral ideals. Codex proved that any idele above a nonzero ideal gives the same coefficient, since the character is trivial on the kernel of the fractional ideal map.",
+    "native_proof_module": "GroundTheory.GlobalFields.TateThesis.HeckeCharRayClass",
+    "native_contribution_draft_sha256": "9753b9fc94a132ad81ba5b7110bd1668203337c310ac04b74bb246401ba155ec",
+    "native_contribution_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass.",
+    "public_source_note": "Fortytwo removed the unused archimedean sign subgroup, character and finite-index construction from HeckeCharRayClass. Codex specialized the finite Fourier transform to the unramified lattice, the archimedean product to real places, and the identity theorem to the actual finite pole set. The mathematical formalization is by Levent Alpöge. Codex chose the integral finite-adèle lattice indicator as the unramified test function and used its known Fourier transform. The weights vanish for class-group characters, so Codex used only the even real Gaussian for the archimedean Fourier and Mellin integrals. Codex extended the unramified normalized L-function at zero by its punctured-neighborhood limit. Codex proved triviality on each archimedean local group and computed its radial Gaussian integral directly, eliminating the classification of general real and complex unit characters. The character is trivial on the modulus section, so Codex used an unshifted Mellin transform and continued the functional equation away from the two possible poles, zero and one. Codex used the nonzero residue of the Dedekind zeta function to obtain absolute convergence further to the right, replacing the ideal-count growth argument. Codex expressed the L-series as an absolutely convergent sum over integral ideals. Codex proved that any idele above a nonzero ideal gives the same coefficient, since the character is trivial on the kernel of the fractional ideal map."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-24T08:55:15.670485+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null,
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
+  "source_kind": "pinned_git_checkout",
+  "target_sha256": "bf191b46f8175fefc1dd5b1da442b28a57572193c5e7a4bcc3831b53a9711069",
+  "pinned_source_files": {
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/SummableAbsNormRpowInv.lean": "eab51f06a9ba186277cfd115b998cbe5528022bf7556fd890841be45a0e41db9",
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ExistsHeckeCharacterOfClassGroup.lean": "4df8c562ee5594e2996f0097d1f3140354e07b98c908b5ca0d5128f9691be0c0",
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/FunctionalEquationOfUnramified.lean": "38bea0a8be8b648482565fd3ec40ccfe299c495a45e06a005176683d2d7e8309",
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/ModuleSectionMemStandardOpenSubgroup.lean": "20b79750bc37a9fbcdeb61cb5cc374e75693780a476bf9bc2ca6d66711690cf5",
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/RootNumberEqDifferentCoeff.lean": "909345232b14c949b84d270ae1ae8e8d7fdafd59af5b2154dc060755e45977e5",
+    "Development/AutomorphicSpectrum/Proofs/BlockDecomposition/SumAddCharOfMulMulOfMulInv.lean": "917ad92505e98ef7d2c68651adc5a09298385b1718a628d20821b942cd1c4adf",
+    "Development/AutomorphicSpectrum/Proofs/GlobalProofs/PartialZetaFunctionalEquation.lean": "5e3bf1687e825702c08ae63e4c451fc6f897eab82e6b2b8ee1249f4f7776fed1",
+    "GroundTheory/GlobalFields/AnalyticClassNumber/HeckeContinued.lean": "76aede10518bf5faf3ced25bc7d3f97357c9d69865874ba3a24bf68d882b2d29",
+    "GroundTheory/GlobalFields/IdeleGroups/IdeleNorms.lean": "c3c4299496b4db89261c42bf2a602a08973563247bb87a76e20724d6977a9b38",
+    "GroundTheory/GlobalFields/IdeleGroups/NormOneCompact.lean": "2c792623d9e06ddd89f31707d70b400350f05e9f53768212092ef279122d7f29",
+    "GroundTheory/GlobalFields/IdeleGroups/UnitBound.lean": "76a581192d798da84000553fc65af1a040481157359e1a64071a03e2682e4d05",
+    "GroundTheory/GlobalFields/TateThesis/AdeleIdealMeasure.lean": "db71c0d89ce7fed0cee838bed50a859558de2b3a033e892ff52d3b34d1004b43",
+    "GroundTheory/GlobalFields/TateThesis/AdeleMeasurable.lean": "215c9ecd0433968a7dfafa4ef494dcbca5db9812cc3c35bf98ba60e9eae67170",
+    "GroundTheory/GlobalFields/TateThesis/AdeleMeasure.lean": "c67e439228e8e4e3033aad6d975f0d2e6ee1d9da725fa2c83a8d1d3f30612c74",
+    "GroundTheory/GlobalFields/TateThesis/AdelePoisson.lean": "867738ab4ad3509d97299785ae812036037dcb20b5b7724599b95bd8fc446b5f",
+    "GroundTheory/GlobalFields/TateThesis/AdelePoissonUniform.lean": "a067912d515b30bd3d288be5c8146c6d84cf7e36ec9047ceee7adc29ffe0fd3e",
+    "GroundTheory/GlobalFields/TateThesis/AdeleScaling.lean": "5bf7de443a83f107f02f221a0abfb166f14b72f10cb1bb97045187aa34dca570",
+    "GroundTheory/GlobalFields/TateThesis/ArchCharsUnitary.lean": "07eab07357ec3fca6c5927c52f9514ec6ee1a1898385f129da21f89d7a672df5",
+    "GroundTheory/GlobalFields/TateThesis/Conductor.lean": "a783615fecced0302e7832be8f25a36525a513e5418422c35b9e6a71f7c7be04",
+    "GroundTheory/GlobalFields/TateThesis/ConductorIdeal.lean": "e4e37c6b919e3624eb773a2e868896ef34c1edf4228a2c9f2fa3d2f463aff4ad",
+    "GroundTheory/GlobalFields/TateThesis/EulerFactors.lean": "6221123d5f2b20524545d17b1647a4de847f0c655b4af7cc7d9bd5b47fc724ee",
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsArch.lean": "74f42b8629bacf7e2e571fcff04d238afaa17dda3679ab9a21f3309f0f6db9f1",
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsFinite.lean": "7d0a33060c115a699675529b1ac8ea1930694ff85e122a8ef24c63712b5e13a9",
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourier.lean": "c4535e5cc8f2e495c2498ea88aaf409305ede95af74fe60161f5d590ed2bbd2a",
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsFourierInfinite.lean": "0f1b634d67760eb31ad4b4fa0b565f67c5b9d5e1e4409b3c89dede373ecbc10f",
+    "GroundTheory/GlobalFields/TateThesis/EulerFactorsInfinite.lean": "7b76eaa86e387dc72e7d995ae371edc52859e648359f5ce2fce71dd43f99f6f6",
+    "GroundTheory/GlobalFields/TateThesis/FiniteAdeleScaling.lean": "a52dfc3aaa9b30bb93f0f4de1f6517dbbeb63f7a4fcdd0800ac99686826712f2",
+    "GroundTheory/GlobalFields/TateThesis/Gaussian.lean": "7dcc685d847bb445ea07010d26c3a3cf2674da8f021c05000b4dbf2f4d789db1",
+    "GroundTheory/GlobalFields/TateThesis/GaussianSchwartz.lean": "638d42b95ac828ec1f1dd4d42f87e8dc1162a57b685b6a7ce7b0b82b4f94b0de",
+    "GroundTheory/GlobalFields/TateThesis/GlobalZeta.lean": "a2c21ea0f36d35705df95cba0bd0659e37556690fe94192eb05f40b8ef7c3528",
+    "GroundTheory/GlobalFields/TateThesis/GlobalZetaFinite.lean": "ac57aafd37859fd268fee346dde99fb3ad676979dec02c34c33e4f3eb7a1118c",
+    "GroundTheory/GlobalFields/TateThesis/GlobalZetaInfinite.lean": "022feafde50d843691475cd17ab8494ad2b0e39d005966ccd02e514b591bc114",
+    "GroundTheory/GlobalFields/TateThesis/GlobalZetaSplit.lean": "f6d3fb44a0ad9e4534cd6931c6ba5cb15ccf4595cba03e864597e4f91fcf6ea4",
+    "GroundTheory/GlobalFields/TateThesis/HeckeChar.lean": "a8f3d3def7fd99dbb3c37ac605e0694837087cffb156e21889744fb01528f19b",
+    "GroundTheory/GlobalFields/TateThesis/HeckeCharRayClass.lean": "26e128284ce7860bbd69a4e3dc8bab211220c012760e70fade937841900ddca9",
+    "GroundTheory/GlobalFields/TateThesis/HeckeLFunction.lean": "e551c3d57e1e8ca1541d17838261b1b14452b86d13a55b3e62b4cf458cca9c8e",
+    "GroundTheory/GlobalFields/TateThesis/HeckeTheorem.lean": "72b1a93c64cc307d070454699dc5ad9821fd762c0cd3220e8c8fa5b85ed6066a",
+    "GroundTheory/GlobalFields/TateThesis/HeckeTheoremConj.lean": "6fcf98c6e60a6d49f23ddddde6abfb2b8c93bbf9d086283e57ca73dead974262",
+    "GroundTheory/GlobalFields/TateThesis/HeckeTheoremFE.lean": "2aa01187e9524961a88ca6edf68919521efeec96b44ba3e2b4d0e0679208a269",
+    "GroundTheory/GlobalFields/TateThesis/HeckeTheoremScaling.lean": "323e561e14c1df2a6ee4f4c5b93f41e8dace8c020ba5d24bc6a7cc40f894c237",
+    "GroundTheory/GlobalFields/TateThesis/IdeleMeasure.lean": "fd4cd07ef8b0e26e1b3df263bd91632aa88b62cd04100def5c6cdaad3c05d366",
+    "GroundTheory/GlobalFields/TateThesis/IdeleMeasureCosets.lean": "f7dc5fce0b61906de40e6aad45193e40d8d5a3aef9c224c00fae636e04674672",
+    "GroundTheory/GlobalFields/TateThesis/IdeleMeasureNormOne.lean": "0272d9a8eebb7dba271e5a9566a7b6fd907e71651e5ea303f6fbde6d2077098f",
+    "GroundTheory/GlobalFields/TateThesis/IdeleMeasureQuotient.lean": "7016a9794a34faa0035b7b11d732101bd53b2c69dacb866412555d9ee8011f31",
+    "GroundTheory/GlobalFields/TateThesis/LatticePoisson.lean": "cd3da49139f49ac541864e23373b7683097b69d6bbce07375ee0e93ee7b41c6b",
+    "GroundTheory/GlobalFields/TateThesis/LatticePoissonBasic.lean": "fa66ada1a836cc317b79f74beb03f8228383acf55b90c4d4ca109b66aa5b15e9",
+    "GroundTheory/GlobalFields/TateThesis/LocalConductor.lean": "1ae3de288a2ff585f3d5b8d57c566ce6fe3cbfd0a8cef88579e40acfe2ef5c37",
+    "GroundTheory/GlobalFields/TateThesis/SchwartzBruhat.lean": "194c225753ea977e808731bd90bcaf57efbb7095649fe63e47c47bda9cf27166",
+    "GroundTheory/GlobalFields/TateThesis/SchwartzBruhatDual.lean": "b26853f134c46f2cffcfc584d79a49500cc21347a96001c03c93db9098267def",
+    "GroundTheory/GlobalFields/TateThesis/SchwartzBruhatFinite.lean": "7ca4beea26f6c16704920c95735ad4ae42f3d148915b2ac4dac1525bbefc8b5a",
+    "GroundTheory/GlobalFields/TateThesis/TateMain.lean": "2393fa3f7cb2cec951ab5d70f2e3d66373d6d77b6e349f27ac2f9e06f6bcbd9f",
+    "GroundTheory/GlobalFields/TateThesis/TateMainUnique.lean": "6a5c319c6a1642a4a5a35b17da00eea187f457c55560486faa1ffd606ebdb362",
+    "GroundTheory/GlobalFields/TateThesis/TateTheta.lean": "67d2055b0f1fbe151957aea61fe7273e12bc4ef3bddcf93170e465d25e891049",
+    "GroundTheory/GlobalFields/TateThesis/TateThetaDecay.lean": "cf0e6a357c9fc00efd36049c3ef1e979b464abbcc48d971f4df500589e117450",
+    "GroundTheory/GlobalFields/TateThesis/TraceDualLattice.lean": "f41c4d68e3bf6128c68607ccd2eec84ed019af33255c10c05e106ba02be175a9",
+    "GroundTheory/GlobalFields/TateThesis/TraceFourier.lean": "462bc65e1fd64c9854721c7f0c67e7bfa9503b928a12e70935309755b00b4fb4",
+    "GroundTheory/GlobalFields/TateThesis/TraceLatticeEuclidean.lean": "85f2cc8f1b3a80cef0e8052e3867b2c5ec161e6193113f8989cd9b3c79210ed0",
+    "GroundTheory/GlobalFields/TateThesis/TraceLatticePoisson.lean": "aeaa1ccfb65b2be6ba81922431d51f4fa8501cd7754be9c70967d446088a0245"
+  }
+}

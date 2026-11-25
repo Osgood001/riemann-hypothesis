@@ -1,0 +1,132 @@
+{
+  "core": 33,
+  "candidate": "core33-fastslice18ef9d1842",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 42,
+  "local_normalized_tokens": 69093,
+  "published_baseline_tokens": 826075,
+  "proof_tree_sha256": "3beb31d5bb95d27abe623baee40a99124873b23917af85b11d6bcbfa679598b8",
+  "modified_files": {
+    "Formalism/GL3MeanSquares/HookFormulaTorsion/GlobalBoundRefinements.lean": {
+      "before": "137f8b07f001e72474cb52e915ed97517dd841fdd569ce481b08c1b403c8936b",
+      "after": "0df9beb44e47463a317aa40b29f74811fca10dbdca5371baee951867a04b440c"
+    },
+    "Formalism/GL3MeanSquares/HookFormulaTorsion/SumWeightsOverPrimeLeHalfDegree.lean": {
+      "before": "55c4f4a188c2e169ce968c7413c23788ddb23f032ad7cd2219af437e5ba27b19",
+      "after": "98feab0c132cad902297f9a31c0e24b359b7e5862083e0f96e1bd227c04558b2"
+    },
+    "Formalism/GL3MeanSquares/InvNormSqConjRatioPowIdentities.lean": {
+      "before": "ab9958a551be152a3ef280a517878579b1aa4d34339671583911220e8394579a",
+      "after": "4967d05bcc9743a7cf6522421736e6d3d1435819e285bd576e90ca3d6e9a5418"
+    },
+    "Formalism/HermitianLattices/FinalNeighbourConstruct.lean": {
+      "before": "8501c5e7087472a18ffc75b982eeaefe587d0be9e577e530d6c7b3ea34b2714a",
+      "after": "ac2e45037bfb873244e93fd0eecfd42d38b86403adfea99d660c2b1f2ab0b996"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/ClassSetAssembly.lean": {
+      "before": "963087a292366936a0a11866a127c19e6a5a1f21a16b4a73d97cf6a0ae590519",
+      "after": "6e039de2f5bdb143a1e78efd0f36ceaae57f46b93a7dd7bf7e6c5b0f63f6fef8"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/GenusBasic.lean": {
+      "before": "aacb65dff1755b27a7d437bc765f42b57f09ac1f9f458f55aa517efdc601d227",
+      "after": "70df46875f118f243b12b2d86bd6383255609879e24a7b464a2c71e1b2fb6c53"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/IsomAct.lean": {
+      "before": "87c8687f9ef7561f10da61c66f64e11d38b2321d4e906c11871125743e159c2b",
+      "after": "73c80dca72f32d44cfdf8dbd574283beaa313accb300d16df55802359cf5c851"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/LocBasic.lean": {
+      "before": "9e8f4a2384f6297a12f5b4ac7d485f8ce9612971cda0c5c839e02c08de496c48",
+      "after": "dcbe2d29b2847ab5c9782aae052bba7080209acd29047e5ff5056e65fbed4a73"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/MassTelescope.lean": {
+      "before": "0d140105f16745397fca1cdbe617be668b1092404260ef9a10a39347facc9b51",
+      "after": "bbb22f1d89b41d4eddcbeb0b4f442707ec639f390cdf9784c1f9fe0d51075542"
+    },
+    "Formalism/HermitianLattices/HermitianLatticesProofs/TraceReal.lean": {
+      "before": "320305398ce381b1162afa96f2527e2efb91da404051ddf1a8baf38f7477f19a",
+      "after": "172d779172aebfbd9c6c11306ca60a68657d1ca269a8ff2682d9b36adc127d96"
+    },
+    "Formalism/LogVandermondeBounds/LogVandermondeProofs/PrimePowerSubgroupTrivial.lean": {
+      "before": "e0e1a29f5e7fefc1162ee83cbbae383ce3d996586b4f14c544785c0990f3d788",
+      "after": "6e4bc9592dda64c137b87d0c4dc25075a933bc1538262ad5f97f1ccfd5ab16b2"
+    },
+    "Formalism/SharpRestriction/GlobalSchurBounds/ThickPlacesCorollaryOfAnyTranslate.lean": {
+      "before": "e53a3678fb09fff3429bae30bfa65ac93b2c5ca36a1100bf8f0f1f8cc52e00fd",
+      "after": "30ea459868e85af3e6a37dcf53319eeb0ba5283a8c65ae3116d08fa93cd6761b"
+    },
+    "Formalism/SharpRestriction/RamificationFrobenius/TotientGaloisClasses/HostFacts.lean": {
+      "before": "55932761ca70f4de199ea50ec2cf0b23c720102c73d9572956e9b20e8eb52d77",
+      "after": "62c3b9cd585a12d36e6cfe27cdbc23ccaf4e1dd956d95fd2d418d1cb489a8800"
+    },
+    "Formalism/SuccessiveMinima/MinkowskiIIUpper.lean": {
+      "before": "7324ab821e46cbb4bac607ad6604113f96f30cbd9233616b687bad7fccc98e55",
+      "after": "835de5621e835cc862317d7b9cbeb2331059ae9b3d75bb39fda95d71ffe18bcc"
+    }
+  },
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "new_contribution": "Fortytwo donor identified suffix deletion. The supervisor restored the three recipient theorems then traced their transitive local kernel proof terms, retained the exact original Lean declaration source ranges, and narrowed imports to modules defining the surviving external constants. The recipient source and compiled wrapper were verified separately. The supervisor substituted the direct host embedding composed with its Galois equivalence in finrank_host, removed an unused cardinality fact, and imported the theorem’s defining HostFacts module. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle. Codex traced the constants in the compiled target, removed unreachable proofs and imports, and checked every changed module and transitive importer against the pinned recipient. The inherited Fortytwo proof edit remains in the final bundle."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-23T20:36:16.817165+00:00",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null,
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
+  "source_kind": "pinned_git_checkout",
+  "target_sha256": "0c6fb51ac30e486529684e06985186ab8f664157d334db4560c4f35cab865bc0",
+  "pinned_source_files": {
+    "Formalism/FockGram/FockGramProofs/CovolGram.lean": "7cc5305e5b6535f084a33e197d7defa1368e65868e97626de93f27688b9d3bba",
+    "Formalism/GL3MeanSquares/HookFormulaTorsion/GlobalBoundRefinements.lean": "137f8b07f001e72474cb52e915ed97517dd841fdd569ce481b08c1b403c8936b",
+    "Formalism/GL3MeanSquares/HookFormulaTorsion/SumWeightsOverPrimeLeHalfDegree.lean": "55c4f4a188c2e169ce968c7413c23788ddb23f032ad7cd2219af437e5ba27b19",
+    "Formalism/GL3MeanSquares/InvNormSqConjRatioPowIdentities.lean": "ab9958a551be152a3ef280a517878579b1aa4d34339671583911220e8394579a",
+    "Formalism/HermitianLattices/FinalMass.lean": "26639b9c57ab22427bd6e525edc2cab99fba92e24929e34fde91cda044368a70",
+    "Formalism/HermitianLattices/FinalNeighbourConstruct.lean": "8501c5e7087472a18ffc75b982eeaefe587d0be9e577e530d6c7b3ea34b2714a",
+    "Formalism/HermitianLattices/GenusCovolBound.lean": "9494dd86f714dca7631b81e7e654778abeb33bbcf69c7d8455e39571bcef73c9",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/AutFinite.lean": "87cd5708f08cf968a6d81fd86000d516222c1bdde552ec83dcadd394f0abbe1c",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/ClassSetAssembly.lean": "963087a292366936a0a11866a127c19e6a5a1f21a16b4a73d97cf6a0ae590519",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/ClassSetFinite.lean": "95d7e2433c6b43c0e2c85c4adc833b234ea012dd205d76aeaf8395721a5d233c",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/DualBasic.lean": "7f4dd0e0adee5b75af6dee379910071b987504290d63da70f028ccc964b472fe",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/DualLattice.lean": "223afede90ba6d98c135fac9f39e6646c6b486649feb89b9b08d9d836ae7454b",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/FinIntermediate.lean": "12a858f5d15319d31a70a02a884b495bfeb408ce78604dd89d02d9211a19783c",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/GenusBasic.lean": "aacb65dff1755b27a7d437bc765f42b57f09ac1f9f458f55aa517efdc601d227",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/GenusCovolBound.lean": "9f9d2dea06293a8622439f6ca13c3693352fc5ceec0634e298f58351dc821c29",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/GenusScale.lean": "5360d191acf790b4f0f4ccf1888c8db90a5c564b5735270a6b5b7fe30b21ae4f",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/IsomAct.lean": "87c8687f9ef7561f10da61c66f64e11d38b2321d4e906c11871125743e159c2b",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/IsomOfTrace.lean": "d46fb511512a045067882e091c653bace90040add70bd7d474ebf542403b6acb",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/LocBasic.lean": "9e8f4a2384f6297a12f5b4ac7d485f8ce9612971cda0c5c839e02c08de496c48",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/LocDual.lean": "c2cb870047610f3dcfd12a4264bd2e0ccd68d52712533cf792d689baedc7da51",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/MassBasic.lean": "d3add326c3a6690ba763529c4ce9a58e1212651befa317be5e980c2bde85e01e",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/MassTelescope.lean": "0d140105f16745397fca1cdbe617be668b1092404260ef9a10a39347facc9b51",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/ShortVectors.lean": "8514106ad852726ef445f840cafc71c63c60b83338dfb6643456d94b1b6af3e6",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/ThetaSummable.lean": "fca49c9408fa513b212b1104637b6d6377858fbf4b61d4c5139016804163d19c",
+    "Formalism/HermitianLattices/HermitianLatticesProofs/TraceReal.lean": "320305398ce381b1162afa96f2527e2efb91da404051ddf1a8baf38f7477f19a",
+    "Formalism/LogVandermondeBounds/LogVandermondeProofs/PrimePowerSubgroupTrivial.lean": "e0e1a29f5e7fefc1162ee83cbbae383ce3d996586b4f14c544785c0990f3d788",
+    "Formalism/LogVandermondeBounds/LogVandermondeVariationUnbounded.lean": "d201039e3c4f27a1180eb1b3028f05bd9628da5b7a229412db941426fd3bd86c",
+    "Formalism/SharpRestriction/GlobalSchurBounds/ThickPlacesCorollaryOfAnyTranslate.lean": "e53a3678fb09fff3429bae30bfa65ac93b2c5ca36a1100bf8f0f1f8cc52e00fd",
+    "Formalism/SharpRestriction/RamificationFrobenius/TotientGaloisClasses/HostFacts.lean": "55932761ca70f4de199ea50ec2cf0b23c720102c73d9572956e9b20e8eb52d77",
+    "Formalism/SuccessiveMinima/DefsMink.lean": "f4dfcb8628ec5b371f483bebec64145b89d971cc530e1e210262f6b475b07208",
+    "Formalism/SuccessiveMinima/MinkowskiIIUpper.lean": "7324ab821e46cbb4bac607ad6604113f96f30cbd9233616b687bad7fccc98e55",
+    "Formalism/SuccessiveMinima/StatementMink.lean": "bf40cefe5d30725a1d97fdd426106bcdff7aa23789cf2ad59c82ce87ffc5460e",
+    "Formalism/SuccessiveMinima/SuccessiveMinimaProofs/AdaptedBasis.lean": "d9c51f10cd264da6c5844e85e15d0b6a35f7023717e1dea83199c7442821d12e",
+    "Formalism/SuccessiveMinima/SuccessiveMinimaProofs/GjLevel.lean": "1c5fb0295306906b76d9b90d89a1c14729629bc1562e128b6eaa74c086bdd242",
+    "Formalism/SuccessiveMinima/SuccessiveMinimaProofs/GjScale.lean": "c080a2c00acecc490dfed483b3d84821aeff0a63450dbbf3c8cfbf24d963716c",
+    "Formalism/SuccessiveMinima/SuccessiveMinimaProofs/MeasureEqCovolumeMulVolumeImage.lean": "5aec38b928a0846eccb5202ce9658be9c365313d2a76c8a5beb9e6bdfe4deb1a",
+    "Formalism/SuccessiveMinima/SuccessiveMinimaProofs/MinkCore.lean": "1db1ecb5476e7d636c960c5348744c69897595348913ba38ef5eb63bbeb69509",
+    "Formalism/SuccessiveMinima/SuccessiveMinimaProofs/SuccMin.lean": "8a7ceb22f263b1c96680deaae2cc9a93dc078141923199d665f377d4e0d47fcb",
+    "Formalism/ThetaLiftIndependence/ThetaOrbitSums/ClassRepsDefinite.lean": "f46b6f3a667ebaae12a6f89c6d0116b6753bde9cea3330279de3f36f4f240323",
+    "Formalism/ThetaLiftIndependence/ThetaOrbitSums/LatLiftIndep.lean": "33081bad0fc7edbb3968bb0b5dac2ba76f768cfca857aeb296e36ab3207ab9df",
+    "Lemmata/GeneralBFactSecondSide/Imports.lean": "9152adbecb109dfc6ee0edbe6287a182755c4aeb715262ffcb004da0876ee151"
+  }
+}

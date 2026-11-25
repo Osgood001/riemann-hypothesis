@@ -1,0 +1,20 @@
+{
+  "core": 40,
+  "proof_id": "3ad76727e0aa65b4846ecf6d6715ee9f8b1e96822b12b48b8c3af105f37d2ab6",
+  "candidate": "core40-haar3ad76727e0aa",
+  "tokens": 343,
+  "characters": 2395,
+  "editable_files": 1,
+  "original_files": 0,
+  "source_changes": 1,
+  "source_database_sha256": "38d219a6d3f8173f616ffc59a7694057cfd5db10576c2d4ccde0285ecfcbc2ba",
+  "original_repository": "https://github.com/tamnd/riemann-lean",
+  "original_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "original_directory": "lean/src",
+  "per_file_hashes_sha256": "49b7f52cd4b08a35b415e45bf38be6faaf439e7108bd3d3e87ccef32d6a076c0",
+  "replacement_archives": [],
+  "full_comparator_log_sha256": "e8458fdd80dc71e39928dae8562dbd447873d493383487244f0d8e25da4646e8",
+  "linux_raw_receipt_sha256": "5a8f5768b02f15effae2bdf27c003009d1ca7544703e321698cff93b0cd5846d",
+  "reference_kind": "published_statement_with_pinned_original_imports",
+  "proof_author_and_contributors": "Levent Alpöge and the original authors supplied the formalization. The proof retains the Fortytwo fundamental-domain witness and dependent existential elimination from the earlier campaign. MarvinDontPanic generalized the torus identity in public PR 43, crediting Mikko Nyman and collaborators (#103701) and the Fortytwo proofs #103322 and #104025. Jinhyeok Jeong (#106877) supplied the diagonal case split and evaluated the integral on the supplied domain before rescaling the Haar measure. Codex integrated those steps in #107157. In this descendant Codex removed the unused UnitaryBC namespace, let Lean infer the torus-function domain and the measurable-space type, and proved equality of the unipotent maps as functions by extensionality. In #108057’s successor, Codex omitted the binder name in finite-place extensionality, introduced the final constructor arguments as a separate proof goal, and let Lean infer both Haar measures in the absolute continuity calculation. Renxiu Song’s public #107132 rewrites the constant term and its defining integral together. Codex adapted that step to the equality of functions from #108155 by applying extensionality before the rewrite. The complete source passed the organizer Comparator and Lean 4.33.1 default kernel on Linux."
+}

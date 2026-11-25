@@ -1,0 +1,81 @@
+{
+  "core": 40,
+  "candidate": "core40-domaina7f4ced7cfaa",
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "submitted_files": 1,
+  "local_normalized_tokens": 371,
+  "published_baseline_tokens": 1031987,
+  "proof_tree_sha256": "19ae4236a1f15814a1076f2e0f3b5f1e3948d59ad739109b29c664c49eeef7c3",
+  "modified_files": {},
+  "attribution": {
+    "formalization": "Levent Alpöge and original authors",
+    "public_parent": {
+      "additional_public_source": {
+        "author": "Jinhyeok Jeong",
+        "official_attempt": 106877,
+        "official_url": "https://riemann.verifytask.cn/api/attempt/106877",
+        "source_sha256": "3de32c64aaa0155d91d3c19d8be2990574366b4e7a538efdab4128d3e474520f",
+        "published_diff_sha256": "55eb419a531d771065e17a8eeca009844e3ad226da032c2fa046029d9ecbe5d3",
+        "contributions": [
+          "Jinhyeok Jeong split the diagonal equality into equal and unequal matrix indices. Codex applied his case split to MarvinDontPanic’s generalized torus identity.",
+          "Jeong rewrote the constant term as an integral on the supplied fundamental domain before changing the Haar measure. Codex applied this ordering with the retained unit-volume and Haar-scalar identities."
+        ]
+      },
+      "public_url": "https://github.com/MarvinDontPanic/riemann-hypothesis/blob/41740f7aa9a1ae961cbbffce4364fadd9a110aed/community/marvin-core-reductions/core40/Solution.lean",
+      "source_sha256": "c19d29736fb8c4c73b3e0407d70d0e828781797b8c2b50858f43a171b11af6b8",
+      "git_blob": "037b462361e1ee7ebdcd5dfaf56869c4c7d67e32",
+      "commit": "41740f7aa9a1ae961cbbffce4364fadd9a110aed",
+      "author": "MarvinDontPanic",
+      "supervisor_changes": [
+        "applied congruence to the split-centre equality before reducing it to diagonal entries",
+        "restricted the Haar-measure rewrite to its first occurrence",
+        "used the absolute-value identity for the archimedean square root",
+        "used one extensionality step for the units equality",
+        "inferred the unipotent matrix argument type from its explicit adelic field",
+        "unfolded the dictionary to introduce its original parameters directly",
+        "inferred the terminal infinite-coordinate summand from the checked target",
+        "inferred the complex coefficient of the exponential from the torus identity",
+        "specialized every infinite place using total complexity and simplified its multiplicity and coordinate map",
+        "compared the original torus units through a single extensionality step on their matrices",
+        "combined the infinite projection rewrite and its place simplification into one simp invocation",
+        "used definitional equality for the nonnegative-real scalar action on the complex integral",
+        "let the Haar-scalar positivity theorem infer both measures"
+      ]
+    },
+    "prior_contributors": [
+      "Mikko Nyman and collaborators (#103701)",
+      "Vladyslav Larin and Fortytwo (#103322, #104025 and PR 19)"
+    ],
+    "inherited_native_work": {
+      "model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+      "direct_witness_call": "call_95c78cb8fab84d17933c177d656dcc50_0",
+      "original_session_sha256": "a862c45038c037422d364ac4e97976264409cb9ed2a23e08063685c0be8a82f9",
+      "role": "Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work."
+    },
+    "current_source": "Levent Alpöge and the original authors supplied the formalization. MarvinDontPanic’s public PR 43 generalized the torus identity to an arbitrary function from Fin N to the reals. This lets one simplification prove the split-centre and lattice identities. Marvin credited Mikko Nyman and collaborators (#103701) and the earlier Fortytwo submissions (#103322, #104025) and PR 19. Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work. For this derivative, Codex applied congruence to the split-centre equality before reducing it to diagonal entries and restricted the Haar-measure rewrite to its first occurrence and used the absolute-value identity for the archimedean square root and used one extensionality step for the units equality and inferred the unipotent matrix argument type from its explicit adelic field and unfolded the dictionary to introduce its original parameters directly and inferred the terminal infinite-coordinate summand from the checked target and inferred the complex coefficient of the exponential from the torus identity and specialized every infinite place using total complexity and simplified its multiplicity and coordinate map and compared the original torus units through a single extensionality step on their matrices and combined the infinite projection rewrite and its place simplification into one simp invocation and used definitional equality for the nonnegative-real scalar action on the complex integral and let the Haar-scalar positivity theorem infer both measures. The unchanged organizer Comparator and Lean default kernel accepted this exact proof. Public parent: https://github.com/MarvinDontPanic/riemann-hypothesis/blob/41740f7aa9a1ae961cbbffce4364fadd9a110aed/community/marvin-core-reductions/core40/Solution.lean Jinhyeok Jeong split the diagonal equality into equal and unequal matrix indices. Codex applied his case split to MarvinDontPanic’s generalized torus identity. Jeong rewrote the constant term as an integral on the supplied fundamental domain before changing the Haar measure. Codex applied this ordering with the retained unit-volume and Haar-scalar identities. Published source: https://riemann.verifytask.cn/api/attempt/106877"
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-25T06:11:19.034808+00:00",
+    "elapsed_seconds": 168.542,
+    "frozen_files": 1405,
+    "log_sha256": "ce3ab32133557d2f1dfa5ef7aeac7e340b102a56e18ab476b09ca0e7b465ca3c",
+    "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
+    "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  },
+  "hosted_score": null,
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
+  "source_kind": "pinned_git_checkout",
+  "target_sha256": "db42504120a3ee7af320c76aa8b682751b0a5d8b1ce67e7421c8712da699851f",
+  "pinned_source_files": {},
+  "proof_id": "a7f4ced7cfaada152bd19117aec1ac5df50f90c5a39e71305279ab1fc78f80a8"
+}

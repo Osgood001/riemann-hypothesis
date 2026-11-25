@@ -1,0 +1,11 @@
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHilbertSamuelOfPrincipalisation
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SmallSecTensTriv
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
+
+namespace AlpogeRHCore23
+
+theorem arithHilbertSamuelOfPrincipalisation :
+    GlobalTheory.Published.Principalisation → GlobalTheory.Published.ArithHilbertSamuel := by
+  exact GlobalTheory.arithHilbertSamuel_of_principalisation
+
+end AlpogeRHCore23

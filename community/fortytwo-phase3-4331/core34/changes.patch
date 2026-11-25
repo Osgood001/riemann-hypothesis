@@ -1,0 +1,3231 @@
+--- a/GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PDivCycleMul.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PDivCycleMul.lean
+@@ -1,93 +1,10 @@
+ import Mathlib
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.IsMultiHomogIdealSpanSingleton
+-set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.NumbersDVR
+ 
+ section General
+ 
+ variable {A : Type*} [CommRing A]
+-
+-theorem localizedQuot_subsingleton_of_not_le (Q W : Ideal A) [W.IsPrime] (h : ¬ Q ≤ W) :
+-    Subsingleton (LocalizedModule W.primeCompl (A ⧸ Q)) := by
+-  obtain ⟨q, hqQ, hqW⟩ := Set.not_subset.mp h
+-  rw [LocalizedModule.subsingleton_iff]
+-  intro m
+-  obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective m
+-  refine ⟨q, hqW, ?_⟩
+-  rw [Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]
+-  exact Q.mul_mem_right a hqQ
+-
+-theorem length_localizedQuot_sup_span_mul (P W : Ideal A) [P.IsPrime] [W.IsPrime] {x : A} (y : A)
+-    (hx : x ∉ P) :
+-    Module.length (Localization.AtPrime W)
+-        (LocalizedModule W.primeCompl (A ⧸ (P ⊔ Ideal.span {x * y}))) =
+-      Module.length (Localization.AtPrime W)
+-          (LocalizedModule W.primeCompl (A ⧸ (P ⊔ Ideal.span {y}))) +
+-        Module.length (Localization.AtPrime W)
+-          (LocalizedModule W.primeCompl (A ⧸ (P ⊔ Ideal.span {x}))) := by
+-  have hle : P ⊔ Ideal.span {x * y} ≤ P ⊔ Ideal.span {x} :=
+-    sup_le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr
+-      (Ideal.mul_mem_right y _ (Ideal.mem_span_singleton_self x))) P
+-  let g₁ : (A ⧸ (P ⊔ Ideal.span {y})) →ₗ[A] A ⧸ (P ⊔ Ideal.span {x * y}) :=
+-    Submodule.mapQ _ _ (LinearMap.mulLeft A x) (fun a ha => by
+-      obtain ⟨p, hp, r, hr, rfl⟩ := Submodule.mem_sup.mp ha
+-      obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.mp hr
+-      show x * (p + c * y) ∈ P ⊔ Ideal.span {x * y}
+-      have e : x * (p + c * y) = x * p + c * (x * y) := by ring
+-      rw [e]
+-      exact Submodule.add_mem_sup (P.mul_mem_left _ hp) (Ideal.mem_span_singleton'.mpr ⟨c, rfl⟩))
+-  let g₂ : (A ⧸ (P ⊔ Ideal.span {x * y})) →ₗ[A] A ⧸ (P ⊔ Ideal.span {x}) :=
+-    Submodule.mapQ _ _ LinearMap.id (fun a ha => hle ha)
+-  have hinj : Function.Injective g₁ := by
+-    rw [← LinearMap.ker_eq_bot, eq_bot_iff]
+-    intro z hz
+-    induction z using Submodule.Quotient.induction_on with | _ a => ?_
+-    rw [LinearMap.mem_ker] at hz
+-    simp only [g₁, Submodule.mapQ_apply, LinearMap.mulLeft_apply,
+-      Submodule.Quotient.mk_eq_zero] at hz
+-    simp only [Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]
+-    obtain ⟨p, hp, r, hr, hpr⟩ := Submodule.mem_sup.mp hz
+-    obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.mp hr
+-    have hm : x * (a - c * y) ∈ P := by
+-      have e : x * (a - c * y) = p := by linear_combination hpr.symm
+-      rw [e]; exact hp
+-    have ha : a - c * y ∈ P := (‹P.IsPrime›.mem_or_mem hm).resolve_left hx
+-    have e : a = (a - c * y) + c * y := by ring
+-    rw [e]
+-    exact Submodule.add_mem_sup ha (Ideal.mem_span_singleton'.mpr ⟨c, rfl⟩)
+-  have hsurj : Function.Surjective g₂ := by
+-    intro z
+-    induction z using Submodule.Quotient.induction_on with | _ a => ?_
+-    exact ⟨Submodule.Quotient.mk a, rfl⟩
+-  have hex : Function.Exact g₁ g₂ := by
+-    intro z
+-    induction z using Submodule.Quotient.induction_on with | _ a => ?_
+-    simp only [g₂, Submodule.mapQ_apply, LinearMap.id_apply, Submodule.Quotient.mk_eq_zero,
+-      Set.mem_range]
+-    constructor
+-    · intro ha
+-      obtain ⟨p, hp, r, hr, rfl⟩ := Submodule.mem_sup.mp ha
+-      obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.mp hr
+-      refine ⟨Submodule.Quotient.mk c, ?_⟩
+-      simp only [g₁, Submodule.mapQ_apply, LinearMap.mulLeft_apply]
+-      rw [Submodule.Quotient.eq]
+-      have e : x * c - (p + c * x) = -p := by ring
+-      rw [e]
+-      exact Submodule.mem_sup_left (P.neg_mem hp)
+-    · rintro ⟨z, hz⟩
+-      induction z using Submodule.Quotient.induction_on with | _ c => ?_
+-      simp only [g₁, Submodule.mapQ_apply, LinearMap.mulLeft_apply] at hz
+-      rw [Submodule.Quotient.eq] at hz
+-      have e : a = -(x * c - a) + c * x := by ring
+-      rw [e]
+-      exact Submodule.add_mem _ (Submodule.neg_mem _ (hle hz))
+-        (Submodule.mem_sup_right (Ideal.mem_span_singleton'.mpr ⟨c, rfl⟩))
+-  exact Module.length_eq_add_of_exact (R := Localization.AtPrime W)
+-    (LocalizedModule.map W.primeCompl g₁) (LocalizedModule.map W.primeCompl g₂)
+-    (LocalizedModule.map_injective _ _ hinj) (LocalizedModule.map_surjective _ _ hsurj)
+-    (LocalizedModule.map_exact _ _ _ hex)
+-
+ theorem length_localizedQuot_ne_top [IsNoetherianRing A] (J W : Ideal A) [W.IsPrime]
+     (hW : W ∈ J.minimalPrimes) :
+     Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (A ⧸ J)) ≠ ⊤ := by
+@@ -115,107 +32,5 @@
+   rw [← e.length_eq, Ideal.localized'_eq_map]
+   exact Module.length_ne_top
+ 
+-theorem mem_minimalPrimes_sup_span_mul [IsNoetherianRing A] {P W : Ideal A} [P.IsPrime] {x y : A}
+-    (hy : y ∉ P) (hW : W ∈ (P ⊔ Ideal.span {x}).minimalPrimes) :
+-    W ∈ (P ⊔ Ideal.span {x * y}).minimalPrimes := by
+-  have hWp : W.IsPrime := hW.1.1
+-  have hxW : x ∈ W := hW.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))
+-  have hPW : P ≤ W := le_sup_left.trans hW.1.2
+-  refine ⟨⟨hWp, sup_le hPW ((Ideal.span_singleton_le_iff_mem _).mpr (W.mul_mem_right y hxW))⟩, ?_⟩
+-  rintro Q ⟨hQp, hQ⟩ hQW
+-  have hPQ : P ≤ Q := le_sup_left.trans hQ
+-  rcases hQp.mem_or_mem (hQ (Ideal.mem_sup_right (Ideal.subset_span rfl))) with hxQ | hyQ
+-  · exact hW.2 ⟨hQp, sup_le hPQ ((Ideal.span_singleton_le_iff_mem _).mpr hxQ)⟩ hQW
+-  by_contra hWQ
+-  have hlt : Q < W := lt_of_le_of_ne hQW (fun h => hWQ h.ge)
+-  have hPQlt : P < Q := lt_of_le_of_ne hPQ (fun h => hy (h ▸ hyQ))
+-  have hker : RingHom.ker (Ideal.Quotient.mk P) = P := Ideal.mk_ker
+-  have hQ' : (Q.map (Ideal.Quotient.mk P)).IsPrime :=
+-    Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (hker.le.trans hPQ)
+-  have hW' : (W.map (Ideal.Quotient.mk P)).IsPrime :=
+-    Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (hker.le.trans hPW)
+-  have h0 : (⊥ : Ideal (A ⧸ P)).IsPrime := Ideal.isPrime_bot
+-  have hcQ : (Q.map (Ideal.Quotient.mk P)).comap (Ideal.Quotient.mk P) = Q := by
+-    rw [Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot,
+-      hker, sup_eq_left.mpr hPQ]
+-  have hcW : (W.map (Ideal.Quotient.mk P)).comap (Ideal.Quotient.mk P) = W := by
+-    rw [Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot,
+-      hker, sup_eq_left.mpr hPW]
+-  have hcP : (⊥ : Ideal (A ⧸ P)).comap (Ideal.Quotient.mk P) = P := by
+-    rw [← RingHom.ker_eq_comap_bot, hker]
+-  have h1 : (⊥ : Ideal (A ⧸ P)) < Q.map (Ideal.Quotient.mk P) :=
+-    lt_of_le_of_ne bot_le (fun h => hPQlt.ne
+-      (hcP.symm.trans ((congrArg (Ideal.comap (Ideal.Quotient.mk P)) h).trans hcQ)))
+-  have h2 : Q.map (Ideal.Quotient.mk P) < W.map (Ideal.Quotient.mk P) :=
+-    lt_of_le_of_ne (Ideal.map_mono hQW) (fun h => hlt.ne
+-      (hcQ.symm.trans ((congrArg (Ideal.comap (Ideal.Quotient.mk P)) h).trans hcW)))
+-  have hb := Ideal.height_add_one_le_of_lt_of_isPrime h1
+-  have hc := Ideal.height_add_one_le_of_lt_of_isPrime h2
+-  have hk := Ideal.map_height_le_one_of_mem_minimalPrimes hW
+-  have h2le : (2 : ℕ∞) ≤ 1 :=
+-    calc (2 : ℕ∞) = 0 + 1 + 1 := by norm_num
+-      _ ≤ (⊥ : Ideal (A ⧸ P)).height + 1 + 1 := by gcongr; positivity
+-      _ ≤ (Q.map (Ideal.Quotient.mk P)).height + 1 := by gcongr
+-      _ ≤ 1 := hc.trans hk
+-  exact absurd h2le (by norm_num)
+-
+ end General
+-
+-section Forms
+-
+-variable {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
+-
+-theorem divCycle_eq_toNat_multAt {P : Ideal (MRing ι R)} (f g : MRing ι R)
+-    {W : Ideal (MRing ι R)} [W.IsPrime] (hW : W ∈ (P ⊔ Ideal.span {g}).minimalPrimes)
+-    (hrel : IsRelevant W) (hle : P ⊔ Ideal.span {g} ≤ P ⊔ Ideal.span {f}) :
+-    divCycle P f W = ((multAt (P ⊔ Ideal.span {f}) W).toNat : ℤ) := by
+-  unfold divCycle
+-  by_cases hfW : P ⊔ Ideal.span {f} ≤ W
+-  · have hm : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes :=
+-      ⟨⟨hW.1.1, hfW⟩, fun Q hQ hQW => hW.2 ⟨hQ.1, hle.trans hQ.2⟩ hQW⟩
+-    rw [dif_pos ⟨hm, hrel⟩]
+-  · rw [dif_neg (fun h => hfW h.1.1.2)]
+-    unfold multAt
+-    rw [Module.length_eq_zero_iff.mpr (localizedQuot_subsingleton_of_not_le _ W hfW)]
+-    rfl
+-
+-end Forms
+-
+-theorem DivCycleMul.proof : DivCycleMul.Statement := by
+-  intro R _ _ K _ ι _ P x y hP hx hy
+-  funext W
+-  have hxy : x * y ∉ P := fun h => (hP.mem_or_mem h).elim hx hy
+-  by_cases hrel : IsRelevant W
+-  swap
+-  · simp only [Pi.add_apply]
+-    unfold divCycle
+-    rw [dif_neg (fun h => hrel h.2), dif_neg (fun h => hrel h.2), dif_neg (fun h => hrel h.2),
+-      add_zero]
+-  by_cases hm : W ∈ (P ⊔ Ideal.span {x * y}).minimalPrimes
+-  · have hW : W.IsPrime := hm.1.1
+-    have hxle : P ⊔ Ideal.span {x * y} ≤ P ⊔ Ideal.span {x} :=
+-      sup_le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr
+-        (Ideal.mul_mem_right y _ (Ideal.mem_span_singleton_self x))) P
+-    have hyle : P ⊔ Ideal.span {x * y} ≤ P ⊔ Ideal.span {y} :=
+-      sup_le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr
+-        (Ideal.mul_mem_left _ x (Ideal.mem_span_singleton_self y))) P
+-    simp only [Pi.add_apply]
+-    rw [divCycle_eq_toNat_multAt (x * y) (x * y) hm hrel le_rfl,
+-      divCycle_eq_toNat_multAt x (x * y) hm hrel hxle,
+-      divCycle_eq_toNat_multAt y (x * y) hm hrel hyle]
+-    have htop := length_localizedQuot_ne_top _ W hm
+-    have hadd := length_localizedQuot_sup_span_mul P W y hx
+-    unfold multAt
+-    rw [hadd] at htop ⊢
+-    rw [ENat.toNat_add (WithTop.add_ne_top.mp htop).1 (WithTop.add_ne_top.mp htop).2]
+-    push_cast
+-    ring
+-  · simp only [Pi.add_apply]
+-    unfold divCycle
+-    have hnx : ¬ W ∈ (P ⊔ Ideal.span {x}).minimalPrimes :=
+-      fun h => hm (mem_minimalPrimes_sup_span_mul hy h)
+-    have hny : ¬ W ∈ (P ⊔ Ideal.span {y}).minimalPrimes :=
+-      fun h => hm (mul_comm y x ▸ mem_minimalPrimes_sup_span_mul hx h)
+-    rw [dif_neg (fun h => hm h.1), dif_neg (fun h => hnx h.1), dif_neg (fun h => hny h.1), add_zero]
+-
+ end GroundTheory.Heights₂.Heights.NumbersDVR
+--- a/GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PRepresentative.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/PRepresentative.lean
+@@ -1,6 +1,5 @@
+ import Mathlib
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.IsMultiHomogIdealSpanSingleton
+-set_option maxSynthPendingDepth 1
++import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Objects
+ 
+ namespace GroundTheory.Heights₂.Heights.NumbersDVR
+ 
+@@ -13,18 +12,6 @@
+ section Helpers
+ 
+ variable {K : Type*} [DecidableEq K] {ι : K → Type*} {R : Type*} [CommRing R]
+-
+-open Classical in
+-
+-theorem weightedHomogeneousComponent_mul_form {x y : MRing ι R} {j : K → ℕ}
+-    (hy : IsMultiHomog y j) (n : K → ℕ) :
+-    weightedHomogeneousComponent (blockWeight ι) n (x * y) =
+-      if j ≤ n then weightedHomogeneousComponent (blockWeight ι) (n - j) x * y else 0 := by
+-  let _ := MvPolynomial.weightedGradedAlgebra R (blockWeight ι)
+-  rw [← weightedDecomposition.decompose'_apply, ← weightedDecomposition.decompose'_apply]
+-  exact DirectSum.coe_decompose_mul_of_right_mem
+-    (𝒜 := weightedHomogeneousSubmodule R (blockWeight ι)) n hy
+-
+ theorem exists_component_not_mem {H : Ideal (MRing ι R)} {x : MRing ι R} (hx : x ∉ H) :
+     ∃ e : K → ℕ, weightedHomogeneousComponent (blockWeight ι) e x ∉ H := by
+   by_contra h
+@@ -33,43 +20,11 @@
+   rw [← sum_weightedHomogeneousComponent (blockWeight ι) (φ := x),
+     finsum_eq_sum _ (weightedHomogeneousComponent_finsupp x)]
+   exact H.sum_mem fun e _ => h e
+-
+-theorem exists_form_pair {P H : Ideal (MRing ι R)} [hP : P.IsPrime] [hH : H.IsPrime]
+-    (hPm : IsMultiHomogIdeal P) (hPH : P ≤ H) {f g u v : MRing ι R} {bf bg : K → ℕ}
+-    (hf : IsMultiHomog f bf) (hg : IsMultiHomog g bg) (hfP : f ∉ P) (hgP : g ∉ P) (hu : u ∉ H)
+-    (hv : v ∉ H) (h : u * f - v * g ∈ P) :
+-    ∃ (u' v' : MRing ι R) (e d : K → ℕ), IsMultiHomog u' e ∧ IsMultiHomog v' d ∧
+-      d + bg = e + bf ∧ u' ∉ H ∧ v' ∉ H ∧ u' * f - v' * g ∈ P := by
+-  classical
+-  obtain ⟨e, he⟩ := exists_component_not_mem hu
+-  set u' := weightedHomogeneousComponent (blockWeight ι) e u with hu'
+-  have hc := hPm _ h (e + bf)
+-  rw [map_sub, weightedHomogeneousComponent_mul_form hf, weightedHomogeneousComponent_mul_form hg,
+-    if_pos le_add_self, add_tsub_cancel_right, ← hu'] at hc
+-  by_cases hle : bg ≤ e + bf
+-  · rw [if_pos hle] at hc
+-    set v' := weightedHomogeneousComponent (blockWeight ι) (e + bf - bg) v
+-    refine ⟨u', v', e, e + bf - bg, weightedHomogeneousComponent_isWeightedHomogeneous _ _,
+-      weightedHomogeneousComponent_isWeightedHomogeneous _ _, tsub_add_cancel_of_le hle, he, ?_, hc⟩
+-    intro hv'
+-    have h2 : g * (u * v' - u' * v) ∈ P := by
+-      have e2 : g * (u * v' - u' * v) = u' * (u * f - v * g) - u * (u' * f - v' * g) := by ring
+-      rw [e2]
+-      exact P.sub_mem (P.mul_mem_left _ h) (P.mul_mem_left _ hc)
+-    have h3 : u * v' - u' * v ∈ H := hPH ((hP.mem_or_mem h2).resolve_left hgP)
+-    have h4 : u' * v ∈ H := by
+-      have h5 := H.sub_mem (H.mul_mem_left u hv') h3
+-      rwa [sub_sub_cancel] at h5
+-    exact (hH.mem_or_mem h4).elim he hv
+-  · rw [if_neg hle, sub_zero] at hc
+-    exact ((hP.mem_or_mem hc).elim (fun h' => he (hPH h')) hfP).elim
+-
+ theorem exists_form_mem_not_mem {H H' : Ideal (MRing ι R)} (hH' : IsMultiHomogIdeal H')
+     (h : ¬ H' ≤ H) : ∃ (x : MRing ι R) (e : K → ℕ), IsMultiHomog x e ∧ x ∈ H' ∧ x ∉ H := by
+   obtain ⟨y, hy, hyH⟩ := Set.not_subset.mp h
+   obtain ⟨e, he⟩ := exists_component_not_mem hyH
+   exact ⟨_, e, weightedHomogeneousComponent_isWeightedHomogeneous _ _, hH' y hy e, he⟩
+-
+ theorem exists_form_separator {H : Ideal (MRing ι R)} [hH : H.IsPrime]
+     (S : Finset (Ideal (MRing ι R))) (hS : ∀ H' ∈ S, IsMultiHomogIdeal H' ∧ ¬ H' ≤ H) :
+     ∃ (a : MRing ι R) (A : K → ℕ), IsMultiHomog a A ∧ a ∉ H ∧ ∀ H' ∈ S, a ∈ H' := by
+@@ -86,7 +41,6 @@
+     rcases Finset.mem_insert.mp hH' with rfl | h
+     · exact Ideal.mul_mem_right _ _ hxH₀
+     · exact Ideal.mul_mem_left _ _ (haS H' h)
+-
+ theorem exists_form_not_mem_of_isRelevant [Fintype K] {H : Ideal (MRing ι R)} [hH : H.IsPrime]
+     (hrel : IsRelevant H) (c : K → ℕ) : ∃ m : MRing ι R, IsMultiHomog m c ∧ m ∉ H := by
+   choose i hi using hrel
+@@ -103,184 +57,6 @@
+     obtain ⟨k, -, hk⟩ := Ideal.IsPrime.prod_mem_iff.mp hm
+     exact hi k (hH.mem_of_pow_mem _ hk)
+ 
+-omit [DecidableEq K] in
+-
+-theorem divCycle_eq_of_sub_mem {P : Ideal (MRing ι R)} {x y : MRing ι R} (h : x - y ∈ P) :
+-    divCycle P x = divCycle P y := by
+-  have hI : P ⊔ Ideal.span {x} = P ⊔ Ideal.span {y} := by
+-    have key : ∀ {x' y' : MRing ι R}, x' - y' ∈ P → P ⊔ Ideal.span {x'} ≤ P ⊔ Ideal.span {y'} := by
+-      intro x' y' h'
+-      refine sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr ?_)
+-      have e : x' = (x' - y') + y' := by ring
+-      rw [e]
+-      exact Submodule.add_mem_sup h' (Ideal.subset_span rfl)
+-    refine le_antisymm (key h) (key ?_)
+-    rw [← neg_sub]
+-    exact P.neg_mem h
+-  funext W
+-  unfold divCycle
+-  by_cases hW : W ∈ (P ⊔ Ideal.span {x}).minimalPrimes ∧ IsRelevant W
+-  · have hW' : W ∈ (P ⊔ Ideal.span {y}).minimalPrimes ∧ IsRelevant W := hI ▸ hW
+-    rw [dif_pos hW, dif_pos hW']
+-    simp only [hI]
+-  · have hW' : ¬ (W ∈ (P ⊔ Ideal.span {y}).minimalPrimes ∧ IsRelevant W) := hI ▸ hW
+-    rw [dif_neg hW, dif_neg hW']
+-
+ end Helpers
+-
+-section Main
+-
+-theorem Representative.proof (h1 : DivCycleMul.Statement.{u}) : Representative.Statement.{u} := by
+-  intro O _ _ _ ϖ _ K _ _ ι _ P b f g hP hV T hT
+-  classical
+-  haveI := hP.isPrime
+-  obtain ⟨bf, bg, hbf, hbg, hb⟩ := hV.degrees
+-  have claim : ∃ f₁ g₁ : MRing ι O, (∃ F E : K → ℕ, IsMultiHomog f₁ F ∧ IsMultiHomog g₁ E ∧
+-      (fun k => (F k : ℤ) - E k) = b) ∧ f₁ ∉ P ∧ g₁ ∉ P ∧ f₁ * g - g₁ * f ∈ P ∧
+-      ∀ H ∈ T, f₁ ∉ H ∧ g₁ ∉ H := by
+-    rcases T.eq_empty_or_nonempty with hTe | ⟨H₀, hH₀⟩
+-    · refine ⟨f, g, ⟨bf, bg, hbf, hbg, hb⟩, hV.num_not_mem, hV.den_not_mem, ?_, by simp [hTe]⟩
+-      rw [mul_comm, sub_self]
+-      exact P.zero_mem
+-
+-    set T' := T.filter (fun H => ∀ H' ∈ T, H ≤ H' → H' = H) with hT'
+-    have hmax : ∀ H ∈ T, ∃ H' ∈ T', H ≤ H' := by
+-      intro H hH
+-      obtain ⟨H', hle, hm⟩ := T.exists_le_maximal hH
+-      exact ⟨H', Finset.mem_filter.mpr ⟨hm.1, fun H'' hH'' hle' => le_antisymm (hm.2 hH'' hle') hle'⟩,
+-        hle⟩
+-    obtain ⟨H₁, hH₁, -⟩ := hmax H₀ hH₀
+-    have hdata : ∀ H, ∃ (a u v : MRing ι O) (A e d : K → ℕ), H ∈ T' →
+-        (IsMultiHomog a A ∧ a ∉ H ∧ (∀ H' ∈ T', H' ≠ H → a ∈ H') ∧ IsMultiHomog u e ∧
+-          IsMultiHomog v d ∧ d + bg = e + bf ∧ u ∉ H ∧ v ∉ H ∧ u * f - v * g ∈ P) := by
+-      intro H
+-      by_cases hH : H ∈ T'
+-      · have hHT := (Finset.mem_filter.mp hH).1
+-        obtain ⟨hH1, hPH, hϖH, -⟩ := hT H hHT
+-        haveI := hH1.isPrime
+-        obtain ⟨u0, v0, hu0, hv0, h0⟩ :=
+-          hV.unit_off_special H hH1.isPrime hPH hH1.relevant hϖH
+-        obtain ⟨u, v, e, d, hu, hv, hde, huH, hvH, huv⟩ := exists_form_pair hP.multiHomog hPH hbf hbg
+-          hV.num_not_mem hV.den_not_mem hu0 hv0 h0
+-        obtain ⟨a, A, ha, haH, haS⟩ := exists_form_separator (H := H) (T'.erase H)
+-          (fun H' hH' => ⟨(hT H' (Finset.mem_filter.mp (Finset.mem_of_mem_erase hH')).1).1.multiHomog,
+-            fun hle => Finset.ne_of_mem_erase hH'
+-              ((Finset.mem_filter.mp (Finset.mem_of_mem_erase hH')).2 H hHT hle).symm⟩)
+-        exact ⟨a, u, v, A, e, d, fun _ => ⟨ha, haH,
+-          fun H' hH' hne => haS H' (Finset.mem_erase.mpr ⟨hne, hH'⟩), hu, hv, hde, huH, hvH, huv⟩⟩
+-      · exact ⟨0, 0, 0, 0, 0, 0, fun h => absurd h hH⟩
+-    choose a u v A e d hprop using hdata
+-    set E : K → ℕ := ∑ H ∈ T', (A H + e H) with hE
+-    have hmono : ∀ H, ∃ m : MRing ι O, H ∈ T' → IsMultiHomog m (E - (A H + e H)) ∧ m ∉ H := by
+-      intro H
+-      by_cases hH : H ∈ T'
+-      · obtain ⟨hH1, -⟩ := hT H (Finset.mem_filter.mp hH).1
+-        haveI := hH1.isPrime
+-        obtain ⟨m, hm⟩ := exists_form_not_mem_of_isRelevant hH1.relevant (E - (A H + e H))
+-        exact ⟨m, fun _ => hm⟩
+-      · exact ⟨0, fun h => absurd h hH⟩
+-    choose m hm using hmono
+-    have hle : ∀ H ∈ T', A H + e H ≤ E := fun H hH =>
+-      Finset.single_le_sum (f := fun H => A H + e H) (fun _ _ _ => Nat.zero_le _) hH
+-    set F : K → ℕ := A H₁ + (E - (A H₁ + e H₁)) + d H₁ with hF
+-    have hFeq : F + bg = E + bf := by
+-      obtain ⟨-, -, -, -, -, hde, -⟩ := hprop H₁ hH₁
+-      funext k
+-      have h1k := hle H₁ hH₁ k
+-      have h2k := congrFun hde k
+-      simp only [Pi.add_apply, Pi.sub_apply] at h1k h2k ⊢
+-      simp only [hF, Pi.add_apply, Pi.sub_apply]
+-      omega
+-    have hdegv : ∀ H ∈ T', A H + (E - (A H + e H)) + d H = F := by
+-      intro H hH
+-      obtain ⟨-, -, -, -, -, hde, -⟩ := hprop H hH
+-      funext k
+-      have h1k := hle H hH k
+-      have h2k := congrFun hde k
+-      have h3k := congrFun hFeq k
+-      simp only [Pi.add_apply, Pi.sub_apply] at h1k h2k h3k ⊢
+-      omega
+-    have hdegu : ∀ H ∈ T', A H + (E - (A H + e H)) + e H = E := by
+-      intro H hH
+-      funext k
+-      have h1k := hle H hH k
+-      simp only [Pi.add_apply, Pi.sub_apply] at h1k ⊢
+-      omega
+-    have hnot : ∀ H ∈ T', (∑ H' ∈ T', a H' * m H' * v H') ∉ H ∧
+-        (∑ H' ∈ T', a H' * m H' * u H') ∉ H := by
+-      intro H hH
+-      obtain ⟨hH1, -⟩ := hT H (Finset.mem_filter.mp hH).1
+-      have hp := hH1.isPrime
+-      obtain ⟨-, haH, -, -, -, -, huH, hvH, -⟩ := hprop H hH
+-      have hrest : ∀ w : Ideal (MRing ι O) → MRing ι O,
+-          (∑ H' ∈ T'.erase H, a H' * m H' * w H') ∈ H := fun w =>
+-        H.sum_mem fun H' hH' => H.mul_mem_right _ (H.mul_mem_right _
+-          ((hprop H' (Finset.mem_of_mem_erase hH')).2.2.1 H hH (Finset.ne_of_mem_erase hH').symm))
+-      have hone : ∀ w : Ideal (MRing ι O) → MRing ι O, w H ∉ H →
+-          (∑ H' ∈ T', a H' * m H' * w H') ∉ H := by
+-        intro w hw hmem
+-        rw [← Finset.add_sum_erase T' _ hH] at hmem
+-        have h' := (Submodule.add_mem_iff_left _ (hrest w)).mp hmem
+-        rcases hp.mem_or_mem h' with h'' | h''
+-        · rcases hp.mem_or_mem h'' with h''' | h'''
+-          · exact haH h'''
+-          · exact (hm H hH).2 h'''
+-        · exact hw h''
+-      exact ⟨hone v hvH, hone u huH⟩
+-    refine ⟨∑ H ∈ T', a H * m H * v H, ∑ H ∈ T', a H * m H * u H, ⟨F, E, ?_, ?_, ?_⟩,
+-      fun h' => (hnot H₁ hH₁).1 (((hT H₁ (Finset.mem_filter.mp hH₁).1).2.1) h'),
+-      fun h' => (hnot H₁ hH₁).2 (((hT H₁ (Finset.mem_filter.mp hH₁).1).2.1) h'), ?_, ?_⟩
+-    · refine IsWeightedHomogeneous.sum _ _ _ fun H hH => ?_
+-      obtain ⟨ha, -, -, -, hv, -⟩ := hprop H hH
+-      have h' := (ha.mul (hm H hH).1).mul hv
+-      rwa [hdegv H hH] at h'
+-    · refine IsWeightedHomogeneous.sum _ _ _ fun H hH => ?_
+-      obtain ⟨ha, -, -, hu, -⟩ := hprop H hH
+-      have h' := (ha.mul (hm H hH).1).mul hu
+-      rwa [hdegu H hH] at h'
+-    · rw [← hb]
+-      funext k
+-      have hk := congrFun hFeq k
+-      simp only [Pi.add_apply] at hk
+-      omega
+-    · rw [Finset.sum_mul, Finset.sum_mul, ← Finset.sum_sub_distrib]
+-      refine P.sum_mem fun H hH => ?_
+-      obtain ⟨-, -, -, -, -, -, -, -, huv⟩ := hprop H hH
+-      have e2 : a H * m H * v H * g - a H * m H * u H * f = -(a H * m H) * (u H * f - v H * g) := by
+-        ring
+-      rw [e2]
+-      exact P.mul_mem_left _ huv
+-    · intro H hH
+-      obtain ⟨H', hH', hle'⟩ := hmax H hH
+-      exact ⟨fun h' => (hnot H' hH').1 (hle' h'), fun h' => (hnot H' hH').2 (hle' h')⟩
+-  obtain ⟨f₁, g₁, hdeg, hf₁, hg₁, hmem, hT₁⟩ := claim
+-  have hunitP : ∀ W : Ideal (MRing ι O), W.IsPrime → P ≤ W → IsRelevant W →
+-      (C ϖ : MRing ι O) ∉ W → ∃ u v : MRing ι O, u ∉ W ∧ v ∉ W ∧ u * f₁ - v * g₁ ∈ P := by
+-    intro W hW hPW hrel hϖW
+-    obtain ⟨u, v, hu, hv, h⟩ := hV.unit_off_special W hW hPW hrel hϖW
+-    refine ⟨u, v, hu, hv, ?_⟩
+-    have e2 : g * (u * f₁ - v * g₁) = u * (f₁ * g - g₁ * f) + g₁ * (u * f - v * g) := by ring
+-    have h' : g * (u * f₁ - v * g₁) ∈ P := by
+-      rw [e2]
+-      exact P.add_mem (P.mul_mem_left _ hmem) (P.mul_mem_left _ h)
+-    exact (hP.isPrime.mem_or_mem h').resolve_left hV.den_not_mem
+-  refine ⟨f₁, g₁, IsVerticalDivisor.of_unit_off_special hdeg hf₁ hg₁ hunitP, ?_, fun H hH => ?_⟩
+-  · have hx := h1 O K ι P f₁ g hP.isPrime hf₁ hV.den_not_mem
+-    have hy := h1 O K ι P g₁ f hP.isPrime hg₁ hV.num_not_mem
+-    have hxy : divCycle P (f₁ * g) = divCycle P (g₁ * f) := divCycle_eq_of_sub_mem hmem
+-    funext W
+-    have h' := congrFun (hx.symm.trans (hxy.trans hy)) W
+-    simp only [Pi.add_apply] at h'
+-    unfold ratDiv
+-    linarith
+-  · obtain ⟨hH1, hPH, -, -⟩ := hT H hH
+-    exact IsVerticalDivisor.of_unit_off_special hdeg (hT₁ H hH).1 (hT₁ H hH).2
+-      fun W hW hHW hrel hϖW =>
+-        let ⟨u, v, hu, hv, h⟩ := hunitP W hW (hPH.trans hHW) hrel hϖW
+-        ⟨u, v, hu, hv, hPH h⟩
+-
+-end Main
+-
+ end
+-
+ end GroundTheory.Heights₂.Heights.NumbersDVR
+--- a/GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/RelevantMinimalOfDivCycleNeZero.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/DiscreteValuationNumbers/RelevantMinimalOfDivCycleNeZero.lean
+@@ -1,10 +1,6 @@
+ import Mathlib
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.CutIdentityRightSideCongrOfSubMem
++import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Objects
+ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PRepresentative
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PDivCycleMul
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSupSpanMultiHomog
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PMinimalPrimeMultiHomog
+-set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.NumbersDVR
+ 
+@@ -62,119 +58,4 @@
+     exact key W' hW' (hle' hmem)
+ 
+ end Avoid
+-
+-theorem mem_minimalPrimes_sup_span_of_mem {A : Type*} [CommRing A] [IsNoetherianRing A] {P H : Ideal A}
+-    [hP : P.IsPrime] {x y : A} (hH : H ∈ (P ⊔ Ideal.span {x}).minimalPrimes) (hy : y ∉ P)
+-    (hyH : y ∈ H) : H ∈ (P ⊔ Ideal.span {y}).minimalPrimes := by
+-  have : H.IsPrime := hH.1.1
+-  have hPH : P ≤ H := le_sup_left.trans hH.1.2
+-  obtain ⟨Q, hQ, hQH⟩ := Ideal.exists_minimalPrimes_le
+-    (sup_le hPH ((Ideal.span_singleton_le_iff_mem _).mpr hyH))
+-  have : Q.IsPrime := hQ.1.1
+-  have hPQ : P ≤ Q := le_sup_left.trans hQ.1.2
+-  have hyQ : y ∈ Q := hQ.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self y))
+-  suffices hQH' : Q = H by rw [← hQH']; exact hQ
+-  by_contra hne
+-  have hlt : Q < H := lt_of_le_of_ne hQH hne
+-  let φ := Ideal.Quotient.mk P
+-  have hφ : Function.Surjective φ := Ideal.Quotient.mk_surjective
+-  have hHm : (H.map φ).IsPrime := Ideal.map_isPrime_of_surjective hφ (by rwa [Ideal.mk_ker])
+-  have hQm : (Q.map φ).IsPrime := Ideal.map_isPrime_of_surjective hφ (by rwa [Ideal.mk_ker])
+-  have hcomap : ∀ I : Ideal A, P ≤ I → (I.map φ).comap φ = I := fun I hI => by
+-    rw [Ideal.comap_map_of_surjective φ hφ, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.mpr hI]
+-  have h_lt : Q.map φ < H.map φ := (Ideal.map_mono hlt.le).lt_of_not_ge fun h => hlt.not_ge (by
+-    simpa only [hcomap Q hPQ, hcomap H hPH] using Ideal.comap_mono (f := φ) h)
+-  have h1 := Ideal.map_height_le_one_of_mem_minimalPrimes hH
+-  have : (H.map φ).FiniteHeight := ⟨Or.inr (h1.trans_lt (WithTop.coe_lt_top 1)).ne⟩
+-  have h0 := (Ideal.height_strict_mono_of_isPrime_of_isPrime h_lt).trans_le h1
+-  rw [Order.lt_one_iff, Ideal.height_eq_zero_iff] at h0
+-  have : (⊥ : Ideal (A ⧸ P)).IsPrime := Ideal.isPrime_bot
+-  have h0' : Q.map φ ∈ (⊥ : Ideal (A ⧸ P)).minimalPrimes := h0
+-  rw [Ideal.minimalPrimes_eq_subsingleton_self] at h0'
+-  have : φ y ∈ Q.map φ := Ideal.mem_map_of_mem φ hyQ
+-  rw [show Q.map φ = ⊥ from h0', Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem] at this
+-  exact hy this
+-
+-theorem relevant_minimal_of_divCycle_ne_zero {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
+-    {P W : Ideal (MRing ι R)} {x : MRing ι R} (h : divCycle P x W ≠ 0) :
+-    W ∈ (P ⊔ Ideal.span {x}).minimalPrimes ∧ IsRelevant W := by
+-  unfold divCycle at h
+-  split_ifs at h with hW
+-  · exact hW
+-  · exact absurd rfl h
+-
+-theorem AvoidingFormExists.proof : AvoidingFormExists.Statement.{u} := by
+-  intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD e₀
+-  have hPp : P.IsPrime := hP.multiProj.isPrime
+-  have hD1 := hD.1
+-  obtain ⟨bf, bg, hf, hg, -⟩ := hD1.degrees
+-
+-  have hfin : ∀ x : MRing ι O, {W | W ∈ (P ⊔ Ideal.span {x}).minimalPrimes ∧ IsRelevant W}.Finite :=
+-    fun x => (Ideal.finite_minimalPrimes_of_isNoetherianRing _ _).subset fun W hW => hW.1
+-  have hmin : ∀ (x : MRing ι O) (c : K → ℕ), IsMultiHomog x c →
+-      ∀ W ∈ {W | W ∈ (P ⊔ Ideal.span {x}).minimalPrimes ∧ IsRelevant W},
+-        W.IsPrime ∧ IsMultiHomogIdeal W ∧ IsRelevant W := fun x c hx W hW =>
+-    ⟨hW.1.1.1, MinimalPrimeMultiHomog.proof O K ι _ W
+-      (SupSpanMultiHomog.proof O K ι P x c hP.multiProj.multiHomog hx) hW.1, hW.2⟩
+-  obtain ⟨e, h, hh, he, hS⟩ := exists_form_avoid_primes
+-    (insert P ((hfin f).toFinset ∪ (hfin g).toFinset)) (by
+-      intro W hW
+-      rcases Finset.mem_insert.mp hW with rfl | hW
+-      · exact ⟨hPp, hP.multiProj.multiHomog, hP.multiProj.relevant⟩
+-      rcases Finset.mem_union.mp hW with hW | hW
+-      · exact hmin f bf hf W ((hfin f).mem_toFinset.mp hW)
+-      · exact hmin g bg hg W ((hfin g).mem_toFinset.mp hW)) e₀
+-  have hhP : h ∉ P := hS P (Finset.mem_insert_self _ _)
+-  have hhf : ∀ W ∈ (P ⊔ Ideal.span {f}).minimalPrimes, IsRelevant W → h ∉ W := fun W hW hr =>
+-    hS W (Finset.mem_insert_of_mem (Finset.mem_union_left _ ((hfin f).mem_toFinset.mpr ⟨hW, hr⟩)))
+-  have hhg : ∀ W ∈ (P ⊔ Ideal.span {g}).minimalPrimes, IsRelevant W → h ∉ W := fun W hW hr =>
+-    hS W (Finset.mem_insert_of_mem (Finset.mem_union_right _ ((hfin g).mem_toFinset.mpr ⟨hW, hr⟩)))
+-
+-  have hG : ∀ G, ratDiv P f g G ≠ 0 → divCycle P h G = 0 := by
+-    intro G hG
+-    by_contra hhG
+-    have hhG' : h ∈ G := (relevant_minimal_of_divCycle_ne_zero hhG).1.1.2
+-      (Ideal.mem_sup_right (Ideal.mem_span_singleton_self h))
+-    by_cases hfG : divCycle P f G = 0
+-    · have hgG : divCycle P g G ≠ 0 := fun h0 => hG (by unfold ratDiv; rw [hfG, h0, sub_zero])
+-      obtain ⟨hm, hr⟩ := relevant_minimal_of_divCycle_ne_zero hgG
+-      exact hhg G hm hr hhG'
+-    · obtain ⟨hm, hr⟩ := relevant_minimal_of_divCycle_ne_zero hfG
+-      exact hhf G hm hr hhG'
+-  have hterm : ∀ s : MRing ι O, ∀ G, ratDiv P f g G ≠ 0 →
+-      divCycle P (s * h) G = divCycle P s G ∨ s ∈ P := by
+-    intro s G hr
+-    by_cases hsP : s ∈ P
+-    · exact Or.inr hsP
+-    · left
+-      rw [DivCycleMul.proof O K ι P s h hPp hsP hhP, Pi.add_apply, hG G hr, add_zero]
+-  refine ⟨e, h, hh, hhP, he, ?_, fun G _ hr => hG G hr, ?_, ?_⟩
+-  ·
+-    intro H hH _
+-    obtain ⟨hm, hr⟩ := relevant_minimal_of_divCycle_ne_zero hH
+-    have : H.IsPrime := hm.1.1
+-    have hPH : P ≤ H := le_sup_left.trans hm.1.2
+-    have hhH : h ∈ H := hm.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self h))
+-    refine IsVerticalDivisor.of_unit_off_special hD1.degrees
+-      (fun hfH => hhf H (mem_minimalPrimes_sup_span_of_mem hm hD1.num_not_mem hfH) hr hhH)
+-      (fun hgH => hhg H (mem_minimalPrimes_sup_span_of_mem hm hD1.den_not_mem hgH) hr hhH) ?_
+-    intro W hW hHW hrW hϖW
+-    obtain ⟨u, v, hu, hv, huv⟩ := hD1.unit_off_special W hW (hPH.trans hHW) hrW hϖW
+-    exact ⟨u, v, hu, hv, hPH huv⟩
+-  ·
+-    refine Nat.le_zero.mp (ciSup_le' fun G => ?_)
+-    by_cases hr : ratDiv P f g G.1 = 0
+-    · simp [hr]
+-    · simp [hG G.1 hr]
+-  ·
+-    intro s hsP
+-    unfold commonExcess
+-    congr 1
+-    funext G
+-    by_cases hr : ratDiv P f g G.1 = 0
+-    · simp [hr]
+-    · rcases hterm s G.1 hr with h1 | h1
+-      · rw [h1]
+-      · exact absurd h1 hsP
+-
+ end GroundTheory.Heights₂.Heights.NumbersDVR
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/Assembly.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/Assembly.lean
+@@ -1,42 +1,31 @@
+ import Mathlib
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.HilbEventuallyPolyQualified
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PCutRational
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PCutRegular
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PEventuallyPolyShift
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PEventuallyPolyUnique
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PGradedFinite
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbDegreeBound
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbExactDivide
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPolyOfDiffs
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.HilbEventuallyPolyQualified
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PEventuallyPolyUnique
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PEventuallyPolyShift
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbIrrelevantZero
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRelevantPrimeDimGe
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbDegreeBound
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumAdd
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumBase
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumSymm
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PMixedDiffConst
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumSymm
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumAdd
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumZeroSlot
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumBase
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PMultEqualsCoeff
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PCutRegular
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PCutRational
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDivPrincipalDegree
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PExistsForm
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDivCycleSupport
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumUnique
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumBaseChange
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContracted
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFDegree
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbAddBlock
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPNProduct
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiHomog
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameHilbFn
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameIntNum
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiProjPrime
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PSplitRelDeg
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPolyOfDiffs
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRelevantPrimeDimGe
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDegreeBound
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDivPushForward
++
+ set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.FieldNumbers
+-
+ open GroundTheory.Heights₂.Heights.NumbersDVR
+-
+ universe u
+ 
+ theorem GradedFinite.full : GradedFinite.Statement.{u} := GradedFinite.proof
+@@ -72,9 +61,6 @@
+ 
+ theorem IntNumAdd.full : IntNumAdd.Statement.{u} := IntNumAdd.proof MixedDiffConst.full
+ 
+-theorem IntNumZeroSlot.full : IntNumZeroSlot.Statement.{u} :=
+-  IntNumZeroSlot.proof MixedDiffConst.full HilbEventuallyPoly.full HilbDegreeBound.full
+-
+ theorem IntNumBase.full : IntNumBase.Statement.{u} := IntNumBase.proof MixedDiffConst.full
+ 
+ theorem MultEqualsCoeff.full : MultEqualsCoeff.Statement.{u} :=
+@@ -86,39 +72,11 @@
+ theorem CutRational.full : CutRational.Statement.{u} :=
+   CutRational.proof CutRegular.full IntNumAdd.full
+ 
+-theorem DivPrincipalDegree.full : DivPrincipalDegree.Statement.{u} :=
+-  DivPrincipalDegree.proof CutRational.full IntNumBase.full IntNumZeroSlot.full
+-
+-theorem ExistsForm.full : ExistsForm.Statement.{u} := ExistsForm.proof
+-
+-theorem DivCycleSupport.full : DivCycleSupport.Statement.{u} := DivCycleSupport.proof
+-
+-theorem IntNumUnique.full : IntNumUnique.Statement.{u} :=
+-  IntNumUnique.proof CutRational.full IntNumBase.full ExistsForm.full DivCycleSupport.full
+-
+-theorem IntNumBaseChange.full : IntNumBaseChange.Statement := IntNumBaseChange.intersectionNumber_baseChange
+-
+ theorem ProjectionFormulaContracted.full : ProjectionFormulaContracted.Statement.{u} :=
+   PFContracted.proof MixedDiffConst.full CutRational.full
+-
+-theorem HilbAddBlock.full : HilbAddBlock.Statement.{u} := HilbAddBlock.proof
+-
+-theorem ProductWithProjectiveSpace.full : ProductWithProjectiveSpace.Statement.{u} :=
+-  ProductWithProjectiveSpace.proof MixedDiffConst.full HilbAddBlock.full
+ 
+ theorem ProjectionFormulaDegree.of_divPushForward (h : DivPushForward.Statement.{u}) :
+     ProjectionFormulaDegree.Statement.{u} :=
+   ProjectionFormulaDegree.proof CutRational.full IntNumBase.full ProjectionFormulaContracted.full h
+ 
+-theorem RenameMultiHomog.full : RenameMultiHomog.Statement.{u} := RenameMultiHomog.proof
+-
+-theorem RenameHilbFn.full : RenameHilbFn.Statement.{u} := RenameHilbFn.proof
+-
+-theorem RenameIntNum.full : RenameIntNum.Statement.{u} := RenameIntNum.proof RenameHilbFn.full
+-
+-theorem RenameMultiProjPrime.full : RenameMultiProjPrime.Statement.{u} :=
+-  RenameMultiProjPrime.proof
+-
+-theorem SplitRelDeg.full : SplitRelDeg.Statement.{u} := SplitRelDeg.proof
+-
+ end GroundTheory.Heights₂.Heights.FieldNumbers
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/HilbEventuallyPolyQualified.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/HilbEventuallyPolyQualified.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContracted
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+ set_option maxSynthPendingDepth 1
+@@ -59,12 +60,7 @@
+ theorem isMultiHomogIdeal_sup_span {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I)
+     {s : MRing ι F} {c : K → ℕ} (hs : IsMultiHomog s c) :
+     IsMultiHomogIdeal (I ⊔ Ideal.span {s}) := by
+-  rw [isMultiHomogIdeal_iff_isHomogeneous] at hI ⊢
+-  refine hI.sup (Ideal.homogeneous_span _ _ ?_)
+-  intro x hx
+-  rw [Set.mem_singleton_iff] at hx
+-  subst hx
+-  exact ⟨c, hs⟩
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PFContracted.isMultiHomogIdeal_sup_span <;> assumption
+ 
+ theorem hilbFn_eq_zero_of_block {I : Ideal (MRing ι F)} (k : K)
+     (hk : ∀ i, (X ⟨k, i⟩ : MRing ι F) ∈ I) (m : K → ℤ) (hm : 1 ≤ m k) : hilbFn I m = 0 := by
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LengthSumLocalizations.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LengthSumLocalizations.lean
+@@ -15,10 +15,9 @@
+     [CommRing C] [Algebra B C] [IsLocalization.AtPrime C 𝔪] :
+     have : IsLocalRing C := IsLocalization.AtPrime.isLocalRing C 𝔪
+     Function.Surjective (algebraMap B (C ⧸ IsLocalRing.maximalIdeal C)) := by
+-  intro _ y
+-  obtain ⟨x, hx⟩ := (IsLocalization.AtPrime.equivQuotMaximalIdeal 𝔪 C).surjective y
+-  obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective x
+-  exact ⟨b, by rw [← hx]; rfl⟩
++  intro _
++  exact (IsLocalization.AtPrime.equivQuotMaximalIdeal 𝔪 C).surjective.comp
++    Ideal.Quotient.mk_surjective
+ 
+ theorem isSimpleModule_quot_maximalIdeal (𝔪 : Ideal B) [𝔪.IsMaximal] (C : Type*) [CommRing C]
+     [Algebra B C] [IsLocalization.AtPrime C 𝔪] :
+@@ -79,23 +78,17 @@
+ theorem pi_mk_injective (hall : ∀ M : Ideal B, M.IsMaximal → ∃ i, M = 𝔪 i) (N : Type*)
+     [AddCommGroup N] [Module B N] :
+     Function.Injective (LinearMap.pi fun i => TensorProduct.mk B (C i) N 1) := by
+-  rw [injective_iff_map_eq_zero]
+-  intro n hn
+-  by_contra hne
+-  have hlt : LinearMap.ker (LinearMap.toSpanSingleton B N n) ≠ ⊤ := by
+-    intro htop
+-    apply hne
+-    have h1 : (1 : B) ∈ LinearMap.ker (LinearMap.toSpanSingleton B N n) := htop ▸ Submodule.mem_top
+-    simpa using h1
+-  obtain ⟨M, hM, hle⟩ := Ideal.exists_le_maximal _ hlt
+-  obtain ⟨i, rfl⟩ := hall M hM
+-  have : IsLocalizedModule (𝔪 i).primeCompl (TensorProduct.mk B (C i) N 1) :=
++  intro x y h
++  apply Module.eq_of_localization_maximal (R := B) (fun P _ => LocalizedModule P.primeCompl N)
++    (fun P _ => LocalizedModule.mkLinearMap P.primeCompl N) x y
++  intro P hp
++  obtain ⟨i, rfl⟩ := hall P hp
++  let f := TensorProduct.mk B (C i) N 1
++  have : IsLocalizedModule (𝔪 i).primeCompl f :=
+     (isLocalizedModule_iff_isBaseChange (𝔪 i).primeCompl (C i) _).mpr
+       (TensorProduct.isBaseChange B N (C i))
+-  have h0 : TensorProduct.mk B (C i) N 1 n = 0 := by
+-    simpa using congrFun hn i
+-  obtain ⟨s, hs⟩ := (IsLocalizedModule.eq_zero_iff (𝔪 i).primeCompl _).mp h0
+-  exact s.2 (hle (by rw [LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]; exact hs))
++  exact (IsLocalizedModule.eq_iff_exists (𝔪 i).primeCompl _).mpr
++    ((IsLocalizedModule.eq_iff_exists (𝔪 i).primeCompl f).mp (congrFun h i))
+ 
+ theorem length_eq_sum_of_isFiniteLength (hinj : Function.Injective 𝔪)
+     (hall : ∀ M : Ideal B, M.IsMaximal → ∃ i, M = 𝔪 i) (A : Type*) [CommRing A] [Algebra A B]
+@@ -151,9 +144,7 @@
+     exact ne_top_of_le_ne_top hpi (Module.length_le_of_injective _ (pi_mk_injective 𝔪 C hall N))
+   have : Nontrivial (B ⧸ 𝔪 i) := Ideal.Quotient.nontrivial_iff.mpr (h𝔪 i).ne_top
+   have hd : Module.length A (B ⧸ 𝔪 i) ≠ 0 := (Module.length_pos (R := A)).ne'
+-  have hti : Module.length (C i) (C i ⊗[B] N) = ⊤ := by
+-    by_contra h'
+-    exact hi (Module.length_ne_top_iff.mp h')
++  have hti := not_ne_iff.mp (hi ∘ Module.length_ne_top_iff.mp)
+   rw [hA, eq_comm, ← top_le_iff]
+   calc (⊤ : ℕ∞) = Module.length (C i) (C i ⊗[B] N) * Module.length A (B ⧸ 𝔪 i) := by
+         rw [hti, ENat.top_mul hd]
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LocalIntegralClosureChart.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/LocalIntegralClosureChart.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PMChartTrdeg
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsMChart
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDegZeroLocQuot
+@@ -92,15 +93,7 @@
+ 
+ theorem isMultiHomog_chartMonomial (u : ∀ k, ι k) (b : K → ℕ) :
+     IsMultiHomog (chartMonomial (F := F) u b) b := by
+-  have hb : (∑ k, b k • blockWeight ι ⟨k, u k⟩) = b := by
+-    funext k
+-    simp [blockWeight, Finset.sum_apply, Pi.single_apply]
+-  have h := IsWeightedHomogeneous.prod (w := blockWeight ι) Finset.univ
+-    (fun k => (X ⟨k, u k⟩ : MRing ι F) ^ b k) (fun k => b k • blockWeight ι ⟨k, u k⟩)
+-    fun k _ => (isWeightedHomogeneous_X F (blockWeight ι) ⟨k, u k⟩).pow (b k)
+-  unfold IsMultiHomog chartMonomial
+-  convert h using 1
+-  exact hb.symm
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.MChartTrdeg.chartMonomial_isMultiHomog <;> assumption
+ 
+ omit [DecidableEq K] in
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/NoetherReduction.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/NoetherReduction.lean
+@@ -103,13 +103,5 @@
+       inferInstance
+   exact finite_integralClosure_mvPolynomial_of_isSeparable k s L
+ 
+-theorem finite_integralClosure_of_charZero
+-    (k A : Type u) [Field k] [CharZero k] [CommRing A] [IsDomain A] [Algebra k A]
+-    [Algebra.FiniteType k A] (K : Type u) [Field K] [Algebra A K] [IsFractionRing A K]
+-    (L : Type u) [Field L] [Algebra K L] [FiniteDimensional K L] [Algebra A L]
+-    [IsScalarTower A K L] :
+-    Module.Finite A (integralClosure A L) :=
+-  finite_integralClosure_of_forall_mvPolynomial k A K L fun s L' _ _ _ _ _ =>
+-    finite_integralClosure_mvPolynomial_of_charZero k s L'
+ 
+ end GroundTheory.Heights₂.Heights.FieldNumbers
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PContractRelDimLe.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PContractRelDimLe.lean
+@@ -21,37 +21,8 @@
+     (hQ : ∀ (T : Finset K) (q : MRing ι F), q ∈ Q → killBlocks T q ∈ Q) (hrel : IsRelevant Q)
+     (T : Finset K) :
+     ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) ≤
+-      ringKrullDim (MRing ι F ⧸ Q) := by
+-  choose i hi using hrel
+-  have hmono : ∀ {T T' : Finset K}, T ⊆ T' → killIdeal Q T ≤ killIdeal Q T' := by
+-    intro T T' h q hq
+-    change killBlocks T' q ∈ Q
+-    rw [← killBlocks_comp h]
+-    exact hQ T' _ hq
+-  induction T using Finset.induction_on with
+-  | empty =>
+-    have : killIdeal Q (∅ : Finset K) = Q := by
+-      ext q
+-      simp [killIdeal, killBlocks_empty]
+-    rw [this, Finset.card_empty, Nat.cast_zero, add_zero]
+-  | insert k T hk ih =>
+-    have : (killIdeal Q T).IsPrime := Ideal.comap_isPrime _ _
+-    have hstep := ringKrullDim_add_one_le (P := killIdeal Q T) (Q := killIdeal Q (insert k T))
+-      (hmono (Finset.subset_insert k T)) (f := X ⟨k, i k⟩)
+-      (by
+-        change killBlocks T (X ⟨k, i k⟩) ∉ Q
+-        rw [killBlocks_X, if_neg hk]
+-        exact hi k)
+-      (by
+-        change killBlocks (insert k T) (X ⟨k, i k⟩) ∈ Q
+-        rw [killBlocks_X, if_pos (Finset.mem_insert_self k T)]
+-        exact Q.zero_mem)
+-    calc ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + ((insert k T).card : WithBot ℕ∞)
+-        = (ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + 1) + (T.card : WithBot ℕ∞) := by
+-          rw [Finset.card_insert_of_notMem hk, Nat.cast_add, Nat.cast_one, add_assoc,
+-            add_comm (1 : WithBot ℕ∞)]
+-      _ ≤ ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) := by gcongr
+-      _ ≤ _ := ih
++      ringKrullDim (MRing ι F ⧸ Q) :=
++  PFContracted.dimension_add_killed_blocks_card_le hQ hrel T
+ 
+ end Chain
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PCutRegular.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PCutRegular.lean
+@@ -1,3 +1,6 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContracted
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbDegreeBound
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbExactDivide
+@@ -40,11 +43,7 @@
+ 
+ theorem eventualValue_eq_zero {f : (K → ℤ) → ℤ} (hf : ∀ᶠ m in Filter.atTop, f m = 0) :
+     eventualValue f = 0 := by
+-  unfold eventualValue
+-  split_ifs with h
+-  · obtain ⟨m, h1, h2⟩ := (h.choose_spec.and hf).exists
+-    rw [← h1, h2]
+-  · rfl
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PFContracted.eventualValue_eq_zero <;> assumption
+ 
+ theorem intNum_eq_zero_of_eventually {I : Ideal (MRing ι F)}
+     (hI : ∀ᶠ m in Filter.atTop, hilbFn I m = 0) {n : ℕ} (bs : Fin n → K → ℤ) :
+@@ -52,19 +51,9 @@
+   eventualValue_eq_zero (foldr_diffStep_eventually_zero hI (List.ofFn bs))
+ 
+ theorem hilbFn_top (m : K → ℤ) : hilbFn (⊤ : Ideal (MRing ι F)) m = 0 := by
+-  unfold hilbFn
+-  split_ifs
+-  · have : gradedPiece (⊤ : Ideal (MRing ι F)) (fun k => (m k).toNat) = ⊥ := by
+-      rw [eq_bot_iff]
+-      intro x _
+-      rw [Submodule.mem_bot]
+-      have : Subsingleton (MRing ι F ⧸ (⊤ : Ideal (MRing ι F))) :=
+-        Ideal.Quotient.subsingleton_iff.mpr rfl
+-      exact Subsingleton.elim _ _
+-    rw [this, finrank_bot, Nat.cast_zero]
+-  · rfl
+-
+-theorem mem_of_block_le {I : Ideal (MRing ι F)} {k : K}
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PrimeFiltration.hilbFn_top <;> assumption
++
++theorem mem_of_block_le {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F] {I : Ideal (MRing ι F)} {k : K}
+     (hk : ∀ i : ι k, (X ⟨k, i⟩ : MRing ι F) ∈ I) {m : K → ℕ} (hm : 1 ≤ m k)
+     {f : MRing ι F} (hf : IsMultiHomog f m) : f ∈ I := by
+   have hspan : Ideal.span ((X : (Σ k, ι k) → MRing ι F) '' {v | v.1 = k}) ≤ I := by
+@@ -88,7 +77,7 @@
+   rw [hw] at h0
+   omega
+ 
+-theorem hilbFn_eventually_zero_of_not_relevant {I : Ideal (MRing ι F)} (hI : ¬ IsRelevant I) :
++theorem hilbFn_eventually_zero_of_not_relevant {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F] {I : Ideal (MRing ι F)} (hI : ¬ IsRelevant I) :
+     ∀ᶠ m in Filter.atTop, hilbFn I m = 0 := by
+   unfold IsRelevant at hI
+   push Not at hI
+@@ -110,23 +99,13 @@
+ theorem isMultiHomogIdeal_sup_span {P : Ideal (MRing ι F)} (hP : IsMultiHomogIdeal P)
+     {c : K → ℕ} {s : MRing ι F} (hs : IsMultiHomog s c) :
+     IsMultiHomogIdeal (P ⊔ Ideal.span {s}) := by
+-  classical
+-  intro f hf b
+-  obtain ⟨a, ha, t', ht', rfl⟩ := Submodule.mem_sup.mp hf
+-  obtain ⟨t, rfl⟩ := Ideal.mem_span_singleton'.mp ht'
+-  rw [map_add, HilbExactDivide.component_mul_form hs]
+-  refine Ideal.add_mem _ (Ideal.mem_sup_left (hP a ha b)) ?_
+-  split_ifs
+-  · exact Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self s))
+-  · exact Ideal.zero_mem _
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PFContracted.isMultiHomogIdeal_sup_span <;> assumption
+ 
+ omit [DecidableEq K] in
+ 
+ theorem colon_eq_of_not_mem {P : Ideal (MRing ι F)} [hP : P.IsPrime] {s : MRing ι F}
+     (hs : s ∉ P) : P.colon (Ideal.span {s}) = P := by
+-  ext g
+-  rw [HilbExactDivide.mem_colon_span_iff]
+-  exact ⟨fun h => (hP.mem_or_mem h).resolve_right hs, fun h => P.mul_mem_right s h⟩
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.colon_span_eq_of_isPrime <;> assumption
+ 
+ omit [DecidableEq K] in
+ 
+@@ -146,21 +125,11 @@
+       · exact WithTop.top_ne_coe (WithBot.coe_inj.mp h)
+       · exact ENat.top_ne_natCast _ (WithBot.coe_inj.mp h)
+     | coe e =>
+-      have key : WithTop.map (fun e : ℕ => (e : ℤ) - Fintype.card K) (e : ℕ∞) =
+-          (((e : ℤ) - Fintype.card K : ℤ) : WithTop ℤ) := rfl
+-      rw [key]
+-      constructor
+-      · intro h
+-        have h1 : ((e : ℤ) - Fintype.card K : ℤ) = d := WithTop.coe_inj.mp (WithBot.coe_inj.mp h)
+-        have h2 : e = d + Fintype.card K := by omega
+-        rw [h2]
+-        rfl
+-      · intro h
+-        have h1 : (e : ℕ∞) = ((d + Fintype.card K : ℕ) : ℕ∞) := WithBot.coe_inj.mp h
+-        have h2 : e = d + Fintype.card K := by exact_mod_cast h1
+-        subst h2
+-        rw [show (((d + Fintype.card K : ℕ) : ℤ) - Fintype.card K) = (d : ℤ) by push_cast; ring]
+-        rfl
++      change (((((e : ℤ) - Fintype.card K : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) =
++        (((d : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))) ↔
++        (((e : ℕ∞) : WithBot ℕ∞) = (((d + Fintype.card K : ℕ) : ℕ∞) : WithBot ℕ∞))
++      simp only [WithBot.coe_inj, WithTop.coe_inj, ENat.coe_inj]
++      omega
+ 
+ theorem eq_of_add_one_le_of_le {x : WithBot ℕ∞} {e : ℕ}
+     (h1 : x + 1 ≤ ((e + 1 : ℕ) : WithBot ℕ∞)) (h2 : ((e : ℕ) : WithBot ℕ∞) ≤ x) :
+@@ -170,17 +139,12 @@
+   | coe y =>
+     cases y using ENat.recTopCoe with
+     | top =>
+-      exfalso
+-      have h1' : (((⊤ : ℕ∞) + 1 : ℕ∞) : WithBot ℕ∞) ≤ (((e + 1 : ℕ) : ℕ∞) : WithBot ℕ∞) := h1
+-      have h2' := WithBot.coe_le_coe.mp h1'
+-      rw [top_add, top_le_iff] at h2'
+-      exact ENat.natCast_ne_top _ h2'
++      have := WithBot.coe_le_coe.mp h1
++      simp at this
+     | coe y =>
+-      have a1 : y + 1 ≤ e + 1 := by exact_mod_cast h1
+-      have a2 : e ≤ y := by exact_mod_cast h2
+-      have : y = e := by omega
+-      subst this
+-      rfl
++      have a : y + 1 ≤ e + 1 := by exact_mod_cast h1
++      have b : e ≤ y := by exact_mod_cast h2
++      exact_mod_cast (show y = e by omega)
+ 
+ theorem le_of_height_add {h : ℕ∞} {x : WithBot ℕ∞} {e : ℕ} (hh : h ≤ 1)
+     (hsum : (h : WithBot ℕ∞) + x = ((e + 1 : ℕ) : WithBot ℕ∞)) : ((e : ℕ) : WithBot ℕ∞) ≤ x := by
+@@ -206,15 +170,7 @@
+ theorem ringKrullDim_sup_span_add_one_le {P : Ideal (MRing ι F)} [P.IsPrime] {s : MRing ι F}
+     (hs : s ∉ P) :
+     ringKrullDim (MRing ι F ⧸ (P ⊔ Ideal.span {s})) + 1 ≤ ringKrullDim (MRing ι F ⧸ P) := by
+-  have hne : (P ⊔ Ideal.span {s}).map (Ideal.Quotient.mk P) ≠ ⊥ := by
+-    intro h
+-    apply hs
+-    rw [← Ideal.Quotient.eq_zero_iff_mem]
+-    have : Ideal.Quotient.mk P s ∈ (P ⊔ Ideal.span {s}).map (Ideal.Quotient.mk P) :=
+-      Ideal.mem_map_of_mem _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))
+-    rwa [h, Ideal.mem_bot] at this
+-  have := GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_quotient_add_one_le _ hne
+-  rwa [ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE le_sup_left)] at this
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.ringKrullDim_sup_span_add_one_le <;> assumption
+ 
+ theorem ringKrullDim_minimalPrime [Fintype K] [∀ k, Fintype (ι k)] {P W : Ideal (MRing ι F)}
+     [P.IsPrime] {s : MRing ι F} (hs : s ∉ P) (hW : W ∈ (P ⊔ Ideal.span {s}).minimalPrimes)
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDegZeroLocDim.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDegZeroLocDim.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.LocalIntegralClosureChart
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsMChart
+ import GroundTheory.ArithmeticGeometry.AbelianVarieties.JacobianSmoothness.RingKrullDimLeRingKrullDimQuotientAddOne
+@@ -25,10 +26,7 @@
+ 
+ theorem chartMonomial_not_mem (Q : Ideal (MRing ι F)) [Q.IsPrime] (u : ∀ k, ι k)
+     (hu : ∀ k, (X ⟨k, u k⟩ : MRing ι F) ∉ Q) (b : K → ℕ) : chartMonomial u b ∉ Q := by
+-  unfold chartMonomial
+-  intro h
+-  obtain ⟨k, -, hk⟩ := Ideal.IsPrime.prod_mem_iff.mp h
+-  exact hu k (Ideal.IsPrime.mem_of_pow_mem ‹_› _ hk)
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.chartMonomial_not_mem_of_notMem <;> assumption
+ 
+ theorem chart_ringKrullDim_add_card (h : MChartTrdeg.Statement.{u}) (Q : Ideal (MRing ι F)) [Q.IsPrime]
+     (hQ : IsMultiHomogIdeal Q) (u : ∀ k, ι k) (hu : ∀ k, (X ⟨k, u k⟩ : MRing ι F) ∉ Q) :
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPrincipalDegree.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPrincipalDegree.lean
+@@ -1,8 +1,6 @@
+ import Mathlib
++import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Objects
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+-import GroundTheory.HeightsAndTheta.Heights.HeightComparison.IsMultiHomogIdealIff
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.CycDim
+-set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.FieldNumbers
+ 
+@@ -33,62 +31,5 @@
+     have h' : (a : ℤ) - Fintype.card K = (b : ℤ) - Fintype.card K := h
+     omega)
+ 
+-theorem isMultiProjPrime_relDim_zero_of_divCycle_ne_zero {P : Ideal (MRing ι F)}
+-    (hP : IsMultiProjPrime P) (hdim : relDim P = 1) {b : K → ℕ} {f : MRing ι F}
+-    (hf : IsMultiHomog f b) (hfP : f ∉ P) {W : Ideal (MRing ι F)} (hW : divCycle P f W ≠ 0) :
+-    IsMultiProjPrime W ∧ relDim W = 0 := by
+-  have h : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes ∧ IsRelevant W := by
+-    by_contra h
+-    exact hW (by rw [divCycle, dif_neg h])
+-  obtain ⟨hmin, hrel⟩ := h
+-  have hWh : IsMultiHomogIdeal W := (Bridge.isMultiHomogIdeal_iff W).mpr
+-    (ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isMultiHomogIdeal_of_mem_minimalPrimes
+-      ((Bridge.isMultiHomogIdeal_iff P).mp hP.multiHomog) ((Bridge.isMultiHomog_iff f b).mp hf) hmin)
+-  refine ⟨⟨hmin.1.1, hWh, hrel⟩, ?_⟩
+-  have := hP.isPrime
+-  have hPd : ringKrullDim (MRing ι F ⧸ P) = ((Fintype.card K + 1 : ℕ) : WithBot ℕ∞) := by
+-    apply relDim_map_injective (K := K)
+-    change relDim P = _
+-    rw [hdim]
+-    show (1 : WithBot (WithTop ℤ)) =
+-      ((((Fintype.card K + 1 : ℕ) : ℤ) - Fintype.card K : ℤ) : WithBot (WithTop ℤ))
+-    have e : (((Fintype.card K + 1 : ℕ) : ℤ) - Fintype.card K : ℤ) = 1 := by push_cast; ring
+-    rw [e]
+-    rfl
+-  have key : ringKrullDim (MRing ι F ⧸ W) + 1 = ringKrullDim (MRing ι F ⧸ P) :=
+-    ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_dim_quot_minimal_add_one hfP hmin (fun h => by
+-      rw [hPd] at h
+-      exact ENat.natCast_ne_top _ (WithBot.coe_injective h))
+-  rw [hPd] at key
+-  have hWd := ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_withBot_eq_of_add_one key
+-  rw [relDim_of_ringKrullDim_eq W _ hWd, sub_self]
+-  rfl
+-
+ end
+-
+-theorem DivPrincipalDegree.proof (h₁ : CutRational.Statement.{u}) (h₂ : IntNumBase.Statement.{u})
+-    (h₃ : IntNumZeroSlot.Statement.{u}) : DivPrincipalDegree.Statement.{u} := by
+-  intro F _ K _ _ ι _ P hP hdim b f g hf hg hfP hgP
+-  have hcut := h₁ F K ι P hP 0 (by rw [hdim]; rfl) b b f g hf hg hfP hgP ![]
+-  have hzero : intNum F P (Fin.snoc (α := fun _ => K → ℤ) (![] : Fin 0 → K → ℤ)
+-      (fun k => (b k : ℤ) - b k)) = 0 :=
+-    (h₃ F K ι P).1 1 _ (Fin.last 0) (by rw [Fin.snoc_last]; funext k; simp)
+-  rw [hzero] at hcut
+-  refine Eq.trans ?_ hcut.symm
+-  unfold cycEval
+-  refine finsum_congr fun W => ?_
+-  by_cases hW : ratDiv P f g W = 0
+-  · rw [hW, zero_mul, zero_mul]
+-  · congr 1
+-    have hfg : divCycle P f W ≠ 0 ∨ divCycle P g W ≠ 0 := by
+-      by_contra h
+-      push Not at h
+-      exact hW (by rw [ratDiv, h.1, h.2, sub_zero])
+-    obtain ⟨hWm, hW0⟩ := hfg.elim (isMultiProjPrime_relDim_zero_of_divCycle_ne_zero hP hdim hf hfP)
+-      (isMultiProjPrime_relDim_zero_of_divCycle_ne_zero hP hdim hg hgP)
+-    obtain ⟨-, he⟩ := h₂ F K ι W hWm hW0
+-    show ((resDeg W : ℕ) : ℤ) = intNum F W ![]
+-    unfold resDeg
+-    rw [dif_pos hWm.isPrime, he]
+-
+ end GroundTheory.Heights₂.Heights.FieldNumbers
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPushForward.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPushForward.lean
+@@ -74,27 +74,24 @@
+       · exact absurd ⟨hc.1 ▸ isMultiProjPrime_contractPrime j ι' (hsup' W' h0).1, hc.2⟩ hW
+       · rw [hM0 W W' hc, mul_zero]
+ 
+-  set s := hfin.toFinset
+-  set t := s.image (contractPrime j)
+-  have hsub : ∀ W', D' W' ≠ 0 → W' ∈ s := fun W' h => hfin.mem_toFinset.2 h
+-  have hzero : ∀ W' W, W' ∉ s ∨ W ∉ t → D' W' * M W W' * N W = 0 := by
+-    rintro W' W (h | h)
+-    · rw [show D' W' = 0 by by_contra h'; exact h (hsub W' h'), zero_mul, zero_mul]
+-    · by_cases h0 : D' W' = 0
+-      · rw [h0, zero_mul, zero_mul]
+-      have hc : ¬ (contractPrime j W' = W ∧ relDim W = (n : ℕ)) := fun hc =>
+-        h (Finset.mem_image.2 ⟨W', hsub W' h0, hc.1⟩)
+-      rw [hM0 W W' hc, mul_zero, zero_mul]
+-  have swap : ∑ᶠ W', ∑ᶠ W, D' W' * M W W' * N W = ∑ᶠ W, ∑ᶠ W', D' W' * M W W' * N W := by
+-    rw [finsum_congr fun W' => finsum_eq_sum_of_support_subset _ (s := t) fun W hW => by
+-        by_contra h; exact hW (hzero W' W (Or.inr h)),
+-      finsum_congr fun W => finsum_eq_sum_of_support_subset _ (s := s) fun W' hW' => by
+-        by_contra h; exact hW' (hzero W' W (Or.inl h)),
+-      finsum_eq_sum_of_support_subset _ (s := s) fun W' hW' => by
+-        by_contra h; exact hW' (Finset.sum_eq_zero fun W _ => hzero W' W (Or.inl h)),
+-      finsum_eq_sum_of_support_subset _ (s := t) fun W hW => by
+-        by_contra h; exact hW (Finset.sum_eq_zero fun W' _ => hzero W' W (Or.inr h)),
+-      Finset.sum_comm]
++  let s := hfin.toFinset
++  have cut (g : Ideal (MRing ι' F) → ℤ) (hg : ∀ w, D' w = 0 → g w = 0) :
++      (∑ᶠ w, g w) = s.sum g := by
++    apply finsum_eq_sum_of_support_subset
++    intro w hw
++    exact hfin.mem_toFinset.mpr (fun h => hw (hg w h))
++  have fiber (w' : Ideal (MRing ι' F)) :
++      Function.HasFiniteSupport (fun w => D' w' * M w w' * N w) := by
++    refine (Set.finite_singleton (contractPrime j w')).subset ?_
++    intro w hw
++    by_contra h
++    apply hw
++    change D' w' * M w w' * N w = 0
++    rw [hM0 w w' (fun e => h e.1.symm), mul_zero, zero_mul]
++  have swap : ∑ᶠ w', ∑ᶠ w, D' w' * M w w' * N w = ∑ᶠ w, ∑ᶠ w', D' w' * M w w' * N w := by
++    rw [cut _ (by intro w' h; simp [h])]
++    rw [sum_finsum_comm s _ (fun w' _ => fiber w')]
++    exact finsum_congr fun w => (cut _ (by intro w' h; simp [h])).symm
+   calc cycEval N' D' = ∑ᶠ W', D' W' * N' W' := rfl
+     _ = ∑ᶠ W', ∑ᶠ W, D' W' * M W W' * N W := finsum_congr step1
+     _ = ∑ᶠ W, ∑ᶠ W', D' W' * M W W' * N W := swap
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPushForwardLocal.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PDivPushForwardLocal.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PRepresentative
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDivCycleMinimal
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsConeLocalLength
+@@ -18,20 +19,8 @@
+ theorem exists_form_not_mem {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type u}
+     [Field F] {W : Ideal (MRing ι F)} (hW : IsMultiProjPrime W) (c : K → ℕ) :
+     ∃ h : MRing ι F, IsMultiHomog h c ∧ h ∉ W := by
+-  choose v hv using hW.relevant
+-  have := hW.isPrime
+-  refine ⟨∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ c k, ?_, ?_⟩
+-  · have hprod := IsWeightedHomogeneous.prod (w := blockWeight ι) Finset.univ
+-      (fun k => (X ⟨k, v k⟩ : MRing ι F) ^ c k) (fun k => c k • blockWeight ι ⟨k, v k⟩)
+-      (fun k _ => (isWeightedHomogeneous_X F (blockWeight ι) _).pow (c k))
+-    have hc : (∑ k, c k • blockWeight ι ⟨k, v k⟩) = c := by
+-      funext k'
+-      simp [blockWeight, Finset.sum_apply, Pi.single_apply]
+-    rw [hc] at hprod
+-    exact hprod
+-  · rw [Ideal.IsPrime.prod_mem_iff]
+-    rintro ⟨k, -, hk⟩
+-    exact hv k (Ideal.IsPrime.mem_of_pow_mem this _ hk)
++  haveI := hW.isPrime
++  exact exists_form_not_mem_of_isRelevant hW.relevant c
+ 
+ theorem DivPushForwardLocal.proof (h1 : DivCycleMinimal.Statement.{u})
+     (h2 : ConeLocalLength.Statement.{u}) (h3 : DegZeroLocalRing.Statement.{u})
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbDegreeBound.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbDegreeBound.lean
+@@ -1,6 +1,8 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPrimeFiltration
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDegreeBound
++
+ set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.FieldNumbers
+@@ -17,33 +19,11 @@
+ 
+ attribute [local instance] MvPolynomial.weightedGradedAlgebra
+ 
+-theorem isHomogeneous_of_isMultiHomogIdeal {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I) :
+-    I.IsHomogeneous (weightedHomogeneousSubmodule F (blockWeight ι)) := by
+-  classical
+-  have e : I = Ideal.span
+-      {g | ∃ f ∈ I, ∃ b, g = weightedHomogeneousComponent (blockWeight ι) b f} := by
+-    apply le_antisymm
+-    · intro f hf
+-      rw [← sum_weightedHomogeneousComponent (blockWeight ι) f,
+-        finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]
+-      exact Ideal.sum_mem _ fun b _ => Ideal.subset_span ⟨f, hf, b, rfl⟩
+-    · rw [Ideal.span_le]
+-      rintro g ⟨f, hf, b, rfl⟩
+-      exact hI f hf b
+-  rw [e]
+-  refine Ideal.homogeneous_span _ _ fun x hx => ?_
+-  obtain ⟨f, -, b, rfl⟩ := hx
+-  exact ⟨b, weightedHomogeneousComponent_isWeightedHomogeneous b f⟩
+ 
+ theorem isMultiHomogIdeal_sup_span {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I)
+     {s : MRing ι F} {c : K → ℕ} (hs : IsMultiHomog s c) :
+     IsMultiHomogIdeal (I ⊔ Ideal.span {s}) := by
+-  classical
+-  have h2 : (Ideal.span {s}).IsHomogeneous (weightedHomogeneousSubmodule F (blockWeight ι)) :=
+-    Ideal.homogeneous_span _ _ fun x hx => ⟨c, (Set.mem_singleton_iff.mp hx) ▸ hs⟩
+-  intro f hf b
+-  exact weightedHomogeneousComponent_mem_of_mem
+-    (h := (isHomogeneous_of_isMultiHomogIdeal hI).sup h2) (hp := hf) (m := b)
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PrimeFiltration.multiHomog_sup_span <;> assumption
+ 
+ omit [Fintype K] [DecidableEq K] in
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbExactDivide.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PHilbExactDivide.lean
+@@ -1,6 +1,7 @@
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PGradedFinite
++
+ set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.FieldNumbers
+@@ -44,18 +45,6 @@
+   rw [e]
+   exact hI a ha n
+ 
+-omit [DecidableEq K] in
+-
+-theorem mem_colon_span_iff {I : Ideal (MRing ι F)} {s g : MRing ι F} :
+-    g ∈ I.colon (Ideal.span {s}) ↔ g * s ∈ I := by
+-  rw [Submodule.mem_colon]
+-  constructor
+-  · intro h
+-    simpa [smul_eq_mul] using h s (Ideal.subset_span rfl)
+-  · intro h x hx
+-    obtain ⟨t, rfl⟩ := Ideal.mem_span_singleton'.mp hx
+-    rw [smul_eq_mul, show g * (t * s) = t * (g * s) by ring]
+-    exact I.mul_mem_left t h
+ 
+ open Classical in
+ 
+@@ -189,8 +178,6 @@
+       omega
+     simp only [hilbFn, if_neg hm, if_neg hm', sub_zero]
+ 
+-theorem closed : HilbExactDivide.Statement.{u} :=
+-  proof GradedFinite.proof
+ 
+ end HilbExactDivide
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartHomog.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartHomog.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PMChartLocDim
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsMChart
+ set_option maxSynthPendingDepth 1
+@@ -20,13 +21,7 @@
+ 
+ theorem chartMonomial_isMultiHomog (u : ∀ k, ι k) (c : K → ℕ) :
+     IsMultiHomog (chartMonomial u c : MRing ι F) c := by
+-  show IsWeightedHomogeneous (blockWeight ι) (∏ k, (X ⟨k, u k⟩ : MRing ι F) ^ c k) c
+-  have h := IsWeightedHomogeneous.prod (R := F) Finset.univ
+-    (fun k => (X ⟨k, u k⟩ : MRing ι F) ^ c k) (fun k => c k • blockWeight ι ⟨k, u k⟩)
+-    (w := blockWeight ι) (fun k _ => (isWeightedHomogeneous_X F (blockWeight ι) ⟨k, u k⟩).pow (c k))
+-  convert h using 1
+-  funext j
+-  simp [blockWeight, Finset.sum_apply, Pi.single_apply]
++  exact GroundTheory.Heights₂.Heights.FieldNumbers.MChartLocDim.chartMonomial_isMultiHomog u c
+ 
+ theorem finsuppProd_chartVar (u : ∀ k, ι k) (e : (Σ k, ι k) →₀ ℕ) :
+     (e.prod fun v n => (X ⟨v.1, u v.1⟩ : MRing ι F) ^ n) =
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartLocDim.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartLocDim.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PDegZeroLocResidue
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsMChart
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDegZeroLocQuot
+@@ -38,8 +39,7 @@
+ 
+ theorem algebraMap_mk_ne_zero (Q : Ideal (MRing ι F)) [Q.IsPrime] {g : MRing ι F} (hg : g ∉ Q) :
+     algebraMap (MRing ι F ⧸ Q) (FractionRing (MRing ι F ⧸ Q)) (Ideal.Quotient.mk Q g) ≠ 0 := by
+-  rw [Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]
+-  exact hg
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.DegZeroLocResidue.fr_ne_zero <;> assumption
+ 
+ omit [DecidableEq K] in
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartTrdeg.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMChartTrdeg.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PMChartLocDim
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsMChart
+ import GroundTheory.ArithmeticGeometry.AbelianVarieties.JacobianSmoothness.RingKrullDimLeRingKrullDimQuotientAddOne
+@@ -17,14 +18,7 @@
+ 
+ theorem chartMonomial_isMultiHomog (u : ∀ k, ι k) (b : K → ℕ) :
+     IsMultiHomog (chartMonomial (F := F) u b) b := by
+-  have h := IsWeightedHomogeneous.prod (R := F) (w := blockWeight ι) Finset.univ
+-    (fun k => (X ⟨k, u k⟩ : MRing ι F) ^ b k) (fun k => b k • blockWeight ι ⟨k, u k⟩)
+-    (fun k _ => (isWeightedHomogeneous_X F _ _).pow (b k))
+-  have hb : ∑ k, b k • blockWeight ι ⟨k, u k⟩ = b := by
+-    funext j
+-    simp [blockWeight, Finset.sum_apply, Pi.single_apply]
+-  unfold IsMultiHomog chartMonomial
+-  rwa [hb] at h
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.MChartLocDim.chartMonomial_isMultiHomog <;> assumption
+ 
+ variable (P : Ideal (MRing ι F)) [P.IsPrime]
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMultEqualsCoeff.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PMultEqualsCoeff.lean
+@@ -1,3 +1,4 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PCutRegular
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDegreeBound
+@@ -86,43 +87,7 @@
+ 
+ theorem hilbFn_eventually_zero_of_not_relevant (I : Ideal (MRing ι F)) (hI : ¬ IsRelevant I) :
+     ∀ᶠ m in atTop, hilbFn I m = 0 := by
+-  simp only [IsRelevant, not_forall, not_exists, not_not] at hI
+-  obtain ⟨k, hk⟩ := hI
+-  filter_upwards [eventually_ge_atTop (1 : K → ℤ)] with m hm
+-  unfold hilbFn
+-  split_ifs with h0
+-  · have hbot : gradedPiece I (fun k => (m k).toNat) = ⊥ := by
+-      rw [eq_bot_iff]
+-      rintro x ⟨f, hf, rfl⟩
+-      rw [Submodule.mem_bot, AlgHom.toLinearMap_apply, Ideal.Quotient.mkₐ_eq_mk,
+-        Ideal.Quotient.eq_zero_iff_mem, MvPolynomial.as_sum f]
+-      refine Ideal.sum_mem _ fun s hs => ?_
+-      have hw := (mem_weightedHomogeneousSubmodule _ _ _ _).mp hf (mem_support_iff.mp hs)
+-      obtain ⟨v, hv, hvk⟩ : ∃ v ∈ s.support, v.1 = k := by
+-        by_contra hne
+-        simp only [not_exists, not_and] at hne
+-        have h1 := congrFun hw k
+-        rw [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply,
+-          Finset.sum_eq_zero fun v hv => by
+-            simp [blockWeight, Ne.symm (hne v hv)]] at h1
+-        have := hm k
+-        simp only [Pi.one_apply] at this
+-        omega
+-      have hle : Finsupp.single v 1 ≤ s := by
+-        rw [Finsupp.single_le_iff]
+-        exact Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hv)
+-      have hX : (X v : MRing ι F) ∈ I := by
+-        obtain ⟨k', i⟩ := v
+-        subst hvk
+-        exact hk i
+-      have e : monomial s (coeff s f) = X v * monomial (s - Finsupp.single v 1) (coeff s f) := by
+-        rw [show (X v : MRing ι F) = monomial (Finsupp.single v 1) 1 from rfl, monomial_mul,
+-          one_mul, add_tsub_cancel_of_le hle]
+-      rw [e]
+-      exact I.mul_mem_right _ hX
+-    rw [hbot]
+-    simp
+-  · rfl
++  exact GroundTheory.Heights₂.Heights.FieldNumbers.CutRegular.hilbFn_eventually_zero_of_not_relevant hI
+ 
+ end MultEqualsCoeff
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContracted.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContracted.lean
+@@ -18,12 +18,6 @@
+ variable {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F]
+ 
+ attribute [local instance] MvPolynomial.weightedGradedAlgebra
+-
+-def blockDeg (k : K) : (Σ k, ι k) → ℕ := fun v => blockWeight ι v k
+-
+-theorem weight_blockDeg (k : K) (d : (Σ k, ι k) →₀ ℕ) :
+-    Finsupp.weight (blockDeg (ι := ι) k) d = Finsupp.weight (blockWeight ι) d k := by
+-  simp [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, blockDeg]
+ 
+ theorem isHomogeneous_iff {M : Type*} [AddCommMonoid M] [DecidableEq M] (w : (Σ k, ι k) → M)
+     (I : Ideal (MRing ι F)) :
+@@ -36,87 +30,21 @@
+     have := h m r hr
+     rwa [← weightedDecomposition.decompose'_apply] at this
+ 
+-theorem component_blockDeg_of_isMultiHomog {p : MRing ι F} {b : K → ℕ} (hp : IsMultiHomog p b)
+-    (k : K) (n : ℕ) :
+-    weightedHomogeneousComponent (blockDeg k) n p = if b k = n then p else 0 := by
+-  ext d
+-  rw [coeff_weightedHomogeneousComponent, weight_blockDeg]
+-  by_cases hd : coeff d p = 0
+-  · split_ifs <;> simp [hd]
+-  · have hw : Finsupp.weight (blockWeight ι) d = b := hp hd
+-    rw [hw]
+-    split_ifs <;> simp
+-
+-theorem blockDeg_component_mem {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I) (k : K) (n : ℕ)
+-    {r : MRing ι F} (hr : r ∈ I) : weightedHomogeneousComponent (blockDeg k) n r ∈ I := by
+-  rw [← sum_weightedHomogeneousComponent (blockWeight ι) r,
+-    finsum_eq_sum _ (weightedHomogeneousComponent_finsupp r), map_sum]
+-  refine Ideal.sum_mem _ fun b _ => ?_
+-  rw [component_blockDeg_of_isMultiHomog (weightedHomogeneousComponent_isWeightedHomogeneous b r)]
+-  split_ifs
+-  · exact hI r hr b
+-  · exact I.zero_mem
+-
+-theorem isMultiHomogIdeal_of_blockDeg [Fintype K] {I : Ideal (MRing ι F)}
+-    (h : ∀ (k : K) (n : ℕ), ∀ r ∈ I, weightedHomogeneousComponent (blockDeg k) n r ∈ I) :
+-    IsMultiHomogIdeal I := by
+-  classical
+-  intro r hr b
+-  let G : Finset K → MRing ι F := fun T =>
+-    ∑ d ∈ r.support.filter (fun d => ∀ k ∈ T, Finsupp.weight (blockWeight ι) d k = b k),
+-      monomial d (coeff d r)
+-  have hG : ∀ T d, coeff d (G T) =
+-      if ∀ k ∈ T, Finsupp.weight (blockWeight ι) d k = b k then coeff d r else 0 := by
+-    intro T d
+-    simp only [G, coeff_sum, coeff_monomial, Finset.sum_ite_eq', Finset.mem_filter,
+-      mem_support_iff]
+-    by_cases hc : coeff d r = 0 <;> simp [hc]
+-  have hmem : ∀ T, G T ∈ I := by
+-    intro T
+-    induction T using Finset.induction_on with
+-    | empty =>
+-      have : G ∅ = r := by
+-        ext d
+-        rw [hG]
+-        simp
+-      rw [this]
+-      exact hr
+-    | insert k T hk ih =>
+-      have : G (insert k T) = weightedHomogeneousComponent (blockDeg k) (b k) (G T) := by
+-        ext d
+-        rw [hG, coeff_weightedHomogeneousComponent, hG, weight_blockDeg]
+-        simp only [Finset.forall_mem_insert, ite_and]
+-      rw [this]
+-      exact h k (b k) _ ih
+-  have : G Finset.univ = weightedHomogeneousComponent (blockWeight ι) b r := by
+-    ext d
+-    rw [hG, coeff_weightedHomogeneousComponent]
+-    by_cases hw : Finsupp.weight (blockWeight ι) d = b
+-    · simp [hw]
+-    · rw [if_neg hw, if_neg]
+-      exact fun h => hw (funext fun k => h k (Finset.mem_univ k))
+-  rw [← this]
+-  exact hmem _
+-
+ theorem isMultiHomogIdeal_of_mem_minimalPrimes [Fintype K] {I W : Ideal (MRing ι F)}
+     (hI : IsMultiHomogIdeal I) (hW : W ∈ I.minimalPrimes) : IsMultiHomogIdeal W := by
+-  refine isMultiHomogIdeal_of_blockDeg fun k n r hr => ?_
+-  have hIk : I.IsHomogeneous (weightedHomogeneousSubmodule F (blockDeg (ι := ι) k)) :=
+-    (isHomogeneous_iff _ I).mpr fun n r hr => blockDeg_component_mem hI k n hr
+-  have hcore : (W.homogeneousCore
+-      (weightedHomogeneousSubmodule F (blockDeg (ι := ι) k))).toIdeal.IsPrime :=
+-    hW.1.1.homogeneousCore
+-  have hle : I ≤ (W.homogeneousCore
+-      (weightedHomogeneousSubmodule F (blockDeg (ι := ι) k))).toIdeal :=
+-    hIk.toIdeal_homogeneousCore_eq_self.symm.trans_le (Ideal.homogeneousCore_mono _ hW.1.2)
+-  have heq : (W.homogeneousCore
+-      (weightedHomogeneousSubmodule F (blockDeg (ι := ι) k))).toIdeal = W :=
+-    le_antisymm (Ideal.toIdeal_homogeneousCore_le _ _)
+-      (hW.2 ⟨hcore, hle⟩ (Ideal.toIdeal_homogeneousCore_le _ _))
+-  have hWk : W.IsHomogeneous (weightedHomogeneousSubmodule F (blockDeg (ι := ι) k)) := by
++  classical
++  let : LinearOrder K := LinearOrder.lift' (Fintype.equivFin K) (Fintype.equivFin K).injective
++  let w : (Σ k, ι k) → Lex (K → ℕ) := fun i => toLex (blockWeight ι i)
++  let G := weightedHomogeneousSubmodule F w
++  have hIH : I.IsHomogeneous G := (isHomogeneous_iff w I).mpr fun b r hr => hI r hr (ofLex b)
++  have hle : I ≤ (W.homogeneousCore G).toIdeal :=
++    hIH.toIdeal_homogeneousCore_eq_self.symm.trans_le (Ideal.homogeneousCore_mono _ hW.1.2)
++  have he : (W.homogeneousCore G).toIdeal = W := le_antisymm (Ideal.toIdeal_homogeneousCore_le _ _)
++    (hW.2 ⟨hW.1.1.homogeneousCore, hle⟩ (Ideal.toIdeal_homogeneousCore_le _ _))
++  have hw : W.IsHomogeneous G := by
+     rw [Ideal.IsHomogeneous.iff_eq]
+-    exact heq
+-  exact (isHomogeneous_iff _ W).mp hWk n r hr
++    exact he
++  exact fun r hr b => (isHomogeneous_iff w W).mp hw (toLex b) r hr
+ 
+ theorem isMultiHomogIdeal_sup_span {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I)
+     {f : MRing ι F} {c : K → ℕ} (hf : IsMultiHomog f c) :
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContractedDim.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFContractedDim.lean
+@@ -131,47 +131,48 @@
+ def killIdeal (Q : Ideal (MRing ι F)) (T : Finset K) : Ideal (MRing ι F) :=
+   Q.comap (killBlocks T)
+ 
+-theorem card_le_ringKrullDim [Fintype K] {Q : Ideal (MRing ι F)} [hQp : Q.IsPrime]
+-    (hQ : ∀ (T : Finset K) (q : MRing ι F), q ∈ Q → killBlocks T q ∈ Q) (hrel : IsRelevant Q) :
+-    (Fintype.card K : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ Q) := by
++theorem dimension_add_killed_blocks_card_le {Q : Ideal (MRing ι F)} [Q.IsPrime]
++    (hQ : ∀ (T : Finset K) (q : MRing ι F), q ∈ Q → killBlocks T q ∈ Q) (hrel : IsRelevant Q)
++    (T : Finset K) :
++    ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) ≤
++      ringKrullDim (MRing ι F ⧸ Q) := by
+   choose i hi using hrel
+   have hmono : ∀ {T T' : Finset K}, T ⊆ T' → killIdeal Q T ≤ killIdeal Q T' := by
+     intro T T' h q hq
+     change killBlocks T' q ∈ Q
+     rw [← killBlocks_comp h]
+     exact hQ T' _ hq
+-  have hprime : ∀ T, (killIdeal Q T).IsPrime := fun T => Ideal.comap_isPrime _ _
+-  have hchain : ∀ T : Finset K,
+-      ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) ≤
+-        ringKrullDim (MRing ι F ⧸ Q) := by
+-    intro T
+-    induction T using Finset.induction_on with
+-    | empty =>
+-      have : killIdeal Q (∅ : Finset K) = Q := by
+-        ext q
+-        simp [killIdeal, killBlocks_empty]
+-      rw [this, Finset.card_empty, Nat.cast_zero, add_zero]
+-    | insert k T hk ih =>
+-      have := hprime T
+-      have hstep := ringKrullDim_add_one_le (P := killIdeal Q T) (Q := killIdeal Q (insert k T))
+-        (hmono (Finset.subset_insert k T)) (f := X ⟨k, i k⟩)
+-        (by
+-          change killBlocks T (X ⟨k, i k⟩) ∉ Q
+-          rw [killBlocks_X, if_neg hk]
+-          exact hi k)
+-        (by
+-          change killBlocks (insert k T) (X ⟨k, i k⟩) ∈ Q
+-          rw [killBlocks_X, if_pos (Finset.mem_insert_self k T)]
+-          exact Q.zero_mem)
+-      calc ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + ((insert k T).card : WithBot ℕ∞)
+-          = (ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + 1) + (T.card : WithBot ℕ∞) := by
+-            rw [Finset.card_insert_of_notMem hk, Nat.cast_add, Nat.cast_one, add_assoc,
+-              add_comm (1 : WithBot ℕ∞)]
+-        _ ≤ ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) := by gcongr
+-        _ ≤ _ := ih
+-  have := hprime Finset.univ
++  induction T using Finset.induction_on with
++  | empty =>
++    have : killIdeal Q (∅ : Finset K) = Q := by
++      ext q
++      simp [killIdeal, killBlocks_empty]
++    rw [this, Finset.card_empty, Nat.cast_zero, add_zero]
++  | insert k T hk ih =>
++    have : (killIdeal Q T).IsPrime := Ideal.comap_isPrime _ _
++    have hstep := ringKrullDim_add_one_le (P := killIdeal Q T) (Q := killIdeal Q (insert k T))
++      (hmono (Finset.subset_insert k T)) (f := X ⟨k, i k⟩)
++      (by
++        change killBlocks T (X ⟨k, i k⟩) ∉ Q
++        rw [killBlocks_X, if_neg hk]
++        exact hi k)
++      (by
++        change killBlocks (insert k T) (X ⟨k, i k⟩) ∈ Q
++        rw [killBlocks_X, if_pos (Finset.mem_insert_self k T)]
++        exact Q.zero_mem)
++    calc ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + ((insert k T).card : WithBot ℕ∞)
++        = (ringKrullDim (MRing ι F ⧸ killIdeal Q (insert k T)) + 1) + (T.card : WithBot ℕ∞) := by
++          rw [Finset.card_insert_of_notMem hk, Nat.cast_add, Nat.cast_one, add_assoc,
++            add_comm (1 : WithBot ℕ∞)]
++      _ ≤ ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) := by gcongr
++      _ ≤ _ := ih
++
++theorem card_le_ringKrullDim [Fintype K] {Q : Ideal (MRing ι F)} [hQp : Q.IsPrime]
++    (hQ : ∀ (T : Finset K) (q : MRing ι F), q ∈ Q → killBlocks T q ∈ Q) (hrel : IsRelevant Q) :
++    (Fintype.card K : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ Q) := by
++  haveI : (killIdeal Q (Finset.univ : Finset K)).IsPrime := Ideal.comap_isPrime _ _
+   have h0 := ringKrullDim_nonneg_of_nontrivial (R := MRing ι F ⧸ killIdeal Q Finset.univ)
+-  have := hchain Finset.univ
++  have := dimension_add_killed_blocks_card_le hQ hrel Finset.univ
+   rw [Finset.card_univ] at this
+   calc (Fintype.card K : WithBot ℕ∞) = 0 + (Fintype.card K : WithBot ℕ∞) := (zero_add _).symm
+     _ ≤ ringKrullDim (MRing ι F ⧸ killIdeal Q Finset.univ) + (Fintype.card K : WithBot ℕ∞) := by
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFDegree.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPFDegree.lean
+@@ -1,4 +1,5 @@
+ import Mathlib
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsExamples
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsDivPushForward
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PExistsForm
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPolyOfDiffs.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPolyOfDiffs.lean
+@@ -44,13 +44,6 @@
+     field_simp
+     ring
+ 
+-theorem eval_aeval_X (y : K → ℚ) (k : K) (F : Polynomial ℚ) :
+-    eval y (Polynomial.aeval (X k) F) = F.eval (y k) := by
+-  induction F using Polynomial.induction_on with
+-  | C a => simp
+-  | add p r hp hr => rw [map_add, map_add, hp, hr, Polynomial.eval_add]
+-  | monomial n a _ => simp
+-
+ theorem exists_antideriv (k : K) (q : MvPolynomial K ℚ) : ∃ P : MvPolynomial K ℚ,
+     P.totalDegree ≤ q.totalDegree + 1 ∧
+     ∀ x : K → ℚ, eval x P - eval (x - Pi.single k 1) P = eval x q := by
+@@ -58,7 +51,7 @@
+       ∀ x : K → ℚ, eval x P - eval (x - Pi.single k 1) P = eval x (monomial α (q.coeff α)) := by
+     intro α hα
+     obtain ⟨F, hFd, hF⟩ := exists_pow_antideriv (α k)
+-    refine ⟨monomial (α.erase k) (q.coeff α) * Polynomial.aeval (X k) F, ?_, fun x => ?_⟩
++    refine ⟨monomial (α.erase k) (q.coeff α) * F.toMvPolynomial k, ?_, fun x => ?_⟩
+     · have hsum : ((α.erase k).sum fun _ e => e) + α k ≤ q.totalDegree := by
+         refine le_trans (le_of_eq ?_) (le_totalDegree hα)
+         conv_rhs => rw [← Finsupp.single_add_erase k α]
+@@ -66,8 +59,8 @@
+           Finsupp.sum_single_index rfl, add_comm]
+       have h1 : (monomial (α.erase k) (q.coeff α)).totalDegree ≤
+           (α.erase k).sum fun _ e => e := totalDegree_monomial_le _ _
+-      have h2 : (Polynomial.aeval (X k : MvPolynomial K ℚ) F).totalDegree ≤ α k + 1 := by
+-        rw [Polynomial.aeval_eq_sum_range]
++      have h2 : (F.toMvPolynomial k).totalDegree ≤ α k + 1 := by
++        rw [Polynomial.toMvPolynomial, Polynomial.aeval_eq_sum_range]
+         refine totalDegree_finsetSum_le fun i hi => ?_
+         refine (totalDegree_smul_le _ _).trans ?_
+         rw [totalDegree_X_pow]
+@@ -85,9 +78,7 @@
+           rw [Finsupp.support_erase] at hj
+           exact (Finset.mem_erase.1 hj).1
+         simp [Pi.single_apply, hjk]
+-      have hev : ∀ y : K → ℚ, eval y (Polynomial.aeval (X k) F) = F.eval (y k) :=
+-        fun y => eval_aeval_X y k F
+-      rw [hmono, map_mul, map_mul, hsh, hev, hev, map_mul, map_pow, eval_X, ← mul_sub]
++      rw [hmono, map_mul, map_mul, hsh, eval_toMvPolynomial, eval_toMvPolynomial, map_mul, map_pow, eval_X, ← mul_sub]
+       congr 1
+       rw [← hF (x k)]
+       simp
+@@ -102,19 +93,15 @@
+ 
+ theorem totalDegree_freeze_le (s : Finset K) (N : K → ℚ) (j : K) :
+     (freeze s N j).totalDegree ≤ 1 := by
+-  unfold freeze
+-  split_ifs
+-  · exact (totalDegree_X j).le
+-  · rw [totalDegree_C]; exact zero_le_one
++  by_cases h : j ∈ s <;> simp [freeze, h]
+ 
+ theorem eval_aeval_freeze (s : Finset K) (N x : K → ℚ) (P : MvPolynomial K ℚ) :
+     eval x (aeval (freeze s N) P) = eval (fun j => if j ∈ s then x j else N j) P := by
+-  induction P using MvPolynomial.induction_on with
+-  | C a => simp
+-  | add p r hp hr => rw [map_add, map_add, hp, hr, map_add]
+-  | mul_X p j hp =>
+-    simp only [map_mul, hp, aeval_X, eval_X, freeze]
+-    split_ifs <;> simp
++  change aeval x (aeval (freeze s N) P) = aeval (fun j => if j ∈ s then x j else N j) P
++  rw [comp_aeval_apply]
++  apply congrArg (fun g : K → ℚ => aeval g P)
++  funext j
++  by_cases hj : j ∈ s <;> simp [freeze, hj]
+ 
+ def pathPt (N : K → ℤ) (s : Finset K) (m : K → ℤ) : K → ℤ :=
+   fun j => if j ∈ s then m j else N j
+@@ -153,7 +140,7 @@
+       (h (Function.update x k t) : ℚ) - eval (fun j => (Function.update x k t j : ℚ)) (P k) =
+       (h x : ℚ) - eval (fun j => (x j : ℚ)) (P k) := by
+     intro k x hx hxk t ht
+-    induction t, ht using Int.le_induction with
++    induction t, ht using Int.leInduction with
+     | base => rw [← hxk, Function.update_eq_self]
+     | succ t ht ih =>
+       have hy : N ≤ Function.update x k (t + 1) := by
+@@ -174,21 +161,16 @@
+     induction s using Finset.induction_on with
+     | empty =>
+       refine ⟨C (h N : ℚ), by rw [totalDegree_C]; exact Nat.zero_le _, fun m _ => ?_⟩
+-      have e : pathPt N ∅ m = N := by funext j; simp [pathPt]
+-      rw [e, eval_C]
++      rw [show pathPt N ∅ m = N from funext fun j => by simp [pathPt], eval_C]
+     | insert k s hk ih =>
+       obtain ⟨Q, hQd, hQ⟩ := ih
+       refine ⟨Q + aeval (freeze (insert k s) (fun j => (N j : ℚ))) (P k) -
+         aeval (freeze s (fun j => (N j : ℚ))) (P k), ?_, fun m hm => ?_⟩
+       · refine (totalDegree_sub _ _).trans
+           (max_le ((totalDegree_add _ _).trans (max_le hQd ?_)) ?_)
+-        · exact (totalDegree_aeval_le _ (totalDegree_freeze_le _ _) _).trans (hPd k)
+-        · exact (totalDegree_aeval_le _ (totalDegree_freeze_le _ _) _).trans (hPd k)
++        all_goals exact (totalDegree_aeval_le _ (totalDegree_freeze_le _ _) _).trans (hPd k)
+       · have hx : N ≤ pathPt N s m := fun j => by
+-          simp only [pathPt]
+-          split_ifs
+-          · exact hm j
+-          · exact le_rfl
++          by_cases hj : j ∈ s <;> simp [pathPt, hj, hm j]
+         have hxk : pathPt N s m k = N k := by simp [pathPt, hk]
+         have hupd : pathPt N (insert k s) m = Function.update (pathPt N s m) k (m k) := by
+           funext j
+@@ -206,9 +188,7 @@
+   refine ⟨Q, hQd, ?_⟩
+   rw [EventuallyPoly, Filter.eventually_atTop]
+   refine ⟨N, fun m hm => ?_⟩
+-  have e : pathPt N Finset.univ m = m := by funext j; simp [pathPt]
+-  rw [← e]
+-  exact (hQ m hm).trans (by rw [e])
++  simpa only [show pathPt N Finset.univ m = m from funext fun j => by simp [pathPt]] using hQ m hm
+ 
+ end PolyOfDiffs
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/PPrimeFiltration.lean
+@@ -1,5 +1,8 @@
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PHilbExactDivide
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PPFContracted
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
++
+ set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.FieldNumbers
+@@ -16,116 +19,42 @@
+ 
+ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type u} [Field F]
+ 
+-abbrev lexDecEq (n : ℕ) : DecidableEq (Lex (Fin n → ℕ)) := LinearOrder.toDecidableEq
++local instance lexIndexOrder : LinearOrder K :=
++  LinearOrder.lift' (Fintype.equivFin K) (Fintype.equivFin K).injective
++
++attribute [local irreducible] lexIndexOrder
++
++abbrev lexDecEq (K : Type) [Fintype K] : DecidableEq (Lex (K → ℕ)) := LinearOrder.toDecidableEq
+ 
+ attribute [local instance 2000] lexDecEq
+ 
+-@[irreducible] def blockIdx (K : Type) [Fintype K] : K ≃ Fin (Fintype.card K) :=
+-  Fintype.equivFin K
+-
+-def lexEmb (K : Type) [Fintype K] : (K → ℕ) →+ Lex (Fin (Fintype.card K) → ℕ) where
+-  toFun b := toLex (fun i => b ((blockIdx K).symm i))
+-  map_zero' := rfl
+-  map_add' _ _ := rfl
+-
+-omit [DecidableEq K] in
+-theorem ofLex_lexEmb (b : K → ℕ) (i : Fin (Fintype.card K)) :
+-    ofLex (lexEmb K b) i = b ((blockIdx K).symm i) := rfl
+-
+-omit [DecidableEq K] in
+-theorem lexEmb_injective : Function.Injective (lexEmb K) := by
+-  intro b b' h
+-  funext k
+-  have := congrFun (congrArg ofLex h) (blockIdx K k)
+-  rwa [ofLex_lexEmb, ofLex_lexEmb, Equiv.symm_apply_apply] at this
+-
+-def lexWeight : (Σ k, ι k) → Lex (Fin (Fintype.card K) → ℕ) :=
+-  fun v => lexEmb K (blockWeight ι v)
+-
+-theorem weight_lexWeight (d : (Σ k, ι k) →₀ ℕ) :
+-    Finsupp.weight (lexWeight (ι := ι)) d = lexEmb K (Finsupp.weight (blockWeight ι) d) := by
+-  simp only [Finsupp.weight_apply, map_finsuppSum, map_nsmul, lexWeight]
+-
+-abbrev lexGrading (ι : K → Type) (F : Type u) [Field F] :
+-    Lex (Fin (Fintype.card K) → ℕ) → Submodule F (MRing ι F) :=
+-  weightedHomogeneousSubmodule F (lexWeight (ι := ι))
+-
+-open Classical in
+-theorem component_lex (f : MRing ι F) (b : K → ℕ) :
+-    weightedHomogeneousComponent (lexWeight (ι := ι)) (lexEmb K b) f =
+-      weightedHomogeneousComponent (blockWeight ι) b f := by
+-  ext d
+-  simp only [coeff_weightedHomogeneousComponent, weight_lexWeight, lexEmb_injective.eq_iff]
+-
+-open Classical in
+-theorem component_lex_of_ne (f : MRing ι F) (m : Lex (Fin (Fintype.card K) → ℕ))
+-    (hm : ∀ b, lexEmb K b ≠ m) :
+-    weightedHomogeneousComponent (lexWeight (ι := ι)) m f = 0 := by
+-  ext d
+-  simp [coeff_weightedHomogeneousComponent, weight_lexWeight, hm]
+-
+-theorem component_lex_mem {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I) {f : MRing ι F}
+-    (hf : f ∈ I) (m : Lex (Fin (Fintype.card K) → ℕ)) :
+-    weightedHomogeneousComponent (lexWeight (ι := ι)) m f ∈ I := by
+-  by_cases h : ∃ b, lexEmb K b = m
+-  · obtain ⟨b, rfl⟩ := h
+-    rw [component_lex]
+-    exact hI f hf b
+-  · push Not at h
+-    rw [component_lex_of_ne f m h]
+-    exact I.zero_mem
++abbrev lexGrading (ι : K → Type) (F : Type u) [Field F] :=
++  weightedHomogeneousSubmodule F (fun i => toLex (blockWeight ι i))
+ 
+ attribute [local instance] MvPolynomial.weightedGradedAlgebra
+ 
+ theorem isHomogeneous_of_multiHomog {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I) :
+     I.IsHomogeneous (lexGrading ι F) := by
+-  classical
+-  have e : I = Ideal.span
+-      {g | ∃ f ∈ I, ∃ m, g = weightedHomogeneousComponent (lexWeight (ι := ι)) m f} := by
+-    apply le_antisymm
+-    · intro f hf
+-      rw [← sum_weightedHomogeneousComponent (lexWeight (ι := ι)) f,
+-        finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]
+-      exact Ideal.sum_mem _ fun m _ => Ideal.subset_span ⟨f, hf, m, rfl⟩
+-    · rw [Ideal.span_le]
+-      rintro g ⟨f, hf, m, rfl⟩
+-      exact component_lex_mem hI hf m
+-  rw [e]
+-  refine Ideal.homogeneous_span _ _ fun x hx => ?_
+-  obtain ⟨f, -, m, rfl⟩ := hx
+-  exact ⟨m, weightedHomogeneousComponent_isWeightedHomogeneous m f⟩
++  intro i r hr
++  have H : weightedHomogeneousComponent (fun j => toLex (blockWeight ι j)) i r ∈ I := by
++    convert hI r hr (ofLex i) using 1
++    ext d
++    simp only [coeff_weightedHomogeneousComponent]
++    split_ifs <;> first | rfl | contradiction
++  rwa [← weightedDecomposition.decompose'_apply] at H
+ 
+ theorem multiHomog_of_isHomogeneous {I : Ideal (MRing ι F)}
+     (h : I.IsHomogeneous (lexGrading ι F)) : IsMultiHomogIdeal I := by
+-  classical
+   intro f hf b
+-  rw [← component_lex]
+-  exact weightedHomogeneousComponent_mem_of_mem (h := h) (hp := hf) (m := lexEmb K b)
+-
+-theorem mem_lexGrading {s : MRing ι F} {c : K → ℕ} (hs : IsMultiHomog s c) :
+-    s ∈ lexGrading ι F (lexEmb K c) := by
+-  rw [mem_weightedHomogeneousSubmodule]
+-  intro d hd
+-  rw [weight_lexWeight, hs hd]
+-
+-theorem exists_multiHomog_of_mem {s : MRing ι F} {m : Lex (Fin (Fintype.card K) → ℕ)}
+-    (hs : s ∈ lexGrading ι F m) (h0 : s ≠ 0) : ∃ c : K → ℕ, IsMultiHomog s c := by
+-  rw [mem_weightedHomogeneousSubmodule] at hs
+-  obtain ⟨d, hd⟩ := MvPolynomial.ne_zero_iff.mp h0
+-  refine ⟨Finsupp.weight (blockWeight ι) d, fun {d'} hd' => ?_⟩
+-  apply lexEmb_injective
+-  rw [← weight_lexWeight, ← weight_lexWeight, hs hd', hs hd]
++  exact weightedHomogeneousComponent_mem_of_mem (h := h) (hp := hf) (m := toLex b)
+ 
+ theorem component_mul_form {c : K → ℕ} {s : MRing ι F} (hs : IsMultiHomog s c)
+     (t : MRing ι F) (b : K → ℕ) :
+     weightedHomogeneousComponent (blockWeight ι) (b + c) (t * s) =
+       weightedHomogeneousComponent (blockWeight ι) b t * s := by
+-  have hs' : s ∈ weightedHomogeneousSubmodule F (blockWeight ι) c :=
+-    (mem_weightedHomogeneousSubmodule _ _ _ _).mpr hs
+-  have := DirectSum.coe_decompose_mul_add_of_right_mem
+-    (𝒜 := weightedHomogeneousSubmodule F (blockWeight ι)) (i := b) (a := t) hs'
+-  rw [← weightedDecomposition.decompose'_apply, ← weightedDecomposition.decompose'_apply]
+-  exact this
++  classical
++  have h : c ≤ b + c := fun i => Nat.le_add_left _ _
++  simpa [h] using (GroundTheory.Heights₂.Heights.FieldNumbers.HilbExactDivide.component_mul_form hs t (b + c))
+ 
+ omit [Fintype K] [DecidableEq K] in
+ theorem mem_colon_iff {J : Ideal (MRing ι F)} {s f : MRing ι F} :
+@@ -151,8 +80,8 @@
+   obtain ⟨P, hP, hmax⟩ := set_has_maximal_iff_noetherian.mpr hnoeth 𝒮 hne
+   obtain ⟨s, ⟨i, hsi⟩, hsJ, hPs⟩ := hP
+   subst hPs
+-  have hs0 : s ≠ 0 := fun h => hsJ (h ▸ J.zero_mem)
+-  obtain ⟨c, hc⟩ := exists_multiHomog_of_mem hsi hs0
++  let c := ofLex i
++  have hc : IsMultiHomog s c := (mem_weightedHomogeneousSubmodule _ _ _ _).mp hsi
+   have hmh := multiHomog_colon hJ hc
+   have hcolon := isHomogeneous_of_multiHomog hmh
+   have hprime : (J.colon (Ideal.span {s})).IsPrime := by
+@@ -180,10 +109,7 @@
+ 
+ theorem multiHomog_sup_span {J : Ideal (MRing ι F)} (hJ : IsMultiHomogIdeal J) {s : MRing ι F}
+     {c : K → ℕ} (hs : IsMultiHomog s c) : IsMultiHomogIdeal (J ⊔ Ideal.span {s}) := by
+-  refine multiHomog_of_isHomogeneous ((isHomogeneous_of_multiHomog hJ).sup ?_)
+-  refine Ideal.homogeneous_span _ _ ?_
+-  rintro x rfl
+-  exact ⟨_, mem_lexGrading hs⟩
++  apply GroundTheory.Heights₂.Heights.FieldNumbers.PFContracted.isMultiHomogIdeal_sup_span <;> assumption
+ 
+ end Lex
+ 
+@@ -191,111 +117,45 @@
+ 
+ variable {K : Type} {ι : K → Type} {F : Type u} [Field F]
+ 
+-theorem smul_quot_mk (I : Ideal (MRing ι F)) (r x : MRing ι F) :
+-    r • Ideal.Quotient.mk I x = Ideal.Quotient.mk I (r * x) := by
+-  exact (Submodule.Quotient.mk_smul I r x).symm
+ 
+ theorem multAt_eq_zero {A W : Ideal (MRing ι F)} [W.IsPrime] (h : ¬ A ≤ W) : multAt A W = 0 := by
+-  obtain ⟨q, hqA, hqW⟩ := Set.not_subset.mp h
+-  have hz : ∀ z : LocalizedModule W.primeCompl (MRing ι F ⧸ A), z = 0 := by
+-    intro z
+-    induction z using LocalizedModule.induction_on with
+-    | h m t =>
+-      obtain ⟨m, rfl⟩ := Ideal.Quotient.mk_surjective m
+-      rw [← LocalizedModule.zero_mk t, LocalizedModule.mk_eq]
+-      refine ⟨⟨q, Ideal.mem_primeCompl_iff.mpr hqW⟩, ?_⟩
+-      rw [smul_zero, smul_zero, Submonoid.smul_def, Submonoid.smul_def, smul_smul,
+-        smul_quot_mk, Ideal.Quotient.eq_zero_iff_mem]
+-      exact A.mul_mem_right _ (A.mul_mem_right _ hqA)
+-  have : Subsingleton (LocalizedModule W.primeCompl (MRing ι F ⧸ A)) :=
+-    ⟨fun x y => by rw [hz x, hz y]⟩
++  have hs : (⟨W, inferInstance⟩ : PrimeSpectrum (MRing ι F)) ∉ Module.support _ (MRing ι F ⧸ A) := by
++    rw [Module.support_eq_zeroLocus, Ideal.annihilator_quotient]
++    exact h
++  have := Module.notMem_support_iff.mp hs
+   exact Module.length_eq_zero
+ 
++set_option backward.isDefEq.respectTransparency false in
+ theorem multAt_self (W : Ideal (MRing ι F)) [hW : W.IsPrime] : multAt W W = 1 := by
++  let B := Localization.AtPrime W
+   unfold multAt
+-  have hφ : ∀ x : Localization.AtPrime W,
+-      LinearMap.toSpanSingleton (Localization.AtPrime W)
+-        (LocalizedModule W.primeCompl (MRing ι F ⧸ W))
+-        (LocalizedModule.mk 1 1) x = x • LocalizedModule.mk 1 1 := fun x => rfl
+-  have hsurj : Function.Surjective (LinearMap.toSpanSingleton (Localization.AtPrime W)
+-      (LocalizedModule W.primeCompl (MRing ι F ⧸ W)) (LocalizedModule.mk 1 1)) := by
+-    intro z
+-    induction z using LocalizedModule.induction_on with
+-    | h m t =>
+-      obtain ⟨m, rfl⟩ := Ideal.Quotient.mk_surjective m
+-      refine ⟨Localization.mk m t, ?_⟩
+-      rw [hφ, LocalizedModule.mk_smul_mk, mul_one, ← map_one (Ideal.Quotient.mk W),
+-        smul_quot_mk, mul_one]
+-  have hle : IsLocalRing.maximalIdeal (Localization.AtPrime W) ≤ LinearMap.ker
+-      (LinearMap.toSpanSingleton (Localization.AtPrime W)
+-        (LocalizedModule W.primeCompl (MRing ι F ⧸ W)) (LocalizedModule.mk 1 1)) := by
+-    rw [← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_le_iff_le_comap]
+-    intro w hw
+-    rw [Ideal.mem_comap, LinearMap.mem_ker, hφ, algebraMap_smul, LocalizedModule.smul'_mk,
+-      ← map_one (Ideal.Quotient.mk W), smul_quot_mk, mul_one,
+-      (Ideal.Quotient.eq_zero_iff_mem).mpr hw, LocalizedModule.zero_mk]
+-  have hne : LinearMap.ker (LinearMap.toSpanSingleton (Localization.AtPrime W)
+-      (LocalizedModule W.primeCompl (MRing ι F ⧸ W)) (LocalizedModule.mk 1 1)) ≠ ⊤ := by
+-    intro h
+-    have h1 := (LinearMap.mem_ker).mp (h ▸ Submodule.mem_top : (1 : Localization.AtPrime W) ∈ _)
+-    rw [hφ, one_smul, ← LocalizedModule.zero_mk 1, LocalizedModule.mk_eq] at h1
+-    obtain ⟨u, hu⟩ := h1
+-    rw [smul_zero, smul_zero, Submonoid.smul_def, Submonoid.smul_def, Submonoid.coe_one,
+-      one_smul, ← map_one (Ideal.Quotient.mk W), smul_quot_mk, mul_one,
+-      Ideal.Quotient.eq_zero_iff_mem] at hu
+-    exact u.2 hu
+-  have hker := ((IsLocalRing.maximalIdeal.isMaximal (Localization.AtPrime W)).eq_of_le hne hle).symm
+-  rw [← (LinearMap.quotKerEquivOfSurjective _ hsurj).length_eq]
+-  have : IsSimpleModule (Localization.AtPrime W) (Localization.AtPrime W ⧸ LinearMap.ker
+-      (LinearMap.toSpanSingleton (Localization.AtPrime W)
+-        (LocalizedModule W.primeCompl (MRing ι F ⧸ W)) (LocalizedModule.mk 1 1))) := by
+-    rw [isSimpleModule_iff_isCoatom, hker]
+-    exact Ideal.isMaximal_def.mp (IsLocalRing.maximalIdeal.isMaximal _)
+-  exact Module.length_eq_one _ _
++  let e := (LocalizedModule.equivTensorProduct W.primeCompl (MRing ι F ⧸ W)).trans
++    (Algebra.TensorProduct.quotIdealMapEquivTensorQuot B W).toLinearEquiv.symm
++  have hlen : Module.length B (LocalizedModule W.primeCompl (MRing ι F ⧸ W)) =
++      Module.length B (B ⧸ W.map (algebraMap (MRing ι F) B)) := e.length_eq
++  rw [hlen, Localization.AtPrime.map_eq_maximalIdeal]
++  apply Module.length_eq_one_iff.mpr
++  rw [isSimpleModule_iff_isCoatom]
++  exact Ideal.isMaximal_def.mp (IsLocalRing.maximalIdeal.isMaximal _)
+ 
+ theorem multAt_colon_add (J W : Ideal (MRing ι F)) [W.IsPrime] (s : MRing ι F) :
+     multAt J W = multAt (J.colon (Ideal.span {s})) W + multAt (J ⊔ Ideal.span {s}) W := by
+-  let f : (MRing ι F ⧸ J.colon (Ideal.span {s})) →ₗ[MRing ι F] (MRing ι F ⧸ J) :=
+-    Submodule.liftQ _ (J.mkQ ∘ₗ LinearMap.mulRight (MRing ι F) s) (by
+-      intro x hx
+-      rw [LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply,
+-        Submodule.Quotient.mk_eq_zero, LinearMap.mulRight_apply]
+-      exact (PrimeFiltration.mem_colon_iff).mp hx)
+-  let g : (MRing ι F ⧸ J) →ₗ[MRing ι F] (MRing ι F ⧸ (J ⊔ Ideal.span {s})) :=
+-    Submodule.factor le_sup_left
+-  have hf : Function.Injective f := by
+-    rw [← LinearMap.ker_eq_bot]
+-    refine Submodule.ker_liftQ_eq_bot _ _ _ ?_
+-    intro x hx
+-    rw [LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply,
+-      Submodule.Quotient.mk_eq_zero, LinearMap.mulRight_apply] at hx
+-    exact (PrimeFiltration.mem_colon_iff).mpr hx
++  let t := LinearMap.mulRight (MRing ι F) s
++  have hh : (J.mkQ.comp t).ker = J.colon (Ideal.span {s}) := by
++    ext z
++    change J.mkQ (z * s) = 0 ↔ z ∈ J.colon (Ideal.span {s})
++    rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, PrimeFiltration.mem_colon_iff]
++  let f := (J.colon (Ideal.span {s})).liftQ (J.mkQ.comp t) hh.ge
++  let g := Submodule.factor (show J ≤ J ⊔ Ideal.span {s} from le_sup_left)
++  have hf : Function.Injective f := LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot _ _ _ hh.le)
+   have hg : Function.Surjective g := Submodule.factor_surjective _
++  have ht : t.range = Ideal.span {s} := by
++    ext z
++    exact Ideal.mem_span_singleton'.symm
+   have hex : Function.Exact f g := by
+-    intro y
+-    induction y using Submodule.Quotient.induction_on with
+-    | H y =>
+-    constructor
+-    · intro hy
+-      have hy' : y ∈ J ⊔ Ideal.span {s} := by
+-        have := hy
+-        simp only [g] at this
+-        rwa [← Submodule.mkQ_apply, Submodule.factor_mk, Submodule.mkQ_apply,
+-          Submodule.Quotient.mk_eq_zero] at this
+-      obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.mp hy'
+-      obtain ⟨t, rfl⟩ := Ideal.mem_span_singleton'.mp hb
+-      refine ⟨Submodule.Quotient.mk t, ?_⟩
+-      simp only [f, Submodule.liftQ_apply, LinearMap.comp_apply, LinearMap.mulRight_apply,
+-        Submodule.mkQ_apply]
+-      rw [Submodule.Quotient.eq]
+-      simpa using J.neg_mem ha
+-    · rintro ⟨x, hx⟩
+-      rw [← hx]
+-      induction x using Submodule.Quotient.induction_on with
+-      | H t =>
+-      simp only [f, g, Submodule.liftQ_apply, LinearMap.comp_apply, LinearMap.mulRight_apply]
+-      rw [Submodule.factor_mk, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
+-      exact Submodule.mem_sup_right (Ideal.mem_span_singleton'.mpr ⟨t, rfl⟩)
++    rw [LinearMap.exact_iff]
++    simp [f, g, Submodule.factor, Submodule.ker_mapQ, Submodule.range_liftQ, LinearMap.range_comp, ht,
++      Submodule.map_sup]
+   let p := W.primeCompl
+   let R' := Localization.AtPrime W
+   let fL := (IsLocalizedModule.map p (LocalizedModule.mkLinearMap p _)
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDegZeroLocSeparate.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDegZeroLocSeparate.lean
+@@ -19,11 +19,6 @@
+       ∃ x ∈ degZeroLoc P 𝒲, (¬ ∃ y ∈ degZeroLoc P {W₁}, x * y = 1) ∧
+         ∃ y ∈ degZeroLoc P {W₂}, x * y = 1
+ 
+-section Example
+-
+-abbrev lineOtherPointIdeal : Ideal LineRing := Ideal.span {X ⟨(), (1 : Fin 2)⟩}
+-
+-end Example
+ 
+ end
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDegreeBound.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDegreeBound.lean
+@@ -30,24 +30,6 @@
+     [∀ k, Fintype (ι k)] (P : Ideal (MRing ι F)), IsMultiProjPrime P →
+     ((Fintype.card K : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ P)
+ 
+-theorem EventuallyPolyUnique.hypotheses_example :
+-    EventuallyPoly (hilbFn (⊥ : Ideal (MRing (ProjIdx 1) ℚ))) (X () + 1) ∧
+-      EventuallyPoly (hilbFn (⊥ : Ideal (MRing (ProjIdx 1) ℚ))) (X () + 1) :=
+-  ⟨eventuallyPoly_projectiveLine, eventuallyPoly_projectiveLine⟩
+-
+-theorem EventuallyPolyShift.hypotheses_example :
+-    EventuallyPoly (hilbFn (⊥ : Ideal (MRing (ProjIdx 1) ℚ))) (X () + 1) :=
+-  eventuallyPoly_projectiveLine
+-
+-theorem HilbIrrelevantZero.hypotheses_example :
+-    ¬ IsRelevant (Ideal.span (Set.range X) : Ideal (MRing (ProjIdx 1) ℚ)) := by
+-  intro h
+-  obtain ⟨i, hi⟩ := h ()
+-  exact hi (Ideal.subset_span ⟨_, rfl⟩)
+-
+-theorem RelevantPrimeDimGe.hypotheses_example :
+-    IsMultiProjPrime (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) :=
+-  isMultiProjPrime_bot
+ 
+ end
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDivPushForward.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDivPushForward.lean
+@@ -1,6 +1,6 @@
+ import Mathlib
+-import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsExamples
+-set_option maxSynthPendingDepth 1
++import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Objects
++import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+ 
+ namespace GroundTheory.Heights₂.Heights.FieldNumbers
+ 
+@@ -9,7 +9,6 @@
+ noncomputable section
+ 
+ universe u
+-
+ def DivPushForward.Statement : Prop :=
+   ∀ (F : Type u) [Field F] (K K' : Type) [Fintype K] [DecidableEq K] [Fintype K']
+     [DecidableEq K'] (j : K ↪ K') (ι' : K' → Type) [∀ k, Fintype (ι' k)]
+@@ -28,37 +27,5 @@
+       cycEval N' (divCycle P' (rename (blockIncl j ι') a)) =
+         relDeg j P' * cycEval N (divCycle (contractPrime j P') a)
+ 
+-open Classical in
+-
+-theorem DivPushForward.hypotheses_example :
+-    let P' : Ideal (MRing (addBlock (ProjIdx 1) 0) ℚ) := ⊥
+-    let N : Ideal (MRing (fun k => addBlock (ProjIdx 1) 0 ((Function.Embedding.some : Unit ↪ Option Unit) k)) ℚ) → ℤ := fun _ => 1
+-    let N' : Ideal (MRing (addBlock (ProjIdx 1) 0) ℚ) → ℤ := fun W' =>
+-      if h : W'.IsPrime ∧ relDim (contractPrime (Function.Embedding.some : Unit ↪ Option Unit) W') = ((0 : ℕ) : WithBot (WithTop ℤ)) then
+-        haveI := h.1; (relDeg (Function.Embedding.some : Unit ↪ Option Unit) W' : ℤ) * N (contractPrime (Function.Embedding.some : Unit ↪ Option Unit) W') else 0
+-    IsMultiProjPrime P' ∧ relDim P' = ((0 + 1 : ℕ) : WithBot (WithTop ℤ)) ∧
+-      relDim (contractPrime (Function.Embedding.some : Unit ↪ Option Unit) P') = ((0 + 1 : ℕ) : WithBot (WithTop ℤ)) ∧
+-      IsMultiHomog (X ⟨(), (0 : Fin 2)⟩ : MRing (fun k => addBlock (ProjIdx 1) 0 ((Function.Embedding.some : Unit ↪ Option Unit) k)) ℚ)
+-        (blockWeight (ProjIdx 1) ⟨(), 0⟩) ∧
+-      (X ⟨(), (0 : Fin 2)⟩ : MRing (fun k => addBlock (ProjIdx 1) 0 ((Function.Embedding.some : Unit ↪ Option Unit) k)) ℚ) ∉ contractPrime (Function.Embedding.some : Unit ↪ Option Unit) P' ∧
+-      (∀ W' (hW' : IsMultiProjPrime W'), relDim W' = ((0 : ℕ) : WithBot (WithTop ℤ)) →
+-        relDim (contractPrime (Function.Embedding.some : Unit ↪ Option Unit) W') = ((0 : ℕ) : WithBot (WithTop ℤ)) →
+-        haveI := hW'.isPrime
+-        N' W' = relDeg (Function.Embedding.some : Unit ↪ Option Unit) W' * N (contractPrime (Function.Embedding.some : Unit ↪ Option Unit) W')) ∧
+-      (∀ W', IsMultiProjPrime W' → relDim W' = ((0 : ℕ) : WithBot (WithTop ℤ)) →
+-        relDim (contractPrime (Function.Embedding.some : Unit ↪ Option Unit) W') < ((0 : ℕ) : WithBot (WithTop ℤ)) → N' W' = 0) := by
+-  intro P' N N'
+-  obtain ⟨h1, h2, h3⟩ := ProjectionFormulaDegree.hypotheses_example
+-  refine ⟨h1, h2, h3, coordinate_isMultiHomog 1 0, ?_, ?_, ?_⟩
+-  · rw [show P' = ⊥ from rfl, contractPrime_bot, Ideal.mem_bot]
+-    exact X_ne_zero _
+-  · intro W' hW' _ hc
+-    show (if h : _ then _ else _) = _
+-    rw [dif_pos ⟨hW'.isPrime, hc⟩]
+-  · intro W' _ _ hc
+-    show (if h : _ then _ else _) = _
+-    rw [dif_neg (fun h => (ne_of_lt hc) h.2)]
+-
+ end
+-
+ end GroundTheory.Heights₂.Heights.FieldNumbers
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDivPushForwardLocal.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsDivPushForwardLocal.lean
+@@ -30,14 +30,6 @@
+       cycEval M (divCycle P' (rename (blockIncl j ι') a)) =
+         relDeg j P' * divCycle (contractPrime j P') a W
+ 
+-section Example
+-
+-abbrev LineRing : Type :=
+-  MRing (fun k => addBlock (ProjIdx 1) 0 ((Function.Embedding.some : Unit ↪ Option Unit) k)) ℚ
+-
+-abbrev linePointIdeal : Ideal LineRing := Ideal.span {X ⟨(), (0 : Fin 2)⟩}
+-
+-end Example
+ 
+ end
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsExamples.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsExamples.lean
+@@ -1,6 +1,5 @@
+ import Mathlib
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.Statements
+-set_option maxSynthPendingDepth 1
+ 
+ namespace GroundTheory.Heights₂.Heights.FieldNumbers
+ 
+@@ -9,116 +8,6 @@
+ noncomputable section
+ 
+ universe u
+-
+-theorem relDim_bot {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type*} [∀ k, Fintype (ι k)]
+-    {F : Type*} [Field F] :
+-    relDim (⊥ : Ideal (MRing ι F)) =
+-      (((Fintype.card (Σ k, ι k) : ℤ) - Fintype.card K : ℤ) : WithTop ℤ) := by
+-  unfold relDim
+-  rw [ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _),
+-    MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add,
+-    Nat.card_eq_fintype_card]
+-  rfl
+-
+-abbrev ProjIdx (N : ℕ) : Unit → Type := fun _ => Fin (N + 1)
+-
+-theorem relDim_projectiveSpace {F : Type*} [Field F] (N : ℕ) :
+-    relDim (⊥ : Ideal (MRing (ProjIdx N) F)) = (N : WithBot (WithTop ℤ)) := by
+-  rw [relDim_bot]
+-  simp [Fintype.card_sigma]
+-  rfl
+-
+-def binomFn (N : ℕ) (t : ℤ) : ℤ := if 0 ≤ t then ((t.toNat + N).choose N : ℤ) else 0
+-
+-theorem binomFn_sub (N : ℕ) (t : ℤ) :
+-    binomFn (N + 1) t - binomFn (N + 1) (t - 1) = binomFn N t := by
+-  unfold binomFn
+-  rcases lt_trichotomy t 0 with h | rfl | h
+-  · rw [if_neg (by omega), if_neg (by omega), if_neg (by omega)]
+-    simp
+-  · simp
+-  · obtain ⟨u, rfl⟩ : ∃ u : ℕ, t = u + 1 := ⟨(t - 1).toNat, by omega⟩
+-    rw [if_pos (by omega), if_pos (by omega), if_pos (by omega)]
+-    have h1 : ((u : ℤ) + 1).toNat = u + 1 := by omega
+-    have h2 : ((u : ℤ) + 1 - 1).toNat = u := by omega
+-    have h3 := Nat.choose_succ_succ (u + N + 1) N
+-    rw [h1, h2, show u + 1 + (N + 1) = u + N + 1 + 1 by omega, h3,
+-      show u + (N + 1) = u + N + 1 by omega, show u + 1 + N = u + N + 1 by omega]
+-    push_cast
+-    ring
+-
+-theorem weight_projIdx (N : ℕ) (d : (Σ _ : Unit, ProjIdx N ()) →₀ ℕ) :
+-    Finsupp.weight (blockWeight (ProjIdx N)) d () = ∑ x, d x := by
+-  rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply]
+-  simp [blockWeight]
+-
+-theorem finrank_gradedPiece_projectiveSpace (F : Type*) [Field F] (N a : ℕ) :
+-    Module.finrank F (gradedPiece (⊥ : Ideal (MRing (ProjIdx N) F)) (fun _ => a)) =
+-      (a + N).choose N := by
+-  have hinj : Function.Injective
+-      (Ideal.Quotient.mkₐ F (⊥ : Ideal (MRing (ProjIdx N) F))).toLinearMap := by
+-    intro x y h
+-    simpa [Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq, sub_eq_zero] using h
+-  unfold gradedPiece
+-  rw [← LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj _),
+-    weightedHomogeneousSubmodule_eq_finsupp_supported]
+-  let s : Set ((Σ _ : Unit, ProjIdx N ()) →₀ ℕ) :=
+-    {d | Finsupp.weight (blockWeight (ProjIdx N)) d = fun _ => a}
+-  let e : s ≃ (Finset.univ.finsuppAntidiag a : Finset ((Σ _ : Unit, ProjIdx N ()) →₀ ℕ)) :=
+-    Equiv.subtypeEquivRight fun d => by
+-      rw [Finset.mem_finsuppAntidiag]
+-      simp only [s, Set.mem_ofPred_eq, Finset.subset_univ, and_true]
+-      constructor
+-      · intro h
+-        rw [← weight_projIdx]
+-        exact congrFun h ()
+-      · intro h
+-        funext u
+-        rw [weight_projIdx]
+-        exact h
+-  have : Fintype s := Fintype.ofEquiv _ e.symm
+-  rw [LinearEquiv.finrank_eq (AddMonoidAlgebra.supportedEquivFinsupp (R := F) (S := F) s), Module.finrank_finsupp_self,
+-    Fintype.card_congr e, Fintype.card_coe, Finset.card_finsuppAntidiag_nat_eq_choose]
+-  simp [Fintype.card_sigma]
+-  rw [add_comm, Nat.choose_symm_add]
+-
+-theorem hilbFn_projectiveSpace (F : Type*) [Field F] (N : ℕ) (m : Unit → ℤ) :
+-    hilbFn (⊥ : Ideal (MRing (ProjIdx N) F)) m = binomFn N (m ()) := by
+-  unfold hilbFn binomFn
+-  by_cases hm : 0 ≤ m ()
+-  · rw [if_pos (fun k => hm), if_pos hm]
+-    have : (fun k => (m k).toNat) = fun _ : Unit => (m ()).toNat := rfl
+-    rw [this, finrank_gradedPiece_projectiveSpace]
+-  · rw [if_neg (fun h => hm (h ())), if_neg hm]
+-
+-theorem foldr_diffStep_binomFn (j N : ℕ) :
+-    (List.replicate j (1 : Unit → ℤ)).foldr diffStep (fun m => binomFn (N + j) (m ())) =
+-      fun m => binomFn N (m ()) := by
+-  induction j generalizing N with
+-  | zero => simp
+-  | succ j ih =>
+-    rw [List.replicate_succ, List.foldr_cons, show N + (j + 1) = (N + 1) + j by omega, ih]
+-    funext m
+-    simp only [diffStep, Pi.sub_apply, Pi.one_apply]
+-    exact binomFn_sub N (m ())
+-
+-theorem intNum_projectiveSpace (F : Type*) [Field F] (N : ℕ) :
+-    intNum F (⊥ : Ideal (MRing (ProjIdx N) F)) (fun _ : Fin N => (1 : Unit → ℤ)) = 1 := by
+-  have hh : hilbFn (⊥ : Ideal (MRing (ProjIdx N) F)) = fun m => binomFn (0 + N) (m ()) := by
+-    funext m
+-    rw [zero_add, hilbFn_projectiveSpace]
+-  unfold intNum mixedDiff
+-  rw [List.ofFn_const, hh, foldr_diffStep_binomFn]
+-  have hev : ∀ᶠ m : Unit → ℤ in Filter.atTop, binomFn 0 (m ()) = 1 :=
+-    (Filter.eventually_ge_atTop 0).mono fun m hm => by
+-      have : (0 : ℤ) ≤ m () := hm ()
+-      simp [binomFn, this]
+-  have hex : ∃ c, ∀ᶠ m : Unit → ℤ in Filter.atTop, binomFn 0 (m ()) = c := ⟨1, hev⟩
+-  unfold eventualValue
+-  rw [dif_pos hex]
+-  obtain ⟨m, h1, h2⟩ := (hex.choose_spec.and hev).exists
+-  exact h1.symm.trans h2
+-
+ theorem blockIncl_injective {K K' : Type*} (j : K ↪ K') (ι' : K' → Type*) :
+     Function.Injective (blockIncl j ι') := by
+   rintro ⟨a, x⟩ ⟨b, y⟩ h
+@@ -127,188 +16,5 @@
+   cases j.injective h1
+   rw [eq_of_heq h2]
+ 
+-theorem contractPrime_bot {K K' : Type*} {F : Type*} [Field F] (j : K ↪ K') (ι' : K' → Type*) :
+-    contractPrime j (⊥ : Ideal (MRing ι' F)) = ⊥ :=
+-  Ideal.comap_bot_of_injective _ (rename_injective _ (blockIncl_injective j ι'))
+-
+-theorem addBlockPrime_bot {K : Type*} {F : Type*} [Field F] (ι : K → Type) (N : ℕ) :
+-    addBlockPrime N (⊥ : Ideal (MRing ι F)) = ⊥ :=
+-  Ideal.map_bot
+-
+-theorem isMultiHomogIdeal_bot_projectiveSpace (N : ℕ) :
+-    IsMultiHomogIdeal (⊥ : Ideal (MRing (ProjIdx N) ℚ)) :=
+-  isMultiProjPrime_bot.multiHomog
+-
+-theorem coordinate_isMultiHomog (N : ℕ) (i : Fin (N + 1)) :
+-    IsMultiHomog (X ⟨(), i⟩ : MRing (ProjIdx N) ℚ) (blockWeight (ProjIdx N) ⟨(), 0⟩) :=
+-  isWeightedHomogeneous_X _ _ _
+-
+-theorem coordinate_not_mem_bot (N : ℕ) (i : Fin (N + 1)) :
+-    (X ⟨(), i⟩ : MRing (ProjIdx N) ℚ) ∉ (⊥ : Ideal (MRing (ProjIdx N) ℚ)) := by
+-  rw [Ideal.mem_bot]
+-  exact X_ne_zero _
+-
+-theorem HilbExactDivide.hypotheses_example :
+-    IsMultiHomogIdeal (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) ∧
+-      IsMultiHomog (X ⟨(), 0⟩ : MRing (ProjIdx 1) ℚ) (blockWeight (ProjIdx 1) ⟨(), 0⟩) :=
+-  ⟨isMultiHomogIdeal_bot_projectiveSpace 1, coordinate_isMultiHomog 1 0⟩
+-
+-theorem PolyOfDiffs.hypotheses_example :
+-    ∀ k : Unit, ∃ q : MvPolynomial Unit ℚ, (q = 0 ∨ q.totalDegree < 1) ∧
+-      EventuallyPoly (diffStep (Pi.single k 1) (fun m : Unit → ℤ => m ())) q := by
+-  rintro ⟨⟩
+-  refine ⟨1, Or.inr (by simp), Filter.Eventually.of_forall fun m => ?_⟩
+-  simp [diffStep]
+-
+-theorem eventuallyPoly_projectiveLine :
+-    EventuallyPoly (hilbFn (⊥ : Ideal (MRing (ProjIdx 1) ℚ))) (X () + 1) :=
+-  (Filter.eventually_ge_atTop 0).mono fun m hm => by
+-    have ht : (0 : ℤ) ≤ m () := hm ()
+-    rw [hilbFn_projectiveSpace, binomFn, if_pos ht, Nat.choose_one_right]
+-    have e : (((m ()).toNat : ℕ) : ℤ) = m () := Int.toNat_of_nonneg ht
+-    have e' : (((m ()).toNat : ℕ) : ℚ) = (m () : ℚ) := by exact_mod_cast e
+-    simp only [map_add, eval_X, map_one]
+-    push_cast
+-    rw [e']
+-
+-theorem HilbDegreeBound.hypotheses_example :
+-    IsMultiHomogIdeal (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) ∧
+-      IsRelevant (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) ∧
+-      EventuallyPoly (hilbFn (⊥ : Ideal (MRing (ProjIdx 1) ℚ))) (X () + 1) ∧
+-      (X () + 1 : MvPolynomial Unit ℚ) ≠ 0 := by
+-  refine ⟨isMultiHomogIdeal_bot_projectiveSpace 1, isMultiProjPrime_bot.relevant,
+-    eventuallyPoly_projectiveLine, fun h => ?_⟩
+-  simpa using congrArg (MvPolynomial.eval fun _ => (0 : ℚ)) h
+-
+-theorem MixedDiffConst.hypotheses_example :
+-    IsMultiHomogIdeal (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) ∧
+-      IsRelevant (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) ∧
+-      relDim (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) = (1 : ℕ) :=
+-  ⟨isMultiHomogIdeal_bot_projectiveSpace 1, isMultiProjPrime_bot.relevant,
+-    relDim_projectiveSpace 1⟩
+-
+-theorem IntNumZeroSlot.hypotheses_example :
+-    IsMultiHomogIdeal (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) ∧
+-      relDim (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) < (2 : ℕ) := by
+-  refine ⟨isMultiHomogIdeal_bot_projectiveSpace 1, ?_⟩
+-  rw [relDim_projectiveSpace]
+-  show (((1 : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) < (((2 : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))
+-  exact WithBot.coe_lt_coe.mpr (WithTop.coe_lt_coe.mpr (by norm_num))
+-
+-theorem IntNumBase.hypotheses_example :
+-    IsMultiProjPrime (⊥ : Ideal (MRing (ProjIdx 0) ℚ)) ∧
+-      relDim (⊥ : Ideal (MRing (ProjIdx 0) ℚ)) = 0 := by
+-  refine ⟨isMultiProjPrime_bot, ?_⟩
+-  rw [relDim_projectiveSpace]
+-  rfl
+-
+-theorem CutRegular.hypotheses_example :
+-    IsMultiProjPrime (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) ∧
+-      relDim (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) = ((0 + 1 : ℕ)) ∧
+-      IsMultiHomog (X ⟨(), 0⟩ : MRing (ProjIdx 1) ℚ) (blockWeight (ProjIdx 1) ⟨(), 0⟩) ∧
+-      (X ⟨(), 0⟩ : MRing (ProjIdx 1) ℚ) ∉ (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) :=
+-  ⟨isMultiProjPrime_bot, relDim_projectiveSpace 1, coordinate_isMultiHomog 1 0,
+-    coordinate_not_mem_bot 1 0⟩
+-
+-theorem CutRational.hypotheses_example :
+-    IsMultiProjPrime (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) ∧
+-      relDim (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) = 1 ∧
+-      IsMultiHomog (X ⟨(), 0⟩ : MRing (ProjIdx 1) ℚ) (blockWeight (ProjIdx 1) ⟨(), 0⟩) ∧
+-      IsMultiHomog (X ⟨(), 1⟩ : MRing (ProjIdx 1) ℚ) (blockWeight (ProjIdx 1) ⟨(), 0⟩) ∧
+-      (X ⟨(), 0⟩ : MRing (ProjIdx 1) ℚ) ∉ (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) ∧
+-      (X ⟨(), 1⟩ : MRing (ProjIdx 1) ℚ) ∉ (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) := by
+-  refine ⟨isMultiProjPrime_bot, ?_, coordinate_isMultiHomog 1 0, coordinate_isMultiHomog 1 1,
+-    coordinate_not_mem_bot 1 0, coordinate_not_mem_bot 1 1⟩
+-  rw [relDim_projectiveSpace]
+-  rfl
+-
+-theorem IntNumBaseChange.hypotheses_example :
+-    IsMultiProjPrime (⊥ : Ideal (MRing (ProjIdx 1) ℚ)) ∧
+-      (algebraMap ℚ (RatFunc ℚ)) 1 = 1 :=
+-  ⟨isMultiProjPrime_bot, map_one _⟩
+-
+-theorem ProjectionFormulaContracted.hypotheses_example :
+-    IsMultiProjPrime (⊥ : Ideal (MRing (addBlock (ProjIdx 0) 1) ℚ)) ∧
+-      relDim (⊥ : Ideal (MRing (addBlock (ProjIdx 0) 1) ℚ)) = (1 : ℕ) ∧
+-      relDim (contractPrime Function.Embedding.some
+-        (⊥ : Ideal (MRing (addBlock (ProjIdx 0) 1) ℚ))) < (1 : ℕ) := by
+-  refine ⟨isMultiProjPrime_bot, ?_, ?_⟩
+-  · rw [relDim_bot]
+-    rfl
+-  · rw [contractPrime_bot, relDim_bot]
+-    show (((0 : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) < (((1 : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))
+-    exact WithBot.coe_lt_coe.mpr (WithTop.coe_lt_coe.mpr (by norm_num))
+-
+-theorem ProjectionFormulaDegree.hypotheses_example :
+-    IsMultiProjPrime (⊥ : Ideal (MRing (addBlock (ProjIdx 1) 0) ℚ)) ∧
+-      relDim (⊥ : Ideal (MRing (addBlock (ProjIdx 1) 0) ℚ)) = (1 : ℕ) ∧
+-      relDim (contractPrime Function.Embedding.some
+-        (⊥ : Ideal (MRing (addBlock (ProjIdx 1) 0) ℚ))) = (1 : ℕ) := by
+-  refine ⟨isMultiProjPrime_bot, ?_, ?_⟩
+-  · rw [relDim_bot]
+-    rfl
+-  · rw [contractPrime_bot, relDim_bot]
+-    rfl
+-
+-theorem ProductWithProjectiveSpace.hypotheses_example :
+-    IsMultiProjPrime (⊥ : Ideal (MRing (ProjIdx 0) ℚ)) ∧
+-      relDim (⊥ : Ideal (MRing (ProjIdx 0) ℚ)) = (0 : ℕ) ∧ 0 + 1 = 0 + 1 :=
+-  ⟨isMultiProjPrime_bot, relDim_projectiveSpace 0, rfl⟩
+-
+-theorem eq_monomial_of_isMultiHomog_point {F : Type*} [Field F] (f : MRing (ProjIdx 0) F)
+-    (b : Unit → ℕ) (hf : IsMultiHomog f b) :
+-    f = monomial (Finsupp.single ⟨(), 0⟩ (b ())) (coeff (Finsupp.single ⟨(), 0⟩ (b ())) f) := by
+-  ext d
+-  rw [coeff_monomial]
+-  split_ifs with h
+-  · rw [h]
+-  · by_contra hne
+-    have hw := hf hne
+-    have hd : d = Finsupp.single ⟨(), 0⟩ (b ()) := by
+-      ext i
+-      obtain ⟨⟨⟩, i⟩ := i
+-      have hi : i = 0 := Fin.fin_one_eq_zero i
+-      subst hi
+-      rw [Finsupp.single_eq_same, ← congrFun hw (), weight_projIdx,
+-        Fintype.sum_eq_single ⟨(), 0⟩]
+-      rintro ⟨⟨⟩, j⟩ hj
+-      exact absurd (by rw [Fin.fin_one_eq_zero j]) hj
+-    exact h hd.symm
+-
+-theorem resDeg_point (F : Type*) [Field F] : resDeg (⊥ : Ideal (MRing (ProjIdx 0) F)) = 1 := by
+-  unfold resDeg
+-  rw [dif_pos Ideal.isPrime_bot]
+-  have hle : homFracDegZero (⊥ : Ideal (MRing (ProjIdx 0) F)) = ⊥ := by
+-    refine le_antisymm ?_ bot_le
+-    unfold homFracDegZero
+-    rw [IntermediateField.adjoin_le_iff]
+-    rintro x ⟨b, f, g, hf, hg, hgP, rfl⟩
+-    rw [SetLike.mem_coe, IntermediateField.mem_bot]
+-    have ef := eq_monomial_of_isMultiHomog_point f b hf
+-    have eg := eq_monomial_of_isMultiHomog_point g b hg
+-    rw [← C_mul_X_pow_eq_monomial] at ef eg
+-    generalize coeff (Finsupp.single ⟨(), 0⟩ (b ())) f = a at ef
+-    generalize coeff (Finsupp.single ⟨(), 0⟩ (b ())) g = c at eg
+-    generalize b () = n at ef eg
+-    set v : (Σ _ : Unit, ProjIdx 0 ()) := ⟨(), 0⟩
+-    have hc : c ≠ 0 := by
+-      rintro rfl
+-      apply hgP
+-      rw [eg, C_0, zero_mul]
+-      exact Ideal.zero_mem _
+-    have hY : algebraMap (MRing (ProjIdx 0) F ⧸ (⊥ : Ideal (MRing (ProjIdx 0) F)))
+-        (FractionRing (MRing (ProjIdx 0) F ⧸ (⊥ : Ideal (MRing (ProjIdx 0) F))))
+-        (Ideal.Quotient.mk _ (X v ^ n)) ≠ 0 := by
+-      rw [Ne, map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem,
+-        Ideal.mem_bot]
+-      exact pow_ne_zero _ (X_ne_zero _)
+-    refine ⟨a / c, ?_⟩
+-    rw [ef, eg, map_mul, map_mul, map_mul, map_mul, ← MvPolynomial.algebraMap_eq,
+-      Ideal.Quotient.mk_algebraMap, Ideal.Quotient.mk_algebraMap,
+-      ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply,
+-      mul_div_mul_right _ _ hY, map_div₀]
+-  rw [hle, IntermediateField.finrank_bot]
+-
+ end
+-
+ end GroundTheory.Heights₂.Heights.FieldNumbers
+--- a/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsFiniteAlgebraLengthSum.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/FieldsOfNumbers/StatementsFiniteAlgebraLengthSum.lean
+@@ -22,7 +22,6 @@
+ instance span_two_isPrime : (Ideal.span {(2 : ℤ)}).IsPrime :=
+   (Ideal.span_singleton_prime (by norm_num)).mpr Int.prime_two
+ 
+-abbrev ZLocTwo : Type := Localization.AtPrime (Ideal.span {(2 : ℤ)})
+ 
+ end
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/HeightComparison/IsMultiHomogIdealIff.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/HeightComparison/IsMultiHomogIdealIff.lean
+@@ -11,8 +11,6 @@
+ 
+ variable {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
+ 
+-theorem isRelevant_iff (W : Ideal (NumbersDVR.MRing ι R)) :
+-    NumbersDVR.IsRelevant W ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant (R := R) W := Iff.rfl
+ 
+ section Homog
+ 
+@@ -76,31 +74,12 @@
+       exact ⟨a, (isMultiHomog_iff x a).mpr ha⟩
+     exact weightedHomogeneousComponent_mem_of_mem (h := hom) (hp := hf) (m := b)
+ 
+-theorem isMultiProjPrime_iff (P : Ideal (NumbersDVR.MRing ι R)) :
+-    NumbersDVR.IsMultiProjPrime P ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsMultiProjPrime (R := R) P :=
+-  ⟨fun h => ⟨h.isPrime, (isMultiHomogIdeal_iff P).mp h.multiHomog, h.relevant⟩,
+-    fun h => ⟨h.1, (isMultiHomogIdeal_iff P).mpr h.2.1, h.2.2⟩⟩
+ 
+ end Ideals
+ 
+ section Cycles
+ 
+-theorem multAt_eq_toNat (J W : Ideal (NumbersDVR.MRing ι R)) [W.IsPrime] :
+-    ReciprocityTheory.ChartRestriction.G.Geo.multAt (R := R) J W = (NumbersDVR.multAt J W).toNat := by
+-  unfold ReciprocityTheory.ChartRestriction.G.Geo.multAt NumbersDVR.multAt
+-  rw [dif_pos ‹W.IsPrime›]
+ 
+-theorem divCycle_eq [Fintype K] [∀ k, Fintype (ι k)] [IsNoetherianRing R]
+-    (P : Ideal (NumbersDVR.MRing ι R)) (f : NumbersDVR.MRing ι R) (W : Ideal (NumbersDVR.MRing ι R)) :
+-    NumbersDVR.divCycle P f W = (ReciprocityTheory.ChartRestriction.G.Geo.divCycle (R := R) P f W : ℤ) := by
+-  classical
+-  unfold NumbersDVR.divCycle ReciprocityTheory.ChartRestriction.G.Geo.divCycle
+-  simp only [Finsupp.ofSupportFinite_coe, ReciprocityTheory.ChartRestriction.G.Geo.divSupp, Set.mem_ofPred_eq,
+-    ← isRelevant_iff]
+-  split_ifs with h
+-  · have : W.IsPrime := h.1.1.1
+-    rw [multAt_eq_toNat]
+-  · rfl
+ 
+ end Cycles
+ 
+--- a/GroundTheory/HeightsAndTheta/Heights/Intersections/TableDegreeThreeBase.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/Intersections/TableDegreeThreeBase.lean
+@@ -1,94 +1,6 @@
+ import Mathlib
+-import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsArith
+-import GroundTheory.HeightsAndTheta.Heights.Intersections.ImportsFurtherTail
+-import GroundTheory.HeightsAndTheta.Heights.Intersections.IsMultiHomogFirstCoordinate
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivSupp
+-set_option maxSynthPendingDepth 1
+-
+-noncomputable section
+ 
+ namespace GroundTheory.Heights₂.Heights.Inter
+-
+-open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4
+-
+-section Pull
+-
+-variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
+-  {K' : Type*} [Fintype K'] {ι' : K' → Type*} [∀ k, Fintype (ι' k)]
+-
+-omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
+-
+-theorem blocks_ne_zero_restrict {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
+-    {z : (Σ k', ι' k') → ℂ} (hz : ∀ k', ∃ i', z ⟨k', i'⟩ ≠ 0) (k : K) : ∃ i, z (v ⟨k, i⟩) ≠ 0 := by
+-  obtain ⟨i', hi'⟩ := hz (κ k)
+-  obtain ⟨p, hp⟩ := hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩
+-  have h2 : p.1 = k := hv.1 (by rw [← hv.2.2.1 p, hp])
+-  obtain ⟨pk, pi⟩ := p
+-  simp only at h2
+-  subst h2
+-  exact ⟨pi, by rw [hp]; exact hi'⟩
+-
+-theorem IsPullHerm.isSmoothHerm {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
+-    {A : HermLine ι} {A' : HermLine ι'} (h : IsPullHerm κ v A A') (hA : IsSmoothHerm A) :
+-    IsSmoothHerm A' := by
+-  have e : A'.h = A.h ∘ fun (z : (Σ k', ι' k') → ℂ) (p : Σ k, ι k) => z (v p) := funext h.2
+-  have hR : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun (z : (Σ k', ι' k') → ℂ) (p : Σ k, ι k) => z (v p)) :=
+-    contDiff_pi.2 fun p => contDiff_apply ℝ ℂ (v p)
+-  unfold IsSmoothHerm
+-  rw [e]
+-  exact hA.comp hR.contDiffOn fun z hz => blocks_ne_zero_restrict hv hz
+-
+-theorem pullExists : PullExistsStatement := fun _ _ _ _ _ _ _ _ _ _ A hv =>
+-  ⟨IndefiniteRowSideFullHecke.Inter.pullHerm hv A, IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hv A,
+-    IsPullHerm.isSmoothHerm hv (IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hv A)⟩
+-
+-omit [Fintype K] [Fintype K'] in
+-theorem pullDeg_add (κ : K → K') (a b : K → ℤ) : pullDeg κ (a + b) = pullDeg κ a + pullDeg κ b := by
+-  classical
+-  funext k'
+-  simp only [pullDeg, Function.extend, Pi.add_apply]
+-  split_ifs <;> simp
+-
+-omit [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+-
+-theorem IsPullHerm.tensor {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} {A B : HermLine ι}
+-    {A' B' : HermLine ι'} (hA : IsPullHerm κ v A A') (hB : IsPullHerm κ v B B') :
+-    IsPullHerm κ v (A.tensor B) (A'.tensor B') := by
+-  refine ⟨?_, fun z => ?_⟩
+-  · show A'.a + B'.a = pullDeg κ (A.a + B.a)
+-    rw [hA.1, hB.1, pullDeg_add]
+-  · show A'.h z * B'.h z = A.h _ * B.h _
+-    rw [hA.2, hB.2]
+-
+-end Pull
+-
+-section Algebra
+-
+-variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
+-
+-omit [Fintype K] in
+-
+-theorem isMultiHomog_prod_X_pow [DecidableEq K] {J : Type*} [Fintype J] (q : J → Σ k, ι k) (e : J → ℕ) :
+-    IsMultiHomog (∏ j, X (q j) ^ e j : MRing ι)
+-      (fun k => ∑ j ∈ Finset.univ.filter (fun j => (q j).1 = k), e j) := by
+-  classical
+-  have hm : (∏ j, X (q j) ^ e j : MRing ι) = monomial (∑ j, Finsupp.single (q j) (e j)) 1 := by
+-    rw [monomial_sum_one]
+-    simp [X_pow_eq_monomial]
+-  intro m hm' k
+-  rw [hm] at hm'
+-  have := Finset.mem_singleton.1 (support_monomial_subset hm')
+-  subst this
+-  beta_reduce
+-  rw [Finset.sum_filter]
+-  simp only [Finsupp.coe_finsetSum, Finset.sum_apply]
+-  rw [Finset.sum_comm]
+-  refine Finset.sum_congr rfl fun j _ => ?_
+-  obtain ⟨k0, i0⟩ := q j
+-  by_cases h : k0 = k
+-  · subst h
+-    simp [Finsupp.single_apply]
+-  · simp [h]
+ 
+ theorem krullDim_quot_add_one_le {R : Type*} [CommRing R] {Q Q₂ : Ideal R} [Q.IsPrime] (hle : Q ≤ Q₂)
+     {x : R} (hx : x ∈ Q₂) (hxQ : x ∉ Q) : ringKrullDim (R ⧸ Q₂) + 1 ≤ ringKrullDim (R ⧸ Q) := by
+@@ -104,118 +16,4 @@
+   obtain ⟨c', rfl⟩ := Ideal.Quotient.mk_surjective c
+   simp only [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem.2 hx, mul_zero]
+ 
+-end Algebra
+-
+-section Proof
+-
+-theorem contract_intersection_number (hIm : ImageArithStatement) (hF : pointForm_holds.Statement) (hV : ProjectivePointVertical.Statement)
+-    (I : AllFam) (hI : I.IsFamily) {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
+-    {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)] {κ : K → K'}
+-    {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v) :
+-    ∀ (n : ℕ) (P' : Ideal (MRing ι')) (d : ℕ) (L : Fin n → HermLine ι) (L' : Fin n → HermLine ι'),
+-      IsArithVar P' n → IsArithVar (imageZ v P') d → d < n → (∀ j, IsSmoothHerm (L j)) →
+-      (∀ j, IsPullHerm κ v (L j) (L' j)) → I K' ι' P' n L' = 0 := by
+-  intro n
+-  induction n with
+-  | zero => intro _ d _ _ _ _ h; omega
+-  | succ n ih =>
+-    intro P' d L L' hP' hQ hdn hL hLL
+-    classical
+-    have hL' : ∀ j, IsSmoothHerm (L' j) := fun j => IsPullHerm.isSmoothHerm hv (hLL j) (hL j)
+-    have hL0 : ∀ j, IsSmoothHerm (Fin.init L j) := fun j => hL _
+-    have hL0' : ∀ j, IsSmoothHerm (Fin.init L' j) := fun j => hL' _
+-    have hLL0 : ∀ j, IsPullHerm κ v (Fin.init L j) (Fin.init L' j) := fun j => hLL _
+-    have hQp : (imageZ v P').IsPrime := hQ.2.1.1
+-
+-    have key : ∀ (B : HermLine ι) (B' : HermLine ι'), IsSmoothHerm B' → IsPullHerm κ v B B' →
+-        (∀ k, 0 ≤ B.a k) → I K' ι' P' (n + 1) (Fin.snoc (Fin.init L') B') = 0 := by
+-      intro B B' hB' hBB hBa
+-      choose i hi using hQ.2.1.2.2
+-      let b : K → ℕ := fun k => (B.a k).toNat
+-      let t : MRing ι := ∏ k, X ⟨k, i k⟩ ^ b k
+-      have ht : t ∉ imageZ v P' := by
+-        intro h
+-        obtain ⟨k, -, hk⟩ := (Ideal.IsPrime.prod_mem_iff (hp := hQp)).1 h
+-        exact hi k (hQp.mem_of_pow_mem _ hk)
+-      have htm : IsMultiHomog t b := by
+-        convert isMultiHomog_prod_X_pow (fun k => (⟨k, i k⟩ : Σ k, ι k)) b using 1
+-        funext k
+-        simp [Finset.sum_filter]
+-      let s : MRing ι' := rename v t
+-      have hs : s ∉ P' := ht
+-      let b' : K' → ℕ := fun k' => ∑ k ∈ Finset.univ.filter (fun k => κ k = k'), b k
+-      have hsm : IsMultiHomog s b' := by
+-        have e : s = ∏ k, X (v ⟨k, i k⟩) ^ b k := by simp [s, t, map_prod]
+-        rw [e]
+-        convert isMultiHomog_prod_X_pow (fun k => v ⟨k, i k⟩) b using 1
+-        funext k'
+-        simp only [hv.2.2.1, b']
+-      have hBa' : ∀ k', B'.a k' = b' k' := by
+-        intro k'
+-        rw [hBB.1]
+-        by_cases hk : ∃ k, κ k = k'
+-        · obtain ⟨k0, rfl⟩ := hk
+-          have hf : Finset.univ.filter (fun k => κ k = κ k0) = {k0} := by
+-            ext k
+-            simp [hv.1.eq_iff]
+-          simp only [b', hf, Finset.sum_singleton, pullDeg, hv.1.extend_apply, b]
+-          exact (Int.toNat_of_nonneg (hBa k0)).symm
+-        · have hf : Finset.univ.filter (fun k => κ k = k') = ∅ := by
+-            ext k
+-            simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]
+-            exact fun h => hk ⟨k, h⟩
+-          simp only [b', hf, Finset.sum_empty, pullDeg, Function.extend_apply' _ _ _ hk]
+-          rfl
+-      have hsec : IsSectionOn P' B' s := ⟨b', hBa', hsm, hs⟩
+-      rw [(hI K' ι').2.2 P' n (Fin.init L') B' s b' hP' hL0' hB' hBa' hsm hs, recR_eq]
+-      have h1 : arInt P' s B' (Fin.init L') = 0 :=
+-        hF K ι K' ι' κ v P' d n (Fin.init L) (Fin.init L') (logNorm B' s) hv hP' hQ hdn hL0 hLL0
+-      have h2 : cycR (I K' ι') P' (Fin.init L') s = vertR P' (Fin.init L') s := by
+-        unfold cycR vertR
+-        refine finsum_mem_congr rfl fun W hW => ?_
+-        split_ifs with hH
+-        · have hWn : IsArithVar W n := (divSuppArith K' ι' P' n B' s W hP' hsec hW).1 hH
+-          obtain ⟨dW, -, hQW⟩ := hIm K ι K' ι' κ v W n hQ.1 hv hWn
+-          have hPW : P' ≤ W := le_sup_left.trans hW.1.1.2
+-          have hsW : s ∈ W := hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))
+-          have hdim := krullDim_quot_add_one_le (Q := imageZ v P') (Q₂ := imageZ v W) (Ideal.comap_mono hPW)
+-            (show t ∈ imageZ v W from hsW) ht
+-          rw [hQW.2.2.2, hQ.2.2.2] at hdim
+-          have hlt : dW + Fintype.card K + 1 ≤ d + Fintype.card K := by exact_mod_cast hdim
+-          rw [ih W dW (Fin.init L) (Fin.init L') hWn hQW (by omega) hL0 hLL0]
+-        · rfl
+-      rw [h1, h2, hV K ι K' ι' κ v P' d n (Fin.init L) (Fin.init L') t b hv hP' hQ hdn hLL0 htm ht,
+-        sub_zero]
+-
+-    let A := L (Fin.last n)
+-    let A' := L' (Fin.last n)
+-    let M : HermLine ι := HermLine.sqMetric fun k => (-(A.a k)).toNat
+-    let M' := IndefiniteRowSideFullHecke.Inter.pullHerm hv M
+-    have hM : IsSmoothHerm M := isSmoothHerm_sqMetric _
+-    have hMM : IsPullHerm κ v M M' := IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hv M
+-    have hM' : IsSmoothHerm M' := IsPullHerm.isSmoothHerm hv hMM hM
+-    have hA' : IsSmoothHerm A' := hL' _
+-    have hadd := (hI K' ι').2.1 P' n (Fin.init L') A' M' hP' hL0' hA' hM'
+-    have h3 := key (A.tensor M) (A'.tensor M') (isSmoothHerm_tensor hA' hM')
+-      (IsPullHerm.tensor (hLL _) hMM) fun k => by
+-        show 0 ≤ A.a k + ((-(A.a k)).toNat : ℤ)
+-        omega
+-    have h4 := key M M' hM' hMM fun k => by
+-      show (0 : ℤ) ≤ ((-(A.a k)).toNat : ℤ)
+-      omega
+-    have e : L' = Fin.snoc (Fin.init L') A' := (Fin.snoc_init_self L').symm
+-    rw [e]
+-    linarith
+-
+-theorem PushforwardProjectivePoint.proof (hIm : ImageArithStatement) (hF : pointForm_holds.Statement) (hV : ProjectivePointVertical.Statement) :
+-    PushforwardProjectivePoint.Statement := by
+-  intro I hI K _ ι _ K' _ ι' _ κ v P' d d' L L' hv hP' hQ hdd hL hLL
+-  exact contract_intersection_number hIm hF hV I hI hv d' P' d L L' hP' hQ hdd hL hLL
+-
+-theorem contract_of (hIm : ImageArithStatement) (hF : pointForm_holds.Statement) (hV : ProjectivePointVertical.Statement) :
+-    ContractStatement :=
+-  PushforwardProjectivePoint.proof hIm hF hV
+-
+-end Proof
+-
+ end GroundTheory.Heights₂.Heights.Inter
+--- a/GroundTheory/HeightsAndTheta/Heights/SemipositiveHeights/NumericalSegre.lean
++++ b/GroundTheory/HeightsAndTheta/Heights/SemipositiveHeights/NumericalSegre.lean
+@@ -1,19 +1,4 @@
+ import Mathlib
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyBundles
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagBundleDim
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTwistedDualGensSpan
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSpanBundleDim
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPointIdealMultiProj
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSpanBundleTrdegGe
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PSpanBundleTrdegLe
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagBundleSectionForms
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagBundleSectionDiv
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PMultAtOfSaturated
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PProjIdealFormValue
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PTruncSpecialize
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagBundleChartSection
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagLineSection
+-import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PFlagLineDegree
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConeLocalFlat
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConeLocalLength
+ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PConePolyLocalization
+@@ -89,14 +74,4 @@
+     DivCycleMinimal.proof hcone
+   exact DivPushForwardLocal.proof DivCycleMinimal.proof hcone hdzr hrank hlen
+ 
+-theorem FlagBundleDim.full : FlagBundleDim.Statement :=
+-  FlagBundleDim.proof TwistedDualGensSpan.proof
+-    (SpanBundleDim.proof PointIdealMultiProj.proof SpanBundleTrdegGe.proof SpanBundleTrdegLe.proof)
+-
+-theorem NumericalSegre.full : NumericalSegre.Statement :=
+-  NumericalSegre.of_open FlagBundleDim.full FlagBundleSectionForms.proof
+-    (FlagBundleSectionDiv.proof FlagBundleDim.full MultAtOfSaturated.proof ProjIdealFormValue.proof
+-      TruncSpecialize.proof FlagBundleChartSection.proof)
+-    FlagLineSection.proof FlagLineDegree.proof DivPushForwardLocalZero
+-
+ end GroundTheory.Heights₂.Heights.NumbersDVR
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/KrullDimQuotientEqOneIffEqBot.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/KrullDimQuotientEqOneIffEqBot.lean
+@@ -1,131 +1,92 @@
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.LengthCokerEqKerAddDimOneOrderSum
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.LocalLengthAdditivityTorsionFree
++
++open Module Submodule
+ 
+ namespace ReciprocityTheory.ChartRestriction.G.AI
+ 
+-open Module
++theorem exists_free_lattice {A M : Type*} [CommRing A] [IsDomain A]
++    [AddCommGroup M] [Module A M] [Module.Finite A M] :
++    ∃ L : Submodule A M, Module.Free A L ∧ Module.IsTorsion A (M ⧸ L) ∧
++      finrank A L = finrank A M := by
++  obtain ⟨v, hv⟩ := exists_linearIndependent_of_le_finrank (R := A) (M := M)
++    (le_refl (finrank A M))
++  let L := span A (Set.range v)
++  have h : finrank A L = finrank A M := (finrank_span_eq_card hv).trans (Fintype.card_fin _)
++  refine ⟨L, Module.Free.of_basis (Basis.span hv), ?_, h⟩
++  apply Module.finrank_eq_zero_iff_isTorsion.mp
++  have hle := Module.finrank_quotient_add_finrank_le L
++  omega
+ 
+-section
+-variable {A : Type*} [CommRing A] [IsDomain A] [IsNoetherianRing A]
+-
+-theorem krullDimLE_one_of_krullDim_eq (h : ringKrullDim A = 1) : Ring.KrullDimLE 1 A := by
+-  rw [Ring.krullDimLE_iff, h]
+-  simp
+-
+-theorem krullDim_quotient_eq_one_iff_eq_bot [Ring.KrullDimLE 1 A] (h : ringKrullDim A = 1) (p : PrimeSpectrum A) :
+-    ringKrullDim (A ⧸ p.asIdeal) = 1 ↔ p.asIdeal = ⊥ := by
+-  constructor
+-  · intro hq
+-    by_contra hne
+-    have hmax : p.asIdeal.IsMaximal := Ideal.IsPrime.isMaximal_of_ne_bot p.isPrime hne
+-    have h0 := ringKrullDim_eq_zero_of_isField
+-      ((Ideal.Quotient.maximal_ideal_iff_isField_quotient _).mp hmax)
+-    rw [h0] at hq
+-    exact zero_ne_one hq
+-  · intro hp
+-    rw [ringKrullDim_eq_of_ringEquiv ((Ideal.quotEquivOfEq hp).trans (RingEquiv.quotientBot A)), h]
+-
+-theorem length_coker_ne_top (M : Type*) [AddCommGroup M] [Module A M] [Module.Finite A M]
+-    [Ring.KrullDimLE 1 A] {x : A} (hx : x ≠ 0) :
+-    length A (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) ≠ ⊤ := by
+-  have htors : Module.IsTorsionBy A (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) x := by
+-    intro n
+-    refine Submodule.Quotient.induction_on _ n (fun m => ?_)
+-    rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
+-    exact ⟨m, rfl⟩
+-  have htors' : Module.IsTorsionBySet A (M ⧸ LinearMap.range (LinearMap.lsmul A M x))
+-      (Ideal.span {x} : Set A) :=
+-    (Module.isTorsionBySet_span_singleton_iff x).mpr htors
+-  letI : Module (A ⧸ Ideal.span {x}) (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) := htors'.module
+-  haveI : IsScalarTower A (A ⧸ Ideal.span {x}) (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) :=
+-    htors'.isScalarTower
+-  haveI : Ring.KrullDimLE 0 (A ⧸ Ideal.span {x}) := by
+-    rw [Ring.krullDimLE_zero_iff]
+-    intro P hP
+-    have hc : (Ideal.comap (Ideal.Quotient.mk (Ideal.span {x})) P).IsPrime := Ideal.IsPrime.comap _
+-    have hne : Ideal.comap (Ideal.Quotient.mk (Ideal.span {x})) P ≠ ⊥ := by
+-      intro h0
+-      have hxm : x ∈ Ideal.comap (Ideal.Quotient.mk (Ideal.span {x})) P := by
+-        rw [Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self x)]
+-        exact P.zero_mem
+-      rw [h0, Ideal.mem_bot] at hxm
+-      exact hx hxm
+-    haveI hm := Ideal.IsPrime.isMaximal_of_ne_bot hc hne
+-    have hsurj : Function.Surjective (Ideal.Quotient.mk (Ideal.span {x})) := Ideal.Quotient.mk_surjective
+-    have hmap := Ideal.IsMaximal.map_of_surjective_of_ker_le hsurj
+-      (m := Ideal.comap (Ideal.Quotient.mk (Ideal.span {x})) P) (by
+-        intro a ha
+-        rw [RingHom.mem_ker] at ha
+-        rw [Ideal.mem_comap, ha]
+-        exact P.zero_mem)
+-    rwa [Ideal.map_comap_of_surjective _ hsurj] at hmap
+-  haveI : IsArtinianRing (A ⧸ Ideal.span {x}) := isArtinianRing_iff_krullDimLE_zero.mpr inferInstance
+-  haveI : Module.Finite (A ⧸ Ideal.span {x}) (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) :=
+-    Module.Finite.of_restrictScalars_finite A _ _
+-  have hs : Function.Surjective (algebraMap A (A ⧸ Ideal.span {x})) := Ideal.Quotient.mk_surjective
++theorem finite_length_torsion {A Q : Type*} [CommRing A] [IsDomain A] [IsNoetherianRing A]
++    [Ring.KrullDimLE 1 A] [AddCommGroup Q] [Module A Q] [Module.Finite A Q]
++    (h : Module.IsTorsion A Q) : length A Q ≠ ⊤ := by
++  obtain ⟨a, ha, hnd⟩ := Submodule.annihilator_top_inter_nonZeroDivisors h
++  have kill : Module.IsTorsionBy A Q a := fun z => Submodule.mem_annihilator.mp ha z (Submodule.mem_top)
++  let I := Ideal.span {a}
++  have annih : Module.IsTorsionBySet A Q (I : Set A) :=
++    (Module.isTorsionBySet_span_singleton_iff a).mpr kill
++  let : Module (A ⧸ I) Q := annih.module
++  have : IsScalarTower A (A ⧸ I) Q := annih.isScalarTower
++  have hs : Function.Surjective (algebraMap A (A ⧸ I)) := Ideal.Quotient.mk_surjective
++  have inst := (isFiniteLength_iff_isNoetherian_isArtinian.mp (isFiniteLength_quotient_span_singleton A hnd)).2
++  have : IsArtinianRing (A ⧸ I) := isArtinian_of_tower A inferInstance
++  have : Module.Finite (A ⧸ I) Q := Module.Finite.of_restrictScalars_finite A _ _
+   rw [Module.length_eq_of_surjective hs, Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]
+   exact ⟨inferInstance, inferInstance⟩
+ 
+-theorem length_ker_eq_zero_of_torsionFree (M : Type*) [AddCommGroup M] [Module A M] [Module.IsTorsionFree A M]
+-    {x : A} (hx : x ≠ 0) :
+-    length A (LinearMap.ker (LinearMap.lsmul A M x)) = 0 := by
+-  rw [Module.length_eq_zero_iff]
+-  have hreg : IsSMulRegular M x := IsSMulRegular.of_ne_zero hx
+-  have hker : LinearMap.ker (LinearMap.lsmul A M x) = ⊥ :=
+-    LinearMap.ker_eq_bot.mpr (fun a b hab => hreg (by simpa using hab))
+-  rw [hker]
+-  infer_instance
++theorem free_coker_length {A F : Type*} [CommRing A] [IsDomain A] [AddCommGroup F]
++    [Module A F] [Module.Free A F] [Module.Finite A F] (x : A) :
++    length A (F ⧸ LinearMap.range (LinearMap.lsmul A F x)) = (finrank A F : ℕ∞) * Ring.ord A x := by
++  classical
++  let e := (Module.finBasis A F).equivFun
++  let I : Ideal A := Ideal.span {x}
++  let T := Submodule.pi Set.univ (fun _ : Fin (finrank A F) => I)
++  have he : Submodule.map e.toLinearMap (LinearMap.range (LinearMap.lsmul A F x)) = T := by
++    ext z
++    constructor
++    · rintro ⟨_, ⟨m, rfl⟩, rfl⟩
++      intro i _
++      apply Ideal.mem_span_singleton.mpr
++      exact ⟨e m i, by simp [e, LinearMap.lsmul_apply]⟩
++    · intro hz
++      have hz' (i) : x ∣ z i := Ideal.mem_span_singleton.mp (hz i (Set.mem_univ _))
++      choose w hw using hz'
++      refine ⟨x • e.symm w, ⟨e.symm w, rfl⟩, ?_⟩
++      ext i
++      simpa using (hw i).symm
++  let f := Submodule.Quotient.equiv _ T e he
++  rw [f.length_eq, (Submodule.quotientPi (fun _ : Fin (finrank A F) => I)).length_eq,
++    Module.length_pi_of_fintype]
++  simp [I, Ring.ord, nsmul_eq_mul]
+ 
+-theorem length_localization_bot_eq_finrank (M : Type*) [AddCommGroup M] [Module A M] [Module.Finite A M] :
+-    length (Localization.AtPrime (⊥ : Ideal A)) (LocalizedModule (⊥ : Ideal A).primeCompl M) =
+-      (finrank A M : ℕ∞) := by
+-  have hfield : IsField (Localization.AtPrime (⊥ : Ideal A)) := by
+-    rw [IsLocalRing.isField_iff_maximalIdeal_eq, ← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_bot]
+-  letI : Field (Localization.AtPrime (⊥ : Ideal A)) := hfield.toField
+-  have hle : (⊥ : Ideal A).primeCompl ≤ nonZeroDivisors A := by
+-    intro a ha
+-    exact mem_nonZeroDivisors_of_ne_zero (fun h0 => ha (by rw [h0]; exact Submodule.zero_mem _))
+-  haveI : Module.Finite (Localization.AtPrime (⊥ : Ideal A)) (LocalizedModule (⊥ : Ideal A).primeCompl M) :=
+-    Module.Finite.of_isLocalizedModule (⊥ : Ideal A).primeCompl
+-      (LocalizedModule.mkLinearMap (⊥ : Ideal A).primeCompl M)
+-  rw [Module.length_of_free_of_finite, Module.length_eq_one, mul_one]
+-  rw [IsLocalization.finrank_eq (Localization.AtPrime (⊥ : Ideal A)) (⊥ : Ideal A).primeCompl hle,
+-    IsLocalizedModule.finrank_eq (⊥ : Ideal A).primeCompl
+-      (LocalizedModule.mkLinearMap (⊥ : Ideal A).primeCompl M) hle]
+-
+-theorem ordQuotient_bot (x : A) :
+-    ordMod ⟨⊥, Ideal.isPrime_bot⟩ x = Ring.ord A x := by
+-  unfold ordMod Ring.ord
+-  dsimp only
+-  have hs : Function.Surjective (algebraMap A (A ⧸ (⊥ : Ideal A))) := Ideal.Quotient.mk_surjective
+-  rw [← Module.length_eq_of_surjective hs]
+-  have h1 : Ideal.map (Ideal.Quotient.mkₐ A (⊥ : Ideal A)) (Ideal.span {x}) =
+-      Ideal.span {Ideal.Quotient.mk (⊥ : Ideal A) x} := by
+-    rw [Ideal.map_span, Set.image_singleton, Ideal.Quotient.mkₐ_eq_mk]
+-  have e1 := (Ideal.quotientEquivAlgOfEq A h1).symm.trans
+-    ((DoubleQuot.quotQuotEquivQuotSupₐ A ⊥ (Ideal.span {x})).trans
+-      (Ideal.quotientEquivAlgOfEq A (bot_sup_eq (Ideal.span {x}))))
+-  exact e1.toLinearEquiv.length_eq
+-
+-end
++private theorem coker_comp_length {A F M N : Type*} [CommRing A]
++    [AddCommGroup F] [Module A F] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N]
++    (f : F →ₗ[A] M) (g : M →ₗ[A] N) (hg : Function.Injective g) :
++    length A (N ⧸ (g.comp f).range) = length A (M ⧸ f.range) + length A (N ⧸ g.range) := by
++  let S := (g.comp f).range
++  have hS : S = f.range.map g := LinearMap.range_comp _ _
++  have hle : S ≤ g.range := by rintro _ ⟨m, rfl⟩; exact ⟨f m, rfl⟩
++  have hp : f.range ≤ S.comap g := by rintro _ ⟨m, rfl⟩; exact ⟨m, rfl⟩
++  let a := f.range.mapQ S g hp
++  have ha : Function.Injective a := by
++    rw [← LinearMap.ker_eq_bot, Submodule.ker_mapQ, hS, Submodule.comap_map_eq_of_injective hg]
++    rw [← le_bot_iff, Submodule.map_le_iff_le_comap, Submodule.comap_bot, Submodule.ker_mkQ]
++  have e := Submodule.quotientQuotientEquivQuotient S g.range hle
++  have hlen := Module.length_eq_add_of_exact a a.range.mkQ ha a.range.mkQ_surjective
++    (LinearMap.exact_map_mkQ_range a)
++  rw [show a.range = g.range.map S.mkQ from Submodule.range_mapQ _ _ _ _, e.length_eq] at hlen
++  exact hlen
+ 
+ theorem dimOneTorsionFreeFormula : LocalLengthAdditivityTorsionFree := by
+   intro A _ _ _ _ M _ _ _ _ x h hx
+-  haveI : Ring.KrullDimLE 1 A := krullDimLE_one_of_krullDim_eq h
+-  obtain ⟨-, heq⟩ := dimOneFormula A M x h (length_coker_ne_top M hx)
+-  rw [heq, length_ker_eq_zero_of_torsionFree M hx, zero_add]
+-  have hset : {p : PrimeSpectrum A | ringKrullDim (A ⧸ p.asIdeal) = 1} = {⟨⊥, Ideal.isPrime_bot⟩} := by
+-    ext p
+-    simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+-    rw [krullDim_quotient_eq_one_iff_eq_bot h p]
+-    constructor
+-    · intro hp
+-      ext1
+-      exact hp
+-    · intro hp
+-      rw [hp]
+-  change ∑ᶠ p ∈ {p : PrimeSpectrum A | ringKrullDim (A ⧸ p.asIdeal) = 1}, _ = _
+-  rw [hset, finsum_mem_singleton]
+-  dsimp only
+-  rw [length_localization_bot_eq_finrank, ordQuotient_bot]
++  have : Ring.KrullDimLE 1 A := by rw [Ring.krullDimLE_iff, h]; simp
++  obtain ⟨L, hfree, ht, hr⟩ := exists_free_lattice (A := A) (M := M)
++  let : Module.Free A L := hfree
++  have hfst := coker_comp_length L.subtype (LinearMap.lsmul A M x) (IsSMulRegular.of_ne_zero hx)
++  have hsnd := coker_comp_length (LinearMap.lsmul A L x) L.subtype L.injective_subtype
++  have he : (LinearMap.lsmul A M x).comp L.subtype = L.subtype.comp (LinearMap.lsmul A L x) := rfl
++  rw [he, hsnd, Submodule.range_subtype] at hfst
++  rw [← hr, ← free_coker_length (F := L)]
++  exact WithTop.add_left_cancel (finite_length_torsion ht) ((add_comm _ _).trans hfst).symm
+ 
+ end ReciprocityTheory.ChartRestriction.G.AI
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/LocalLengthAdditivityTorsionFree.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/LocalLengthAdditivityTorsionFree.lean
+@@ -6,42 +6,10 @@
+ 
+ open Module
+ 
+-noncomputable def ordMod {A : Type*} [CommRing A] (p : PrimeSpectrum A) (x : A) : ℕ∞ :=
+-  Ring.ord (A ⧸ p.asIdeal) (Ideal.Quotient.mk p.asIdeal x)
+-
+-noncomputable def ordLoc {A : Type*} [CommRing A] (p : PrimeSpectrum A) (x : A) : ℕ∞ :=
+-  Ring.ord (Localization.AtPrime p.asIdeal) (algebraMap A (Localization.AtPrime p.asIdeal) x)
+-
+-def LocalLengthAdditivity : Prop :=
+-  ∀ (A : Type u) [CommRing A] [IsNoetherianRing A] [IsLocalRing A] (M : Type v) [AddCommGroup M]
+-    [Module A M] [Module.Finite A M] (x : A),
+-    ringKrullDim A = 1 →
+-    length A (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) ≠ ⊤ →
+-    length A (LinearMap.ker (LinearMap.lsmul A M x)) ≠ ⊤ ∧
+-    length A (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) =
+-      length A (LinearMap.ker (LinearMap.lsmul A M x)) +
+-        ∑ᶠ (p : PrimeSpectrum A) (_ : ringKrullDim (A ⧸ p.asIdeal) = 1),
+-          length (Localization.AtPrime p.asIdeal) (LocalizedModule p.asIdeal.primeCompl M) *
+-            ordMod p x
+-
+ def LocalLengthAdditivityTorsionFree : Prop :=
+   ∀ (A : Type u) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalRing A] (M : Type v)
+     [AddCommGroup M] [Module A M] [Module.Finite A M] [Module.IsTorsionFree A M] (x : A),
+     ringKrullDim A = 1 → x ≠ 0 →
+     length A (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) = (finrank A M : ℕ∞) * Ring.ord A x
+ 
+-def LocalLengthMultiplicativity : Prop :=
+-  ∀ (A : Type u) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalRing A] (a b : A),
+-    ringKrullDim A = 2 → a ≠ 0 → b ≠ 0 →
+-    length A (A ⧸ Ideal.span {a, b}) ≠ ⊤ →
+-    (length A (A ⧸ Ideal.span {a, b}) =
+-      length A (LinearMap.ker (LinearMap.lsmul A (A ⧸ Ideal.span {a}) b)) +
+-        ∑ᶠ (p : PrimeSpectrum A) (_ : p.asIdeal.height = 1 ∧ a ∈ p.asIdeal),
+-          ordLoc p a * ordMod p b) ∧
+-    (length A (LinearMap.ker (LinearMap.lsmul A (A ⧸ Ideal.span {a}) b)) =
+-      length A (LinearMap.ker (LinearMap.lsmul A (A ⧸ Ideal.span {b}) a)) ∧
+-     length A (LinearMap.ker (LinearMap.lsmul A (A ⧸ Ideal.span {a}) b)) ≠ ⊤) ∧
+-    (∑ᶠ (p : PrimeSpectrum A) (_ : p.asIdeal.height = 1 ∧ a ∈ p.asIdeal), ordLoc p a * ordMod p b) =
+-      ∑ᶠ (p : PrimeSpectrum A) (_ : p.asIdeal.height = 1 ∧ b ∈ p.asIdeal), ordLoc p b * ordMod p a
+-
+ end ReciprocityTheory.ChartRestriction.G.AI
+--- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/MultihomogeneousIdeals/CycDim.lean
++++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/ArithmeticIntersection/MultihomogeneousIdeals/CycDim.lean
+@@ -1,7 +1,8 @@
+-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.IsFieldIntersection
++import Mathlib
++import Lemmata.GeneralBFactBis.Imports
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivSuppAA
+ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterDivSuppAC
+-import Lemmata.GeneralBFactBis.Imports
+-import Lemmata.FirstBlockLemmaB.Imports
++import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.IsIntersectionFamily
+ 
+ noncomputable section
+ 
+@@ -118,7 +119,7 @@
+ 
+ theorem cyc_withBot_eq_of_add_one {x : WithBot ℕ∞} {m : ℕ} (h : x + 1 = ((m + 1 : ℕ) : WithBot ℕ∞)) :
+     x = (m : WithBot ℕ∞) := by
+-  first | exact Bl.general_b_fact_bis.goal1 .. | (apply Bl.general_b_fact_bis.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_bis.goal1 <;> assumption)
++  apply Bl.general_b_fact_bis.goal1 <;> assumption
+ 
+ theorem cyc_dim_quot_minimal_add_one {V W : Ideal (MRingOver F ι)} [hVp : V.IsPrime]
+     {f : MRingOver F ι} (hf : f ∉ V) (hW : W ∈ (V ⊔ Ideal.span {f}).minimalPrimes)
+@@ -158,182 +159,4 @@
+ 
+ end CycDim
+ 
+-section CycChart
+-
+-variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {F : Type*} [Field F]
+-
+-theorem aeval_blockScale {A : Type*} [CommRing A] [Algebra F A] {g : MRingOver F ι} {a : K → ℕ}
+-    (hg : IsMultiHomog g a) (c : K → A) (z : (Σ k, ι k) → A) :
+-    aeval (fun p => c p.1 * z p) g = (∏ k, c k ^ a k) * aeval z g := by
+-  simp only [aeval_def, eval₂_eq', Finset.mul_sum]
+-  refine Finset.sum_congr rfl fun d hd => ?_
+-  have h1 : ∏ p, (c p.1 * z p) ^ d p = (∏ p, c p.1 ^ d p) * ∏ p, z p ^ d p := by
+-    rw [← Finset.prod_mul_distrib]
+-    simp_rw [mul_pow]
+-  have h2 : ∏ p : (Σ k, ι k), c p.1 ^ d p = ∏ k, c k ^ a k := by
+-    rw [Fintype.prod_sigma]
+-    refine Finset.prod_congr rfl fun k _ => ?_
+-    show ∏ y, c k ^ d ⟨k, y⟩ = _
+-    rw [Finset.prod_pow_eq_pow_sum, hg d hd k]
+-  rw [h1, h2]
+-  ring
+-
+-theorem aeval_blockScale_eq_zero {A : Type*} [CommRing A] [Algebra F A] {V : Ideal (MRingOver F ι)}
+-    (hV : IsMultiHomogIdeal V) (c : K → A) (θ : MRingOver F ι →ₐ[F] A) (hθ : ∀ g ∈ V, θ g = 0)
+-    {g : MRingOver F ι} (hg : g ∈ V) : aeval (fun p => c p.1 * θ (X p)) g = 0 := by
+-  have e : (aeval fun p => θ (X p) : MRingOver F ι →ₐ[F] A) = θ :=
+-    MvPolynomial.algHom_ext fun p => aeval_X _ _
+-  obtain ⟨S, hS, rfl⟩ := hV
+-  have h : Ideal.span S ≤ RingHom.ker (aeval (fun p => c p.1 * θ (X p)) : MRingOver F ι →ₐ[F] A) := by
+-    refine Ideal.span_le.mpr fun f hfS => ?_
+-    obtain ⟨a, ha⟩ := hS f hfS
+-    rw [SetLike.mem_coe, RingHom.mem_ker, aeval_blockScale ha, DFunLike.congr_fun e f,
+-      hθ f (Ideal.subset_span hfS), mul_zero]
+-  exact RingHom.mem_ker.mp (h hg)
+-
+-theorem cyc_dim_add_one_le {R : Type*} [CommRing R] {P Q : Ideal R} [P.IsPrime] (hPQ : P ≤ Q)
+-    {x : R} (hxQ : x ∈ Q) (hxP : x ∉ P) : ringKrullDim (R ⧸ Q) + 1 ≤ ringKrullDim (R ⧸ P) := by
+-  first | exact Bl.FirstBlockLemmaB.goal1 .. | (apply Bl.FirstBlockLemmaB.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaB.goal1 <;> assumption)
+-
+-theorem mk_chartIdeal_X_self (V : Ideal (MRingOver F ι)) (j : ∀ k, ι k) (k : K) :
+-    Ideal.Quotient.mk (chartIdeal V j) (X ⟨k, j k⟩) = 1 := by
+-  rw [← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]
+-  exact Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩)
+-
+-theorem mkₐ_chartIdeal_X_self (V : Ideal (MRingOver F ι)) (j : ∀ k, ι k) (k : K) :
+-    Ideal.Quotient.mkₐ F (chartIdeal V j) (X ⟨k, j k⟩) = 1 :=
+-  mk_chartIdeal_X_self V j k
+-
+-theorem isUnit_mk_chartIdeal_X {V : Ideal (MRingOver F ι)} (hV : IsProjVarF V 0) (j : ∀ k, ι k)
+-    (p : Σ k, ι k) (hp : (X p : MRingOver F ι) ∉ V) :
+-    IsUnit (Ideal.Quotient.mk (chartIdeal V j) (X p)) := by
+-  classical
+-  by_contra hu
+-  obtain ⟨M, hM, hpM⟩ := exists_max_ideal_of_mem_nonunits hu
+-  have hVp : V.IsPrime := hV.1.1
+-  letI : Field (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)) := Ideal.Quotient.field M
+-  let θ : MRingOver F ι →ₐ[F] MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)) :=
+-    (IsScalarTower.toAlgHom F (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)) (MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)))).comp
+-      ((Ideal.Quotient.mkₐ F M).comp (Ideal.Quotient.mkₐ F (chartIdeal V j)))
+-  have hθ : ∀ g, θ g = MvPolynomial.C (Ideal.Quotient.mk M (Ideal.Quotient.mk (chartIdeal V j) g)) := fun g => rfl
+-  let c : Finset K → K → MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)) :=
+-    fun S k => if k ∈ S then 0 else MvPolynomial.X k
+-  let φ : Finset K → MRingOver F ι →ₐ[F] MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)) :=
+-    fun S => aeval fun q => c S q.1 * θ (X q)
+-  have hφX : ∀ S q, φ S (X q) = c S q.1 * θ (X q) := fun S q => aeval_X _ _
+-  let Q : Finset K → Ideal (MRingOver F ι) := fun S => RingHom.ker (φ S)
+-  have hQp : ∀ S, (Q S).IsPrime := fun S => RingHom.ker_isPrime (φ S).toRingHom
+-  have hVQ : ∀ S, V ≤ Q S := fun S g hg => RingHom.mem_ker.mpr
+-    (aeval_blockScale_eq_zero hV.1.2.1 (c S) θ (fun g hg => by
+-      rw [hθ, Ideal.Quotient.eq_zero_iff_mem.mpr (show g ∈ chartIdeal V j from Ideal.mem_sup_left hg),
+-        map_zero, map_zero]) hg)
+-
+-  have hmono : ∀ S k, Q S ≤ Q (insert k S) := by
+-    intro S k g hg
+-    let ρ : MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)) →ₐ[F] MvPolynomial K (((MRingOver F ι ⧸ chartIdeal V j) ⧸ M)) :=
+-      (aeval fun k' => if k' = k then 0 else MvPolynomial.X k').restrictScalars F
+-    have e : ρ.comp (φ S) = φ (insert k S) := by
+-      refine MvPolynomial.algHom_ext fun q => ?_
+-      rw [AlgHom.comp_apply, hφX, hφX, map_mul]
+-      congr 1
+-      · by_cases h1 : q.1 ∈ S
+-        · simp [ρ, c, h1]
+-        · by_cases h2 : q.1 = k
+-          · subst h2
+-            simp [ρ, c, h1]
+-          · simp [ρ, c, h1, h2]
+-      · rw [hθ]
+-        simp [ρ, MvPolynomial.algebraMap_eq]
+-    have hg' : φ S g = 0 := RingHom.mem_ker.mp hg
+-    show φ (insert k S) g = 0
+-    rw [← e, AlgHom.comp_apply, hg', map_zero]
+-  have hin : ∀ S k, (X ⟨k, j k⟩ : MRingOver F ι) ∈ Q (insert k S) := by
+-    intro S k
+-    show φ (insert k S) (X ⟨k, j k⟩) = 0
+-    rw [hφX]
+-    simp [c]
+-  have hout : ∀ S k, k ∉ S → (X ⟨k, j k⟩ : MRingOver F ι) ∉ Q S := by
+-    intro S k hk h
+-    have h' : φ S (X ⟨k, j k⟩) = 0 := RingHom.mem_ker.mp h
+-    rw [hφX, hθ, mk_chartIdeal_X_self, map_one, map_one, mul_one] at h'
+-    simp only [c, if_neg hk] at h'
+-    exact MvPolynomial.X_ne_zero k h'
+-  have hbase : (X p : MRingOver F ι) ∈ Q ∅ := by
+-    show φ ∅ (X p) = 0
+-    rw [hφX, hθ, Ideal.Quotient.eq_zero_iff_mem.mpr hpM, map_zero, mul_zero]
+-  have chain : ∀ S : Finset K, ((S.card : ℕ) : WithBot ℕ∞) + 1 + ringKrullDim (MRingOver F ι ⧸ Q S) ≤
+-      ringKrullDim (MRingOver F ι ⧸ V) := by
+-    intro S
+-    induction S using Finset.induction_on with
+-    | empty =>
+-      have := cyc_dim_add_one_le (hVQ ∅) hbase hp
+-      rw [Finset.card_empty, Nat.cast_zero, zero_add, add_comm]
+-      exact this
+-    | @insert k S hk ih =>
+-      have : (Q S).IsPrime := hQp S
+-      have h1 := cyc_dim_add_one_le (hmono S k) (hin S k) (hout S k hk)
+-      rw [Finset.card_insert_of_notMem hk]
+-      calc (((S.card + 1 : ℕ)) : WithBot ℕ∞) + 1 + ringKrullDim (MRingOver F ι ⧸ Q (insert k S))
+-          = (S.card : WithBot ℕ∞) + 1 + (ringKrullDim (MRingOver F ι ⧸ Q (insert k S)) + 1) := by
+-            push_cast; abel
+-        _ ≤ (S.card : WithBot ℕ∞) + 1 + ringKrullDim (MRingOver F ι ⧸ Q S) := add_le_add_right h1 _
+-        _ ≤ _ := ih
+-  have h := chain Finset.univ
+-  have : (Q Finset.univ).IsPrime := hQp _
+-  have : IsDomain (MRingOver F ι ⧸ Q Finset.univ) := Ideal.Quotient.isDomain _
+-  have h0 : (0 : WithBot ℕ∞) ≤ ringKrullDim (MRingOver F ι ⧸ Q Finset.univ) :=
+-    ringKrullDim_nonneg_of_nontrivial
+-  rw [hV.2, Finset.card_univ] at h
+-  have h2 : (((Fintype.card K + 1 : ℕ)) : WithBot ℕ∞) ≤ ((0 + Fintype.card K : ℕ) : WithBot ℕ∞) := by
+-    calc (((Fintype.card K + 1 : ℕ)) : WithBot ℕ∞) = (Fintype.card K : WithBot ℕ∞) + 1 + 0 := by
+-          push_cast; simp
+-      _ ≤ _ := add_le_add_right h0 _
+-      _ ≤ _ := h
+-  have h3 : Fintype.card K + 1 ≤ 0 + Fintype.card K := by exact_mod_cast h2
+-  omega
+-
+-def chartSwap {V : Ideal (MRingOver F ι)} (hV : IsMultiHomogIdeal V) (i j : ∀ k, ι k)
+-    (hu : ∀ k, IsUnit (Ideal.Quotient.mkₐ F (chartIdeal V j) (X ⟨k, i k⟩))) :
+-    (MRingOver F ι ⧸ chartIdeal V i) →ₐ[F] (MRingOver F ι ⧸ chartIdeal V j) :=
+-  Ideal.Quotient.liftₐ (chartIdeal V i)
+-    (aeval fun p => ↑(hu p.1).unit⁻¹ * Ideal.Quotient.mkₐ F (chartIdeal V j) (X p)) (by
+-      intro a ha
+-      have h : chartIdeal V i ≤ RingHom.ker
+-          (aeval fun p => ↑(hu p.1).unit⁻¹ * Ideal.Quotient.mkₐ F (chartIdeal V j) (X p) :
+-            MRingOver F ι →ₐ[F] _) := by
+-        refine sup_le (fun g hg => RingHom.mem_ker.mpr (aeval_blockScale_eq_zero
+-          (A := MRingOver F ι ⧸ chartIdeal V j) hV (fun k => ↑(hu k).unit⁻¹)
+-          (Ideal.Quotient.mkₐ F (chartIdeal V j)) (fun g hg => ?_) hg)) (Ideal.span_le.mpr ?_)
+-        · rw [Ideal.Quotient.mkₐ_eq_mk]
+-          exact Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left hg)
+-        · rintro _ ⟨k, rfl⟩
+-          rw [SetLike.mem_coe, RingHom.mem_ker, map_sub, map_one, aeval_X, IsUnit.val_inv_mul,
+-            sub_self]
+-      exact RingHom.mem_ker.mp (h ha))
+-
+-theorem chartSwap_mkₐ {V : Ideal (MRingOver F ι)} (hV : IsMultiHomogIdeal V) (i j : ∀ k, ι k)
+-    (hu : ∀ k, IsUnit (Ideal.Quotient.mkₐ F (chartIdeal V j) (X ⟨k, i k⟩))) (p : Σ k, ι k) :
+-    chartSwap hV i j hu (Ideal.Quotient.mkₐ F (chartIdeal V i) (X p)) =
+-      ↑(hu p.1).unit⁻¹ * Ideal.Quotient.mkₐ F (chartIdeal V j) (X p) := by
+-  unfold chartSwap
+-  exact (Ideal.Quotient.liftₐ_apply _ _ _ _).trans ((Ideal.Quotient.lift_mk _ _ _).trans (aeval_X _ _))
+-
+-theorem chartSwap_comp {V : Ideal (MRingOver F ι)} (hV : IsMultiHomogIdeal V) (i j : ∀ k, ι k)
+-    (hu : ∀ k, IsUnit (Ideal.Quotient.mkₐ F (chartIdeal V j) (X ⟨k, i k⟩)))
+-    (hv : ∀ k, IsUnit (Ideal.Quotient.mkₐ F (chartIdeal V i) (X ⟨k, j k⟩))) :
+-    (chartSwap hV j i hv).comp (chartSwap hV i j hu) = AlgHom.id F _ := by
+-  refine Ideal.Quotient.algHom_ext F (MvPolynomial.algHom_ext fun p => ?_)
+-  simp only [AlgHom.comp_apply, AlgHom.id_apply]
+-  rw [chartSwap_mkₐ, map_mul, chartSwap_mkₐ]
+-  have hui : chartSwap hV j i hv (↑(hu p.1).unit) = ↑(hv p.1).unit⁻¹ := by
+-    rw [(hu p.1).unit_spec, chartSwap_mkₐ, mkₐ_chartIdeal_X_self, mul_one]
+-  have hinv : chartSwap hV j i hv (↑(hu p.1).unit⁻¹) = ↑(hv p.1).unit := by
+-    have h1 : chartSwap hV j i hv (↑(hu p.1).unit⁻¹) * chartSwap hV j i hv (↑(hu p.1).unit) = 1 := by
+-      rw [← map_mul, Units.inv_mul, map_one]
+-    rw [hui] at h1
+-    exact Units.mul_inv_eq_one.mp h1
+-  rw [hinv, Units.mul_inv_cancel_left]
+-
+-end CycChart
+-
+ end ReciprocityTheory.ChartRestriction.G.AI.I1

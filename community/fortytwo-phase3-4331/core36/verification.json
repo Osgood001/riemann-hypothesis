@@ -1,0 +1,49 @@
+{
+  "core": 36,
+  "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
+  "lean": "leanprover/lean4:v4.33.1",
+  "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "published_baseline_tokens": 1023975,
+  "target_sha256": "5e743caf7fae5cc15e00a94762f2f8f05ee809c7d8be7a14843a5a60bb5d749c",
+  "candidate": "core36-privatefamily04983756e896",
+  "proof_id": "04983756e896f481880567ed64f7b83c252319a5491047d89a6165f9349978ee",
+  "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "source_kind": "pinned_git_checkout",
+  "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/lean/src",
+  "submitted_files": 1,
+  "local_normalized_tokens": 221,
+  "proof_tree_sha256": "e738f27f4c5e93106db2f3cdc79d48610ff11d6617559ba2a2dd75e19b360376",
+  "pinned_source_files": {},
+  "modified_files": {},
+  "hosted_score": null,
+  "attribution": {
+    "original_author": "Levent Alpöge",
+    "prior_proof": "Mikko Nyman, building on Vincent Liu.",
+    "prior_attempt": "https://riemann.verifytask.cn/api/attempt/103707",
+    "prior_source_sha256": "0be8f1b3e5ec9f95287e00d2eeaf759b22d5b07878445454cce208cce6546880",
+    "native_model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+    "native_contribution": "The positive and negative root lattices can be stated using H.rt0 and -H.rt0.",
+    "native_draft_sha256": "f2d07fcee013392ccbd6368a6e84f1efd7cca6426349217fac08d51347e2535d",
+    "source_implementation": "Codex expressed the four signed-lattice terms as a local composition of the lattice and signed-root functions and used the Mathlib dsimp% elaborator to expand it in the exported statement.",
+    "public_proof_author": "MarvinDontPanic",
+    "public_proof_source": "https://github.com/MarvinDontPanic/riemann-hypothesis/blob/3909e54fe7413fc126a618bcfb366342c3f64419/community/marvin-core-reductions/core36/Solution.lean",
+    "public_proof_sha256": "2fc6c3425bda434b5cc0e2de46c28438cf68f528feee5ceebc1ce41896d79538",
+    "prior_fortytwo_proof": "575611c2fd6607f06b8ff3ec5b9ce04e018f4044b89fbdbf2bb0a2b10f6b622f",
+    "public_contribution": "Shortened the notation and the application of the signed-root disjointness proof in PR 43."
+  },
+  "local_replay": {
+    "comparator_exit": 0,
+    "lean_default_kernel_accepted": true,
+    "completed_utc": "2026-11-25T13:00:36.758220+00:00",
+    "elapsed_seconds": 127.603,
+    "frozen_files": 70,
+    "log_sha256": "1f6caddc48099342424046a522c194bcbd889f6f47a47866a399e941e6254ade",
+    "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
+    "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e",
+    "permitted_axioms": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ]
+  }
+}
