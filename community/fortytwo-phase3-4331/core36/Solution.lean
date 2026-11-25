@@ -3,18 +3,18 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 
 -- The Fortytwo DeepSeek researcher identified the two signed roots directly in the native target; Codex integrated that observation with the published proof by Mikko Nyman and prior work by Vincent Liu.
 
-open NumberField GlobalTheory CompanionTheory.Ar.Fl
-open Submodule Set Sum PureType
+open NumberField GlobalTheory CompanionTheory.Ar.Fl Submodule Set Sum PureType
 
 theorem AlpogeRHCore36.pureFamilyDecomposition
     E [Field E] [NumberField E] [IsCMField E]
-    H D g ty P hP p q x (n : ℕ)
-    (hx : @IsPure E _ _ _ H D g ty P hP p q x) (hn : ∀ y, n • y ∈ span (𝓞 E) (range x)) :
+    H D g ty P hP p q x (n : ℕ) :
+    @IsPure E _ _ _ H D g ty P hP p q x → (∀ y, n • y ∈ span (𝓞 E) (range x)) →
 
     (∀ y, ∃ a ∈ lat hP (sgnRt H true), ∃ b ∈ lat hP (sgnRt H false), n • y = a + b) ∧
     (∀ y ∈ lat hP (sgnRt H true), n • y ∈ span (𝓞 E) (range (x ∘ inl))) ∧
     ∀ y ∈ lat hP (sgnRt H false), n • y ∈ span (𝓞 E) (range (x ∘ inr)) := by
 
+  rintro ⟨hp, hm⟩ hn
   have := disjoint_lat hP (show H.rt0 ≠ -H.rt0 by grind [H.sqrt_neg_disc_sq, H.d_mod, Nat.cast_eq_zero])
 
   simp_all [disjoint_def, range_eq, mem_sup, mem_span, range_subset_iff]
@@ -24,4 +24,4 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
     intro y
     obtain ⟨a, h, b, k, e⟩ := hn y
     try intro hy; have := nsmul_mem hy n
-    grind [sgnRt, h _ hx.1, k _ hx.2, Submodule.add_mem_iff_left, add_comm]
+    grind [sgnRt, h _ hp, k _ hm, Submodule.add_mem_iff_left, add_comm]
