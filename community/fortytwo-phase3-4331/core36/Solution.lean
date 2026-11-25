@@ -20,6 +20,8 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
 
   simp_all [disjoint_def, range_eq, mem_sup, mem_span, range_subset_iff]
 
-  and_intros <;> intro y <;> obtain ⟨a, h, b, k, e⟩ := hn y
-  all_goals try intro hy; have := nsmul_mem hy n
-  all_goals grind [sgnRt, h _ hx.1, k _ hx.2, Submodule.add_mem_iff_left, add_comm]
+  and_intros <;> intro y
+  all_goals
+    obtain ⟨a, h, b, k, e⟩ := hn y
+    try intro hy; have := nsmul_mem hy n
+    grind [sgnRt, h _ hx.1, k _ hx.2, Submodule.add_mem_iff_left, add_comm]
