@@ -5,6 +5,88 @@ public import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StIntegralForm
 
 @[expose] public section
 
+open Module
+
+namespace AddSubgroup
+
+theorem relIndex_dvd_pow_of_zsmul_mem {Q : Type*} [AddCommGroup Q] (H B : AddSubgroup Q)
+    [Free ℤ B.toIntSubmodule] [Module.Finite ℤ B.toIntSubmodule] (k : ℤ)
+    (h : ∀ y ∈ B, k • y ∈ H) : H.relIndex B ∣ k.natAbs ^ finrank ℤ B := by
+  let A := B.map (nsmulAddMonoidHom (α := Q) k.natAbs)
+  have hAB : A.relIndex B = k.natAbs ^ finrank ℤ B := relIndex_map_nsmul _ _
+  have hAH : A ≤ H := by
+    rintro _ ⟨y, hy, rfl⟩
+    change k.natAbs • y ∈ H
+    have hm := h y hy
+    cases k with
+    | ofNat n => simpa using hm
+    | negSucc n => simpa using H.neg_mem hm
+  rw [← hAB]
+  exact relIndex_dvd_of_le_left B hAH
+
+end AddSubgroup
+
+namespace LinearMap.BilinForm
+
+/-- A multiple of the trace-dual landing in any subgroup bounds the relative index of that subgroup. -/
+theorem relIndex_dual_dvd_pow_of_zsmul_mem {Q : Type*} [AddCommGroup Q] [Module ℚ Q]
+    [FiniteDimensional ℚ Q] (T : LinearMap.BilinForm ℚ Q) (hT : T.Nondegenerate) (L H : AddSubgroup Q)
+    (hfg : L.FG) (hspan : Submodule.span ℚ (L : Set Q) = ⊤) (k : ℤ)
+    (h : ∀ y ∈ T.dualSubmodule L.toIntSubmodule, k • y ∈ H) :
+    H.relIndex (T.dualSubmodule L.toIntSubmodule).toAddSubgroup ∣ k.natAbs ^ finrank ℚ Q := by
+  classical
+  let B := T.dualSubmodule L.toIntSubmodule
+  have : Module.IsTorsionFree ℤ Q := .trans_faithfulSMul ℤ ℚ Q
+  have : Module.Finite ℤ L.toIntSubmodule :=
+    Module.Finite.iff_fg.mpr ((Submodule.fg_iff_addSubgroup_fg _).mpr hfg)
+  have : Module.Finite ℤ B := Module.Finite.of_injective (T.dualSubmoduleToDual _)
+    (T.dualSubmoduleToDual_injective hT _ hspan)
+  let b := Free.chooseBasis ℤ B
+  have hr : finrank ℤ B ≤ finrank ℚ Q := by
+    rw [finrank_eq_card_basis b]
+    exact ((LinearIndependent.iff_fractionRing ℤ ℚ).mp
+      (b.linearIndependent.map' B.subtype B.ker_subtype)).fintype_card_le_finrank
+  exact (@AddSubgroup.relIndex_dvd_pow_of_zsmul_mem Q _ H B.toAddSubgroup
+    (inferInstanceAs (Free ℤ B)) (inferInstanceAs (Module.Finite ℤ B)) k h).trans
+    (pow_dvd_pow _ hr)
+
+theorem relIndex_dual_le_pow_of_zsmul_mem {Q : Type*} [AddCommGroup Q] [Module ℚ Q]
+    [FiniteDimensional ℚ Q] (T : LinearMap.BilinForm ℚ Q) (hT : T.Nondegenerate) (L H : AddSubgroup Q)
+    (hfg : L.FG) (hspan : Submodule.span ℚ (L : Set Q) = ⊤) (k : ℤ) (hk : k ≠ 0)
+    (h : ∀ y ∈ T.dualSubmodule L.toIntSubmodule, k • y ∈ H) :
+    H.relIndex (T.dualSubmodule L.toIntSubmodule).toAddSubgroup ≤ k.natAbs ^ finrank ℚ Q :=
+  Nat.le_of_dvd (pow_pos (Int.natAbs_pos.mpr hk) _)
+    (T.relIndex_dual_dvd_pow_of_zsmul_mem hT L H hfg hspan k h)
+
+end LinearMap.BilinForm
+
+open Module Matrix
+namespace LinearMap.BilinForm
+
+theorem relIndex_dual_eq_abs_det {Q ι : Type*} [AddCommGroup Q] [Module ℚ Q]
+    [Fintype ι] [DecidableEq ι] (b : Basis ι ℚ Q) (T : LinearMap.BilinForm ℚ Q) (hT : T.Nondegenerate)
+    (L : Submodule ℤ Q) (hb : L = Submodule.span ℤ (Set.range b)) (integral : L ≤ T.dualSubmodule L) :
+    (L.toAddSubgroup.relIndex (T.dualSubmodule L).toAddSubgroup : ℚ) = |(toMatrix b T).det| := by
+  classical
+  let d := T.dualBasis hT b
+  have h := AddSubgroup.relIndex_eq_abs_det L.toAddSubgroup (T.dualSubmodule L).toAddSubgroup integral b d
+  have h₁ : L.toAddSubgroup = AddSubgroup.closure (Set.range b) := by
+    apply AddSubgroup.toIntSubmodule.injective
+    rw [AddSubgroup.toIntSubmodule_closure]
+    exact hb
+  have h₂ : (T.dualSubmodule L).toAddSubgroup = AddSubgroup.closure (Set.range d) := by
+    apply AddSubgroup.toIntSubmodule.injective
+    rw [AddSubgroup.toIntSubmodule_closure]
+    change T.dualSubmodule L = _
+    rw [hb, T.dualSubmodule_span_of_basis hT]
+  rw [h h₁ h₂, Basis.det_apply]
+  have e : d.toMatrix b = (toMatrix b T)ᵀ := by
+    ext i j
+    simp [d, Basis.toMatrix_apply, toMatrix_apply, T.dualBasis_repr_apply]
+  rw [e, det_transpose]
+
+end LinearMap.BilinForm
+
 namespace GroundTheory.Heights₂.Heights.FiniteCovolume
 
 open Module MeasureTheory Matrix
@@ -14,18 +96,33 @@ noncomputable section
 variable (Q V K : Type*) [AddCommGroup Q] [Module ℚ Q] [NormedAddCommGroup V] [NormedSpace ℝ V]
   [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] [Fintype K]
 
-theorem IntegralFormCovolume.proof : IntegralFormCovolume.Statement Q V K := by
+/-- In fixed real coordinates and Haar normalization, the squared covolume of a full
+integral rational lattice is proportional to its index in the bilinear dual. -/
+theorem IntegralFormCovolume.index_formula (ψ : Q →+ V) (e : Basis K ℚ Q)
+    (T : LinearMap.BilinForm ℚ Q) (μ : Measure V)
+    (hμ : μ.IsAddHaarMeasure) (hT : T.Nondegenerate)
+    (hli : LinearIndependent ℝ (fun k => ψ (e k))) (hrank : finrank ℝ V = Fintype.card K) :
+    ∃ C : ℝ, 0 < C ∧ ∀ L : AddSubgroup Q, L.FG → Submodule.span ℚ (L : Set Q) = ⊤ →
+      L.toIntSubmodule ≤ T.dualSubmodule L.toIntSubmodule →
+      ∃ _ : DiscreteTopology (AddSubgroup.toIntSubmodule (L.map ψ)),
+        IsZLattice ℝ (AddSubgroup.toIntSubmodule (L.map ψ)) ∧
+        ZLattice.covolume (AddSubgroup.toIntSubmodule (L.map ψ)) μ ^ 2 =
+          C * (L.relIndex (T.dualSubmodule L.toIntSubmodule).toAddSubgroup : ℝ) := by
   classical
-  intro ψ e T μ hμ hT hli hrank
   have : FiniteDimensional ℚ Q := Module.Finite.of_basis e
   have hQ : finrank ℚ Q = Fintype.card K := finrank_eq_card_basis e
   let b₀ : Basis K ℝ V := basisOfLinearIndependentOfCardEqFinrank' _ hli hrank.symm
   have hb₀ : ∀ i, b₀ i = ψ (e i) := fun i => by simp [b₀]
   have hGe : (LinearMap.BilinForm.toMatrix e T).det ≠ 0 :=
     (LinearMap.BilinForm.nondegenerate_iff_det_ne_zero e).1 hT
+  have := hμ
+  have hvol : 0 < μ.real (ZSpan.fundamentalDomain b₀) := by
+    rw [measureReal_def, ENNReal.toReal_pos_iff]
+    exact ⟨pos_iff_ne_zero.mpr (ZSpan.measure_fundamentalDomain_ne_zero b₀),
+      (ZSpan.fundamentalDomain_isBounded b₀).measure_lt_top⟩
   refine ⟨μ.real (ZSpan.fundamentalDomain b₀) ^ 2 /
-    |((LinearMap.BilinForm.toMatrix e T).det : ℝ)|, ?_⟩
-  intro L k hk hfg hspan _ hdual
+    |((LinearMap.BilinForm.toMatrix e T).det : ℝ)|, div_pos (sq_pos_of_pos hvol) (abs_pos.mpr (by exact_mod_cast hGe)), ?_⟩
+  intro L hfg hspan hint
   set M := AddSubgroup.toIntSubmodule L with hM
   have : Module.Finite ℤ M := Module.Finite.iff_fg.2 ((Submodule.fg_iff_addSubgroup_fg M).2 hfg)
   have : Module.IsTorsionFree ℤ Q := .trans_faithfulSMul ℤ ℚ Q
@@ -74,66 +171,40 @@ theorem IntegralFormCovolume.proof : IntegralFormCovolume.Statement Q V K := by
     congr 1
     simp [bx, Function.comp_def]
 
-  have hPk : P.det ^ 2 * |(LinearMap.BilinForm.toMatrix e T).det| ≤ |(k : ℚ)| ^ Fintype.card K := by
-    have hG : (LinearMap.BilinForm.toMatrix xq T).det =
-        P.det ^ 2 * (LinearMap.BilinForm.toMatrix e T).det := by
-      rw [← LinearMap.BilinForm.toMatrix_mul_basis_toMatrix e xq T, det_mul, det_mul, det_transpose]
-      ring
-    set d := T.dualBasis hT xq
-    have hd : ∀ i j, T (d i) (xq j) = if j = i then 1 else 0 :=
-      LinearMap.BilinForm.apply_dualBasis_left hT xq
-    have hc : ∀ i, ∃ c : K → ℤ, ∑ j, c j • xq j = k • d i := by
-      intro i
-      have hmem : k • d i ∈ L := hdual (d i) fun y hy => by
-        have hy' : y ∈ Submodule.span ℤ (Set.range fun j => xq j) := by rw [hspanx]; exact hy
-        obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℤ).1 hy'
-        exact ⟨c i, by simp [map_sum, hd]⟩
-      have hmem' : k • d i ∈ Submodule.span ℤ (Set.range fun j => xq j) := by
-        rw [hspanx]; exact hmem
-      exact (Submodule.mem_span_range_iff_exists_fun ℤ).1 hmem'
-    choose c₀ hc using hc
-    set c : Matrix K K ℤ := Matrix.of c₀ with hcdef
-    have hcG : c.map (Int.cast : ℤ → ℚ) * LinearMap.BilinForm.toMatrix xq T = (k : ℚ) • 1 := by
-      ext i l
-      have h1 := congrArg (fun y => T y (xq l)) (hc i)
-      simp [hd] at h1
-      rw [Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply]
-      simp only [Matrix.map_apply, LinearMap.BilinForm.toMatrix_apply, hcdef, Matrix.of_apply]
-      simpa [zsmul_eq_mul, eq_comm] using h1
-    have hdet := congrArg Matrix.det hcG
-    rw [det_mul, det_smul, det_one, mul_one, hG] at hdet
-    have hcd : (c.map (Int.cast : ℤ → ℚ)).det = (c.det : ℚ) := by
-      simpa using (RingHom.map_det (Int.castRingHom ℚ) c).symm
-    rw [hcd] at hdet
-    have hc0 : c.det ≠ 0 := by
-      rintro h0
-      rw [h0, Int.cast_zero, zero_mul] at hdet
-      exact pow_ne_zero _ (Int.cast_ne_zero.2 hk) hdet.symm
-    have h1 : (1 : ℚ) ≤ |(c.det : ℚ)| := by exact_mod_cast Int.one_le_abs hc0
-    calc P.det ^ 2 * |(LinearMap.BilinForm.toMatrix e T).det|
-        = |P.det ^ 2 * (LinearMap.BilinForm.toMatrix e T).det| := by
-          rw [abs_mul, abs_pow, sq_abs]
-      _ ≤ |(c.det : ℚ)| * |P.det ^ 2 * (LinearMap.BilinForm.toMatrix e T).det| :=
-          le_mul_of_one_le_left (abs_nonneg _) h1
-      _ = |(k : ℚ)| ^ Fintype.card K := by rw [← abs_mul, hdet, abs_pow]
-  have hPkR : (P.det : ℝ) ^ 2 * |((LinearMap.BilinForm.toMatrix e T).det : ℝ)| ≤
-      |(k : ℝ)| ^ Fintype.card K := by exact_mod_cast hPk
-
+  have hG : (LinearMap.BilinForm.toMatrix xq T).det =
+      P.det ^ 2 * (LinearMap.BilinForm.toMatrix e T).det := by
+    rw [← LinearMap.BilinForm.toMatrix_mul_basis_toMatrix e xq T, det_mul, det_mul, det_transpose]
+    ring
+  have indexq := T.relIndex_dual_eq_abs_det xq hT M hspanx.symm hint
+  rw [hG, abs_mul, abs_pow, sq_abs] at indexq
+  have hindex : (L.relIndex (T.dualSubmodule M).toAddSubgroup : ℝ) =
+      (P.det : ℝ) ^ 2 * |((LinearMap.BilinForm.toMatrix e T).det : ℝ)| := by exact_mod_cast indexq
   rw [hL]
   refine ⟨inferInstance, inferInstance, ?_⟩
-  have := hμ
   let bZ : Basis K ℤ (Submodule.span ℤ (Set.range bx)) :=
     Basis.span (bx.linearIndependent.restrict_scalars' ℤ)
   have hcoe : ((↑) ∘ bZ : K → V) = fun j => ψ (xq j) := funext fun i => by
     simp [bZ, Basis.span_apply, bx]
-  rw [ZLattice.covolume_eq_det_mul_measureReal _ μ bZ b₀, hcoe, hdetP, mul_pow, sq_abs,
-    div_mul_eq_mul_div, le_div_iff₀ (abs_pos.2 (by exact_mod_cast hGe))]
-  calc (P.det : ℝ) ^ 2 * μ.real (ZSpan.fundamentalDomain b₀) ^ 2 *
-        |((LinearMap.BilinForm.toMatrix e T).det : ℝ)|
-      = μ.real (ZSpan.fundamentalDomain b₀) ^ 2 *
-        ((P.det : ℝ) ^ 2 * |((LinearMap.BilinForm.toMatrix e T).det : ℝ)|) := by ring
-    _ ≤ μ.real (ZSpan.fundamentalDomain b₀) ^ 2 * |(k : ℝ)| ^ Fintype.card K :=
-        mul_le_mul_of_nonneg_left hPkR (sq_nonneg _)
+  rw [ZLattice.covolume_eq_det_mul_measureReal _ μ bZ b₀, hcoe, hdetP, hindex, mul_pow, sq_abs]
+  field_simp [ne_of_gt (abs_pos.2 (show ((LinearMap.BilinForm.toMatrix e T).det : ℝ) ≠ 0 by exact_mod_cast hGe))]
+
+theorem IntegralFormCovolume.proof : IntegralFormCovolume.Statement Q V K := by
+  intro ψ e T μ hμ hT hli hrank
+  have : FiniteDimensional ℚ Q := Module.Finite.of_basis e
+  obtain ⟨C, hC, hformula⟩ := IntegralFormCovolume.index_formula Q V K ψ e T μ hμ hT hli hrank
+  refine ⟨C, fun L k hk hfg hspan hint hdual => ?_⟩
+  obtain ⟨hd, hL, hvol⟩ := hformula L hfg hspan (fun x hx y hy => by
+    obtain ⟨n, hn⟩ := hint x hx y hy
+    exact Submodule.mem_one.mpr ⟨n, hn.symm⟩)
+  have hindex := T.relIndex_dual_le_pow_of_zsmul_mem hT L L hfg hspan k hk (fun y hy =>
+    hdual y fun x hx => by
+      obtain ⟨n, hn⟩ := Submodule.mem_one.mp (hy x hx)
+      exact ⟨n, hn.symm⟩)
+  refine ⟨hd, hL, hvol.trans_le (mul_le_mul_of_nonneg_left ?_ hC.le)⟩
+  rw [← finrank_eq_card_basis e]
+  have hbound : (L.relIndex (T.dualSubmodule L.toIntSubmodule).toAddSubgroup : ℝ) ≤
+      (k.natAbs : ℝ) ^ finrank ℚ Q := by exact_mod_cast hindex
+  simpa only [Nat.cast_natAbs, Int.cast_abs] using hbound
 
 end
 
