@@ -1,5 +1,6 @@
 module
 
+public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.LatticeNormTransport
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.MeasurePreservingOfAddEquiv
 
 @[expose] public section
@@ -12,6 +13,50 @@ open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureThe
 open scoped TensorProduct Matrix
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+
+namespace Shell
+
+variable {v : HeightOneSpectrum (𝓞 F)}
+
+/-- On the ultrametric open ball of contractive perturbations, left multiplication is an isometry. -/
+theorem one_add_mul_norm {n : ℕ} {C : ℝ}
+    (hm : ∀ a b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (a * b) ≤ C * nM v a * nM v b)
+    {x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (hx : C * nM v x < 1) (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
+    nM v ((1 + x) * b) = nM v b := by
+  by_cases hb : b = 0
+  · subst b; exact congrArg (nM v) (Matrix.mul_zero _)
+  calc
+    nM v ((1 + x) * b) = nM v (b + x * b) := by
+      apply congrArg (nM v)
+      exact (Matrix.add_mul _ _ _).trans (congrArg (fun m => m + x * b) (Matrix.one_mul b))
+    _ = nM v b := nM_add_eq_of_lt ?_
+  have hp := lt_of_le_of_ne (nM_nonneg b) (fun h => hb (nM_eq_zero.mp h.symm))
+  exact (hm x b).trans_lt (by simpa using mul_lt_mul_of_pos_right hx hp)
+
+/-- No determinant-radius hypothesis is needed. The inverse perturbation has exactly the same norm. -/
+theorem inverse_of_contractive {n : ℕ} {C : ℝ}
+    (hm : ∀ a b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (a * b) ≤ C * nM v a * nM v b)
+    {x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (hx : C * nM v x < 1) :
+    ∃ y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), (1 + x) * (1 + y) = 1 ∧ (1 + y) * (1 + x) = 1 ∧ nM v y = nM v x := by
+  let f := Algebra.lmul (Fv F v) _ (1 + x)
+  have hi : Function.Injective f := LinearMap.ker_eq_bot.mp <| by
+    rw [LinearMap.ker_eq_bot']
+    intro b hb
+    apply nM_eq_zero.mp
+    exact (one_add_mul_norm hm hx b).symm.trans ((congrArg (nM v) hb).trans nM_zero)
+  obtain ⟨u, hu⟩ : IsUnit (1 + x) := IsUnit.isUnit_iff_mulLeft_bijective.mpr
+    ⟨hi, LinearMap.injective_iff_surjective.mp hi⟩
+  let y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := ↑u⁻¹ - 1
+  have hy : 1 + y = ↑u⁻¹ := by dsimp [y]; abel
+  have hyL : (1 + x) * (1 + y) = 1 := by rw [hy, ← hu, Units.mul_inv]
+  refine ⟨y, hyL, by rw [hy, ← hu, Units.inv_mul], ?_⟩
+  have e : (1 + x) * y = -x := by
+    apply eq_neg_of_add_eq_zero_right
+    apply add_left_cancel (a := (1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)))
+    simpa only [add_zero, mul_add, mul_one, add_assoc] using hyL
+  exact (one_add_mul_norm hm hx y).symm.trans ((congrArg (nM v) e).trans (nM_neg x))
+
+end Shell
 
 namespace ShNu
 
@@ -46,38 +91,40 @@ theorem nM_transpose (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : nM v xᵀ 
 theorem inv_small {C : ℝ} (hC : ∀ x y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (x * y) ≤ C * nM v x * nM v y)
     {x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (hx : C * nM v x ≤ 1 / 2) (hu : IsUnit (1 + x).det) :
     nM v (((1 + x)⁻¹ - 1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) ≤ nM v x := by
-  set u : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := (1 + x)⁻¹ - 1 with hu_def
-  have hmul : (1 + x) * (1 + x)⁻¹ = 1 := Matrix.mul_nonsing_inv _ hu
-  have h1 : (1 + x) * (1 + u) = 1 := by rw [hu_def, add_sub_cancel]; exact hmul
-  have h2 : (1 + x) * (1 + u) = 1 + (u + (x + x * u)) := by noncomm_ring
-  rw [h2] at h1
-  have h3 : u + (x + x * u) = 0 := by simpa using h1
-  have h4 : u = -(x + x * u) := eq_neg_of_add_eq_zero_left h3
-  have e1 : nM v u = nM v (x + x * u) := by
-    conv_lhs => rw [h4]
-    exact nM_neg (v := v) ((x + x * u : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : Fin n → Fin n → Fv F v ⊗[F] E)
-  have hb : nM v u ≤ max (nM v x) (C * nM v x * nM v u) :=
-    calc nM v u = nM v (x + x * u) := e1
-      _ ≤ max (nM v x) (nM v (x * u)) := nM_add_le (v := v) (x : Fin n → Fin n → Fv F v ⊗[F] E) (x * u)
-      _ ≤ max (nM v x) (C * nM v x * nM v u) := max_le_max le_rfl (hC _ _)
-  by_contra hcon
-  push Not at hcon
-  have hx0 := nM_nonneg (v := v) x
-  rcases le_max_iff.1 hb with h | h
-  · linarith
-  · have : nM v u ≤ 1 / 2 * nM v u := h.trans (mul_le_mul_of_nonneg_right hx (nM_nonneg _))
-    linarith
+  obtain ⟨y, hxy, _, hy⟩ := Shell.inverse_of_contractive hC (hx.trans_lt (by norm_num))
+  rw [Matrix.right_inv_eq_right_inv (Matrix.mul_nonsing_inv _ hu) hxy]
+  exact ((congrArg (nM v) (show 1 + y - 1 = y by abel)).trans hy).le
+
+/-- A contractive perturbation maps a lattice onto itself as soon as the same closed ball
+maps it into itself. Its inverse perturbation has exactly the same coordinate norm. -/
+theorem image_one_add_of_contractive {L : AddSubgroup (Fin n → Fv F v ⊗[F] E)} {r C : ℝ}
+    (hstab : ∀ d : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v d ≤ r →
+      ∀ z ∈ L, (1 + d).mulVec z ∈ L)
+    (hm : ∀ a b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (a * b) ≤ C * nM v a * nM v b)
+    {x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (hx : C * nM v x < 1) (hr : nM v x ≤ r) :
+    IsUnit (1 + x).det ∧ L.map (Matrix.mulVecLin (1 + x)).toAddMonoidHom = L := by
+  obtain ⟨y, hxy, _, hy⟩ := Shell.inverse_of_contractive hm hx
+  refine ⟨Matrix.isUnit_det_of_right_inverse hxy, SetLike.ext' (Set.Subset.antisymm ?_ ?_)⟩
+  · rintro _ ⟨z, hz, rfl⟩
+    exact hstab x hr z hz
+  · intro z hz
+    refine ⟨(1 + y).mulVec z, hstab y (hy.le.trans hr) z hz, ?_⟩
+    change (1 + x).mulVec ((1 + y).mulVec z) = z
+    rw [Matrix.mulVec_mulVec, hxy, Matrix.one_mulVec]
+
 
 def cs (σ : E →ₐ[F] E) (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) :=
   (x.map (sigR (Fv F v) σ))ᵀ
 
-theorem cs_one_add (σ : E →ₐ[F] E) (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
+theorem cs_one_add {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+    {v : HeightOneSpectrum (𝓞 F)} {n : ℕ} (σ : E →ₐ[F] E) (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
     cs σ (1 + x) = 1 + cs σ x := by
   simp only [cs]
   rw [Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_add,
     Matrix.transpose_one]
 
-theorem isUnit_det_cs (σ : E →ₐ[F] E) {a : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (ha : IsUnit a.det) :
+theorem isUnit_det_cs {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+    {v : HeightOneSpectrum (𝓞 F)} {n : ℕ} (σ : E →ₐ[F] E) {a : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (ha : IsUnit a.det) :
     IsUnit (cs σ a).det := by
   simp only [cs, Matrix.det_transpose]
   have : (a.map (sigR (Fv F v) σ)).det = sigR (Fv F v) σ a.det := (RingHom.map_det _ _).symm
@@ -112,86 +159,39 @@ end ShNu
 
 
 open ShNu in
-theorem lattice_norm_conj_invariant (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {n : ℕ}
-    (lam : Measure (Fin n → Fv F v ⊗[F] E)) [lam.IsAddHaarMeasure] (L₁ L₂ : AddSubgroup (Fin n → Fv F v ⊗[F] E))
-    (h₁ : IsCO L₁) (h₂ : IsCO L₂) :
+theorem lattice_norm_conj_invariant (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) :
+    (hcm : IsCMExt F E σ) → {n : ℕ} → (lam : Measure (Fin n → Fv F v ⊗[F] E)) → [lam.IsAddHaarMeasure] →
+    (L₁ L₂ : AddSubgroup (Fin n → Fv F v ⊗[F] E)) → (h₁ : IsCO L₁) → (h₂ : IsCO L₂) →
     ∃ r > 0, ∀ x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v x ≤ r → ∀ B : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E),
-      nu2 lam L₁ L₂ (((1 + x).map (sigR (Fv F v) σ))ᵀ * B * (1 + x)) = nu2 lam L₁ L₂ B := by
+      nu2 lam L₁ L₂ (((1 + x).map (sigR (Fv F v) σ))ᵀ * B * (1 + x)) = nu2 lam L₁ L₂ B := fun _ {n} lam _ L₁ L₂ h₁ h₂ => by
   obtain ⟨Cm, hCm0, hCm⟩ := exists_nM_mul v (E := E) n n n
   obtain ⟨Cs, hCs0, hCs⟩ := exists_nM_sig v σ n n
-  obtain ⟨rd, hrd, hdet⟩ := exists_isUnit_det v (E := E) n
   obtain ⟨r₁, hr₁, hst₁⟩ := stable v h₁
   obtain ⟨r₂, hr₂, hst₂⟩ := stable v h₂
-  set rh : ℝ := 1 / (2 * (Cm + 1)) with hrh
-  have hrh0 : 0 < rh := by positivity
-  have hrhC : ∀ t, 0 ≤ t → t ≤ rh → Cm * t ≤ 1 / 2 := by
-    intro t ht0 ht
-    calc Cm * t ≤ (Cm + 1) * rh := mul_le_mul (by linarith) ht ht0 (by linarith)
-      _ = 1 / 2 := by rw [hrh]; field_simp
-  refine ⟨min (min rd rh) (min r₂ (min r₁ rh / (Cs + 1))), by positivity, fun x hx B => ?_⟩
-  have hx0 := nM_nonneg (v := v) x
-  have hxd : nM v x ≤ rd := hx.trans ((min_le_left _ _).trans (min_le_left _ _))
-  have hxh : nM v x ≤ rh := hx.trans ((min_le_left _ _).trans (min_le_right _ _))
-  have hx2 : nM v x ≤ r₂ := hx.trans ((min_le_right _ _).trans (min_le_left _ _))
-  have hxs : nM v x ≤ min r₁ rh / (Cs + 1) := hx.trans ((min_le_right _ _).trans (min_le_right _ _))
-
+  let u := max 1 Cs
+  have hu : 1 ≤ u := le_max_left _ _
+  let rh := 1 / (Cm + 1)
+  have hrh : 0 < rh := by dsimp [rh]; positivity
+  have hsmall {t : ℝ} (ht : t ≤ rh) : Cm * t < 1 :=
+    (mul_le_mul_of_nonneg_left ht hCm0).trans_lt (by
+      change Cm * (1 / (Cm + 1)) < 1
+      rw [mul_one_div]
+      exact (div_lt_one (by linarith)).mpr (by linarith))
+  refine ⟨min r₂ (min r₁ rh / u), lt_min hr₂ (div_pos (lt_min hr₁ hrh) (by linarith)), fun x hx B => ?_⟩
+  have hx₂ := hx.trans (min_le_left _ _)
+  have hx' := (le_div_iff₀ (show 0 < u by linarith)).mp (hx.trans (min_le_right _ _))
+  have hxm : nM v x ≤ min r₁ rh := (le_mul_of_one_le_right (nM_nonneg x) hu).trans hx'
   have hcs : nM v (cs σ x) ≤ min r₁ rh := by
     calc nM v (cs σ x) = nM v (x.map (sigR (Fv F v) σ)) := nM_transpose _
-      _ ≤ Cs * nM v x := hCs x
-      _ ≤ (Cs + 1) * nM v x := by nlinarith
-      _ ≤ min r₁ rh := by
-          rw [le_div_iff₀ (by linarith)] at hxs; linarith
-  have hcs0 := nM_nonneg (v := v) (cs σ x)
-  have hcs1 : nM v (cs σ x) ≤ r₁ := hcs.trans (min_le_left _ _)
-  have hcsh : nM v (cs σ x) ≤ rh := hcs.trans (min_le_right _ _)
-
-  set a : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := 1 + x with ha_def
-  have ha : IsUnit a.det := hdet x hxd
-  have has : IsUnit (cs σ a).det := isUnit_det_cs σ ha
-  have has' : IsUnit (1 + cs σ x).det := by rw [← cs_one_add]; exact has
-  have hai : nM v ((a⁻¹ - 1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) ≤ r₂ :=
-    (inv_small hCm (hrhC _ hx0 hxh) ha).trans hx2
-  have hasi : nM v (((cs σ a)⁻¹ - 1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) ≤ r₁ := by
-    rw [ha_def, cs_one_add]; exact (inv_small hCm (hrhC _ hcs0 hcsh) has').trans hcs1
-  have hsplit : ∀ P : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), P = 1 + (P - 1) := fun P => by abel
-  have hL2a : ∀ y ∈ L₂, a.mulVec y ∈ L₂ := hst₂ x hx2
-  have hL2ai : ∀ y ∈ L₂, a⁻¹.mulVec y ∈ L₂ := by rw [hsplit a⁻¹]; exact hst₂ _ hai
-  have hL1as : ∀ y ∈ L₁, (cs σ a).mulVec y ∈ L₁ := by rw [ha_def, cs_one_add]; exact hst₁ _ hcs1
-  have hL1asi : ∀ y ∈ L₁, (cs σ a)⁻¹.mulVec y ∈ L₁ := by rw [hsplit (cs σ a)⁻¹]; exact hst₁ _ hasi
-
-  have hPQ : (cs σ a)⁻¹ * cs σ a = 1 := Matrix.nonsing_inv_mul _ has
-  have hQP : cs σ a * (cs σ a)⁻¹ = 1 := Matrix.mul_nonsing_inv _ has
-  set e := mulVecEquiv _ _ hPQ hQP with he
-  have hmp : MeasurePreserving e lam lam := by
-    refine measurePreserving_of_addEquiv lam e (Continuous.matrix_mulVec continuous_const continuous_id)
-      (Continuous.matrix_mulVec continuous_const continuous_id) (L₁ : Set (Fin n → Fv F v ⊗[F] E)) h₁.2
-      (by rw [h₁.1.interior_eq]; exact ⟨0, L₁.zero_mem⟩) ?_
-    ext y
-    simp only [Set.mem_preimage, SetLike.mem_coe, he, mulVecEquiv, AddEquiv.coe_mk, Equiv.coe_fn_mk]
-    constructor
-    · intro hy
-      have := hL1as _ hy
-      rwa [Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec] at this
-    · exact hL1asi y
-
-  have hset : Sx L₁ L₂ ((a.map (sigR (Fv F v) σ))ᵀ * B * a) = e ⁻¹' Sx L₁ L₂ B := by
-    have hcsa : (a.map (sigR (Fv F v) σ))ᵀ = cs σ a := rfl
-    rw [hcsa]
-    ext z
-    simp only [Sx, Set.mem_preimage, Set.mem_setOf_eq, he, mulVecEquiv, AddEquiv.coe_mk, Equiv.coe_fn_mk]
-    constructor
-    · rintro ⟨y, hy, y', hy', rfl⟩
-      refine ⟨(cs σ a)⁻¹.mulVec y, hL1asi y hy, a.mulVec y', hL2a y' hy', ?_⟩
-      rw [Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPQ,
-        Matrix.one_mul]
-    · rintro ⟨y, hy, y', hy', hz⟩
-      refine ⟨(cs σ a).mulVec y, hL1as y hy, a⁻¹.mulVec y', hL2ai y' hy', ?_⟩
-      have hz' : z = (cs σ a).mulVec ((cs σ a)⁻¹.mulVec z) := by
-        rw [Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec]
-      rw [hz', hz, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc,
-        Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ha, Matrix.mul_one]
-  have hmeas := hmp.measure_preimage (measurableSet_Sx h₁ h₂ B).nullMeasurableSet
-  show (lam (Sx L₁ L₂ ((a.map (sigR (Fv F v) σ))ᵀ * B * a)) / lam L₁).toReal = (lam (Sx L₁ L₂ B) / lam L₁).toReal
-  rw [hset, hmeas]
+         _ ≤ Cs * nM v x := hCs x
+         _ ≤ u * nM v x := mul_le_mul_of_nonneg_right (le_max_right _ _) (nM_nonneg x)
+         _ ≤ min r₁ rh := by rwa [mul_comm]
+  have ha := image_one_add_of_contractive hst₂ hCm (hsmall (hxm.trans (min_le_right _ _))) hx₂
+  have hs := image_one_add_of_contractive hst₁ hCm (hsmall (hcs.trans (min_le_right _ _))) (hcs.trans (min_le_left _ _))
+  rw [← cs_one_add] at hs
+  change nu2 lam L₁ L₂ (cs σ (1 + x) * B * (1 + x)) = _
+  simpa only [hs.2, ha.2] using
+    GlobalTheory.CompanionTheory.SwFinM.lattice_norm_matrix_transport lam L₁ L₂
+      (cs σ (1 + x)) _ B (1 + x) (Matrix.mul_nonsing_inv _ hs.1) (Matrix.nonsing_inv_mul _ hs.1)
 
 end PositivityTheory.SiegelWeilFormula.SwLocFin

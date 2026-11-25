@@ -27,19 +27,17 @@ theorem sigma_sigma (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   rw [hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]
 
 theorem sigR_sigR (hcm : IsCMExt F E σ) (a : Fv F v ⊗[F] E) : sigR (Fv F v) σ (sigR (Fv F v) σ a) = a := by
-  induction a using TensorProduct.induction_on with
-  | zero => simp
+  induction a using TensorProduct.inductionOn with
   | tmul k e => simp [sigR, sigma_sigma hcm]
   | add x y hx hy => simp only [map_add (f := _), hx, hy]
 
 def sigE (hcm : IsCMExt F E σ) : (Fv F v ⊗[F] E) ≃ₐ[Fv F v] (Fv F v ⊗[F] E) :=
   AlgEquiv.ofAlgHom (Algebra.TensorProduct.map (AlgHom.id (Fv F v) (Fv F v)) σ)
     (Algebra.TensorProduct.map (AlgHom.id (Fv F v) (Fv F v)) σ)
-    (by ext <;> simp [sigma_sigma hcm]) (by ext <;> simp [sigma_sigma hcm])
+    (by ext; simp [sigma_sigma hcm]) (by ext; simp [sigma_sigma hcm])
 
 theorem sigE_apply (hcm : IsCMExt F E σ) (a : Fv F v ⊗[F] E) : sigE hcm a = sigR (Fv F v) σ a := by
-  induction a using TensorProduct.induction_on with
-  | zero => simp
+  induction a using TensorProduct.inductionOn with
   | tmul k e => simp [sigE, sigR]
   | add x y hx hy => simp only [map_add (f := _), hx, hy]
 
@@ -234,59 +232,79 @@ theorem mul_le_half_of_small {C r : ℝ} (hC : 0 ≤ C) (hr : r ≤ 1 / (2 * (C 
   nlinarith
 
 
+/-- Congruence preserves the coordinate norm as soon as both one-sided perturbations contract. -/
+theorem normPres_of_contractive (σ : E →ₐ[F] E) {n : ℕ} {C : ℝ}
+    (hm : ∀ a b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (a * b) ≤ C * nM v a * nM v b)
+    {x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)}
+    (hx : C * nM v x < 1) (hs : C * nM v (cs σ x) < 1) (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
+    nM v (cs σ (1 + x) * b * (1 + x)) = nM v b := by
+  let N : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) → ℝ := nM v
+  calc
+    _ = N ((1 + cs σ x) * (b * (1 + x))) := by
+      apply congrArg N
+      rw [cs_add, cs_one]
+      exact Matrix.mul_assoc _ _ _
+    _ = N (b * (1 + x)) := one_add_mul_norm hm hs _
+    _ = N (b + b * x) := by
+      apply congrArg N
+      rw [Matrix.mul_add, Matrix.mul_one]
+    _ = N b := ?_
+  by_cases hb : b = 0
+  · simp [hb]
+  apply nM_add_eq_of_lt
+  have hp := lt_of_le_of_ne (nM_nonneg b) (fun h => hb (nM_eq_zero.mp h.symm))
+  exact (hm b x).trans_lt (by simpa [mul_right_comm] using mul_lt_mul_of_pos_right hx hp)
+
+/-- Both conclusions hold on an explicit closed ball in the original coordinate norm. -/
+theorem common_radius_of_bounds (σ : E →ₐ[F] E) {n : ℕ} {Cm Cs : ℝ} (hm0 : 0 ≤ Cm)
+    (hm : ∀ a b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (a * b) ≤ Cm * nM v a * nM v b)
+    (hs : ∀ a : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (cs σ a) ≤ Cs * nM v a)
+    {x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (hx : nM v x ≤ 1 / (Cm * max 1 Cs + 1)) :
+      (∀ b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (cs σ (1 + x) * b * (1 + x)) = nM v b) ∧
+      ∃ y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), (1 + x) * (1 + y) = 1 ∧
+        (1 + y) * (1 + x) = 1 ∧ nM v y = nM v x := by
+  let C := Cm * max 1 Cs
+  change nM v x ≤ 1 / (C + 1) at hx
+  have hC : 0 ≤ C := mul_nonneg hm0 (zero_le_one.trans (le_max_left _ _))
+  have hlt : C * nM v x < 1 := by
+    exact (mul_le_mul_of_nonneg_left hx hC).trans_lt (by rw [mul_one_div]; exact (div_lt_one (by linarith)).mpr (by linarith))
+  have hx' : Cm * nM v x < 1 :=
+    (mul_le_mul_of_nonneg_right (le_mul_of_one_le_right hm0 (le_max_left _ _)) (nM_nonneg x)).trans_lt hlt
+  have hs' : Cm * nM v (cs σ x) < 1 := by
+    calc Cm * nM v (cs σ x) ≤ Cm * (Cs * nM v x) := mul_le_mul_of_nonneg_left (hs x) hm0
+      _ ≤ C * nM v x := by
+        unfold C
+        rw [← mul_assoc]
+        exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (le_max_right 1 Cs) hm0) (nM_nonneg x)
+      _ < 1 := hlt
+  exact ⟨normPres_of_contractive σ hm hx' hs', inverse_of_contractive hm hx'⟩
+
+/-- A single positive radius for the congruence and inverse steps in shell cancellation. -/
+theorem common_radius (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (n : ℕ) :
+    ∃ r > 0, ∀ x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v x ≤ r →
+      (∀ b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (cs σ (1 + x) * b * (1 + x)) = nM v b) ∧
+      ∃ y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), (1 + x) * (1 + y) = 1 ∧
+        (1 + y) * (1 + x) = 1 ∧ nM v y = nM v x := by
+  obtain ⟨Cm, hm0, hm⟩ := exists_nM_mul (E := E) v n n n
+  obtain ⟨Cs, hs0, hs⟩ := exists_nM_cs v σ n n
+  exact ⟨1 / (Cm * max 1 Cs + 1), by positivity, fun _ => common_radius_of_bounds σ hm0 hm hs⟩
+
 variable (v) in
 theorem exists_normPres (σ : E →ₐ[F] E) (n : ℕ) : ∃ r > 0, ∀ x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E),
     nM v x ≤ r → ∀ b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (cs σ (1 + x) * b * (1 + x)) = nM v b := by
-  obtain ⟨C, hC, h⟩ := exists_nM_pert v σ n
-  refine ⟨min 1 (1 / (2 * (C + 1))), by positivity, fun x hx b => ?_⟩
-  have hx1 : nM v x ≤ 1 := hx.trans (min_le_left _ _)
-  have hsm : C * nM v x ≤ 1 / 2 := mul_le_half_of_small hC (hx.trans (min_le_right _ _)) (nM_nonneg x)
-  refine (congrArg (nM v) ((expand b x).trans (add_assoc _ _ _))).trans ?_
-  rcases (nM_nonneg (v := v) b).lt_or_eq with hb | hb
-  · apply nM_add_eq_of_lt
-    refine (h x b hx1).trans_lt ?_
-    have : C * nM v x * nM v b ≤ 1 / 2 * nM v b := mul_le_mul_of_nonneg_right hsm hb.le
-    linarith
-  · have : b = 0 := nM_eq_zero.1 hb.symm
-    subst this; simp
-
+  obtain ⟨r, hr, h⟩ := common_radius v σ n
+  exact ⟨r, hr, fun x hx => (h x hx).1⟩
 
 variable (v) in
 theorem exists_inv (n : ℕ) : ∃ r > 0, ∀ x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v x ≤ r →
     ∃ x' : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), (1 + x) * (1 + x') = 1 ∧ (1 + x') * (1 + x) = 1 ∧
       nM v x' ≤ nM v x := by
-  obtain ⟨r₀, hr₀, hdet⟩ := exists_isUnit_det (E := E) v n
   obtain ⟨Cm, hCm, hm⟩ := exists_nM_mul (E := E) v n n n
-  refine ⟨min r₀ (1 / (2 * (Cm + 1))), by positivity, fun x hx => ?_⟩
-  have hu := hdet x (hx.trans (min_le_left _ _))
-  have hsm : Cm * nM v x ≤ 1 / 2 := mul_le_half_of_small hCm (hx.trans (min_le_right _ _)) (nM_nonneg x)
-  obtain ⟨x', hx'⟩ : ∃ x' : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), x' = (1 + x)⁻¹ - 1 := ⟨_, rfl⟩
-  have h1 : (1 + x) * (1 + x') = 1 := by rw [hx', add_sub_cancel, Matrix.mul_nonsing_inv _ hu]
-  have h1' : (1 + x') * (1 + x) = 1 := by rw [hx', add_sub_cancel, Matrix.nonsing_inv_mul _ hu]
-  refine ⟨x', h1, h1', ?_⟩
-  clear hx'
-  have h3 : x' + (x + x * x') = 0 := by
-    have h5 := h1
-    simp only [add_mul, one_mul, mul_add, mul_one] at h5
-    rw [add_assoc] at h5
-    have h6 := add_eq_left.1 h5
-    rw [← h6]; abel
-  have h7 : x' = -(x + x * x') := eq_neg_of_add_eq_zero_left h3
-  have h4 : nM v x' = nM v (x + x * x') := by
-    conv_lhs => rw [h7]
-    exact nMm_neg _
-  have e1 : nM v (x + x * x') ≤ max (nM v x) (nM v (x * x')) := nMm_add_le x (x * x')
-  have e2 : nM v (x * x') ≤ Cm * nM v x * nM v x' := hm x x'
-  have hle : nM v x' ≤ max (nM v x) (Cm * nM v x * nM v x') :=
-    h4.le.trans (e1.trans (max_le_max le_rfl e2))
-  by_contra hlt
-  rw [not_le] at hlt
-  have hpos : 0 < nM v x' := lt_of_le_of_lt (nM_nonneg x) hlt
-  rcases le_max_iff.1 hle with h | h
-  · linarith
-  · have : Cm * nM v x * nM v x' ≤ 1 / 2 * nM v x' := mul_le_mul_of_nonneg_right hsm hpos.le
-    linarith
-
+  refine ⟨1 / (Cm + 1), by positivity, fun x hx => ?_⟩
+  have hlt : Cm * nM v x < 1 :=
+    (mul_le_mul_of_nonneg_left hx hCm).trans_lt (by rw [mul_one_div]; exact (div_lt_one (by linarith)).mpr (by linarith))
+  obtain ⟨y, h1, h2, hy⟩ := inverse_of_contractive hm hlt
+  exact ⟨y, h1, h2, hy.le⟩
 
 variable (v) in
 theorem exists_quad (σ : E →ₐ[F] E) {n : ℕ} (T : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
@@ -328,8 +346,8 @@ theorem nM_single_le {p q : ℕ} (i : Fin p) (j : Fin q) (w : Fv F v ⊗[F] E) :
     nM v (Matrix.single i j w) ≤ nA v w := by
   refine (nM_le_iff (nA_nonneg w)).2 fun i' j' => ?_
   by_cases h : i = i' ∧ j = j'
-  · rw [Matrix.single_apply, if_pos h]
-  · rw [Matrix.single_apply, if_neg h, nA_zero]; exact nA_nonneg w
+  · rw [Matrix.single_apply, ite_eq_left h]
+  · rw [Matrix.single_apply, ite_eq_right h, nA_zero]; exact nA_nonneg w
 
 
 variable (v) in
@@ -478,11 +496,11 @@ theorem setIntegral_conj (hcm : IsCMExt F E σ) {n : ℕ} (νv : Measure (HermR 
     { toEquiv := e.toEquiv, continuous_toFun := hc, continuous_invFun := hc' }
   have hn : ∀ b : HermR (Fv F v) σ n, nM v (e b).1 = nM v b.1 := fun b => hpres b.1
   have hB : e ⁻¹' {b : HermR (Fv F v) σ n | nM v b.1 ≤ 1} = {b | nM v b.1 ≤ 1} := by
-    ext b; simp only [Set.mem_preimage, Set.mem_setOf_eq]; rw [hn]
+    ext b; simp only [Set.mem_preimage, Set.mem_ofPred_eq]; rw [hn]
   have hmp : MeasurePreserving e νv νv := measurePreserving_of_addEquiv νv e hc hc' _ (isCompact_ballH n 1)
     (by rw [(isOpen_ballH n one_pos).interior_eq]; exact ⟨0, (le_of_eq nM_zero).trans zero_le_one⟩) hB
   have hS : e ⁻¹' {b : HermR (Fv F v) σ n | P (nM v b.1)} = {b | P (nM v b.1)} := by
-    ext b; simp only [Set.mem_preimage, Set.mem_setOf_eq]; rw [hn]
+    ext b; simp only [Set.mem_preimage, Set.mem_ofPred_eq]; rw [hn]
   exact setIntegral_comp_eq νv eh.toMeasurableEquiv hmp _ hSm hS f
 
 instance measMat (n : ℕ) : MeasurableSpace (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :=
@@ -498,7 +516,7 @@ def ballSub (n : ℕ) (r : ℝ) (hr : 0 ≤ r) : AddSubgroup (Matrix (Fin n) (Fi
   carrier := {x | nM v x ≤ r}
   zero_mem' := (le_of_eq nM_zero).trans hr
   add_mem' {x y} hx hy := (nMm_add_le x y).trans (max_le hx hy)
-  neg_mem' {x} hx := by simpa [Set.mem_setOf_eq, nMm_neg] using hx
+  neg_mem' {x} hx := by simpa [Set.mem_ofPred_eq, nMm_neg] using hx
 
 def chi (ψ : AddChar (AF F) ℂ) {n : ℕ} (T b : HermR (Fv F v) σ n) (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : ℂ :=
   psiV F ψ v (-Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (Matrix.trace (T.1 * b.1 * x)))
@@ -525,18 +543,17 @@ theorem shellP_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
     (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) (q : ℝ) (hq : 1 < q) : ∃ R₀ : ℝ, ∀ R : ℝ, R₀ ≤ R → ∀ z : ℂ,
       ∫ b in {b : HermR (Fv F v) σ n | R < nM v b.1 ∧ nM v b.1 ≤ q * R},
         whI (Fv F v) σ J (psiV F ψ v) μv Φv (nu2 lam L₁ L₂) T.1 z b ∂νv = 0 := by
-  haveI : νv.IsAddHaarMeasure := h.sdH.1
-  haveI : μv.IsAddHaarMeasure := h.sdW.1
-  haveI : lam.IsAddHaarMeasure := h.haar
-  obtain ⟨r1, hr1, hpres⟩ := exists_normPres v σ n
-  obtain ⟨r2, hr2, hinv⟩ := exists_inv (E := E) v n
+  have : νv.IsAddHaarMeasure := h.sdH.1
+  have : μv.IsAddHaarMeasure := h.sdW.1
+  have : lam.IsAddHaarMeasure := h.haar
+  obtain ⟨r1, hr1, hball⟩ := common_radius v σ n
   obtain ⟨r3, hr3, hJ⟩ := jtR_conj_inv v σ h.cm J (psiV F ψ v) μv Φv h.sb
   obtain ⟨r4, hr4, hnu⟩ := lattice_norm_conj_invariant v σ h.cm lam L₁ L₂ h.co₁ h.co₂
   obtain ⟨Cq, hCq, hquad⟩ := exists_quad v σ T.1
   obtain ⟨Cν, hCν, hnt⟩ := exists_nontriv v σ h.cm h.chr T.1 h.unit
   obtain ⟨ε, hε, hsmall⟩ := exists_psiV_small (v := v) h.chr
-  set r0 := min (min r1 r2) (min r3 r4) with hr0def
-  have hr0 : 0 < r0 := lt_min (lt_min hr1 hr2) (lt_min hr3 hr4)
+  set r0 := min r1 (min r3 r4) with hr0def
+  have hr0 : 0 < r0 := lt_min hr1 (lt_min hr3 hr4)
   refine ⟨max (max (Cν / r0) (Cq * Cν ^ 2 * q / ε)) 1, fun R hR z => ?_⟩
   have hR1 : 1 ≤ R := (le_max_right _ _).trans hR
   have hRpos : 0 < R := lt_of_lt_of_le one_pos hR1
@@ -546,19 +563,18 @@ theorem shellP_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   have hrpos : 0 < r := div_pos hCν hRpos
   have hrr0 : r ≤ r0 := by rw [hrdef, div_le_iff₀ hRpos, mul_comm]; rwa [div_le_iff₀ hr0] at hRa
   have hrle : ∀ x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v x ≤ r →
-      nM v x ≤ r1 ∧ nM v x ≤ r2 ∧ nM v x ≤ r3 ∧ nM v x ≤ r4 := fun x hx =>
-    ⟨hx.trans (hrr0.trans ((min_le_left _ _).trans (min_le_left _ _))),
-     hx.trans (hrr0.trans ((min_le_left _ _).trans (min_le_right _ _))),
+      nM v x ≤ r1 ∧ nM v x ≤ r3 ∧ nM v x ≤ r4 := fun x hx =>
+    ⟨hx.trans (hrr0.trans (min_le_left _ _)),
      hx.trans (hrr0.trans ((min_le_right _ _).trans (min_le_left _ _))),
      hx.trans (hrr0.trans ((min_le_right _ _).trans (min_le_right _ _)))⟩
 
   let x' : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) → Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := fun x =>
-    if hx : nM v x ≤ r then Classical.choose (hinv x (hrle x hx).2.1) else -x
+    if hx : nM v x ≤ r then Classical.choose ((hball x (hrle x hx).1).2) else -x
   have hx'1 : ∀ x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v x ≤ r →
       (1 + x) * (1 + x' x) = 1 ∧ (1 + x' x) * (1 + x) = 1 := by
     intro x hx
-    have hs := Classical.choose_spec (hinv x (hrle x hx).2.1)
-    simp only [x', dif_pos hx]
+    have hs := Classical.choose_spec ((hball x (hrle x hx).1).2)
+    simp only [x', dite_eq_left hx]
     exact ⟨hs.1, hs.2.1⟩
   let φ : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) → HermR (Fv F v) σ n → HermR (Fv F v) σ n := fun x b =>
     if hx : nM v x ≤ r then conjE h.cm (1 + x) (1 + x' x) (hx'1 x hx).1 (hx'1 x hx).2 b else b
@@ -574,7 +590,7 @@ theorem shellP_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
     ⟨Measure.addHaar, inferInstance⟩
   have hUo : IsOpen (U : Set (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) := isOpen_ballM hrpos
   have hU0 : m U ≠ 0 := hUo.measure_ne_zero m ⟨0, (le_of_eq nM_zero).trans hrpos.le⟩
-  haveI := hm
+  have := hm
   have hUf : m U ≠ ⊤ := (show IsCompact (U : Set (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) from
     isCompact_ballM r).measure_lt_top.ne
   refine avg_zero νv m (U : Set (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) S
@@ -584,21 +600,21 @@ theorem shellP_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
     intro x hx
     have hx0 : nM v x ≤ r := hx
     have e1 : ∀ b, φ x b = conjE h.cm (1 + x) (1 + x' x) (hx'1 x hx0).1 (hx'1 x hx0).2 b := fun b => by
-      simp only [φ, dif_pos hx0]
+      simp only [φ, dite_eq_left hx0]
     simp only [e1]
-    exact setIntegral_conj h.cm νv x (x' x) (hx'1 x hx0).1 (hx'1 x hx0).2 (fun b => hpres x (hrle x hx0).1 b)
+    exact setIntegral_conj h.cm νv x (x' x) (hx'1 x hx0).1 (hx'1 x hx0).2 (fun b => (hball x (hrle x hx0).1).1 b)
       (fun t => R < t ∧ t ≤ q * R) hSm _
   ·
     intro x hx b hb
     have hx0 : nM v x ≤ r := hx
     have e1 : φ x b = conjE h.cm (1 + x) (1 + x' x) (hx'1 x hx0).1 (hx'1 x hx0).2 b := by
-      simp only [φ, dif_pos hx0]
+      simp only [φ, dite_eq_left hx0]
     rw [e1]
     have hval : (conjE h.cm (1 + x) (1 + x' x) (hx'1 x hx0).1 (hx'1 x hx0).2 b).1 = conjM σ (1 + x) b.1 := rfl
     have hnu' : nu2 lam L₁ L₂ (conjM σ (1 + x) b.1) = nu2 lam L₁ L₂ b.1 :=
-      hnu x (hrle x hx0).2.2.2 b.1
+      hnu x (hrle x hx0).2.2 b.1
     have hJ' : jtR (Fv F v) σ J (psiV F ψ v) μv Φv (conjE h.cm (1 + x) (1 + x' x) (hx'1 x hx0).1 (hx'1 x hx0).2 b) =
-        jtR (Fv F v) σ J (psiV F ψ v) μv Φv b := hJ x (hrle x hx0).2.2.1 b _ hval
+        jtR (Fv F v) σ J (psiV F ψ v) μv Φv b := hJ x (hrle x hx0).2.1 b _ hval
     have hq1 : psiV F ψ v (-trPair (Fv F v) T.1 (cs σ x * b.1 * x)) = 1 := by
       apply hsmall
       rw [norm_neg]
@@ -626,7 +642,7 @@ theorem shellP_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
 
 end Shell
 
-theorem shellP : ShellP := fun F E _ _ _ _ _ σ M J n ψ v μv νv lam L₁ L₂ Φv g T h q hq =>
+theorem shellP : ShellP := fun _ _ _ _ _ _ _ σ M J n ψ v μv νv lam L₁ L₂ Φv g T h q hq =>
   Shell.shellP_core σ M J n ψ v μv νv lam L₁ L₂ Φv g T h q hq
 
 end PositivityTheory.SiegelWeilFormula.SwLocFin
