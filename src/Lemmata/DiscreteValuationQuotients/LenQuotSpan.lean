@@ -9,40 +9,16 @@ universe u_1 u_2
 namespace Bl.DiscreteValuationQuotients
 
 private lemma lenQuotSpan {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    {x : O} (hx : x ≠ 0) :
-    Module.length O (O ⧸ Ideal.span ({x} : Set O)) = IsDiscreteValuationRing.addVal O x := by
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  obtain ⟨n, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hϖ
-  rw [IsDiscreteValuationRing.addVal_def' u hϖ n, Ideal.span_singleton_mul_left_unit u.isUnit,
-    ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq,
-    IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]
+    (x : O) : Module.length O (O ⧸ Ideal.span ({x} : Set O)) =
+      IsDiscreteValuationRing.addVal O x := by
+  rw [Module.length_quotient, ← Order.coheight_orderIso (IsDiscreteValuationRing.idealOrderIsoENat O)]
+  exact (Order.height_enat _).trans <| (IsDiscreteValuationRing.addVal_eq_iff_associated _ _).2
+    (Submodule.IsPrincipal.associated_generator_span_self x)
 
-private lemma addValUnit {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    (u : Oˣ) : IsDiscreteValuationRing.addVal O (u : O) = 0 := by
-  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
-  have h := IsDiscreteValuationRing.addVal_def' u hϖ 0
-  rwa [pow_zero, mul_one, Nat.cast_zero] at h
-
-private lemma addValProd {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    {ι : Type*} (s : Finset ι) (g : ι → O) :
-    IsDiscreteValuationRing.addVal O (∏ i ∈ s, g i) =
-      ∑ i ∈ s, IsDiscreteValuationRing.addVal O (g i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => rw [Finset.prod_empty, Finset.sum_empty, IsDiscreteValuationRing.addVal_one]
-  | insert j s hj ih =>
-    rw [Finset.prod_insert hj, Finset.sum_insert hj, IsDiscreteValuationRing.addVal_mul, ih]
-
-theorem goal1 :
-  ∀ {O : Type u_1} {M : Type u_2} [inst : CommRing.{u_1} O] [inst_1 : IsDomain.{u_1} O]
-  [inst_2 : IsDiscreteValuationRing.{u_1} O] [inst_3 : AddCommGroup.{u_2} M] [inst_4 : Module.{u_1, u_2} O M]
-  [Module.Free.{u_1, u_2} O M] [Module.Finite.{u_1, u_2} O M]
-  (φ : LinearMap.{u_1, u_1, u_2, u_2} (RingHom.id.{u_1} O) M M),
-  Function.Injective.{u_2 + 1, u_2 + 1} (DFunLike.coe.{u_2 + 1, u_2 + 1, u_2 + 1} φ) →
-    Eq.{1} (Module.length.{u_1, u_2} O (HasQuotient.Quotient.{u_2, u_2} M (LinearMap.range.{u_1, u_1, u_2, u_2} φ)))
-      (DFunLike.coe.{u_1 + 1, u_1 + 1, 1} (IsDiscreteValuationRing.addVal.{u_1} O)
-        (DFunLike.coe.{max (u_1 + 1) (u_2 + 1), u_2 + 1, u_1 + 1} LinearMap.det.{u_2, u_1} φ)) := by
-  intro O M _ _ _ _ _ _ _ φ hφ
+theorem goal1 {O : Type u_1} {M : Type u_2} [inst : CommRing O] [inst_1 : IsDomain O]
+    [inst_2 : IsDiscreteValuationRing O] [inst_3 : AddCommGroup M] [inst_4 : Module O M]
+    [Module.Free O M] [Module.Finite O M] (φ : M →ₗ[O] M) (hφ : Function.Injective φ) :
+    Module.length O (M ⧸ LinearMap.range φ) = IsDiscreteValuationRing.addVal O (LinearMap.det φ) := by
   classical
   let e0 : M ≃ₗ[O] LinearMap.range φ := LinearEquiv.ofInjective φ hφ
   have h : Module.finrank O (LinearMap.range φ) = Module.finrank O M := e0.finrank_eq.symm
@@ -69,15 +45,11 @@ theorem goal1 :
     ext i j
     rw [LinearMap.toMatrix_apply, ha, map_smul, Module.Basis.repr_self, Finsupp.smul_single,
       smul_eq_mul, mul_one]
-    by_cases hij : i = j
-    · rw [hij, Matrix.diagonal_apply_eq, Finsupp.single_eq_same]
-    · rw [Matrix.diagonal_apply_ne _ hij, Finsupp.single_eq_of_ne hij]
-  have hval : IsDiscreteValuationRing.addVal O (LinearMap.det φ) =
-      IsDiscreteValuationRing.addVal O (∏ i, a i) := by
-    obtain ⟨u, hu⟩ := hassoc
-    rw [← hdet, ← hu, IsDiscreteValuationRing.addVal_mul, addValUnit, add_zero]
-  rw [(Submodule.quotientEquivPiSpan (LinearMap.range φ) b h).length_eq,
-    Module.length_pi_of_fintype, hval, addValProd]
-  exact Finset.sum_congr rfl fun i _ => lenQuotSpan (Submodule.smithNormalFormCoeffs_ne_zero b h i)
+    by_cases hij : i = j <;> simp [Matrix.diagonal, hij]
+  rw [(Submodule.quotientEquivPiSpan (LinearMap.range φ) b h).length_eq, Module.length_pi_of_fintype,
+    (IsDiscreteValuationRing.addVal_eq_iff_associated _ _).2 hassoc, hdet]
+  trans ∑ i, IsDiscreteValuationRing.addVal O (a i)
+  · exact Finset.sum_congr rfl fun i _ => lenQuotSpan (a i)
+  · exact (map_prod (AddValuation.toValuation (IsDiscreteValuationRing.addVal O)) a Finset.univ).symm
 
 end Bl.DiscreteValuationQuotients
