@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 
 -- The Fortytwo DeepSeek researcher identified the two signed roots directly in the native target; Codex integrated that observation with the published proof by Mikko Nyman and prior work by Vincent Liu.
 
-open NumberField GlobalTheory CompanionTheory.Ar.Fl Submodule Set Sum PureType
+open NumberField GlobalTheory CompanionTheory.Ar.Fl Submodule Set Sum PureType SetLike Function
 
 local notation "𝒮" f:80 => span (𝓞 ‹Type›) $ range f
 
@@ -19,11 +19,11 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
   rintro ⟨hp, hm⟩ hn
   have := disjoint_lat hP (show H.rt0 ≠ -H.rt0 by grind [H.sqrt_neg_disc_sq, H.d_mod, Nat.cast_eq_zero])
 
-  simp_all [disjoint_def, range_eq, mem_sup, mem_span, range_subset_iff]
+  simp only [← mem_coe, ← range_subset_iff, ← span_le] at hp hm
+  simp_all [disjoint_def, range_eq, mem_sup, SetLike.le_def, comp_def]
 
   and_intros
   all_goals
     intro y
-    obtain ⟨a, h, b, k, e⟩ := hn y
     try intro hy; have := nsmul_mem hy n
-    grind [sgnRt, h _ hp, k _ hm, add_mem_cancel_left, add_mem_cancel_right]
+    grind [hn y, sgnRt, add_mem_cancel_left, add_mem_cancel_right]
