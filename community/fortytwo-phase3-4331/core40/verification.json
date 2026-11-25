@@ -1,14 +1,14 @@
 {
   "core": 40,
-  "candidate": "core40-fastcornermap70f14f4d940f",
+  "candidate": "core40-domain8ad949a0f9d8",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 539,
+  "local_normalized_tokens": 530,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "ffb87afbce29feac5a59e69137fa06706e2e09512f219a2d1ac766ea6465eb09",
+  "proof_tree_sha256": "85dabe3890e62a8d9eda1b0de09901ff591f400495c0a11c6236a68b47484dce",
   "modified_files": {},
   "attribution": {
     "original_author": "Levent Alpöge",
@@ -36,12 +36,27 @@
     "adapted_solution_sha256": "70f14f4d940ff03fc8fa5795d317b6d019976a78219e80b8fe1b6f3c2af63812",
     "native_contribution_note": "Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators shortened the torus and Haar arguments in #103701 and explicitly credit Fortytwo #103322. Codex applied the equality of the complete mapped matrix. For a second fundamental domain the proof now uses absolute continuity of additive Haar measures directly. The positive Haar scalar is used only to provide the nonzero proportionality factor. The unchanged target and formalization are by Levent Alpöge. The Borel identification for adelic block coordinates is applied directly to the constant-term equation.",
     "public_source_note": "Core 40. Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators shortened the torus and Haar arguments in #103701 and explicitly credit Fortytwo #103322. Codex applied the equality of the complete mapped matrix. For a second fundamental domain the proof now uses absolute continuity of additive Haar measures directly. The positive Haar scalar is used only to provide the nonzero proportionality factor. The unchanged target and formalization are by Levent Alpöge. The Borel identification for adelic block coordinates is applied directly to the constant-term equation. [Published starting proof](https://riemann.verifytask.cn/api/attempt/103701)",
-    "prior_public_lineage": "Pi / Gemini 4 Neon via Antigravity published the earlier one-file proof in #102851. Fortytwo and Codex revised it in #103322, which Mikko Nyman expressly credits in #103701."
+    "prior_public_lineage": "Pi / Gemini 4 Neon via Antigravity published the earlier one-file proof in #102851. Fortytwo and Codex revised it in #103322, which Mikko Nyman expressly credits in #103701.",
+    "parent_candidate": "core40-fastcornermap70f14f4d940f",
+    "direct_witness_reduction": {
+      "native_model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+      "visible_native_events": 98,
+      "visible_trace_sha256": "a862c45038c037422d364ac4e97976264409cb9ed2a23e08063685c0be8a82f9",
+      "native_tool_call": "call_95c78cb8fab84d17933c177d656dcc50_0",
+      "prior_source_sha256": "70f14f4d940ff03fc8fa5795d317b6d019976a78219e80b8fe1b6f3c2af63812",
+      "native_contribution": "DeepSeek supplied the direct fundamental-domain witness and eliminated the dependent existential with rintro.",
+      "supervisor_contribution": "Codex combined those two steps with the accepted diagonal argument, the explicit field type, and the function equality proof."
+    }
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T09:24:25.344286+00:00",
+    "completed_utc": "2026-11-25T00:20:18.903282+00:00",
+    "elapsed_seconds": 153.02,
+    "frozen_files": 1405,
+    "log_sha256": "c43d573aa5b499bd5fcd446879e50057a3223b62f0a8296404afe09163d0bca0",
+    "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
+    "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -52,5 +67,6 @@
   "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/src",
   "source_kind": "pinned_git_checkout",
   "target_sha256": "db42504120a3ee7af320c76aa8b682751b0a5d8b1ce67e7421c8712da699851f",
-  "pinned_source_files": {}
+  "pinned_source_files": {},
+  "proof_id": "8ad949a0f9d895260ed15cd035ef6733ad3ba9fda2fb2755835f58f84c873d8d"
 }

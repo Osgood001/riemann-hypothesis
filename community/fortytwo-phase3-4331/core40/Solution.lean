@@ -1,7 +1,7 @@
 import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.ExpNegGlue
 -- This proof follows the approach visible in the public code of attempt 103322 by Vladyslav Larin (rh-board.pages.dev), shortened by our team.
 -- Derived from Mikko Nyman et al., submission #103701, and Fortytwo #103322. The verifier supervisor tested the measure change.
-
+-- Fortytwo DeepSeek proposed the direct fundamental domain and witness destructuring; Codex restored the checked matrix proof and function extensionality.
 open NumberField IsDedekindDomain MeasureTheory Measure Matrix GlobalTheory.CuspRep GlobalTheory.UnitaryBC
   GroundTheory.Global
   GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.Reduction PositivityTheory.Rg.Rs
@@ -37,13 +37,11 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
       rfl,
     fun φ hφ r _ _ => ?_⟩
   set ν := unipMeasure E N r
-  set D := unipFundamentalDomain E N r
   have hunip (X : UPos N r → Ad E) : unipGL X = unip X := Units.ext rfl
   unfold IsCT
   rw [← BorelSpace.measurable_eq (α := BlockIx N r → Ad E)]
-  refine ⟨⟨ν, D, inferInstance, isAddFundamentalDomain_unipFundamentalDomain, by ext g; simp [ct, ctn, measureReal_def, unipMeasure_unipFundamentalDomain, constantTerm, hunip, D, ν]⟩,
-    fun F ⟨μ, 𝓕, hμ, h𝓕, hF⟩ => ?_⟩
-  subst hF
+  refine ⟨⟨ν, unipFundamentalDomain E N r, inferInstance, isAddFundamentalDomain_unipFundamentalDomain, by ext g; simp [ct, ctn, measureReal_def, unipMeasure_unipFundamentalDomain, constantTerm, hunip, ν]⟩, ?_⟩
+  rintro F ⟨μ, 𝓕, hμ, h𝓕, rfl⟩
   set s := addHaarScalarFactor μ ν
   have e : μ = s • ν := isAddLeftInvariant_eq_smul μ ν
   refine ⟨s, by exact_mod_cast (addHaarScalarFactor_pos_of_isAddHaarMeasure μ ν).ne', funext fun g => ?_⟩
