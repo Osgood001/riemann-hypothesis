@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 
 open NumberField GlobalTheory CompanionTheory.Ar.Fl Submodule Set Sum PureType
 
-local notation "𝒮" f:arg => span (𝓞 (by assumption)) (range f)
+local notation "𝒮" f:arg => span (𝓞 ‹_›) (range f)
 
 theorem AlpogeRHCore36.pureFamilyDecomposition
     E [Field E] [NumberField E] [IsCMField E]
