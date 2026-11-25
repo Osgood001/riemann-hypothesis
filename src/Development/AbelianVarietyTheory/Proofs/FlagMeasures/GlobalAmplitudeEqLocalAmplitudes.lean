@@ -36,7 +36,7 @@ theorem global_amp_local : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' :
     intro p hp
     by_contra hn
     exact hp ((hW p).2.2.2.1 (hout p hn))
-  obtain ⟨κ, hκ, hdec⟩ := GlobalTheory.T.amplitude_expansion_over_finite_places _ _ _ G hk _ ⟨_, hT⟩ S1 hOmS
+  obtain ⟨κ, hκ, hdec⟩ := GlobalTheory.T.amplitude_products_over_finite_places _ _ _ G hk _ ⟨_, hT⟩ S1 hOmS
   rw [hdec Q, norm_mul, hκ, one_mul]
 
   have hloc : ∀ p : {p // p ∈ S1},
@@ -46,8 +46,8 @@ theorem global_amp_local : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' :
       (G.S p.1).amp (G.datOf (c.lat ρ t₀.lam) p.1) ((G.S p.1).BBzero (G.datOf (c.lat ρ t₀.lam) p.1)) =
         LocNG.amp (R p.1) (d p) (fun t => ¬ LocNG.BBne (H := locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p.1) t) := by
     intro p
-    haveI := ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p.1).lf
-    haveI := ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p.1).char0
+    have := ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p.1).lf
+    have := ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p.1).char0
     have hu : (Function.update (G.datOf (c.lat ρ t₀.lam)) p.1 ((c.c p.1).dat (d p))) p.1 = (c.c p.1).dat (d p) :=
       Function.update_self _ _ _
     obtain ⟨h, hh, hδ⟩ := GlobalTheory.T.localDatum_of_term_in_movedLattice_orbit D X Y u u' hst hk w F00 F'0 FP hw hG hbase G c t₀ ρ U U' hmv p.1 (d p)
@@ -77,54 +77,18 @@ theorem global_amp_local : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' :
       _ = ∑' _ : MulAction.orbitRel.Quotient (G.S p).St (Submodule _ (G.S p).V), (0 : ℂ) := by
         apply tsum_congr
         intro o
-        rw [if_neg]
+        rw [ite_eq_right]
         rintro ⟨ht, hb⟩
         exact hb (hBB _ _ ht)
       _ = 0 := tsum_zero
-  congr 1
-  symm
-  let emb : {p // p ∈ S1} ↪ PlF D := Function.Embedding.subtype _
-  let embF : Finset {p // p ∈ S1} ↪ Finset (PlF D) := ⟨fun A => A.map emb, Finset.map_injective emb⟩
-  calc _ = ∑ A ∈ Om.powerset.filter (fun A => Q A.Nonempty), ∏ p ∈ S1,
-          (if p ∈ A.map emb then (G.S p).amp (G.datOf (c.lat ρ t₀.lam) p)
-              (fun Λ => ¬ (G.S p).BBzero (G.datOf (c.lat ρ t₀.lam) p) Λ)
-            else (G.S p).amp (G.datOf (c.lat ρ t₀.lam) p) ((G.S p).BBzero (G.datOf (c.lat ρ t₀.lam) p))) := by
-        refine Finset.sum_congr rfl fun A _ => ?_
-        rw [← Finset.prod_coe_sort S1]
-        refine Finset.prod_congr rfl fun p _ => ?_
-        have hm : (p.1 ∈ A.map emb) ↔ p ∈ A := Finset.mem_map' emb
-        by_cases hp : p ∈ A
-        · rw [if_pos hp, if_pos (hm.2 hp), (hloc p).1]
-        · rw [if_neg hp, if_neg (fun h => hp (hm.1 h)), (hloc p).2]
-    _ = ∑ B ∈ (Om.powerset.filter (fun A => Q A.Nonempty)).map embF, ∏ p ∈ S1,
-          (if p ∈ B then (G.S p).amp (G.datOf (c.lat ρ t₀.lam) p)
-              (fun Λ => ¬ (G.S p).BBzero (G.datOf (c.lat ρ t₀.lam) p) Λ)
-            else (G.S p).amp (G.datOf (c.lat ρ t₀.lam) p) ((G.S p).BBzero (G.datOf (c.lat ρ t₀.lam) p))) :=
-        by rw [Finset.sum_map]; rfl
-    _ = _ := by
-        apply Finset.sum_subset
-        · intro B hB
-          obtain ⟨A, hA, rfl⟩ := Finset.mem_map.1 hB
-          rw [Finset.mem_filter, Finset.mem_powerset] at hA ⊢
-          refine ⟨fun x hx => ?_, ?_⟩
-          · obtain ⟨y, -, rfl⟩ := Finset.mem_map.1 hx
-            exact y.2
-          · show Q (A.map emb).Nonempty
-            rw [Finset.map_nonempty]
-            exact hA.2
-        · intro B hB hn
-          rw [Finset.mem_filter, Finset.mem_powerset] at hB
-          by_cases hall : ∀ p ∈ B, ¬ (FP p).PrimeTo
-          · exfalso
-            apply hn
-            have e : (B.subtype (· ∈ S1)).map emb = B := Finset.subtype_map_of_mem hB.1
-            refine Finset.mem_map.2 ⟨B.subtype (· ∈ S1), ?_, e⟩
-            rw [Finset.mem_filter, Finset.mem_powerset]
-            refine ⟨fun q hq => (hOm q).2 (hall q.1 (Finset.mem_subtype.1 hq)), ?_⟩
-            rw [← Finset.map_nonempty (f := emb), e]
-            exact hB.2
-          · push_neg at hall
-            obtain ⟨p, hpB, hp⟩ := hall
-            exact Finset.prod_eq_zero (hB.1 hpB) (by rw [if_pos hpB]; exact hzero p (hB.1 hpB) hp)
+  rw [Formalism.HermitianLatticeCounting.DefectSum.filter_ambient]
+  simp only [← Finset.prod_coe_sort S1, ← (fun p => (hloc p).1), ← (fun p => (hloc p).2)]
+  congr 4
+  apply Finset.prod_congr rfl
+  intro p _
+  by_cases hp : p ∈ Om
+  · simp [hp]
+  · have hprime : (FP p.1).PrimeTo := not_not.mp (fun h => hp ((hOm p).2 h))
+    simp [hp, hzero p.1 p.2 hprime]
 
 end GlobalTheory.HL.AmpLoc

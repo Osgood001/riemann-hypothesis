@@ -1,6 +1,7 @@
 module
 
 public import Mathlib
+public import Formalism.HermitianCurvature.DefectProducts
 public import Formalism.HermitianCurvature.StatementPB
 public import Formalism.FlagUnipotentLattices.PairingOrthogonalComplement
 public import Formalism.FlagUnipotentLattices.UnipotentStabiliserCharacterisation
@@ -88,6 +89,27 @@ variable {Cl Nu : Type} (L : LocalNG Cl Nu)
 def ampNG (d : ∀ p, L.D p) : ℂ :=
   ∑ A ∈ L.Om.powerset.filter (fun A => A.Nonempty),
     ∏ p, (if p ∈ A then L.aN p (d p) else L.aZ p (d p))
+
+/-- The nongeneric amplitude needs two local products, not a sum over all nonempty subsets. -/
+theorem ampNG_eq_products (d : ∀ p, L.D p) :
+    L.ampNG d =
+      (∏ p, if p ∈ L.Om then L.aN p (d p) + L.aZ p (d p) else L.aZ p (d p)) -
+        ∏ p, L.aZ p (d p) := by
+  simpa [ampNG] using Formalism.HermitianLatticeCounting.DefectSum.filter_ambient L.Om
+    (fun p => L.aN p (d p)) (fun p => L.aZ p (d p)) id
+
+/-- The exact squared mass is determined by local second and cross moments;
+neither the global tuples nor their defect patterns need be enumerated. -/
+theorem ampNG_moment_eq_products :
+    let total := fun p j => if p ∈ L.Om then L.aN p j + L.aZ p j else L.aZ p j
+    ∑ d : (∀ p, L.D p), (∏ p, L.wt p (d p)) * ‖L.ampNG d‖ ^ 2 =
+      (∏ p, ∑ j, L.wt p j * ‖total p j‖ ^ 2) +
+      (∏ p, ∑ j, L.wt p j * ‖L.aZ p j‖ ^ 2) -
+      2 * (∏ p, ∑ j, (L.wt p j : ℂ) * (L.aZ p j * conj (total p j))).re := by
+  let total := fun p j => if p ∈ L.Om then L.aN p j + L.aZ p j else L.aZ p j
+  refine Eq.trans (Finset.sum_congr rfl fun d _ => ?_)
+    (Formalism.HermitianLatticeCounting.DefectSum.weighted_sq_sub_prod L.wt total L.aZ)
+  rw [L.ampNG_eq_products]
 
 def a2 (c : Cl) (ν : Nu) : ℝ :=
   match L.dat c ν with

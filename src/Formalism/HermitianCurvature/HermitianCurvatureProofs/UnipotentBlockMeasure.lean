@@ -165,7 +165,21 @@ theorem step1 (L : LocalNG Cl Nu) (hU : L.Unfold) (S : Finset (Cl × Nu)) :
   · intro x d h
     unfold LocalNG.a2
     simp only [h]
-    try rfl
+
+/-- Defect rates at all places survive unfolding; no comparison to a global mass is needed. -/
+theorem mean_defect_product (L : LocalNG Cl Nu) (κ : ℕ) (Xp : L.P → ℝ)
+    (hX : ∀ p, 0 ≤ Xp p) (hb : L.Basic) (hU : L.Unfold)
+    (h1 : ∀ p ∈ L.Om, ∑ d, L.wt p d * ‖L.aN p d‖ ^ 2 ≤ Xp p * ((L.q p : ℝ) ^ κ)⁻¹ * L.nn p)
+    (h2 : ∀ p, ∑ d, L.wt p d * ‖L.aZ p d‖ ^ 2 ≤ Xp p * L.nn p)
+    (S : Finset (Cl × Nu)) :
+    ∑ x ∈ S, L.a2 x.1 x.2 ≤ L.V0 * ((∏ p, Xp p * L.nn p) *
+      ((∏ p ∈ L.Om, (1 + Real.sqrt (((L.q p : ℝ) ^ κ)⁻¹))) - 1) ^ 2) := by
+  obtain ⟨hw, _, _, _, hnn, hV, _⟩ := hb
+  refine (step1 L hU S).trans (mul_le_mul_of_nonneg_left ?_ hV)
+  exact Formalism.HermitianLatticeCounting.S4.defect_mass_le L.Om L.D L.wt L.aN L.aZ
+    (fun p => Xp p * L.nn p) (fun p => Real.sqrt (((L.q p : ℝ) ^ κ)⁻¹)) hw
+    (fun p => mul_nonneg (hX p) (hnn p)) (fun _ _ => Real.sqrt_nonneg _)
+    (fun p hp => (h1 p hp).trans_eq (by rw [Real.sq_sqrt (by positivity)]; ring)) h2
 
 theorem core (hS4 : Formalism.HermitianLatticeCounting.S4.Step4) (L : LocalNG Cl Nu) (κ : ℕ) (Xp Yp : L.P → ℝ)
     (hX : ∀ p, 1 ≤ Xp p) (hY : ∀ p, 1 ≤ Yp p) (hb : L.Basic)
@@ -178,8 +192,8 @@ theorem core (hS4 : Formalism.HermitianLatticeCounting.S4.Step4) (L : LocalNG Cl
   have hb' := hb
   unfold LocalNG.Basic at hb'
   obtain ⟨hw, _, hq, _, hnn, _, _⟩ := hb'
-  have key := hS4 L.P L.Om L.D L.wt L.aN L.aZ (fun _ => 1) (fun p => Xp p * L.nn p)
-    (fun p => Xp p * Yp p * L.ngen p) L.q 0 κ hw (fun _ => le_refl _) hq
+  have key := hS4 L.P L.Om L.D L.wt L.aN L.aZ Yp (fun p => Xp p * L.nn p)
+    (fun p => Xp p * Yp p * L.ngen p) L.q 0 κ hw hY hq
     (fun p => mul_nonneg (by linarith [hX p]) (hnn p))
     (fun p hp => (h1 p hp).trans (le_of_eq (by simp only [pow_zero, one_mul]; ring)))
     (fun p => (h2 p).trans (le_of_eq (by simp only [pow_zero, one_mul])))
@@ -188,11 +202,8 @@ theorem core (hS4 : Formalism.HermitianLatticeCounting.S4.Step4) (L : LocalNG Cl
       rw [mul_assoc]
       exact mul_le_mul_of_nonneg_left (h3 p) (by linarith [hX p]))
   refine le_trans (le_of_eq ?_) (key.trans (le_of_eq ?_))
-  · unfold LocalNG.ampNG
-    first
-    | rfl
-    | congr!
-  · simp only [Finset.prod_const_one, one_pow, mul_one, Finset.prod_mul_distrib] <;> ring
+  · rfl
+  · simp only [Nat.mul_zero, pow_zero, mul_one, Finset.prod_mul_distrib]; ring
 
 theorem pow_card_eq {P : Type} [Fintype P] (Om : Finset P) (a : ℝ) :
     a ^ Om.card = ∏ p, if p ∈ Om then a else 1 := by
@@ -224,7 +235,7 @@ theorem ngen_nonneg (L : LocalNG Cl Nu) (C0 r : ℕ) (hb : L.Basic) (hM : L.Mass
     have hpos : 0 < 8 * L.H p ^ (C0 * (r + 1) ^ 2 + 2 * (2 * r + 2)) :=
       mul_pos (by norm_num) (pow_pos (by linarith [hH p]) _)
     by_contra hneg
-    push_neg at hneg
+    push Not at hneg
     have := mul_neg_of_pos_of_neg hpos hneg
     linarith
   · rw [← hM.1 p hp]
@@ -411,9 +422,9 @@ section
 open Finset
 
 section
-variable {ι V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V]
+variable {ι V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
-theorem summable_pairs (a : ι → V) (ha : Summable (fun i => ‖a i‖)) :
+theorem summable_pairs [CompleteSpace V] (a : ι → V) (ha : Summable (fun i => ‖a i‖)) :
     Summable (fun p : ι × ι => (inner ℂ (a p.1) (a p.2) : ℂ)) := by
   have hprod : Summable (fun p : ι × ι => ‖a p.1‖ * ‖a p.2‖) :=
     Summable.mul_of_nonneg (f := fun i => ‖a i‖) (g := fun i => ‖a i‖) ha ha
@@ -423,7 +434,7 @@ theorem summable_pairs (a : ι → V) (ha : Summable (fun i => ‖a i‖)) :
       (fun p => norm_inner_le_norm (𝕜 := ℂ) (a p.1) (a p.2)) hprod
   exact hb.of_norm
 
-theorem normsq_tsum (a : ι → V) (ha : Summable (fun i => ‖a i‖)) :
+theorem normsq_tsum [CompleteSpace V] (a : ι → V) (ha : Summable (fun i => ‖a i‖)) :
     ‖∑' i, a i‖ ^ 2 = ∑' p : ι × ι, (inner ℂ (a p.1) (a p.2) : ℂ).re := by
   have hS : HasSum a (∑' i, a i) := ha.of_norm.hasSum
   have hP : Summable (fun p : ι × ι => (inner ℂ (a p.1) (a p.2) : ℂ).re) :=
@@ -488,9 +499,9 @@ theorem t_ClassSquaresSum : Formalism.FourierDecayAlt.PN.ClassSquaresSum := by
     intro p
     simp only [hF]
     by_cases h : cl p.1 = cl p.2
-    · simp only [Set.indicator, Set.mem_ofPred_eq, h, if_true]
+    · simp only [Set.indicator, Set.mem_ofPred_eq, h, ite_true]
       exact (Complex.abs_re_le_norm _).trans (norm_inner_le_norm _ _)
-    · simp only [Set.indicator, Set.mem_ofPred_eq, h, if_false, norm_zero]
+    · simp only [Set.indicator, Set.mem_ofPred_eq, h, ite_false, norm_zero]
       positivity
   have hGs : Summable G := by
     rw [← hinj.summable_iff hsupp]
@@ -782,7 +793,7 @@ theorem t_NGNumbers : NGNumbers := by
   unfold NGSizes at hS
   obtain ⟨hf, hb, hrd0, hrd, hg1, hg, hTT0, hTT, hc0, hc, he0, he⟩ := hS
   have h := core A CB CSt Cg CT hCB hCSt hCg hCT r f b rd g TT cSt e1 (((2 * r + 2 : ℕ) : ℝ))
-    (((2 * r + 2 : ℕ) : ℝ) ^ 5 * f) (by push_cast <;> ring) rfl hf hb hrd0 hrd hg1 hg hTT0 hTT hc0 hc
+    (((2 * r + 2 : ℕ) : ℝ) ^ 5 * f) (by push_cast; ring) rfl hf hb hrd0 hrd hg1 hg hTT0 hTT hc0 hc
     he0 he
   have e : ∀ K : ℝ, K * (((2 * r + 2 : ℕ) : ℝ) ^ 5 * f) * Real.log b =
       K * ((2 * r + 2 : ℕ) : ℝ) ^ 5 * f * Real.log b := fun K => by ring
@@ -870,7 +881,7 @@ theorem occ_of_ne {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H] [In
     · rw [Set.indicator_of_mem ht]
       by_contra hv
       exact hno ⟨t, ht.1, hv, ht.2.1, ht.2.2.1, ht.2.2.2⟩
-    · simp [Set.indicator_apply, ht]
+    · simp [ht]
   unfold Formalism.FourierDecayAlt.PN.grp
   simp only [hz, tsum_zero]
 
