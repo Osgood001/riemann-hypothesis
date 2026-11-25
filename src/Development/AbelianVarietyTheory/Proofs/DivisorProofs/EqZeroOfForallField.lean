@@ -91,7 +91,7 @@ theorem snd_valR_transl {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] [IsCom
     [CommRing B] {β : K →+* B} {x : Sp B ⟶ A.left} {w : Sp (DualNumber B) ⟶ A.left} (hw : IsTransl β x u w)
     {O : A.left.Opens} (h : ⊤ ≤ x ⁻¹ᵁ O) (f : Γ(A.left, O)) : (valR w O f).snd = valR x O (dd O f) := by
   obtain ⟨x', v', h₁, h₂, rfl⟩ := hw
-  letI : Algebra K (DualNumber B) := ((algebraMap B (DualNumber B)).comp β).toAlgebra
+  let : Algebra K (DualNumber B) := ((algebraMap B (DualNumber B)).comp β).toAlgebra
   have hz : ⊤ ≤ x'.left ⁻¹ᵁ O := by
     rw [h₁]; exact fun p _ => h (Set.mem_univ _)
   obtain ⟨h', e⟩ := evalPt_translate (B := DualNumber B) hu hd DualNumber.eps DualNumber.eps_mul_eps x' O hz
@@ -356,7 +356,7 @@ theorem eq_zero_of_forall_field {R : Type} [CommRing R] [_root_.IsReduced R] (r 
   have hn : r ∈ nilradical R := by
     rw [nilradical_eq_sInf, Submodule.mem_sInf]
     intro p hp
-    haveI : Ideal.IsPrime p := hp
+    have : Ideal.IsPrime p := hp
     have h0 := h (FractionRing (R ⧸ p)) ((algebraMap (R ⧸ p) (FractionRing (R ⧸ p))).comp (Ideal.Quotient.mk p))
     rwa [RingHom.comp_apply, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem] at h0
   exact (mem_nilradical.1 hn).eq_zero
@@ -375,8 +375,17 @@ theorem eq_zero_of_dense {X : Scheme.{0}} [IsReduced X] {V : X.Opens} (hV : Dens
   rw [h0, Scheme.basicOpen_zero] at h1
   exact h1.elim
 
-theorem ksClass_mem_balanced : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → (∀ x ∈ genBd Y, IsClosed ({x} : Set (gen Y)) → HasRigidChart Y x) → ∀ (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), (∀ i, IsTanAtG Y.t (chart U) (v i)) → (∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w) → (∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left)) → ∀ (D : logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U) (Θ : Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), IsKS Y.t (interior Y) U v D.1 Θ → Θ ∈ balanced H.bar A := by
-  intro E _ _ _ H Dw l Xo c Y _ _ _ _ U n v A hv hb hA D Θ hKS
+/-- Whenever a tangent-frame matrix represents the Kodaira–Spencer class of a derivation, it is balanced. -/
+theorem isKS_mem_balanced_of_frame
+    {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
+    {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} (Y : Model Xo c (RingHom.id c.F))
+    {U : Y.X.affineOpens} {n : ℕ} {v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)}
+    {A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)}
+    (hv : ∀ i, IsTanAtG Y.t (chart U) (v i))
+    (hb : ∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w)
+    (hA : ∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left))
+    {D : Derivation ℤ Γ(Y.X, U.1) Γ(Y.X, U.1)} {Θ : Matrix (Fin n) (Fin n) Γ(Y.X, U.1)}
+    (hKS : IsKS Y.t (interior Y) U v D Θ) : Θ ∈ balanced H.bar A := by
   have : IsReduced Y.X := by
     have := fun x => (Y.normal x).1
     exact isReduced_of_isReduced_stalk _
@@ -386,8 +395,9 @@ theorem ksClass_mem_balanced : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     intro g hg K _ x
     let W := Y.X.affineBasicOpen g
     have hW : W.1 ≤ U.1 := Y.X.basicOpen_le g
-    obtain ⟨DW, -, hDW⟩ := GlobalTheory.LogDerLoc.exists_logDer_basicOpen _ _ Y.s _ U W hW g rfl D.1 D.2
-    have h₁ := GlobalTheory.LogKSLoc.isKS_basicOpen E H _ Y.t _ U W hW g rfl n v D.1 DW Θ hDW hKS
+    let _ : IsLocalization.Away g Γ(Y.X, Y.X.basicOpen g) := U.2.isLocalization_basicOpen g
+    obtain ⟨DW, hDW⟩ := GlobalTheory.LogDerLoc.exists_extension (B := Γ(Y.X, Y.X.basicOpen g)) g D
+    have h₁ := GlobalTheory.LogKSLoc.isKS_basicOpen E H _ Y.t _ U W hW g rfl n v D DW Θ hDW hKS
     have hc := GlobalTheory.LogKSLoc.spMap_res_chart U W hW
     obtain ⟨b₁, b₂⟩ := GlobalTheory.LocM.FrameBase.tanBasis_baseChange Y.t (resG Y.X hW) _ n v hv hb
     rw [hc] at b₁ b₂
@@ -406,5 +416,9 @@ theorem ksClass_mem_balanced : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     refine eq_zero_of_dense (dense_interior Y) U _ fun g hg K _ x => ?_
     have e := congrFun₂ ((key g hg K x).2 z) a b
     rw [← RingHom.comp_apply, map_sub, RingHom.map_matrix_mul, RingHom.map_matrix_mul, Matrix.transpose_map, e, sub_self]
+
+theorem ksClass_mem_balanced : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → (∀ x ∈ genBd Y, IsClosed ({x} : Set (gen Y)) → HasRigidChart Y x) → ∀ (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), (∀ i, IsTanAtG Y.t (chart U) (v i)) → (∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w) → (∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left)) → ∀ (D : logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U) (Θ : Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), IsKS Y.t (interior Y) U v D.1 Θ → Θ ∈ balanced H.bar A := by
+  intro E _ _ _ H Dw l Xo c Y _ _ _ _ U n v A hv hb hA D Θ hKS
+  exact isKS_mem_balanced_of_frame Y hv hb hA (D := D.1) hKS
 
 end GlobalTheory.LogKSBal
