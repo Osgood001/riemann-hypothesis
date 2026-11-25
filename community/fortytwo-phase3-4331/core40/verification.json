@@ -1,14 +1,14 @@
 {
   "core": 40,
-  "candidate": "core40-domain6a20ca6e7dde",
+  "candidate": "core40-domain6fe4fba79b0d",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 417,
+  "local_normalized_tokens": 404,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "06fca22ba3986560e7e7fb97ba542509d581ac33e80e2b548739202fc3ccb83b",
+  "proof_tree_sha256": "e6e93bb40f2463e78b430a0da993f969df43a9405fa1786fdb7ee994e9f8fbcc",
   "modified_files": {},
   "attribution": {
     "formalization": "Levent Alpöge and original authors",
@@ -20,7 +20,12 @@
       "author": "MarvinDontPanic",
       "supervisor_changes": [
         "compared diagonal entries by congruence and function extensionality, then split each product",
-        "applied congruence to the split-centre equality before reducing it to diagonal entries"
+        "applied congruence to the split-centre equality before reducing it to diagonal entries",
+        "restricted the Haar-measure rewrite to its first occurrence",
+        "used the absolute-value identity for the archimedean square root",
+        "used one extensionality step for the units equality",
+        "inferred the unipotent matrix argument type from its explicit adelic field",
+        "unfolded the dictionary to introduce its original parameters directly"
       ]
     },
     "prior_contributors": [
@@ -33,15 +38,15 @@
       "original_session_sha256": "36d89728ffce07d53ef15025505dc20d5671d603c1375bcec8f3d9e3b6fcccc6",
       "role": "Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work. The public parent also preserves the recorded native simplifier unfolding in the infinite-place projection."
     },
-    "current_source": "Levent Alpöge and the original authors supplied the formalization. MarvinDontPanic’s public PR 43 generalized the torus identity to an arbitrary function from Fin N to the reals. This lets one simplification prove the split-centre and lattice identities. Marvin credited Mikko Nyman and collaborators (#103701) and the earlier Fortytwo submissions (#103322, #104025) and PR 19. Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work. The public parent also preserves the recorded native simplifier unfolding in the infinite-place projection. For this derivative, Codex compared diagonal entries by congruence and function extensionality, then split each product and applied congruence to the split-centre equality before reducing it to diagonal entries. The unchanged organizer Comparator and Lean default kernel accepted this exact proof. Public parent: https://github.com/MarvinDontPanic/riemann-hypothesis/blob/41740f7aa9a1ae961cbbffce4364fadd9a110aed/community/marvin-core-reductions/core40/Solution.lean"
+    "current_source": "Levent Alpöge and the original authors supplied the formalization. MarvinDontPanic’s public PR 43 generalized the torus identity to an arbitrary function from Fin N to the reals. This lets one simplification prove the split-centre and lattice identities. Marvin credited Mikko Nyman and collaborators (#103701) and the earlier Fortytwo submissions (#103322, #104025) and PR 19. Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work. The public parent also preserves the recorded native simplifier unfolding in the infinite-place projection. For this derivative, Codex compared diagonal entries by congruence and function extensionality, then split each product and applied congruence to the split-centre equality before reducing it to diagonal entries and restricted the Haar-measure rewrite to its first occurrence and used the absolute-value identity for the archimedean square root and used one extensionality step for the units equality and inferred the unipotent matrix argument type from its explicit adelic field and unfolded the dictionary to introduce its original parameters directly. The unchanged organizer Comparator and Lean default kernel accepted this exact proof. Public parent: https://github.com/MarvinDontPanic/riemann-hypothesis/blob/41740f7aa9a1ae961cbbffce4364fadd9a110aed/community/marvin-core-reductions/core40/Solution.lean"
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-25T04:45:13.043515+00:00",
-    "elapsed_seconds": 154.796,
+    "completed_utc": "2026-11-25T05:00:18.983508+00:00",
+    "elapsed_seconds": 138.443,
     "frozen_files": 1405,
-    "log_sha256": "17d4159c46416cb095256f8d50cbb3ae5a2dc29e90b09a3245be1fa790e31bf2",
+    "log_sha256": "71a80b66a40147436ced445c25634ddddb161e7f62e4d0864f08d2b8b436723d",
     "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
     "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e",
     "permitted_axioms": [
@@ -55,5 +60,5 @@
   "source_kind": "pinned_git_checkout",
   "target_sha256": "db42504120a3ee7af320c76aa8b682751b0a5d8b1ce67e7421c8712da699851f",
   "pinned_source_files": {},
-  "proof_id": "6a20ca6e7ddeb93081a9c9aa3ce2e29e6de3f6002d098fc391e6914169d18413"
+  "proof_id": "6fe4fba79b0daf1abe29206d4aae9a8751c4b158aa15b249beec5754a49d72de"
 }
