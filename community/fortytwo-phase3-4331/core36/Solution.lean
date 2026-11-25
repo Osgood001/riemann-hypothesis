@@ -4,13 +4,12 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 -- The Fortytwo DeepSeek researcher identified the two signed roots directly in the native target; Codex integrated that observation with the published proof by Mikko Nyman and prior work by Vincent Liu.
 
 open NumberField GlobalTheory CompanionTheory.Ar.Fl
-open ReciprocityTheory.ChartRestriction.G.Geo.Tor Submodule Set Sum PureType
+open Submodule Set Sum PureType
 
 theorem AlpogeRHCore36.pureFamilyDecomposition
     E [Field E] [NumberField E] [IsCMField E]
-    (H : Host E) (D : Datum H) g (ty : Fin g → _) P
-    (hP : IsPeriod D ty P) p q (x : Fin p ⊕ Fin q → _) (n : ℕ)
-    (hx : IsPure hP x) (hn : ∀ y, n • y ∈ span (𝓞 E) (range x)) :
+    H D g ty P hP p q x (n : ℕ)
+    (hx : @IsPure E _ _ _ H D g ty P hP p q x) (hn : ∀ y, n • y ∈ span (𝓞 E) (range x)) :
 
     (∀ y, ∃ a ∈ lat hP (sgnRt H true), ∃ b ∈ lat hP (sgnRt H false), n • y = a + b) ∧
     (∀ y ∈ lat hP (sgnRt H true), n • y ∈ span (𝓞 E) (range (x ∘ inl))) ∧
