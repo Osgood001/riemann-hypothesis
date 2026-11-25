@@ -1,0 +1,58 @@
+{
+  "challenge": {
+    "url": "https://play.bohrium.com/challenges/lean-4-verification-rh-core-pillar-21-nonempty-def-7c453180",
+    "target": "AlpogeRHCore21.nonemptyHypsDefiniteSideOfClosedBound",
+    "stronger_theorem": "AlpogeRHCore21.nonemptyHypsDefiniteSideOfClosedBoundCofinal",
+    "target_type_sha256": "23ba6626a6f1462a281af7cadb8687970e16d64c2083ef485589f4fd8aec784e",
+    "pinned_original_source": "40e56bab026552e089d7afcfeff08d2defb9c005",
+    "shard_url": "https://github.com/Osgood001/riemann-hypothesis/releases/download/v2026.11.23-shards/core21.tar.zst",
+    "shard_sha256": "341ffc5b27d47dc6312257cd02b01fccdd5f99dd16bce625d56f8cb4cd2f0836",
+    "frozen_source_files": 51214
+  },
+  "comparison": {
+    "source_token_counter": "https://github.com/Osgood001/riemann-hypothesis/blob/535c9103a305e822d2adb1830981ec4dd0916621/scripts/pr_lightweight_checks.py",
+    "baseline_kind": "published original, not a hosted leader",
+    "baseline_files": 61172,
+    "baseline_tokens": 94839307,
+    "candidate_files": 38995,
+    "candidate_tokens": 61883858,
+    "entry_tokens": 980,
+    "token_reduction": 32955449,
+    "token_reduction_pct": 34.748724
+  },
+  "candidate": {
+    "entry_sha256": "076f164f2aeede3389d36d3c0d01698e7fca1c4de49f603a44939ce1e2c044cf",
+    "source_tree_sha256": "cf5e619d8a1acf9671fa421adf013c31f19d1c2e8fce8a379e983371b6c4c2a4",
+    "source_tree_digest_format": "sha256 of sorted relative path, space, file sha256, newline",
+    "patch_sha256": "72790e46b3a98aff66ab580316a8747d793c6ec8e43f8784c9411ee7e35d3880",
+    "materializer_sha256": "b89b1e4867640dad060962e581cebf46b425565b7afb7c858092f19490285922"
+  },
+  "local_replay": {
+    "native_toolchain": "leanprover/lean4:v4.33.1",
+    "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
+    "original_dependency_cache_manifest": "292caa386a620d935cfc736b56fcceaab9fe7073086693b62e899c1ee4725f04",
+    "command": "lean -j2 --tstack=400000 -DautoImplicit=false -DrelaxedAutoImplicit=false -DmaxSynthPendingDepth=3 -DmaxHeartbeats=4000000 -DwarningAsError=true -o Solution.olean Solution.lean",
+    "native_exit_code": 0,
+    "native_olean_sha256": "47a8f2d50c6fa0c4dc7c1ff0033094a29f941ea4d914e2a1225e76a4b01a8fb8",
+    "scope": "Fresh solution elaboration against checked original dependency outputs; not a full dependency rebuild.",
+    "exact_published_statement": "Accepted as the type of the compiled solution in a fresh Lean 4.33.1 check with warnings-as-errors.",
+    "permitted_axioms_for_both_theorems": [
+      "propext",
+      "Quot.sound",
+      "Classical.choice"
+    ],
+    "independent_kernel_toolchain": "Lean 4.37.0-rc1 bundled con-ron",
+    "independent_kernel": {
+      "verdict": "con-ron: accepted 932346 declarations (--verified)",
+      "input": "Exact Lean 4.33.1 compiled module with pinned dependency search path",
+      "flags": "--verified --jobs=4 --olean --search-path=<compiled-module-and-dependency-paths>",
+      "selected_constants": [
+        "AlpogeRHCore21.nonemptyHypsDefiniteSideOfClosedBound",
+        "AlpogeRHCore21.nonemptyHypsDefiniteSideOfClosedBoundCofinal"
+      ],
+      "module": "Solution"
+    },
+    "comparator": "No verdict. The candidate NDJSON export was stopped after 25 minutes at 24.04 GB; exact statement matching and independent kernel replay were verified separately.",
+    "hosted_scoring": "Not submitted."
+  }
+}

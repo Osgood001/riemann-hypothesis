@@ -1,0 +1,78 @@
+--- Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/SiegelEisensteinSecondTermHypotheses.lean
++++ Solution.lean
+@@ -1 +0,0 @@
+-import Development.AutomorphicArithmetic.ThetaCorrespondence.FockModels.EveryCharacterE
+@@ -9,2 +7,0 @@
+-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.TopPlug
+-import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.At23OfAll
+@@ -35,0 +33,2 @@
++import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.GeometricWeakTiesOfStrong
++import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RowRatWOfRowTest
+@@ -39,2 +37,0 @@
+-section
+-section
+@@ -42,3 +39,17 @@
+-namespace UpperTheory.Lit
+-open UpperTheory.Top
+-theorem nonempty_hyps_definite_side_of_closed_bound : _root_.GlobalTheory.Fc.S0.UnitaryGroupThirdPlaceHypotheses → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → _root_.GlobalTheory.CovTop.CovolumeBoundOfX → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists), (∀ cDep : ℝ, _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfDependence hL cDep) (fun Q L => _root_.GlobalTheory.Fc.R1.SlotNormCondition Q L fun 𝒞 => Formalism.MainNotions.Closed 𝒞 fun Fm _ => _root_.GlobalTheory.NLink.BoundAtTwoThreeFamilyFonAlt Fm)) → Nonempty (_root_.GlobalTheory.Fc.HypsAlt S0.NL _root_.GlobalTheory.Fc.DefiniteSideCondition) := by
++
++namespace AlpogeRHCore21
++
++/-- Arbitrarily large linkage parameters suffice: the grid estimates impose
++only lower bounds on their common parameter. -/
++theorem nonemptyHypsDefiniteSideOfClosedBoundCofinal :
++    _root_.GlobalTheory.Fc.S0.UnitaryGroupThirdPlaceHypotheses →
++    _root_.GlobalTheory.FunPr.ThetaLocalInputs →
++    GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree →
++    GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
++    _root_.GlobalTheory.CovTop.CovolumeBoundOfX →
++    ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists),
++      (∀ lower : ℝ, ∃ cDep : ℝ, lower ≤ cDep ∧ _root_.GlobalTheory.Fc.RL.LinkedAt
++        (_root_.GlobalTheory.Mem.Top.Bl.parametersOfDependence hL cDep)
++        (fun Q L => _root_.GlobalTheory.Fc.R1.SlotNormCondition Q L fun 𝒞 =>
++          Formalism.MainNotions.Closed 𝒞 fun Fm _ => _root_.GlobalTheory.NLink.BoundAtTwoThreeFamilyFonAlt Fm)) →
++      Nonempty (_root_.GlobalTheory.Fc.HypsAlt _root_.GlobalTheory.Fc.S0.NL _root_.GlobalTheory.Fc.DefiniteSideCondition) := by
+@@ -57,4 +68,5 @@
+-  have hEv : EvLgG (GridA (max CF0 CF1)) := hCF1 _ (le_max_right _ _)
+-  have hOpen1 : _root_.GlobalTheory.Fc.S0.OpenParameterStatements (_root_.GlobalTheory.Mem.Top.Bl.parametersOfDependence hL (max CF0 CF1)) := _root_.GlobalTheory.T.open0_of_unitary_group_hypotheses P hL (max CF0 CF1)
+-  have hMono := _root_.GlobalTheory.Glob.open_and_linked_of_stronger_extension_alt hL (_root_.GlobalTheory.HeightCounting.Up.extensionWithList hL (max CF0 CF1))
+-    (_root_.GlobalTheory.Mem.LiteralAutomorphy.extensionWithAtProperty hL (_root_.GlobalTheory.HeightCounting.Up.extensionWithOrigin hL (max CF0 CF1)) (GridA (max CF0 CF1))) SExt.none (geoCl anyGeometry)
++  obtain ⟨cDep, hcDep, hLink⟩ := hN (max CF0 CF1)
++  have hEv : EvLgG (GridA cDep) := hCF1 cDep ((le_max_right _ _).trans hcDep)
++  have hOpen1 : _root_.GlobalTheory.Fc.S0.OpenParameterStatements (_root_.GlobalTheory.Mem.Top.Bl.parametersOfDependence hL cDep) := _root_.GlobalTheory.T.open0_of_unitary_group_hypotheses P hL cDep
++  have hMono := _root_.GlobalTheory.Glob.open_and_linked_of_stronger_extension_alt hL (_root_.GlobalTheory.HeightCounting.Up.extensionWithList hL cDep)
++    (_root_.GlobalTheory.Mem.LiteralAutomorphy.extensionWithAtProperty hL (_root_.GlobalTheory.HeightCounting.Up.extensionWithOrigin hL cDep) (GridA cDep)) SExt.none (geoCl anyGeometry)
+@@ -63 +75 @@
+-  have hFun := hCF0 (max CF0 CF1) (le_max_left _ _) hL (_root_.GlobalTheory.HeightCounting.Up.extensionWithOrigin hL (max CF0 CF1)) SExt.none (geoCl anyGeometry)
++  have hFun := hCF0 cDep ((le_max_left _ _).trans hcDep) hL (_root_.GlobalTheory.HeightCounting.Up.extensionWithOrigin hL cDep) SExt.none (geoCl anyGeometry)
+@@ -66 +78 @@
+-    P.casselmanWallach P.rayClassFieldSt hX hL (_root_.GlobalTheory.Mem.LiteralAutomorphy.extensionWithAtProperty hL (_root_.GlobalTheory.HeightCounting.Up.extensionWithOrigin hL (max CF0 CF1)) (GridA (max CF0 CF1)))
++    P.casselmanWallach P.rayClassFieldSt hX hL (_root_.GlobalTheory.Mem.LiteralAutomorphy.extensionWithAtProperty hL (_root_.GlobalTheory.HeightCounting.Up.extensionWithOrigin hL cDep) (GridA cDep))
+@@ -68,9 +80,18 @@
+-  exact _root_.GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt P hRat hL (max CF0 CF1) (GridA (max CF0 CF1)) hEv (hN (max CF0 CF1)) hFun hL3
+-theorem every_character_of_theta_integrals_local_matching (P : _root_.GlobalTheory.Fc.S0.UnitaryGroupThirdPlaceHypotheses) (F : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hA : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
+-    (hM : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) (hX : _root_.GlobalTheory.CovTop.CovolumeBoundOfX) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hV : VWin) :
+-    UpperTheory.EveryCharacter :=
+-  _root_.UpperTheory.Top.every_character_of_green_v_win (GlobalTheory.GreenBridge.green_of_regular P.greenRegularCharacters) hV
+-    (_root_.UpperTheory.Lit.nonempty_hyps_definite_side_of_closed_bound P F hA hM hX hL fun cDep => _root_.UpperTheory.N.boundAtTwoThree_linked_of_recT P.nLink (_root_.GlobalTheory.Mem.Top.Bl.parametersOfDependence hL cDep))
+-end UpperTheory.Lit
+-end
+-end
++  exact _root_.GlobalTheory.Fc.S0.StageU.hypotheses_nonempty_of_unramified_exponents_alt P hRat hL cDep (GridA cDep) hEv hLink hFun hL3
++
++theorem nonemptyHypsDefiniteSideOfClosedBound :
++    _root_.GlobalTheory.Fc.S0.UnitaryGroupThirdPlaceHypotheses →
++    _root_.GlobalTheory.FunPr.ThetaLocalInputs →
++    GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree →
++    GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
++    _root_.GlobalTheory.CovTop.CovolumeBoundOfX →
++    ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists),
++      (∀ cDep : ℝ, _root_.GlobalTheory.Fc.RL.LinkedAt
++        (_root_.GlobalTheory.Mem.Top.Bl.parametersOfDependence hL cDep)
++        (fun Q L => _root_.GlobalTheory.Fc.R1.SlotNormCondition Q L fun 𝒞 =>
++          Formalism.MainNotions.Closed 𝒞 fun Fm _ => _root_.GlobalTheory.NLink.BoundAtTwoThreeFamilyFonAlt Fm)) →
++      Nonempty (_root_.GlobalTheory.Fc.HypsAlt _root_.GlobalTheory.Fc.S0.NL _root_.GlobalTheory.Fc.DefiniteSideCondition) := by
++  intro P F hA hM hX hL hN
++  exact nonemptyHypsDefiniteSideOfClosedBoundCofinal P F hA hM hX hL (fun lower => ⟨lower, le_rfl, hN lower⟩)
++
++end AlpogeRHCore21
