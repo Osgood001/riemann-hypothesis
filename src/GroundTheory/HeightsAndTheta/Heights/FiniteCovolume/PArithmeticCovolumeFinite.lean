@@ -26,24 +26,19 @@ theorem continuous_len_invApply {h : HermitianForm F E W} {v : Basis ι E W} (M 
   refine Real.continuous_sqrt.comp (continuous_finsetSum _ fun w _ => Complex.continuous_re.comp ?_)
   exact (hw w).star.dotProduct (continuous_const.matrix_mulVec (hw w))
 
-theorem ArithmeticCovolumeFinite.proof (h : HermitianForm F E W) (v : Basis ι E W)
+theorem ArithmeticCovolumeFinite.of_index_bound (h : HermitianForm F E W) (v : Basis ι E W)
     (h₁ : ScalingLaw.Statement h v) (h₂ : MahlerCompactness.Statement h v)
-    (h₃ : ShortVectorIsotropic.Statement h v) (h₄ : ShortestVectorIndex.Statement h v)
-    (h₅ : IntegralFamilyBound.Statement E) (h₆ : MajorantExists.Statement h v)
+    (h₃ : ShortVectorIsotropic.Statement h v)
+    (C₀ : ℕ) (h₄ : ∀ (M : Majorant h v) (D : ℕ) (La : AddSubgroup W) (g : archUnitary h v)
+      (x : W), IsDIntegral h D La → x ∈ La → x ≠ 0 →
+      (∀ y ∈ La, y ≠ 0 → M.len (invApply g (vecAt v x)) ≤ M.len (invApply g (vecAt v y))) →
+      lineIndex E La x ≤ C₀)
+    (h₆ : MajorantExists.Statement h v)
     (h₈ : ArchLatticeDiscrete.Statement h v) (h₉ : LatticePointsBelowFinite.Statement h v) :
     ArithmeticCovolumeFinite.Statement h v := by
   classical
   intro μ _ D La hLa
   obtain ⟨M⟩ := h₆
-
-  obtain ⟨r, a, ha, har⟩ := h₅
-  have hdeg : finrank ℚ E = 2 * finrank ℚ F := by
-    rw [← Module.finrank_mul_finrank ℚ F E, Algebra.IsQuadraticExtension.finrank_eq_two F E,
-      mul_comm]
-  have ha' : ∃ b : Fin (2 * finrank ℚ F) → 𝓞 E, LinearIndependent ℚ (fun i => (b i : E)) ∧
-      ∀ i (σ : E →+* ℂ), ‖σ (b i)‖ ≤ r :=
-    ⟨a ∘ Fin.cast hdeg.symm, ha.comp _ (Fin.cast_injective _), fun i σ => har _ σ⟩
-  set C₀ : ℕ := ⌊(r * Real.sqrt (2 * finrank ℚ F)) ^ (2 * finrank ℚ F)⌋₊ with hC₀
 
   set VV : Set W := {x | x ∈ La ∧ x ≠ 0 ∧ h.toSesq x x = 0 ∧ lineIndex E La x ≤ C₀} with hVV
   have hstable : ∀ γ ∈ latticeStab h La, ∀ x ∈ VV, γ • x ∈ VV := by
@@ -85,7 +80,7 @@ theorem ArithmeticCovolumeFinite.proof (h : HermitianForm F E W) (v : Basis ι E
         · exact hxlt.le.trans (not_lt.1 hylt)
       have hxVV : x ∈ VV := by
         refine ⟨hxLa, hx0, h₃ M D La g x hLa hxLa hxlt, ?_⟩
-        exact Nat.le_floor (h₄ M r ha' D La g x hLa hxLa hx0 hshort)
+        exact h₄ M D La g x hLa hxLa hx0 hshort
       have hne : ({y ∈ VV | M.len (invApply g (vecAt v y)) < 1}).Nonempty := ⟨x, hxVV, hxlt⟩
       unfold countBelow
       rw [← ENat.toENNReal_one, ENat.toENNReal_le]
@@ -112,7 +107,7 @@ theorem ArithmeticCovolumeFinite.proof (h : HermitianForm F E W) (v : Basis ι E
     obtain ⟨γ, hγS, hγK⟩ := hMah La g hLa hlam
     have hL : ∃ γ' : h.unitaryGroup, γ' • La = γ • La := ⟨γ, rfl⟩
     have hcL : c (γ • La) • La = γ • La := by
-      simp only [c, dif_pos hL]
+      simp only [c, dite_eq_left hL]
       exact hL.choose_spec
     have hstab : γ⁻¹ * c (γ • La) ∈ latticeStab h La := by
       change (γ⁻¹ * c (γ • La)) • La = La
@@ -132,6 +127,22 @@ theorem ArithmeticCovolumeFinite.proof (h : HermitianForm F E W) (v : Basis ι E
   calc μ FD = μ ((FD ∩ B) ∪ (FD ∩ Bᶜ)) := by rw [Set.inter_union_compl]
     _ ≤ μ (FD ∩ B) + μ (FD ∩ Bᶜ) := measure_union_le _ _
     _ < ⊤ := ENNReal.add_lt_top.2 ⟨hBle.trans_lt (hm 1 one_pos).1, hAlt⟩
+
+theorem ArithmeticCovolumeFinite.proof (h : HermitianForm F E W) (v : Basis ι E W)
+    (h₁ : ScalingLaw.Statement h v) (h₂ : MahlerCompactness.Statement h v)
+    (h₃ : ShortVectorIsotropic.Statement h v) (h₄ : ShortestVectorIndex.Statement h v)
+    (h₅ : IntegralFamilyBound.Statement E) (h₆ : MajorantExists.Statement h v)
+    (h₈ : ArchLatticeDiscrete.Statement h v) (h₉ : LatticePointsBelowFinite.Statement h v) :
+    ArithmeticCovolumeFinite.Statement h v := by
+  obtain ⟨r, a, ha, har⟩ := h₅
+  have hdeg : finrank ℚ E = 2 * finrank ℚ F := by
+    rw [← Module.finrank_mul_finrank ℚ F E, Algebra.IsQuadraticExtension.finrank_eq_two F E,
+      mul_comm]
+  have ha' : ∃ b : Fin (2 * finrank ℚ F) → 𝓞 E, LinearIndependent ℚ (fun i => (b i : E)) ∧
+      ∀ i (σ : E →+* ℂ), ‖σ (b i)‖ ≤ r :=
+    ⟨a ∘ Fin.cast hdeg.symm, ha.comp _ (Fin.cast_injective _), fun i σ => har _ σ⟩
+  exact ArithmeticCovolumeFinite.of_index_bound h v h₁ h₂ h₃ _ (fun M D La g x hD hx hx0 hmin =>
+    Nat.le_floor (h₄ M r ha' D La g x hD hx hx0 hmin)) h₆ h₈ h₉
 
 end
 

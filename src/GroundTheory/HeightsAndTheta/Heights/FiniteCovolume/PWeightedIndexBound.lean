@@ -9,15 +9,25 @@ namespace GroundTheory.Heights₂.Heights.FiniteCovolume
 
 open NumberField Module
 
-theorem WeightedIndexBound.proof (E : Type*) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E]
+/-- Transfer any Euclidean packing estimate to the actual weighted coefficient index, before Hadamard. -/
+theorem WeightedIndexBound.det_profile (E : Type*) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E]
     (h₁ : CoeffLatticeBasis.Statement E) (h₂ : IndexLeDet.Statement E)
     (h₃ : WeightedNormSq.Statement E) (h₄ : WeightedSpaceDim.Statement E)
-    (h₅ : ∀ [Fact (finrank ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) = finrank ℚ E)],
-      MinkowskiVolumeForm.Statement (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) (finrank ℚ E))
+    (C : ℝ) (hpack : ∀ [Fact (finrank ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) = finrank ℚ E)]
+      (o : Orientation ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) (Fin (finrank ℚ E)))
+      (b : Fin (finrank ℚ E) → EuclideanSpace ℝ (InfinitePlace E × Fin 2)) (lam : ℝ), 0 < lam →
+      (∀ z : Fin (finrank ℚ E) → ℤ, z ≠ 0 → lam ≤ ‖∑ i, (z i : ℝ) • b i‖) →
+      lam ^ finrank ℚ E ≤ C * |o.volumeForm b|)
     (h₆ : ∀ [Fact (finrank ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) = finrank ℚ E)],
-      VolumeFormIntComb.Statement (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) (finrank ℚ E)) :
-    WeightedIndexBound.Statement E := by
-  intro c hc A hOA hFG hmin r ⟨a, ha, hr⟩
+      VolumeFormIntComb.Statement (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) (finrank ℚ E))
+    (c : InfinitePlace E → ℝ) (hc : ∀ w, 0 < c w)
+    (A : AddSubgroup E) (hOA : intSubgroup E ≤ A) (hFG : A.FG)
+    (hmin : ∀ a ∈ A, a ≠ 0 → ∑ w, c w ≤ ∑ w, c w * ‖w.embedding a‖ ^ 2)
+    (a : Fin (finrank ℚ E) → 𝓞 E) (ha : LinearIndependent ℚ fun i => (a i : E))
+    (o : Orientation ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) (Fin (finrank ℚ E))) :
+    letI : Fact (finrank ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) = finrank ℚ E) := ⟨h₄⟩
+    ((intSubgroup E).relIndex A : ℝ) * (Real.sqrt (∑ w, c w)) ^ finrank ℚ E ≤
+      C * |o.volumeForm (fun i => weightedEmbed c (a i : E))| := by
   have : Fact (finrank ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) = finrank ℚ E) := ⟨h₄⟩
   obtain ⟨e⟩ := h₁ A hOA hFG
   have hmem : ∀ i, (a i : E) ∈ A := fun i => hOA ⟨a i, rfl⟩
@@ -40,15 +50,10 @@ theorem WeightedIndexBound.proof (E : Type*) [Field E] [NumberField E] [_root_.N
   have hS : 0 < ∑ w, c w := Finset.sum_pos (fun w _ => hc w) Finset.univ_nonempty
   set lam := Real.sqrt (∑ w, c w) with hlam
   have hlam0 : 0 < lam := Real.sqrt_pos.2 hS
-  have hlam2 : lam ^ 2 = ∑ w, c w := Real.sq_sqrt hS.le
-  have hdpos : 0 < finrank ℚ E := Module.finrank_pos
-  have hsd : 0 < Real.sqrt (finrank ℚ E) := Real.sqrt_pos.2 (by exact_mod_cast hdpos)
-  set o : Orientation ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) (Fin (finrank ℚ E)) :=
-    (Module.finBasisOfFinrankEq ℝ _ h₄).orientation
   set b : Fin (finrank ℚ E) → EuclideanSpace ℝ (InfinitePlace E × Fin 2) := fun i => Φ (e i : E)
 
-  have hmink : (lam / Real.sqrt (finrank ℚ E)) ^ finrank ℚ E ≤ |o.volumeForm b| := by
-    refine h₅ o b lam hlam0 fun z hz => ?_
+  have hmink : lam ^ finrank ℚ E ≤ C * |o.volumeForm b| := by
+    refine hpack o b lam hlam0 fun z hz => ?_
     have hsum : ∑ i, (z i : ℝ) • b i = Φ ((∑ i, z i • e i : A) : E) := by
       set_option synthInstance.maxHeartbeats 100000 in
         rw [hcoe, map_sum]
@@ -72,33 +77,48 @@ theorem WeightedIndexBound.proof (E : Type*) [Field E] [NumberField E] [_root_.N
   have hvol : o.volumeForm (fun i => Φ (a i : E)) = (T.det : ℝ) * o.volumeForm b := by
     rw [hab]; exact h₆ o b T
 
+  change ((intSubgroup E).relIndex A : ℝ) * lam ^ finrank ℚ E ≤ C * |o.volumeForm (fun i => Φ (a i : E))|
+  rw [hvol, abs_mul]
+  calc
+    _ ≤ |(T.det : ℝ)| * lam ^ finrank ℚ E := mul_le_mul_of_nonneg_right hidx (pow_nonneg hlam0.le _)
+    _ ≤ |(T.det : ℝ)| * (C * |o.volumeForm b|) := mul_le_mul_of_nonneg_left hmink (abs_nonneg _)
+    _ = _ := by ring
+
+theorem WeightedIndexBound.proof (E : Type*) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E]
+    (h₁ : CoeffLatticeBasis.Statement E) (h₂ : IndexLeDet.Statement E)
+    (h₃ : WeightedNormSq.Statement E) (h₄ : WeightedSpaceDim.Statement E)
+    (h₅ : ∀ [Fact (finrank ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) = finrank ℚ E)],
+      MinkowskiVolumeForm.Statement (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) (finrank ℚ E))
+    (h₆ : ∀ [Fact (finrank ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) = finrank ℚ E)],
+      VolumeFormIntComb.Statement (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) (finrank ℚ E)) :
+    WeightedIndexBound.Statement E := by
+  intro c hc A hOA hFG hmin r ⟨a, ha, hr⟩
+  have hd : 0 < Real.sqrt (finrank ℚ E) := Real.sqrt_pos.mpr (by exact_mod_cast (Module.finrank_pos : 0 < finrank ℚ E))
+  let C := Real.sqrt (finrank ℚ E) ^ finrank ℚ E
+  have hC : 0 ≤ C := pow_nonneg hd.le _
+  have : Fact (finrank ℝ (EuclideanSpace ℝ (InfinitePlace E × Fin 2)) = finrank ℚ E) := ⟨h₄⟩
+  let o := (Module.finBasisOfFinrankEq ℝ _ h₄).orientation
+  let lam := Real.sqrt (∑ w, c w)
+  have hS : 0 < ∑ w, c w := Finset.sum_pos (fun w _ => hc w) Finset.univ_nonempty
+  have hlam : 0 < lam := Real.sqrt_pos.mpr hS
   have hr0 : 0 ≤ r := by
     obtain ⟨w⟩ : Nonempty (InfinitePlace E) := inferInstance
-    exact (norm_nonneg _).trans (hr ⟨0, hdpos⟩ w.embedding)
-  have hnorm : ∀ i, ‖Φ (a i : E)‖ ≤ r * lam := by
-    intro i
-    have h2 : ‖Φ (a i : E)‖ ^ 2 ≤ (r * lam) ^ 2 := by
-      rw [h₃ c hc0, mul_pow, hlam2, Finset.mul_sum]
-      refine Finset.sum_le_sum fun w _ => ?_
-      have := pow_le_pow_left₀ (norm_nonneg _) (hr i w.embedding) 2
-      nlinarith [hc0 w]
-    nlinarith [norm_nonneg (Φ (a i : E)), mul_nonneg hr0 hlam0.le]
-  have hhad : |o.volumeForm (fun i => Φ (a i : E))| ≤ (r * lam) ^ finrank ℚ E := by
-    refine (o.abs_volumeForm_apply_le _).trans ?_
-    calc ∏ i, ‖Φ (a i : E)‖ ≤ ∏ _i : Fin (finrank ℚ E), r * lam :=
-          Finset.prod_le_prod₀ (fun i _ => norm_nonneg _) (fun i _ => hnorm i)
-      _ = (r * lam) ^ finrank ℚ E := by simp
+    exact (norm_nonneg _).trans (hr (⟨0, Module.finrank_pos⟩ : Fin (finrank ℚ E)) w.embedding)
+  have hnorm (i) : ‖weightedEmbed c (a i : E)‖ ≤ r * lam := by
+    apply (sq_le_sq₀ (norm_nonneg _) (mul_nonneg hr0 hlam.le)).mp
+    rw [h₃ c (fun w => (hc w).le), mul_pow, Real.sq_sqrt hS.le, Finset.mul_sum]
+    exact Finset.sum_le_sum fun w _ => (mul_le_mul_of_nonneg_left
+      (pow_le_pow_left₀ (norm_nonneg _) (hr i w.embedding) 2) (hc w).le).trans_eq (mul_comm _ _)
+  have hdet := WeightedIndexBound.det_profile E h₁ h₂ h₃ h₄ C (fun o' b lam' hpos hsep => by
+    have hb := h₅ o' b lam' hpos hsep
+    rw [div_pow, div_le_iff₀ (pow_pos hd _)] at hb
+    simpa [C, mul_comm] using hb) h₆ c hc A hOA hFG hmin a ha o
+  refine le_of_mul_le_mul_right ?_ (pow_pos hlam (finrank ℚ E))
+  calc
+    _ ≤ C * |o.volumeForm (fun i => weightedEmbed c (a i : E))| := hdet
+    _ ≤ C * ∏ _i : Fin (finrank ℚ E), (r * lam) := mul_le_mul_of_nonneg_left
+      ((o.abs_volumeForm_apply_le _).trans (Finset.prod_le_prod₀ (fun _ _ => norm_nonneg _) (fun i _ => hnorm i))) hC
+    _ = _ := by simp [C, mul_pow]; ring
 
-  have hpos : 0 < (lam / Real.sqrt (finrank ℚ E)) ^ finrank ℚ E := pow_pos (div_pos hlam0 hsd) _
-  have hkey : |(T.det : ℝ)| * (lam / Real.sqrt (finrank ℚ E)) ^ finrank ℚ E ≤
-      (r * Real.sqrt (finrank ℚ E)) ^ finrank ℚ E * (lam / Real.sqrt (finrank ℚ E)) ^ finrank ℚ E := by
-    calc |(T.det : ℝ)| * (lam / Real.sqrt (finrank ℚ E)) ^ finrank ℚ E
-        ≤ |(T.det : ℝ)| * |o.volumeForm b| :=
-          mul_le_mul_of_nonneg_left hmink (abs_nonneg _)
-      _ = |o.volumeForm (fun i => Φ (a i : E))| := by rw [hvol, abs_mul]
-      _ ≤ (r * lam) ^ finrank ℚ E := hhad
-      _ = (r * Real.sqrt (finrank ℚ E)) ^ finrank ℚ E * (lam / Real.sqrt (finrank ℚ E)) ^ finrank ℚ E := by
-          rw [← mul_pow]; congr 1; field_simp
-  exact hidx.trans (le_of_mul_le_mul_right hkey hpos)
 
 end GroundTheory.Heights₂.Heights.FiniteCovolume

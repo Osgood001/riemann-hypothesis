@@ -56,6 +56,7 @@ public import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PWeightedNormS
 public import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PWeightedSpaceDim
 public import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PWeightPos
 public import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.PWittPartner
+public import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.WeightedDiscriminant
 
 @[expose] public section
 
@@ -149,7 +150,8 @@ theorem LineIndexNeZero.full : LineIndexNeZero.Statement E W := LineIndexNeZero.
 
 theorem LineIndexCoeffs.full : LineIndexCoeffs.Statement (E := E) W := LineIndexCoeffs.proof E W
 
-theorem LineCoeffsFG.full : LineCoeffsFG.Statement (E := E) W := LineCoeffsFG.proof W
+theorem LineCoeffsFG.full (E : Type*) [Field E] [NumberField E] (W : Type*) [AddCommGroup W]
+    [Module E W] : LineCoeffsFG.Statement (E := E) W := LineCoeffsFG.proof W
 
 end Numbers
 
@@ -164,16 +166,27 @@ theorem HermAtPlace.full : HermAtPlace.Statement h v := HermAtPlace.proof h v
 
 theorem GramAtData.full : GramAtData.Statement h v := GramAtData.proof h v
 
-theorem ArchInvariant.full : ArchInvariant.Statement h v := ArchInvariant.proof h v
+theorem ArchInvariant.full {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E]
+    [Algebra F E] [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E]
+    {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (h : HermitianForm F E W) (v : Basis ι E W) : ArchInvariant.Statement h v := ArchInvariant.proof h v
 
-theorem LenSq.full : LenSq.Statement h v := LenSq.proof h v
+theorem LenSq.full {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E]
+    [Algebra F E] [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E]
+    {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (h : HermitianForm F E W) (v : Basis ι E W) : LenSq.Statement h v := LenSq.proof h v
 
-theorem VecAtNeZero.full : VecAtNeZero.Statement v := VecAtNeZero.proof v
+theorem VecAtNeZero.full {E : Type*} [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E]
+    {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (v : Basis ι E W) : VecAtNeZero.Statement v := VecAtNeZero.proof v
 
 theorem WeightedLenSmul.full : WeightedLenSmul.Statement h v :=
   WeightedLenSmul.proof h v (LenSq.full h v)
 
-theorem WeightPos.full : WeightPos.Statement h v := WeightPos.proof h v (VecAtNeZero.full v)
+theorem WeightPos.full {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E]
+    [Algebra F E] [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E]
+    {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (h : HermitianForm F E W) (v : Basis ι E W) : WeightPos.Statement h v := WeightPos.proof h v (VecAtNeZero.full v)
 
 theorem MajorantExists.full : MajorantExists.Statement h v :=
   MajorantExists.proof h v (GramAtData.full h v)
@@ -182,25 +195,47 @@ theorem ArchLatticeDiscrete.full : ArchLatticeDiscrete.Statement h v := ArchLatt
 
 theorem LenCauchySchwarz.full : LenCauchySchwarz.Statement h v := LenCauchySchwarz.proof h v
 
-theorem BoundedInverseCompact.full : BoundedInverseCompact.Statement h v :=
+theorem BoundedInverseCompact.full {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E]
+    [Algebra F E] [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E]
+    {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (h : HermitianForm F E W) (v : Basis ι E W) : BoundedInverseCompact.Statement h v :=
   BoundedInverseCompact.proof h v
 
 theorem GramDetermines.full : GramDetermines.Statement h := GramDetermines.proof h
 
-theorem WittPartner.full : WittPartner.Statement h := WittPartner.proof h
+theorem WittPartner.full {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E]
+    [Algebra F E] [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E]
+    {W : Type*} [AddCommGroup W] [Module E W] (h : HermitianForm F E W) : WittPartner.Statement h := WittPartner.proof h
 
-theorem ComplementForm.full : ComplementForm.Statement h := ComplementForm.proof h
+theorem ComplementForm.full {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E]
+    [Algebra F E] [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E]
+    {W : Type*} [AddCommGroup W] [Module E W] (h : HermitianForm F E W) : ComplementForm.Statement h := ComplementForm.proof h
 
 theorem IsotropicScaling.full : IsotropicScaling.Statement h :=
   IsotropicScaling.proof h (WittPartner.full h)
 
-theorem HyperbolicPairTransitive.full [FiniteDimensional E W] :
+theorem HyperbolicPairTransitive.full {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E]
+    [Algebra F E] [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E]
+    {W : Type*} [AddCommGroup W] [Module E W] (h : HermitianForm F E W) [FiniteDimensional E W] :
     HyperbolicPairTransitive.Statement h :=
   HyperbolicPairTransitive.proof h
 
 theorem ShortVectorIsotropic.full : ShortVectorIsotropic.Statement h v :=
   ShortVectorIsotropic.proof h v (HermAtPlace.full h v) (GramAtData.full h v) (ArchInvariant.full h v)
     (MajorantBound.full ι) (LenSq.full h v) (IntegerSmallAtPlaces.full E)
+
+omit [NumberField F] [IsTotallyReal F] in
+/-- A shortest vector whose integral multiples lie in the subgroup has index bounded by the field alone. -/
+theorem ShortestVectorIndex.discriminant (M : Majorant h v) (La : AddSubgroup W) (g : archUnitary h v)
+    (x : W) (hOx : ∀ a : 𝓞 E, (a : E) • x ∈ La) (hx0 : x ≠ 0)
+    (hmin : ∀ y ∈ La, y ≠ 0 → M.len (invApply g (vecAt v x)) ≤ M.len (invApply g (vecAt v y))) :
+    lineIndex E La x ≤ ⌊discriminantIndexBound E⌋₊ :=
+  Nat.le_floor (ShortestVectorIndex.of_weighted_bound h v (LineIndexCoeffs.full E W)
+    (WeightedLenSmul.proof h v (LenSq.proof h v)) (WeightPos.proof h v (VecAtNeZero.proof v))
+    M La g x hOx hx0 hmin _ (fun c hc hO =>
+      WeightedIndexBound.discriminant E (CoeffLatticeBasis.full E) (IndexLeDet.full E)
+        (WeightedNormSq.full E) (WeightedSpaceDim.full E) (VolumeFormIntComb.full _ _)
+        c hc _ hO))
 
 theorem ShortestVectorIndex.full : ShortestVectorIndex.Statement h v :=
   ShortestVectorIndex.proof h v (LineIndexCoeffs.full E W) (LineCoeffsFG.full E W)
@@ -294,12 +329,14 @@ theorem ArithmeticCovolumeFinite.step_of {W : Type u} [AddCommGroup W] [Module E
       UnfoldAlongSubgroup.Statement (archUnitary h v) ((InfinitePlace E → ℂ) × M.stab))
     (hHP : HaarParabolicCoordinates.Statement h v) (hSC : StabilizerCovolumeFinite.Statement h v)
     (hPB : LatticePointsBelowFinite.Statement h v) : ArithmeticCovolumeFinite.Statement h v :=
-  ArithmeticCovolumeFinite.proof h v
+  ArithmeticCovolumeFinite.of_index_bound h v
     (ScalingLaw.full_of h v (LinePairOrbitsFinite.full_of h hL hCE hLN hCL)
       (UnfoldingIntegral.full_of h v hUA hHP hSC))
     (MahlerCompactness.full_of h v hR hA hT) (ShortVectorIsotropic.full h v)
-    (ShortestVectorIndex.full h v) (IntegralFamilyBound.full E) (MajorantExists.full h v)
-    (ArchLatticeDiscrete.full h v) hPB
+    ⌊discriminantIndexBound E⌋₊
+    (fun M _ La g x hD hx => ShortestVectorIndex.discriminant h v M La g x
+      (fun a => hD.isLattice.smul_mem a x hx))
+    (MajorantExists.full h v) (ArchLatticeDiscrete.full h v) hPB
 
 theorem CovolumeFiniteBelow.of_steps (hR : ReducedBasisBound.Statement)
     (hA : ∀ (W : Type u) [AddCommGroup W] [Module E W] [FiniteDimensional E W]
