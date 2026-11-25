@@ -23,8 +23,8 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
   and_intros
   all_goals
     intro y
-    try intro hy; have := nsmul_mem hy n
+    intros
     specialize hn y
     simp_all [IsPure, ← mem_coe, ← range_subset_iff, ← span_le, range_eq, comp_def]
     simp_all [SetLike.le_def, mem_sup, disjoint_def]
-    grind [ sgnRt, add_mem_cancel_left, add_mem_cancel_right]
+    grind [nsmul_mem, sgnRt, add_mem_cancel_left, add_mem_cancel_right]
