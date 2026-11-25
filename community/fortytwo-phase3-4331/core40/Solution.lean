@@ -11,7 +11,7 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
   intros
   expose_names
   have torEq (f : Fin N → ℝ) :
-      tor E f = infGL E N (diagUnits N fun i => expU fun _ => (f i : ℂ)) := by
+      tor E f = infGL E N (diagUnits N fun i => expU fun _ => f i) := by
     apply Units.ext
     change diagonal _ = 1 - Matrix.map 1 (CuspRep.sInf E) + (diagonal _).map _
     simp only [← diagonal_one, diagonal_map (map_zero _), diagonal_sub, diagonal_add]
@@ -19,12 +19,12 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
     funext i
     apply Prod.ext
     -- Infinite coordinates use the complex exponential; the finite coordinates are one.
-    change _ = 1 - infEq E 1 + infEq E _
+    change _ = 1 - infEq _ 1 + _
     simp
     funext w
     rw [← IdeleGroup.coe_infiniteProj, infiniteProj_posIdele]
-    simp [posRealToUnits, posRealElem, not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w),
-      mult, sqrt_sq_eq_abs, expU, ofReal_exp, infEq]
+    simp [posRealToUnits, posRealElem, ← not_isComplex_iff_isReal, IsTotallyComplex.isComplex,
+      sqrt_sq_eq_abs, expU, ofReal_exp]
     rfl
     change _ = 1 - 0 + 0
     ext v

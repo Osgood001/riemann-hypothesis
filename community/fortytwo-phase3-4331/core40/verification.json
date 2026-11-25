@@ -1,14 +1,14 @@
 {
   "core": 40,
-  "candidate": "core40-domain6fe4fba79b0d",
+  "candidate": "core40-domain05e64b9196c9",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 404,
+  "local_normalized_tokens": 391,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "e6e93bb40f2463e78b430a0da993f969df43a9405fa1786fdb7ee994e9f8fbcc",
+  "proof_tree_sha256": "0904313104108272662afcb66880fd0a9c2bd1ace51cd53e6ae7e143c861dd24",
   "modified_files": {},
   "attribution": {
     "formalization": "Levent Alpöge and original authors",
@@ -25,7 +25,10 @@
         "used the absolute-value identity for the archimedean square root",
         "used one extensionality step for the units equality",
         "inferred the unipotent matrix argument type from its explicit adelic field",
-        "unfolded the dictionary to introduce its original parameters directly"
+        "unfolded the dictionary to introduce its original parameters directly",
+        "inferred the terminal infinite-coordinate summand from the checked target",
+        "inferred the complex coefficient of the exponential from the torus identity",
+        "specialized every infinite place using total complexity and simplified its multiplicity and coordinate map"
       ]
     },
     "prior_contributors": [
@@ -35,18 +38,18 @@
     "inherited_native_work": {
       "model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
       "direct_witness_call": "call_95c78cb8fab84d17933c177d656dcc50_0",
-      "original_session_sha256": "36d89728ffce07d53ef15025505dc20d5671d603c1375bcec8f3d9e3b6fcccc6",
-      "role": "Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work. The public parent also preserves the recorded native simplifier unfolding in the infinite-place projection."
+      "original_session_sha256": "a862c45038c037422d364ac4e97976264409cb9ed2a23e08063685c0be8a82f9",
+      "role": "Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work."
     },
-    "current_source": "Levent Alpöge and the original authors supplied the formalization. MarvinDontPanic’s public PR 43 generalized the torus identity to an arbitrary function from Fin N to the reals. This lets one simplification prove the split-centre and lattice identities. Marvin credited Mikko Nyman and collaborators (#103701) and the earlier Fortytwo submissions (#103322, #104025) and PR 19. Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work. The public parent also preserves the recorded native simplifier unfolding in the infinite-place projection. For this derivative, Codex compared diagonal entries by congruence and function extensionality, then split each product and applied congruence to the split-centre equality before reducing it to diagonal entries and restricted the Haar-measure rewrite to its first occurrence and used the absolute-value identity for the archimedean square root and used one extensionality step for the units equality and inferred the unipotent matrix argument type from its explicit adelic field and unfolded the dictionary to introduce its original parameters directly. The unchanged organizer Comparator and Lean default kernel accepted this exact proof. Public parent: https://github.com/MarvinDontPanic/riemann-hypothesis/blob/41740f7aa9a1ae961cbbffce4364fadd9a110aed/community/marvin-core-reductions/core40/Solution.lean"
+    "current_source": "Levent Alpöge and the original authors supplied the formalization. MarvinDontPanic’s public PR 43 generalized the torus identity to an arbitrary function from Fin N to the reals. This lets one simplification prove the split-centre and lattice identities. Marvin credited Mikko Nyman and collaborators (#103701) and the earlier Fortytwo submissions (#103322, #104025) and PR 19. Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work. For this derivative, Codex compared diagonal entries by congruence and function extensionality, then split each product and applied congruence to the split-centre equality before reducing it to diagonal entries and restricted the Haar-measure rewrite to its first occurrence and used the absolute-value identity for the archimedean square root and used one extensionality step for the units equality and inferred the unipotent matrix argument type from its explicit adelic field and unfolded the dictionary to introduce its original parameters directly and inferred the terminal infinite-coordinate summand from the checked target and inferred the complex coefficient of the exponential from the torus identity and specialized every infinite place using total complexity and simplified its multiplicity and coordinate map. The unchanged organizer Comparator and Lean default kernel accepted this exact proof. Public parent: https://github.com/MarvinDontPanic/riemann-hypothesis/blob/41740f7aa9a1ae961cbbffce4364fadd9a110aed/community/marvin-core-reductions/core40/Solution.lean"
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-25T05:00:18.983508+00:00",
-    "elapsed_seconds": 138.443,
+    "completed_utc": "2026-11-25T05:08:24.559403+00:00",
+    "elapsed_seconds": 163.922,
     "frozen_files": 1405,
-    "log_sha256": "71a80b66a40147436ced445c25634ddddb161e7f62e4d0864f08d2b8b436723d",
+    "log_sha256": "d5565a28ced4aed4c517ba9ff6a71c22cfd0e7f575acd1fa30a10048a9545006",
     "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
     "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e",
     "permitted_axioms": [
@@ -60,5 +63,5 @@
   "source_kind": "pinned_git_checkout",
   "target_sha256": "db42504120a3ee7af320c76aa8b682751b0a5d8b1ce67e7421c8712da699851f",
   "pinned_source_files": {},
-  "proof_id": "6fe4fba79b0daf1abe29206d4aae9a8751c4b158aa15b249beec5754a49d72de"
+  "proof_id": "05e64b9196c9e258a7903e9a9c8fbac58a2192b77a566f6543d024f5eb229ba5"
 }
