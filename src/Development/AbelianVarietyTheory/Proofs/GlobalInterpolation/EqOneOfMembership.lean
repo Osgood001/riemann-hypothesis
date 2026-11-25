@@ -156,16 +156,9 @@ theorem iwU_pow_eq_one {F : Type} [Field F] [NumberField F] {k g : ℕ} (hg : g.
 theorem eq_one_of_pow_prime_pow {E : Type} [Field E] [NumberField E] {k g : ℕ} (hg : g.Prime)
     (hbig : Module.finrank ℚ E * k < g - 1) (a : ℕ) :
     ∀ x : GL (Fin k) E, x ^ g ^ a = 1 → x = 1 := by
-  induction a with
-  | zero => intro x hx; simpa using hx
-  | succ a ih =>
-    intro x hx
-    apply ih
-    by_contra hne
-    have := Formalism.LogVandermondeBounds.StandardLattice.primeOrderFinrank E k g (x ^ g ^ a).val hg
-      (by rw [← Units.val_pow_eq_pow_val, ← pow_mul, ← pow_succ, hx, Units.val_one])
-      (fun h => hne (Units.ext h))
-    omega
+  intro x hx
+  simpa using Formalism.LogVandermondeBounds.StandardLattice.primePowerTorsionBound (j := 0) hg
+    (by simpa) x hx
 
 section Level
 
