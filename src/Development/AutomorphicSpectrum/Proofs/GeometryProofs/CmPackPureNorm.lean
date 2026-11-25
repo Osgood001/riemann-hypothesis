@@ -1,17 +1,16 @@
 module
 
 public import Mathlib
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TwoMulEqOfIsTypeFn
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCMFrame
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DifferentTwistedGeneratorExistsStatement
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenLocalBasisLogNormStatement
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsLocalBasisCmOrderStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PureFamilyDecompositionStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsActionStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackPureFrameStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmPackProductFrameStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExtendsOverDvrStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmLieModelActionStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodsSpanPureDecompositionStatement
 public import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicEmbeddingDiscreteValuationRingStatement
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Rt0ConjNegNeZero
 
@@ -47,18 +46,18 @@ theorem exists_frame {K : Type} [Field K] (V : Subring K) [IsDomain V] [IsPrinci
       Submodule.span V (Set.range u) ⊓ W.restrictScalars V = Submodule.span V (Set.range v) := by
   set N : Submodule V U := Submodule.span V (Set.range u) ⊓ W.restrictScalars V with hN
   have hfg : (Submodule.span V (Set.range u)).FG := Submodule.fg_span (Set.finite_range u)
-  haveI : Module.Finite V (Submodule.span V (Set.range u)) := Module.Finite.iff_fg.2 hfg
-  haveI : IsNoetherian V (Submodule.span V (Set.range u)) := inferInstance
+  have : Module.Finite V (Submodule.span V (Set.range u)) := Module.Finite.iff_fg.2 hfg
+  have : IsNoetherian V (Submodule.span V (Set.range u)) := inferInstance
   have hNfg : N.FG := by
     have := IsNoetherian.noetherian (R := V) (M := Submodule.span V (Set.range u))
       (N.comap (Submodule.span V (Set.range u)).subtype)
     have h2 := this.map (Submodule.span V (Set.range u)).subtype
     rwa [Submodule.map_comap_subtype, inf_eq_right.2 (inf_le_left : N ≤ _)] at h2
-  haveI : Module.Finite V N := Module.Finite.iff_fg.2 hNfg
-  haveI : Module.IsTorsionFree V U := ⟨fun r hr a b h => by
+  have : Module.Finite V N := Module.Finite.iff_fg.2 hNfg
+  have : Module.IsTorsionFree V U := ⟨fun r hr a b h => by
     have hr0 : (r : K) ≠ 0 := fun e => hr.ne_zero (Subtype.ext e)
     exact smul_right_injective U hr0 h⟩
-  haveI : Module.Free V N := Module.free_of_finite_type_torsion_free'
+  have : Module.Free V N := Module.free_of_finite_type_torsion_free'
   let bs := Module.finBasis V N
   refine ⟨_, fun i => (bs i : U), ?_, ?_⟩
   · refine (LinearIndependent.iff_fractionRing V K).1 ?_
@@ -130,6 +129,8 @@ theorem scaled {S : Scheme.{0}} {K : Type} [Field K] {G : Over S} [GrpObj G] {x 
     congr 1
     simp [Matrix.smul_apply, Matrix.one_apply, ite_smul]
 
+-- Preserve the public DVR and domain instance arguments. Both imply nontriviality.
+set_option linter.overlappingInstances false in
 theorem half {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {K : Type} [Field K] [CharZero K]
     (V : Subring K) [IsDomain V] [IsDiscreteValuationRing V] [IsFractionRing V K]
     (ℓ : Nat.Primes) (j : K →+* ℂ_[ℓ]) (y : Sp K ⟶ Xo.XF c) (T : SAB H (Sp V)) (tK : SAB H (Sp K))
@@ -165,8 +166,8 @@ theorem intFrames_fin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   intro E _ _ _ H D l Xo c g ty FU i Z P hP X x hx τ ℓ j v w hty hτ hloc hfr
   obtain ⟨Vs, hdvr, hVj, hOK, hunit⟩ := GlobalTheory.T.padic_embedding_discrete_valuation_ring X.K ℓ j
   let V : Subring X.K := Vs.toSubring
-  haveI : IsDiscreteValuationRing V := hdvr
-  haveI : IsFractionRing V X.K := (inferInstance : IsFractionRing Vs X.K)
+  have : IsDiscreteValuationRing V := hdvr
+  have : IsFractionRing V X.K := (inferInstance : IsFractionRing Vs X.K)
   have hj : ∀ a : X.K, ‖j a‖ ≤ 1 ↔ a ∈ V := hVj
   have hOK' : ∀ s : 𝓞 X.K, (s : X.K) ∈ V := hOK
   obtain ⟨f, b, hf, hb⟩ := GlobalTheory.T.exists_local_basis_cm_order E H ℓ ℓ.prop
@@ -192,14 +193,11 @@ theorem intFrames_fin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     hrt true _ _ (by simp [sgnRt, hrt2])
   obtain ⟨N, hN, hspan⟩ := span_fam (H := H) ℓ.prop x b hloc hb
   have hN0 : 0 < N := Nat.pos_of_ne_zero fun h => hN (h ▸ dvd_zero _)
-  obtain ⟨n, hn, hnspan⟩ := hloc.2
-  have hn0 : 0 < n := Nat.pos_of_ne_zero fun h => hn (h ▸ dvd_zero _)
-  have hdec := (GlobalTheory.T.pure_family_decomposition E H (FU.Di i) g ty P hP D.p D.q x n hx hnspan).1
-  have hg := (GlobalTheory.T.periods_span_pure_decomposition E H (FU.Di i) g ty P hP n hn0 hdec).1
   have hcardI : Fintype.card ((Fin D.p × Fin f) ⊕ (Fin D.q × Fin f)) = g := by
-    rw [hg, (FU.sig i).1, (FU.sig i).2, ← hf, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]
+    have hg := GlobalTheory.PeriodDatum.two_mul_eq_of_isTypeFn H hty
+    rw [← hf] at hg
     simp only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]
-    ring
+    nlinarith
   let e : Fin g ≃ (Fin D.p × Fin f) ⊕ (Fin D.q × Fin f) := (Fintype.equivFinOfCardEq hcardI).symm
   let bI : (Fin D.p × Fin f) ⊕ (Fin D.q × Fin f) → Bool := Sum.elim (fun _ => true) (fun _ => false)
   let aI : ∀ q, PureType.lat hP (sgnRt H (bI q)) := fun q => match q with
