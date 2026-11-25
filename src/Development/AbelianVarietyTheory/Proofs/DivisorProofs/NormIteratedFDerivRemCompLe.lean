@@ -37,28 +37,33 @@ theorem deriv_affine_cexp (a c d e : ℂ) :
     ((((h1.const_mul a).cexp).const_mul c).add (h1.const_mul d)).add_const e
   rw [h.deriv]; ring
 
+theorem norm_cexp_mul_I_sub_one_sub_le_half (z : ℝ) :
+    ‖Complex.exp (z * I) - 1 - z * I‖ ≤ z ^ 2 / 2 := by
+  let a : ℂ := z * I
+  let f (s : ℝ) : ℂ := Complex.exp (a * s) - 1 - a * s
+  have hd (s : ℝ) : HasDerivAt f ((Complex.exp (a * s) - 1) * a) s := by
+    have h : HasDerivAt (fun u : ℝ => (u : ℂ)) 1 s := by
+      simpa using (hasDerivAt_id s).ofReal_comp
+    convert (((h.const_mul a).cexp.sub_const 1).sub (h.const_mul a)) using 1; ring
+  have hB (s : ℝ) (hs : s ∈ Set.Ioo (0 : ℝ) 1) : ‖deriv f s‖ ≤ s * z ^ 2 := by
+    rw [(hd s).deriv, norm_mul]
+    have h : ‖Complex.exp (a * s) - 1‖ ≤ |s * z| := by
+      simpa [a, mul_comm, mul_left_comm, mul_assoc] using Real.norm_exp_I_mul_ofReal_sub_one_le (x := s * z)
+    calc _ ≤ |s * z| * ‖a‖ := by gcongr
+         _ = s * z ^ 2 := by simp only [a, norm_mul, Complex.norm_real, Real.norm_eq_abs, Complex.norm_I, mul_one, abs_mul, abs_of_pos hs.1, mul_assoc, ← sq, sq_abs]
+  have h := norm_sub_le_integral_of_norm_deriv_le_of_le (f := f) zero_le_one
+    (fun _ _ => (hd _).continuousAt.continuousWithinAt)
+    (fun _ _ => (hd _).differentiableAt.differentiableWithinAt)
+    (Filter.Eventually.of_forall hB) ((continuous_id.mul continuous_const).intervalIntegrable _ _)
+  simpa [f, a, intervalIntegral.integral_mul_const, integral_id, div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc] using h
+
 theorem norm_cexp_mul_I_sub_one_le (z : ℝ) : ‖Complex.exp (z * I) - 1‖ ≤ 2 * |z| := by
-  rcases le_or_gt |z| 1 with hz | hz
-  · have hn : ‖(z : ℂ) * I‖ = |z| := by simp
-    have := Complex.norm_exp_sub_one_le (x := (z : ℂ) * I) (by rw [hn]; exact hz)
-    rwa [hn] at this
-  · calc ‖Complex.exp (z * I) - 1‖ ≤ ‖Complex.exp (z * I)‖ + ‖(1 : ℂ)‖ := norm_sub_le _ _
-      _ = 2 := by rw [Complex.norm_exp_ofReal_mul_I]; norm_num
-      _ ≤ 2 * |z| := by linarith
+  have h := Real.norm_exp_I_mul_ofReal_sub_one_le (x := z)
+  rw [mul_comm] at h
+  simpa using h.trans (show ‖z‖ ≤ 2 * |z| by rw [Real.norm_eq_abs]; linarith [abs_nonneg z])
 
 theorem norm_cexp_mul_I_sub_one_sub_le (z : ℝ) :
-    ‖Complex.exp (z * I) - 1 - z * I‖ ≤ 3 * z ^ 2 := by
-  have hn : ‖(z : ℂ) * I‖ = |z| := by simp
-  rcases le_or_gt |z| 1 with hz | hz
-  · have := Complex.norm_exp_sub_one_sub_id_le (x := (z : ℂ) * I) (by rw [hn]; exact hz)
-    rw [hn, sq_abs] at this
-    nlinarith [sq_nonneg z]
-  · calc ‖Complex.exp (z * I) - 1 - z * I‖
-        ≤ ‖Complex.exp (z * I)‖ + ‖(1 : ℂ)‖ + ‖(z : ℂ) * I‖ := norm_sub_le_of_le (norm_sub_le _ _) le_rfl
-      _ = 2 + |z| := by rw [Complex.norm_exp_ofReal_mul_I, hn]; norm_num
-      _ ≤ 3 * z ^ 2 := by
-        have : |z| ^ 2 = z ^ 2 := sq_abs z
-        nlinarith
+    ‖Complex.exp (z * I) - 1 - z * I‖ ≤ 3 * z ^ 2 := (norm_cexp_mul_I_sub_one_sub_le_half z).trans (by nlinarith [sq_nonneg z])
 
 end GlobalTheory.CharFormDeriv
 
@@ -75,58 +80,66 @@ theorem rem_eq {t : ℝ} (ht0 : t ≠ 0) (y : ℝ) :
   field_simp
   ring_nf
 
-theorem norm_iteratedDeriv_rem_le {t : ℝ} (ht0 : t ≠ 0) (ht1 : |t| ≤ 1) (i : ℕ) (y : ℝ) :
-    ‖iteratedDeriv i (rem t) y‖ ≤ 3 * |t| * (1 + |y|) ^ 2 := by
+private theorem deriv_rem (t : ℝ) :
+    deriv (rem t) = fun y : ℝ => (t : ℂ)⁻¹ * (I * t) * Complex.exp ((I * t) * y) + (-I) :=
+  deriv_affine_cexp _ _ _ _
+
+/-- From order two onwards the character remainder has an exact, spatially constant derivative norm. -/
+theorem norm_iteratedDeriv_rem_add_two {t : ℝ} (ht : t ≠ 0) (m : ℕ) (y : ℝ) :
+    ‖iteratedDeriv (m + 2) (rem t) y‖ = |t| ^ (m + 1) := by
+  have hd1' : deriv (rem t) = fun y : ℝ =>
+      ((t : ℂ)⁻¹ * (I * t)) * Complex.exp ((I * t) * y) + 0 * y + (-I) := by
+    rw [deriv_rem]; funext y; ring
+  have hd2 : deriv (deriv (rem t)) = fun y : ℝ =>
+      ((t : ℂ)⁻¹ * (I * t) * (I * t)) * Complex.exp ((I * t) * y) := by
+    rw [hd1', deriv_affine_cexp]; funext y; ring
+  rw [iteratedDeriv_succ', iteratedDeriv_succ', hd2, iteratedDeriv_const_mul_cexp]
+  simp only
+  have e : (I * t) * (y : ℂ) = ((t * y : ℝ) : ℂ) * I := by push_cast; ring
+  rw [norm_mul, e, Complex.norm_exp_ofReal_mul_I, mul_one]
+  simp only [norm_mul, norm_pow, norm_inv, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs, one_mul]
+  rw [pow_succ]
+  field_simp [abs_ne_zero.mpr ht]
+
+theorem norm_iteratedDeriv_rem_le_sharp {t : ℝ} (ht0 : t ≠ 0) (ht1 : |t| ≤ 1) (i : ℕ) (y : ℝ) :
+    ‖iteratedDeriv i (rem t) y‖ ≤ |t| * (1 + |y|) ^ 2 := by
   have ht : (t : ℂ) ≠ 0 := by exact_mod_cast ht0
   have habs : 0 < |t| := abs_pos.mpr ht0
   have hy : 0 ≤ |y| := abs_nonneg y
   have hexp : (I * t) * (y : ℂ) = ((t * y : ℝ) : ℂ) * I := by push_cast; ring
-  have hnexp : ‖Complex.exp ((I * t) * (y : ℂ))‖ = 1 := by
-    rw [hexp, Complex.norm_exp_ofReal_mul_I]
   have hy1 : y ^ 2 ≤ (1 + |y|) ^ 2 := by
     rw [← sq_abs y]; nlinarith
   have hy2 : |y| ≤ (1 + |y|) ^ 2 := by nlinarith
-  have hrem : rem t = fun y : ℝ => (t : ℂ)⁻¹ * Complex.exp ((I * t) * y) + (-I) * y + (-(t : ℂ)⁻¹) := rfl
-  have hd1 : deriv (rem t) = fun y : ℝ => (t : ℂ)⁻¹ * (I * t) * Complex.exp ((I * t) * y) + (-I) := by
-    rw [hrem, deriv_affine_cexp]
   match i with
   | 0 =>
     rw [iteratedDeriv_zero, rem_eq ht0, norm_mul, norm_inv, Complex.norm_real, Real.norm_eq_abs]
-    have h3 := norm_cexp_mul_I_sub_one_sub_le (t * y)
+    have h3 := (norm_cexp_mul_I_sub_one_sub_le_half (t * y)).trans (show (t * y) ^ 2 / 2 ≤ (t * y) ^ 2 by nlinarith [sq_nonneg (t * y)])
     calc |t|⁻¹ * ‖Complex.exp (((t * y : ℝ) : ℂ) * I) - 1 - ((t * y : ℝ) : ℂ) * I‖
-        ≤ |t|⁻¹ * (3 * (t * y) ^ 2) := by gcongr
-      _ = 3 * |t| * y ^ 2 := by
+        ≤ |t|⁻¹ * ((t * y) ^ 2) := by gcongr
+      _ = |t| * y ^ 2 := by
         rw [mul_pow, ← sq_abs t]; field_simp
-      _ ≤ 3 * |t| * (1 + |y|) ^ 2 := by gcongr
+      _ ≤ |t| * (1 + |y|) ^ 2 := by gcongr
   | 1 =>
-    rw [iteratedDeriv_one, hd1]
+    rw [iteratedDeriv_one, deriv_rem]
     simp only
     have e : (t : ℂ)⁻¹ * (I * t) * Complex.exp ((I * t) * y) + (-I)
         = I * (Complex.exp (((t * y : ℝ) : ℂ) * I) - 1) := by
       rw [hexp]; field_simp; ring
     rw [e, norm_mul, Complex.norm_I, one_mul]
-    calc ‖Complex.exp (((t * y : ℝ) : ℂ) * I) - 1‖ ≤ 2 * |t * y| := norm_cexp_mul_I_sub_one_le _
-      _ = 2 * |t| * |y| := by rw [abs_mul]; ring
-      _ ≤ 3 * |t| * (1 + |y|) ^ 2 := by
+    calc
+      ‖Complex.exp (((t * y : ℝ) : ℂ) * I) - 1‖ ≤ |t * y| := by
+        simpa [mul_comm] using Real.norm_exp_I_mul_ofReal_sub_one_le (x := t * y)
+      _ = |t| * |y| := abs_mul t y
+      _ ≤ |t| * (1 + |y|) ^ 2 := by
         have := mul_le_mul_of_nonneg_left hy2 habs.le
         nlinarith
   | m + 2 =>
-    have hd1' : deriv (rem t) = fun y : ℝ =>
-        ((t : ℂ)⁻¹ * (I * t)) * Complex.exp ((I * t) * y) + 0 * y + (-I) := by
-      rw [hd1]; funext y; ring
-    have hd2 : deriv (deriv (rem t)) = fun y : ℝ =>
-        ((t : ℂ)⁻¹ * (I * t) * (I * t)) * Complex.exp ((I * t) * y) := by
-      rw [hd1', deriv_affine_cexp]; funext y; ring
-    rw [iteratedDeriv_succ', iteratedDeriv_succ', hd2, iteratedDeriv_const_mul_cexp]
-    simp only
-    rw [norm_mul, hnexp, mul_one]
-    simp only [norm_mul, norm_pow, norm_inv, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs, one_mul]
-    have hp : |t| ^ m ≤ 1 := pow_le_one₀ habs.le ht1
-    calc |t|⁻¹ * |t| * |t| * |t| ^ m = |t| * |t| ^ m := by field_simp
-      _ ≤ |t| * 1 := by gcongr
-      _ ≤ 3 * |t| * (1 + |y|) ^ 2 := by
-        have : 1 ≤ (1 + |y|) ^ 2 := by nlinarith
-        nlinarith
+    rw [norm_iteratedDeriv_rem_add_two ht0, pow_succ']
+    gcongr
+    exact (pow_le_one₀ habs.le ht1).trans (by nlinarith [sq_nonneg |y|])
+
+theorem norm_iteratedDeriv_rem_le {t : ℝ} (ht0 : t ≠ 0) (ht1 : |t| ≤ 1) (i : ℕ) (y : ℝ) :
+    ‖iteratedDeriv i (rem t) y‖ ≤ 3 * |t| * (1 + |y|) ^ 2 := (norm_iteratedDeriv_rem_le_sharp ht0 ht1 i y).trans (by gcongr; linarith [abs_nonneg t])
 
 end GlobalTheory.CharFormDeriv
 
@@ -136,9 +149,9 @@ theorem contDiff_rem (t : ℝ) : ContDiff ℝ (⊤ : ℕ∞) (rem t) := by
   have ho : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (y : ℂ)) := Complex.ofRealCLM.contDiff
   unfold rem; fun_prop
 
-theorem norm_iteratedFDeriv_rem_comp_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem norm_iteratedFDeriv_rem_comp_le_sharp {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : V →L[ℝ] ℝ) {t : ℝ} (ht0 : t ≠ 0) (ht1 : |t| ≤ 1) (i : ℕ) (x : V) :
-    ‖iteratedFDeriv ℝ i (fun x => rem t (L x)) x‖ ≤ 3 * |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i := by
+    ‖iteratedFDeriv ℝ i (fun x => rem t (L x)) x‖ ≤ |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i := by
   have h := L.iteratedFDeriv_comp_right (contDiff_rem t) x (i := i) (by exact_mod_cast le_top)
   have e : (fun x => rem t (L x)) = rem t ∘ ⇑L := rfl
   rw [e, h]
@@ -146,10 +159,14 @@ theorem norm_iteratedFDeriv_rem_comp_le {V : Type} [NormedAddCommGroup V] [Norme
         ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _
     _ = ‖iteratedDeriv i (rem t) (L x)‖ * ‖L‖ ^ i := by
         rw [norm_iteratedFDeriv_eq_norm_iteratedDeriv]; simp
-    _ ≤ 3 * |t| * (1 + |L x|) ^ 2 * ‖L‖ ^ i := by
-        gcongr; exact norm_iteratedDeriv_rem_le ht0 ht1 i (L x)
-    _ ≤ 3 * |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i := by
+    _ ≤ |t| * (1 + |L x|) ^ 2 * ‖L‖ ^ i := by
+        gcongr; exact norm_iteratedDeriv_rem_le_sharp ht0 ht1 i (L x)
+    _ ≤ |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i := by
         gcongr; rw [← Real.norm_eq_abs]; exact L.le_opNorm x
+
+theorem norm_iteratedFDeriv_rem_comp_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    (L : V →L[ℝ] ℝ) {t : ℝ} (ht0 : t ≠ 0) (ht1 : |t| ≤ 1) (i : ℕ) (x : V) :
+    ‖iteratedFDeriv ℝ i (fun x => rem t (L x)) x‖ ≤ 3 * |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i := (norm_iteratedFDeriv_rem_comp_le_sharp L ht0 ht1 i x).trans (by gcongr; linarith [abs_nonneg t])
 
 theorem hasTemperateGrowth_char {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : V →L[ℝ] ℝ) (t : ℝ) :
@@ -177,10 +194,10 @@ end GlobalTheory.CharFormDeriv
 
 namespace GlobalTheory.CharFormDeriv
 
-theorem seminorm_rem_mul_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
+theorem seminorm_rem_mul_le_binomial {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : V →L[ℝ] ℝ) (f u : SchwartzMap V ℂ) {t : ℝ} (ht0 : t ≠ 0) (ht1 : |t| ≤ 1)
     (hu : ∀ x, u x = rem t (L x) * f x) (k n : ℕ) :
-    SchwartzMap.seminorm ℂ k n u ≤ |t| * (3 * 2 ^ n * (1 + ‖L‖) ^ (n + 2) *
+    SchwartzMap.seminorm ℂ k n u ≤ |t| * ((1 + ‖L‖) ^ (n + 2) *
       (2 ^ (k + 2) * ((Finset.Iic (k + 2, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f)) := by
   set S := 2 ^ (k + 2) * ((Finset.Iic (k + 2, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f
     with hS
@@ -194,21 +211,17 @@ theorem seminorm_rem_mul_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
   have hx0 : 0 ≤ ‖x‖ := norm_nonneg x
   have hterm : ∀ i ∈ Finset.range (n + 1),
       ‖x‖ ^ k * ((n.choose i : ℝ) * ‖iteratedFDeriv ℝ i (rem t ∘ ⇑L) x‖ *
-        ‖iteratedFDeriv ℝ (n - i) f x‖) ≤ (n.choose i : ℝ) * (|t| * (3 * (1 + ‖L‖) ^ (n + 2) * S)) := by
-    intro i hi
-    have hi' : i ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)
-    have h1 : ‖iteratedFDeriv ℝ i (rem t ∘ ⇑L) x‖ ≤ 3 * |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i :=
-      norm_iteratedFDeriv_rem_comp_le L ht0 ht1 i x
+        ‖iteratedFDeriv ℝ (n - i) f x‖) ≤ (‖L‖ ^ i * (n.choose i : ℝ)) * (|t| * (1 + ‖L‖) ^ 2 * S) := by
+    intro i _
+    have h1 : ‖iteratedFDeriv ℝ i (rem t ∘ ⇑L) x‖ ≤ |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i :=
+      norm_iteratedFDeriv_rem_comp_le_sharp L ht0 ht1 i x
     have h2 : (1 + ‖x‖) ^ (k + 2) * ‖iteratedFDeriv ℝ (n - i) f x‖ ≤ S :=
       SchwartzMap.one_add_le_sup_seminorm_apply (m := (k + 2, n)) le_rfl (Nat.sub_le n i) f x
     have h3 : (1 + ‖L‖ * ‖x‖) ^ 2 ≤ (1 + ‖L‖) ^ 2 * (1 + ‖x‖) ^ 2 := by
       rw [← mul_pow]; gcongr; nlinarith
-    have h4 : ‖L‖ ^ i ≤ (1 + ‖L‖) ^ n :=
-      calc ‖L‖ ^ i ≤ (1 + ‖L‖) ^ i := by gcongr; linarith
-        _ ≤ (1 + ‖L‖) ^ n := pow_le_pow_right₀ (by linarith) hi'
     have h5 : ‖x‖ ^ k ≤ (1 + ‖x‖) ^ k := by gcongr; linarith
     have hA : ‖iteratedFDeriv ℝ i (rem t ∘ ⇑L) x‖
-        ≤ 3 * |t| * ((1 + ‖L‖) ^ 2 * (1 + ‖x‖) ^ 2) * (1 + ‖L‖) ^ n :=
+        ≤ |t| * ((1 + ‖L‖) ^ 2 * (1 + ‖x‖) ^ 2) * ‖L‖ ^ i :=
       h1.trans (by gcongr)
     have hc0 : (0 : ℝ) ≤ n.choose i := Nat.cast_nonneg _
     calc ‖x‖ ^ k * ((n.choose i : ℝ) * ‖iteratedFDeriv ℝ i (rem t ∘ ⇑L) x‖ *
@@ -216,11 +229,11 @@ theorem seminorm_rem_mul_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
         = (n.choose i : ℝ) * (‖x‖ ^ k * ‖iteratedFDeriv ℝ i (rem t ∘ ⇑L) x‖ *
           ‖iteratedFDeriv ℝ (n - i) f x‖) := by ring
       _ ≤ (n.choose i : ℝ) * ((1 + ‖x‖) ^ k *
-          (3 * |t| * ((1 + ‖L‖) ^ 2 * (1 + ‖x‖) ^ 2) * (1 + ‖L‖) ^ n) *
+          (|t| * ((1 + ‖L‖) ^ 2 * (1 + ‖x‖) ^ 2) * ‖L‖ ^ i) *
           ‖iteratedFDeriv ℝ (n - i) f x‖) := by gcongr
-      _ = (n.choose i : ℝ) * (|t| * (3 * (1 + ‖L‖) ^ (n + 2) *
-          ((1 + ‖x‖) ^ (k + 2) * ‖iteratedFDeriv ℝ (n - i) f x‖))) := by ring
-      _ ≤ (n.choose i : ℝ) * (|t| * (3 * (1 + ‖L‖) ^ (n + 2) * S)) := by gcongr
+      _ = (‖L‖ ^ i * (n.choose i : ℝ)) * (|t| * (1 + ‖L‖) ^ 2 *
+          ((1 + ‖x‖) ^ (k + 2) * ‖iteratedFDeriv ℝ (n - i) f x‖)) := by ring
+      _ ≤ (‖L‖ ^ i * (n.choose i : ℝ)) * (|t| * (1 + ‖L‖) ^ 2 * S) := by gcongr
   have hfun : (fun x => rem t (L x) * f x) = fun y => (rem t ∘ ⇑L) y * f y := rfl
   rw [hfun]
   calc ‖x‖ ^ k * ‖iteratedFDeriv ℝ n (fun y => (rem t ∘ ⇑L) y * f y) x‖
@@ -230,41 +243,52 @@ theorem seminorm_rem_mul_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
     _ = ∑ i ∈ Finset.range (n + 1), ‖x‖ ^ k * ((n.choose i : ℝ) *
           ‖iteratedFDeriv ℝ i (rem t ∘ ⇑L) x‖ * ‖iteratedFDeriv ℝ (n - i) f x‖) := by
         rw [Finset.mul_sum]
-    _ ≤ ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (|t| * (3 * (1 + ‖L‖) ^ (n + 2) * S)) :=
+    _ ≤ ∑ i ∈ Finset.range (n + 1), (‖L‖ ^ i * (n.choose i : ℝ)) * (|t| * (1 + ‖L‖) ^ 2 * S) :=
         Finset.sum_le_sum hterm
-    _ = |t| * (3 * 2 ^ n * (1 + ‖L‖) ^ (n + 2) * S) := by
+    _ = |t| * ((1 + ‖L‖) ^ (n + 2) * S) := by
         rw [← Finset.sum_mul]
-        have : (∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ)) = 2 ^ n := by
-          exact_mod_cast Nat.sum_range_choose n
-        rw [this]; ring
+        have hsum : (∑ i ∈ Finset.range (n + 1), ‖L‖ ^ i * (n.choose i : ℝ)) = (1 + ‖L‖) ^ n := by
+          simpa [add_comm] using (add_pow ‖L‖ (1 : ℝ) n).symm
+        rw [hsum, pow_add]; ring
+
+theorem seminorm_rem_mul_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    (L : V →L[ℝ] ℝ) (f u : SchwartzMap V ℂ) {t : ℝ} (ht0 : t ≠ 0) (ht1 : |t| ≤ 1)
+    (hu : ∀ x, u x = rem t (L x) * f x) (k n : ℕ) :
+    SchwartzMap.seminorm ℂ k n u ≤ |t| * (3 * 2 ^ n * (1 + ‖L‖) ^ (n + 2) *
+      (2 ^ (k + 2) * ((Finset.Iic (k + 2, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f)) := by
+  apply (seminorm_rem_mul_le_binomial L f u ht0 ht1 hu k n).trans
+  have h : (1 : ℝ) ≤ 3 * 2 ^ n := by
+    have := one_le_pow₀ (show 1 ≤ (2 : ℝ) by norm_num) (n := n)
+    linarith
+  gcongr
+  exact le_mul_of_one_le_left (by positivity) h
 
 end GlobalTheory.CharFormDeriv
 
 namespace GlobalTheory.CharFormDeriv
 
-theorem charForm_kills_linear_mul : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
-    [FiniteDimensional ℝ V] (T : SchwartzMap V ℂ →L[ℂ] ℂ),
-    (∀ (L : V →L[ℝ] ℝ) (f f' : SchwartzMap V ℂ),
-      (∀ x, f' x = Complex.exp (Complex.I * (L x : ℂ)) * f x) → T f' = T f) →
-    ∀ (L : V →L[ℝ] ℝ) (f g : SchwartzMap V ℂ), (∀ x, g x = (L x : ℂ) * f x) → T g = 0 := by
-  intro V _ _ _ T hT L f g hg
-  let ft : ℝ → SchwartzMap V ℂ := fun t =>
-    SchwartzMap.smulLeftCLM ℂ (fun x : V => Complex.exp ((I * t) * (L x : ℂ))) f
-  have hft : ∀ t x, ft t x = Complex.exp ((I * t) * (L x : ℂ)) * f x := fun t x => by
-    simp only [ft, SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_char L t), smul_eq_mul]
-  have hTft : ∀ t : ℝ, T (ft t) = T f := fun t => hT (t • L) f (ft t) (fun x => by
-    rw [hft, ContinuousLinearMap.smul_apply, smul_eq_mul, Complex.ofReal_mul, mul_assoc])
-  let u : ℝ → SchwartzMap V ℂ := fun t => (t : ℂ)⁻¹ • (ft t - f) - I • g
+/-- Multiply a Schwartz function by the unitary character at frequency `t L`. -/
+noncomputable def modulate {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    (L : V →L[ℝ] ℝ) (t : ℝ) (f : SchwartzMap V ℂ) : SchwartzMap V ℂ :=
+  SchwartzMap.smulLeftCLM ℂ (fun x : V => Complex.exp ((I * t) * (L x : ℂ))) f
+
+@[simp] theorem modulate_apply {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    (L : V →L[ℝ] ℝ) (t : ℝ) (f : SchwartzMap V ℂ) (x : V) :
+    modulate L t f x = Complex.exp ((I * t) * (L x : ℂ)) * f x := by
+  simp only [modulate, SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_char L t), smul_eq_mul]
+
+/-- Fourier modulation in the direction `L` differentiates in the Schwartz topology. -/
+theorem tendsto_char_difference_quotient {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    (L : V →L[ℝ] ℝ) (f g : SchwartzMap V ℂ) (hg : ∀ x, g x = (L x : ℂ) * f x) :
+    Filter.Tendsto (fun t : ℝ => (t : ℂ)⁻¹ • (modulate L t f - f)) (nhdsWithin 0 {0}ᶜ) (nhds (I • g)) := by
+  let u : ℝ → SchwartzMap V ℂ := fun t => (t : ℂ)⁻¹ • (modulate L t f - f) - I • g
   have hu : ∀ t : ℝ, ∀ x, u t x = rem t (L x) * f x := fun t x => by
-    simp only [u, SchwartzMap.sub_apply, SchwartzMap.smul_apply, hft, hg, rem, smul_eq_mul]
-    ring
-  have hTu : ∀ t : ℝ, T (u t) = -I * T g := fun t => by
-    simp only [u, map_sub, map_smul, hTft, sub_self, smul_zero, smul_eq_mul, zero_sub]
+    simp only [u, sub_apply, smul_apply, modulate_apply, hg, rem, smul_eq_mul]
     ring
   have hlim : Filter.Tendsto u (nhdsWithin 0 {0}ᶜ) (nhds 0) := by
     rw [(schwartz_withSeminorms ℂ V ℂ).tendsto_nhds u 0]
     rintro ⟨k, n⟩ ε hε
-    set K := 3 * 2 ^ n * (1 + ‖L‖) ^ (n + 2) *
+    set K := (1 + ‖L‖) ^ (n + 2) *
       (2 ^ (k + 2) * ((Finset.Iic (k + 2, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f)
       with hK
     have hK0 : 0 ≤ K := mul_nonneg (by positivity) (mul_nonneg (by positivity) (apply_nonneg _ _))
@@ -277,16 +301,34 @@ theorem charForm_kills_linear_mul : ∀ (V : Type) [NormedAddCommGroup V] [Norme
     have htε : |t| < ε / (K + 1) := lt_of_lt_of_le ht (min_le_right _ _)
     rw [sub_zero]
     show SchwartzMap.seminorm ℂ k n (u t) < ε
-    calc SchwartzMap.seminorm ℂ k n (u t) ≤ |t| * K := seminorm_rem_mul_le L f (u t) ht0' ht1 (hu t) k n
+    calc SchwartzMap.seminorm ℂ k n (u t) ≤ |t| * K := seminorm_rem_mul_le_binomial L f (u t) ht0' ht1 (hu t) k n
       _ ≤ |t| * (K + 1) := by gcongr; linarith
       _ < ε / (K + 1) * (K + 1) := by gcongr
       _ = ε := by field_simp
-  have hcont : Filter.Tendsto (fun t => T (u t)) (nhdsWithin 0 {0}ᶜ) (nhds (T 0)) :=
-    (T.continuous.tendsto 0).comp hlim
-  have hconst : Filter.Tendsto (fun t => T (u t)) (nhdsWithin (0 : ℝ) {0}ᶜ) (nhds (-I * T g)) := by
-    simp only [hTu]; exact tendsto_const_nhds
-  have heq := tendsto_nhds_unique hconst hcont
-  rw [map_zero, neg_mul, neg_eq_zero] at heq
-  exact (mul_eq_zero.mp heq).resolve_left Complex.I_ne_zero
+  simpa [u] using hlim.add_const (I • g)
+
+/-- One direction and one test function suffice.  The character need only fix the
+functional on this test at parameters accumulating at zero. -/
+theorem charForm_kills_linear_mul_of_frequently {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    (T : SchwartzMap V ℂ →L[ℂ] ℂ) (L : V →L[ℝ] ℝ) (f g : SchwartzMap V ℂ)
+    (hg : ∀ x, g x = (L x : ℂ) * f x)
+    (hT : ∃ᶠ t in nhdsWithin (0 : ℝ) {0}ᶜ, T (modulate L t f) = T f) : T g = 0 := by
+  have h := (T.continuous.tendsto _).comp (tendsto_char_difference_quotient L f g hg)
+  have hz : T (I • g) = 0 := tendsto_nhds_unique_of_frequently_eq h tendsto_const_nhds <|
+    hT.mono fun t ht => by simp [Function.comp_apply, ht]
+  simpa [smul_eq_mul] using hz
+
+theorem charForm_kills_linear_mul : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
+    [FiniteDimensional ℝ V] (T : SchwartzMap V ℂ →L[ℂ] ℂ),
+    (∀ (L : V →L[ℝ] ℝ) (f f' : SchwartzMap V ℂ),
+      (∀ x, f' x = Complex.exp (Complex.I * (L x : ℂ)) * f x) → T f' = T f) →
+    ∀ (L : V →L[ℝ] ℝ) (f g : SchwartzMap V ℂ), (∀ x, g x = (L x : ℂ) * f x) → T g = 0 := by
+  intro V _ _ _ T hT L f g hg
+  apply charForm_kills_linear_mul_of_frequently T L f g hg
+  apply Filter.Eventually.frequently (Filter.Eventually.of_forall ?_)
+  intro t
+  apply hT (t • L) f (modulate L t f)
+  intro x
+  simp [mul_assoc]
 
 end GlobalTheory.CharFormDeriv

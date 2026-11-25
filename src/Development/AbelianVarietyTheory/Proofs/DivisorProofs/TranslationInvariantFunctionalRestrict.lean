@@ -34,7 +34,7 @@ theorem hasFDerivAt_slice {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] 
 theorem hasFDerivAt_integral {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {F : ℝ × Y → E}
     (hF : ContDiff ℝ ∞ F) (x : Y) :
     HasFDerivAt (fun x => ∫ s in (0 : ℝ)..1, F (s, x)) (∫ s in (0 : ℝ)..1, dSnd F (s, x)) x := by
-  haveI : ProperSpace Y := FiniteDimensional.proper_real Y
+  have : ProperSpace Y := FiniteDimensional.proper_real Y
   have hc : Continuous (dSnd F) := (contDiff_dSnd hF).continuous
   obtain ⟨C, hC⟩ := ((isCompact_uIcc (a := (0 : ℝ)) (b := 1)).prod
     (isCompact_closedBall x 1)).exists_bound_of_continuousOn hc.continuousOn
@@ -84,7 +84,7 @@ theorem exists_schwartz_average {Z : Type} [NormedAddCommGroup Z] [NormedSpace �
     ∃ g : 𝓢(Y, ℂ), ∀ x, g x = ∫ s in (0 : ℝ)..1, K ((B₀ + s • B₁) x) := by
   have hF : ContDiff ℝ ∞ (fun p : ℝ × Y => K ((B₀ + p.1 • B₁) p.2)) := by
     refine (K.smooth ⊤).comp ?_
-    simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply]
+    simp only [add_apply, smul_apply]
     fun_prop
   refine ⟨⟨fun x => ∫ s in (0 : ℝ)..1, K ((B₀ + s • B₁) x),
     contDiff_infty.2 fun n => (smooth_bound n ℂ _ hF).1, fun k n => ?_⟩, fun _ => rfl⟩
@@ -214,7 +214,7 @@ theorem exists_hadamard [FiniteDimensional ℝ Y] (P : Submodule ℝ Y) (f : �
   have hd : ∀ s : ℝ, HasDerivAt (fun s : ℝ => -H ((B₀ + s • B₁) x))
       (∑ j, (L j x : ℂ) * K j ((B₀ + s • B₁) x)) s := fun s => by
     have h1 : HasDerivAt (fun s : ℝ => (B₀ + s • B₁) x) (B₁ x) s := by
-      simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply]
+      simp only [add_apply, smul_apply]
       simpa using ((hasDerivAt_id s).smul_const (B₁ x)).const_add (B₀ x)
     have h2 := ((H.differentiable _).hasFDerivAt.comp_hasDerivAt s h1).neg
     refine h2.congr_deriv ?_
@@ -228,7 +228,7 @@ theorem exists_hadamard [FiniteDimensional ℝ Y] (P : Submodule ℝ Y) (f : �
     exact Finset.sum_congr rfl fun j _ => by rw [map_smul, hK, Complex.real_smul]
   have hcK : ∀ j, Continuous fun s : ℝ => K j ((B₀ + s • B₁) x) := fun j => by
     refine (K j).continuous.comp ?_
-    simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply]
+    simp only [add_apply, smul_apply]
     fun_prop
   have hI := intervalIntegral.integral_eq_sub_of_hasDerivAt (a := (0 : ℝ)) (b := 1) (fun s _ => hd s)
     ((continuous_finsetSum _ fun j _ => continuous_const.mul (hcK j)).intervalIntegrable _ _)
@@ -244,43 +244,9 @@ open Complex GlobalTheory.CharFormDeriv in
 theorem apply_linear_mul (T : 𝓢(Y, ℂ) →L[ℂ] ℂ) (L : Y →L[ℝ] ℝ)
     (hT : ∀ t : ℝ, ∀ f f' : 𝓢(Y, ℂ), (∀ x, f' x = Complex.exp ((I * t) * (L x : ℂ)) * f x) → T f' = T f)
     (f g : 𝓢(Y, ℂ)) (hg : ∀ x, g x = (L x : ℂ) * f x) : T g = 0 := by
-  let ft : ℝ → 𝓢(Y, ℂ) := fun t =>
-    SchwartzMap.smulLeftCLM ℂ (fun x : Y => Complex.exp ((I * t) * (L x : ℂ))) f
-  have hft : ∀ t x, ft t x = Complex.exp ((I * t) * (L x : ℂ)) * f x := fun t x => by
-    simp only [ft, SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_char L t), smul_eq_mul]
-  have hTft : ∀ t : ℝ, T (ft t) = T f := fun t => hT t f (ft t) (hft t)
-  let u : ℝ → 𝓢(Y, ℂ) := fun t => (t : ℂ)⁻¹ • (ft t - f) - I • g
-  have hu : ∀ t : ℝ, ∀ x, u t x = rem t (L x) * f x := fun t x => by
-    simp only [u, SchwartzMap.sub_apply, SchwartzMap.smul_apply, hft, hg, rem, smul_eq_mul]
-    ring
-  have hTu : ∀ t : ℝ, T (u t) = -I * T g := fun t => by
-    simp only [u, map_sub, map_smul, hTft, sub_self, smul_zero, smul_eq_mul, zero_sub]
-    ring
-  have hlim : Tendsto u (nhdsWithin 0 {0}ᶜ) (nhds 0) := by
-    rw [(schwartz_withSeminorms ℂ Y ℂ).tendsto_nhds u 0]
-    rintro ⟨k, n⟩ ε hε
-    set K := 3 * 2 ^ n * (1 + ‖L‖) ^ (n + 2) *
-      (2 ^ (k + 2) * ((Finset.Iic (k + 2, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f) with hK
-    have hK0 : 0 ≤ K := mul_nonneg (by positivity) (mul_nonneg (by positivity) (apply_nonneg _ _))
-    have hδ : 0 < min 1 (ε / (K + 1)) := lt_min one_pos (div_pos hε (by linarith))
-    filter_upwards [nhdsWithin_le_nhds (Metric.ball_mem_nhds (0 : ℝ) hδ), self_mem_nhdsWithin] with t ht ht0
-    rw [Metric.mem_ball, Real.dist_eq, sub_zero] at ht
-    have ht0' : t ≠ 0 := ht0
-    have ht1 : |t| ≤ 1 := (lt_of_lt_of_le ht (min_le_left _ _)).le
-    have htε : |t| < ε / (K + 1) := lt_of_lt_of_le ht (min_le_right _ _)
-    rw [sub_zero]
-    show SchwartzMap.seminorm ℂ k n (u t) < ε
-    calc SchwartzMap.seminorm ℂ k n (u t) ≤ |t| * K := seminorm_rem_mul_le L f (u t) ht0' ht1 (hu t) k n
-      _ ≤ |t| * (K + 1) := by gcongr; linarith
-      _ < ε / (K + 1) * (K + 1) := by gcongr
-      _ = ε := by field_simp
-  have hcont : Tendsto (fun t => T (u t)) (nhdsWithin 0 {0}ᶜ) (nhds (T 0)) :=
-    (T.continuous.tendsto 0).comp hlim
-  have hconst : Tendsto (fun t => T (u t)) (nhdsWithin (0 : ℝ) {0}ᶜ) (nhds (-I * T g)) := by
-    simp only [hTu]; exact tendsto_const_nhds
-  have heq := tendsto_nhds_unique hconst hcont
-  rw [map_zero, neg_mul, neg_eq_zero] at heq
-  exact (mul_eq_zero.mp heq).resolve_left Complex.I_ne_zero
+  apply charForm_kills_linear_mul_of_frequently T L f g hg
+  exact Filter.Eventually.frequently (Filter.Eventually.of_forall fun t =>
+    hT t f (modulate L t f) (modulate_apply L t f))
 
 end Main
 
@@ -290,7 +256,7 @@ theorem eq_of_eqOn : ∀ {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] [
     ∀ f g : SchwartzMap Y ℂ, (∀ p ∈ P, f p = g p) → ℓ f = ℓ g := by
   intro Y _ _ _ P ℓ h f g hfg
   obtain ⟨r, L, u, hL, hu⟩ := exists_hadamard P (f - g) fun p hp => by
-    rw [SchwartzMap.sub_apply, hfg p hp, sub_self]
+    rw [sub_apply, hfg p hp, sub_self]
   let v : Fin r → 𝓢(Y, ℂ) := fun j => SchwartzMap.smulLeftCLM ℂ (fun x => ((L j x : ℝ) : ℂ)) (u j)
   have hv : ∀ j x, v j x = (L j x : ℂ) * u j x := fun j x => by
     have htg : Function.HasTemperateGrowth fun x : Y => ((L j x : ℝ) : ℂ) :=
@@ -298,7 +264,7 @@ theorem eq_of_eqOn : ∀ {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] [
     simp only [v, SchwartzMap.smulLeftCLM_apply_apply htg, smul_eq_mul]
   have e : f - g = ∑ j, v j := by
     ext x
-    rw [hu, SchwartzMap.sum_apply]
+    rw [hu, sum_apply]
     exact Finset.sum_congr rfl fun j _ => (hv j x).symm
   set_option synthInstance.maxHeartbeats 100000 in
     rw [← sub_eq_zero, ← map_sub, e, map_sum]
