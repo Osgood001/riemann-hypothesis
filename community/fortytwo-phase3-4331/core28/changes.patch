@@ -1,299 +1,3 @@
---- a/ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/GROWCountStatement.lean
-+++ b/ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/GROWCountStatement.lean
-@@ -1,292 +1,8 @@
--import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FamilyLeCoords
--import ReciprocityTheory.L2DbarEstimates.JacobianInterpolationStatement
-+import Mathlib
- 
- namespace ReciprocityTheory.L2DbarEstimates.Y
--
--open MeasureTheory Filter Topology
--open scoped ContDiff ENNReal Pointwise Matrix
--
--noncomputable section
--
--def HAll.{v} (n : ℕ) : Prop :=
--  ∀ (M : Type v) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
--    [MeasurableSpace M] [BorelSpace M], HStatement n M
--
--def SAll.{v} (n : ℕ) : Prop :=
--  ∀ (M : Type v) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
--    [MeasurableSpace M] [BorelSpace M], SStatement n M
--
--def NORMAll.{v} (n : ℕ) : Prop :=
--  ∀ (M : Type v) [TopologicalSpace M], NORMStatement n M
--
--def LSEAll.{v} (n : ℕ) : Prop :=
--  ∀ (M : Type v) [TopologicalSpace M], LSEStatement n M
--
--open WeightedAtlas
--
--def InhStatement (n : ℕ) : Prop :=
--  ∀ hn : 1 ≤ n, ∃ (A : WeightedAtlas n (V n) Unit ℤ) (w : Fin (n + 1) → Unit → V n → ℂ)
--    (w0 : Unit → V n → ℂ) (s : Fin n → Unit → V n → ℂ),
--    A.D0 1 w w0 s ∧ A.Flat w0 s 1 ∧ A.Flat w0 s (MvPolynomial.X ⟨0, hn⟩) ∧
--    (∃ C : ℝ, ∀ y, A.sqn 1 w y ≤ C) ∧
--    (∀ i y (ξ : Fin n → ℂ), ξ ≠ 0 → 0 < A.leviAt i (A.ph 1 i) y ξ) ∧
--    A.IsFrameOn (A.kap + 1) (A.Mset w0 s 1) (fun _ _ => 1)
--
--def HYStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
--    [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (L la : La) (N : ℕ) (w : Fin N → ι → Y → ℂ)
--    (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (De : MvPolynomial (Fin n) ℂ)
--    (σ : ι → Y → ℂ) (ps : Y → ℝ) (F0 : ι → Y → ℂ) (h : Y → ℝ≥0∞),
--    A.D0 L w w0 s → A.Flat w0 s De → A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ →
--    A.SmoothFn ps → A.Pos la ps → A.IsSSec (A.kap + la) F0 → Measurable h →
--    (∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ,
--      ENNReal.ofReal (‖A.dbarAt i F0 y ξ‖ ^ 2 * Real.exp (-A.ph (A.kap + la) i y)) ≤
--        h y * ENNReal.ofReal (A.leviAt i (fun x => A.ph la i x + ps x) y ξ)) →
--    ∃ F : ι → Y → ℂ, A.IsSec (A.kap + la) F ∧
--      ∫⁻ y, ENNReal.ofReal (A.nsq (A.kap + la) (F0 - F) y * Real.exp (-ps y)) ∂A.mu ≤
--        ∫⁻ y, h y * ENNReal.ofReal (Real.exp (-ps y)) ∂A.mu
--
--def AStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
--    [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (L la : La) (N : ℕ) (w : Fin N → ι → Y → ℂ)
--    (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (De : MvPolynomial (Fin n) ℂ)
--    (σ : ι → Y → ℂ) (ps1 : Y → ℝ) (η : ℝ) (c : Y → ℂ),
--    A.D0 L w w0 s → A.Flat w0 s De → A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ →
--    (∃ C : ℝ, ∀ y, A.sqn L w y ≤ C) → A.Pos L (fun _ => 0) → A.SmoothFn ps1 → 0 < η →
--    (∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ,
--      2 * η * A.leviAt i (A.ph L i) y ξ ≤ A.leviAt i (fun x => A.ph (la - n • L) i x + ps1 x) y ξ) →
--    (∃ U : Set Y, IsOpen U ∧ A.zeroSet s ⊆ U ∧ ∀ i y, y ∈ (A.chart i).source → y ∈ U →
--      ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < A.leviAt i (A.ph L i) y ξ) →
--    ∃ F : ι → Y → ℂ, A.IsSec (A.kap + la) F ∧
--      ∫⁻ y, ENNReal.ofReal (A.nsq (A.kap + la) F y * Real.exp (-ps1 y) *
--        A.sqn L w y ^ (-η)) ∂A.mu < ⊤ ∧
--      ∀ P ∈ A.zeroSet s, F (A.pick P) P = c P
--
--def AApproxStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
--    [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (L la : La) (N : ℕ) (w : Fin N → ι → Y → ℂ)
--    (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (De : MvPolynomial (Fin n) ℂ)
--    (σ : ι → Y → ℂ) (ps1 : Y → ℝ) (η : ℝ) (c : Y → ℂ) (ε : ℝ),
--    A.D0 L w w0 s → A.Flat w0 s De → A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ →
--    (∃ C : ℝ, ∀ y, A.sqn L w y ≤ C) → A.Pos L (fun _ => 0) → A.SmoothFn ps1 → 0 < η → 0 < ε →
--    (∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ,
--      2 * η * A.leviAt i (A.ph L i) y ξ ≤ A.leviAt i (fun x => A.ph (la - n • L) i x + ps1 x) y ξ) →
--    (∃ U : Set Y, IsOpen U ∧ A.zeroSet s ⊆ U ∧ ∀ i y, y ∈ (A.chart i).source → y ∈ U →
--      ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < A.leviAt i (A.ph L i) y ξ) →
--    ∃ F : ι → Y → ℂ, A.IsSec (A.kap + la) F ∧
--      ∫⁻ y, ENNReal.ofReal (A.nsq (A.kap + la) F y * Real.exp (-ps1 y) *
--        A.sqn L w y ^ (-η)) ∂A.mu < ⊤ ∧
--      ∀ P ∈ A.zeroSet s, ‖F (A.pick P) P - c P‖ ≤ ε
--
--def APrimeStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y]
--    [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*)
--    [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (L la : La) (N : ℕ) (w : Fin N → ι → Y → ℂ)
--    (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (De : MvPolynomial (Fin n) ℂ)
--    (σ : ι → Y → ℂ) (d m : ℕ) (r r' θ : ℝ) (B : Fin m → Set Y)
--    (π : Fin m → Y → EuclideanSpace ℂ (Fin d)) (yA : Fin m → Y) (f : Fin m → ι → Y → ℂ)
--    (ps1 : Y → ℝ),
--    A.D0 L w w0 s → A.Flat w0 s De → A.IsFrameOn (A.kap + la) (A.Mset w0 s De) σ →
--    1 ≤ d → 0 < r → r < r' → 0 < θ → θ < 1 →
--    (∀ a, IsOpen (B a)) → Pairwise (Function.onFun Disjoint B) →
--    (∀ a i, DifferentiableOn ℂ (π a ∘ (A.chart i).symm)
--      ((A.chart i).target ∩ (A.chart i).symm ⁻¹' B a)) →
--    (∀ a, ∀ y ∈ B a, Function.Surjective
--      (fderiv ℂ (π a ∘ (A.chart (A.pick y)).symm) (A.chart (A.pick y) y))) →
--    (∀ a, ∀ y ∈ B a, ‖π a y‖ < r') →
--    (∀ a (K : Set (EuclideanSpace ℂ (Fin d))), IsCompact K → K ⊆ Metric.ball 0 r' →
--      IsCompact (B a ∩ π a ⁻¹' K)) →
--    (∀ a, yA a ∈ B a) → (∀ a, π a (yA a) = 0) →
--    (∀ a, A.IsSecOn (A.kap + la) (B a) (f a)) →
--    A.SmoothFn ps1 → A.Pos la ps1 →
--    (∀ a i y, y ∈ (A.chart i).source → y ∈ B a → ‖π a y‖ ≤ r → ∀ ξ : Fin n → ℂ, ξ ≠ 0 →
--      (d : ℝ) / (θ * r ^ 2) * A.leviAt i (fun x => ‖π a x‖ ^ 2) y ξ <
--        A.leviAt i (fun x => A.ph la i x + ps1 x) y ξ) →
--    ∃ F : ι → Y → ℂ, A.IsSec (A.kap + la) F ∧
--      ∫⁻ y, ENNReal.ofReal (A.nsq (A.kap + la) F y * Real.exp (-ps1 y)) ∂A.mu < ⊤ ∧
--      ∀ a, F (A.pick (yA a)) (yA a) = f a (A.pick (yA a)) (yA a)
--
--def BStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
--    [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (L mu0 : La) (N : ℕ) (w : Fin N → ι → Y → ℂ)
--    (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (De : MvPolynomial (Fin n) ℂ)
--    (σ : ι → Y → ℂ) (T : ℕ) (f : ι → Y → ℂ),
--    2 ≤ n → A.D0 L w w0 s → A.Flat w0 s De → (∃ i0 : Fin n, MvPolynomial.X i0 ∣ De) →
--    A.IsFrameOn mu0 (A.Mset w0 s De) σ → A.Pos (mu0 - A.kap) (fun _ => 0) → n + 1 ≤ T →
--    A.IsSec (mu0 + T • L) f →
--    ∫⁻ y, ENNReal.ofReal (A.nsq (mu0 + T • L) f y * A.sqn L w y ^ (-(T : ℝ))) ∂A.mu < ⊤ →
--    (∀ P ∈ A.zeroSet s, A.VanishOrd f P (T - n)) →
--    ∃ hh : (Fin n → ℕ) → ι → Y → ℂ,
--      (∀ α ∈ Finset.Nat.antidiagonalTuple n (T - n), A.IsSec (mu0 + n • L) (hh α) ∧
--        ∫⁻ y, ENNReal.ofReal (A.nsq (mu0 + n • L) (hh α) y * A.sqn L w y ^ (-(n : ℝ))) ∂A.mu
--          < ⊤) ∧
--      ∀ i y, y ∈ (A.chart i).source →
--        f i y = ∑ α ∈ Finset.Nat.antidiagonalTuple n (T - n), (∏ k, s k i y ^ α k) * hh α i y
--
--def IMMStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
--    [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (L de : La) (N m : ℕ) (w : Fin N → ι → Y → ℂ)
--    (a : ι → Y → ℂ),
--    (∀ k, A.IsSec L (w k)) → (∀ y, ∃ k, w k (A.pick y) y ≠ 0) → 1 ≤ m →
--    A.IsSec (m • de) a → (∃ y, a (A.pick y) y ≠ 0) →
--    (∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ, ξ ≠ 0 →
--      0 < A.leviAt i (A.ph (L - de) i) y ξ) →
--    Tendsto (fun y => A.nsq (m • de) a y / A.sqn L w y ^ m) (cocompact Y) (𝓝 0) →
--    ∃ y, ∀ ξ : Fin n → ℂ, ξ ≠ 0 →
--      0 < A.leviAt (A.pick y) (fun x => Real.log (∑ k, ‖w k (A.pick y) x‖ ^ 2)) y ξ
--
--def ZEROStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y]
--    [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*)
--    [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (L : La) (N : ℕ) (w : Fin N → ι → Y → ℂ)
--    (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (De : MvPolynomial (Fin n) ℂ) (m : ℕ)
--    (Nsec : ι → Y → ℂ),
--    ConnectedSpace Y → A.D0 L w w0 s → A.Flat w0 s De → MvPolynomial.constantCoeff De ≠ 0 →
--    (∃ C : ℝ, ∀ y, A.sqn L w y ≤ C * (A.nsq L w0 y + A.sqn L s y)) →
--    A.IsSec (m • L) Nsec → (∃ C : ℝ, ∀ y, A.nsq (m • L) Nsec y ≤ C * A.sqn L w y ^ m) →
--    (∀ P ∈ A.zeroSet s, A.VanishOrd Nsec P (m + 1)) →
--    ∀ i y, y ∈ (A.chart i).source → Nsec i y = 0
--
--def ZERODimStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y]
--    [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*)
--    [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (L ε β : La) (N : ℕ) (w : Fin N → ι → Y → ℂ)
--    (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (De : MvPolynomial (Fin n) ℂ) (k e r : ℕ)
--    (b : ι → Y → ℂ) (f : Fin r → ι → Y → ℂ),
--    ConnectedSpace Y → A.D0 L w w0 s → A.Flat w0 s De → MvPolynomial.constantCoeff De ≠ 0 →
--    (∃ C : ℝ, ∀ y, A.sqn L w y ≤ C * (A.nsq L w0 y + A.sqn L s y)) →
--    1 ≤ k → k • ε + β = (k * e) • L → A.IsSec β b → (∃ y, b (A.pick y) y ≠ 0) →
--    (∀ j, A.IsSec ε (f j)) →
--    (∀ c : Fin r → ℂ, (∀ i y, y ∈ (A.chart i).source → ∑ j, c j * f j i y = 0) → c = 0) →
--    (∀ c : Fin r → ℂ, ∃ C : ℝ, ∀ y,
--      A.nsq ((k * e) • L) (fun i x => (∑ j, c j * f j i x) ^ k * b i x) y ≤
--        C * A.sqn L w y ^ (k * e)) →
--    r ≤ (A.zeroSet s).ncard * (e + n).choose n
--
--def INDStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
--    [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (L lam : La) (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ)
--    (S : Finset Y) (F : Y → ι → Y → ℂ) (j : ℕ) (c : Y → (Fin n → ℕ) → ℂ),
--    A.IsSec L w0 → A.IsSSec L w0 → (∀ k, A.IsSec L (s k)) → (∀ k, A.IsSSec L (s k)) →
--    (∀ P ∈ S, ∀ k, s k (A.pick P) P = 0) → (∀ P ∈ S, w0 (A.pick P) P ≠ 0) →
--    (∀ P ∈ S, A.IsCoordAt w0 s P) →
--    (∀ P ∈ S, A.IsSec lam (F P)) → (∀ P ∈ S, A.IsSSec lam (F P)) →
--    (∀ P ∈ S, F P (A.pick P) P ≠ 0) → (∀ P ∈ S, ∀ P' ∈ S, P' ≠ P → F P (A.pick P') P' = 0) →
--    (∀ P' ∈ S, A.VanishOrd (fun i y => ∑ P ∈ S, ∑ α ∈ multiLe n j,
--      c P α * (∏ k, s k i y ^ α k) * w0 i y ^ (j - ∑ k, α k) * F P i y) P' (j + 1)) →
--    ∀ P ∈ S, ∀ α ∈ multiLe n j, c P α = 0
--
--def INDCountStatement : Prop :=
--  ∀ n j : ℕ, (multiLe n j).card = (j + n).choose n
--
--def CMPStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
--    [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (la : La) (a b : Y → ℝ),
--    A.SmoothFn a → A.SmoothFn b → A.Pos la a → A.Pos la b →
--    Tendsto (fun y => b y - a y) (cocompact Y) atBot →
--    ∫⁻ y, A.maDens la b y ∂A.mu ≤ ∫⁻ y, A.maDens la a y ∂A.mu
--
--def CMPDegStatement (n : ℕ) (Y : Type*) [TopologicalSpace Y] [T2Space Y]
--    [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*)
--    [AddCommGroup La] : Prop :=
--  ∀ (A : WeightedAtlas n Y ι La) (L : La) (N : ℕ) (w : Fin N → ι → Y → ℂ)
--    (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (De : MvPolynomial (Fin n) ℂ),
--    1 ≤ n → A.D0 L w w0 s → A.Flat w0 s De →
--    ∫⁻ y in A.Mset w0 s De, ENNReal.ofReal
--        ((A.hessAt (A.pick y) (fun x => Real.log (‖w0 (A.pick y) x‖ ^ 2 +
--          ∑ k, ‖s k (A.pick y) x‖ ^ 2)) y).det.re * Real.exp (-A.ph A.kap (A.pick y) y)) ∂A.mu =
--      ((A.zeroSet s).ncard : ℝ≥0∞) *
--        ∫⁻ v : V n, ENNReal.ofReal ((1 + ‖v‖ ^ 2) ^ (-((n : ℝ) + 1)))
--
--def GROWCountStatement.{u1, u2} : Prop :=
--  ∀ (X : Type u1) [MeasurableSpace X] (μ : Measure X) (Γ : Type u2) [Group Γ] [MulAction Γ X]
--    [Countable Γ] [MeasurableSpace Γ] [MeasurableSMul Γ X] [SMulInvariantMeasure Γ X μ]
--    (D B : Set X) (φ : X → ℝ≥0∞) (m : ℕ),
--    IsFundamentalDomain Γ D μ → MeasurableSet B → Measurable φ →
--    (∀ (γ : Γ) x, φ (γ • x) = φ x) →
--    (∀ T : Finset Γ, (∀ γ ∈ T, (γ • B ∩ B).Nonempty) → T.card ≤ m) →
--    ∫⁻ x in B, φ x ∂μ ≤ m * ∫⁻ x in D, φ x ∂μ
--
--def GROWStatement.{u1, u2} : Prop :=
--  ∀ (X : Type u1) [MeasurableSpace X] (μ : Measure X) (Γ : Type u2) [Group Γ] [MulAction Γ X]
--    [Countable Γ] [MeasurableSpace Γ] [MeasurableSMul Γ X] [SMulInvariantMeasure Γ X μ]
--    (D B : Set X) (F : X → ℂ) (ps : X → ℝ) (x' : X) (C : ℝ≥0∞) (Sup : ℝ) (m : ℕ),
--    IsFundamentalDomain Γ D μ → MeasurableSet B → Measurable F → Measurable ps →
--    (∀ (γ : Γ) x, ‖F (γ • x)‖ ^ 2 * Real.exp (-ps (γ • x)) = ‖F x‖ ^ 2 * Real.exp (-ps x)) →
--    (∀ T : Finset Γ, (∀ γ ∈ T, (γ • B ∩ B).Nonempty) → T.card ≤ m) →
--    ENNReal.ofReal (‖F x'‖ ^ 2) ≤ C * ∫⁻ x in B, ENNReal.ofReal (‖F x‖ ^ 2) ∂μ →
--    (∀ x ∈ B, ps x ≤ Sup) →
--    ENNReal.ofReal (‖F x'‖ ^ 2) ≤
--      C * m * ENNReal.ofReal (Real.exp Sup) *
--        ∫⁻ x in D, ENNReal.ofReal (‖F x‖ ^ 2 * Real.exp (-ps x)) ∂μ
- 
- def tube (f : ℕ) (Ω : Set (Fin f → ℝ)) : Set (Fin f → ℂ) :=
-   {s | (fun k => (s k).im) ∈ Ω}
- 
--def fourCoeff {f : ℕ} (h : (Fin f → ℂ) → ℂ) (b : Fin f → ℝ) (ν : Fin f → ℤ) : ℂ :=
--  ∫ x in Set.univ.pi (fun _ : Fin f => Set.Ioc (0 : ℝ) 1),
--    h (fun k => (x k : ℂ) + (b k : ℂ) * Complex.I) *
--      Complex.exp (-2 * Real.pi * Complex.I *
--        ∑ k, (ν k : ℂ) * ((x k : ℂ) + (b k : ℂ) * Complex.I))
--
--def FOURIndepStatement (f : ℕ) : Prop :=
--  ∀ (Ω : Set (Fin f → ℝ)) (h : (Fin f → ℂ) → ℂ),
--    IsOpen Ω → IsPreconnected Ω → DifferentiableOn ℂ h (tube f Ω) →
--    (∀ s ∈ tube f Ω, ∀ m : Fin f → ℤ, h (s + fun k => (m k : ℂ)) = h s) →
--    ∀ b ∈ Ω, ∀ b' ∈ Ω, ∀ ν, fourCoeff h b ν = fourCoeff h b' ν
--
--def FOURBoundStatement (f : ℕ) : Prop :=
--  ∀ (h : (Fin f → ℂ) → ℂ) (b : Fin f → ℝ) (ν : Fin f → ℤ) (C : ℝ),
--    (∀ x : Fin f → ℝ, ‖h (fun k => (x k : ℂ) + (b k : ℂ) * Complex.I)‖ ≤ C) →
--    ‖fourCoeff h b ν‖ * Real.exp (-2 * Real.pi * ∑ k, (ν k : ℝ) * b k) ≤ C
--
--def FOURSignStatement (f : ℕ) : Prop :=
--  ∀ (Ω : Set (Fin f → ℝ)) (h : (Fin f → ℂ) → ℂ) (b0 κ : Fin f → ℝ) (C E : ℝ),
--    IsOpen Ω → IsPreconnected Ω → DifferentiableOn ℂ h (tube f Ω) →
--    (∀ s ∈ tube f Ω, ∀ m : Fin f → ℤ, h (s + fun k => (m k : ℂ)) = h s) →
--    (∀ t : ℝ, 0 ≤ t → b0 + t • κ ∈ Ω) →
--    (∀ t : ℝ, 0 ≤ t → ∀ x : Fin f → ℝ,
--      ‖h (fun k => (x k : ℂ) + ((b0 + t • κ) k : ℂ) * Complex.I)‖ ≤ C * (1 + t) ^ E) →
--    ∀ ν : Fin f → ℤ, fourCoeff h b0 ν ≠ 0 → 0 ≤ ∑ k, (ν k : ℝ) * κ k
--
--def FOURSumStatement (f : ℕ) : Prop :=
--  ∀ (Ω : Set (Fin f → ℝ)) (h : (Fin f → ℂ) → ℂ),
--    IsOpen Ω → DifferentiableOn ℂ h (tube f Ω) →
--    (∀ s ∈ tube f Ω, ∀ m : Fin f → ℤ, h (s + fun k => (m k : ℂ)) = h s) → (0 : Fin f → ℝ) ∈ Ω →
--    Summable (fun ν : Fin f → ℤ => ‖fourCoeff h 0 ν‖) →
--    ∀ x : Fin f → ℝ, HasSum (fun ν : Fin f → ℤ => fourCoeff h 0 ν *
--      Complex.exp (2 * Real.pi * Complex.I * ∑ k, (ν k : ℂ) * (x k : ℂ))) (h (fun k => (x k : ℂ)))
--
--def UNITrStatement : Prop :=
--  ∀ (E : Type) [Field E] [NumberField E] (r : ℕ) (γ : Matrix (Fin r) (Fin r) E) (g : ℤ),
--    3 * (r : ℤ) < g →
--    (∀ k, 1 ≤ k → k ≤ r → ∃ y : NumberField.RingOfIntegers E,
--      (γ ^ k).trace - (r : E) = (g : E) * (y : E)) →
--    (∀ k, 1 ≤ k → k ≤ r → ∀ τ : E →+* ℂ, ‖τ ((γ ^ k).trace)‖ ≤ r * Real.exp (1 / 3)) →
--    IsNilpotent (γ - 1)
--
--def UNIHSStatement : Prop :=
--  ∀ (r : ℕ) (γ : Matrix (Fin r) (Fin r) ℂ), IsNilpotent (γ - 1) →
--    (∀ v : Fin r → ℂ, ∑ i, ‖(γ *ᵥ v) i‖ ^ 2 ≤ Real.exp (2 / (3 * r)) * ∑ i, ‖v i‖ ^ 2) →
--    ∑ i, ∑ j, ‖(γ - 1) i j‖ ^ 2 < 1
--
--def gramDet {N s : ℕ} (G : Matrix (Fin N) (Fin N) ℝ) (b : Fin s → Fin N → ℤ) : ℝ :=
--  (Matrix.of fun a c => ∑ i, ∑ j, (b a i : ℝ) * G i j * (b c j : ℝ)).det
--
--def qf {N : ℕ} (G : Matrix (Fin N) (Fin N) ℝ) (x : Fin N → ℝ) : ℝ :=
--  ∑ i, ∑ j, x i * G i j * x j
--
--def UNILatStatement : Prop :=
--  ∀ (N : ℕ) (G : Matrix (Fin N) (Fin N) ℝ) (R : Set (Matrix (Fin N) (Fin N) ℤ)) (κ c : ℝ)
--    (φ : Matrix (Fin N) (Fin N) ℤ),
--    G.PosDef → 0 < κ → 0 ≤ c → c < 1 →
--    (∀ (s : ℕ) (b : Fin s → Fin N → ℤ), LinearIndependent ℤ b →
--      (∀ ρ ∈ R, ∀ a, ρ *ᵥ b a ∈ Submodule.span ℤ (Set.range b)) → κ ^ s ≤ gramDet G b) →
--    G.det = κ ^ N →
--    (∀ ρ ∈ R, φ * ρ = ρ * φ) →
--    (∀ x : Fin N → ℝ, qf G (φ.map (Int.cast : ℤ → ℝ) *ᵥ x) ≤ c ^ 2 * qf G x) →
--    φ = 0
--
--end
--
- end ReciprocityTheory.L2DbarEstimates.Y
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean
 @@ -1,3 +1,4 @@
@@ -3882,217 +3586,6 @@
  
  lemma ppos_eq_of (x : Frame X.Ψ r) (τ : X.Ψ) (hA : (X.gramPos x τ).det ≠ 0) (u : Fin r → ℂ)
      (β : Fin X.p0 → ℂ)
---- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMeanContinuity.lean
-+++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMeanContinuity.lean
-@@ -1,5 +1,5 @@
- import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.RealEmbeddingCharacters
--import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSum
-+import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.GROWCountStatement
- 
- namespace ReciprocityTheory.ChartRestriction.G.FD.FlowMeanContinuity
- 
-@@ -9,32 +9,7 @@
- 
- variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
- 
--lemma mean_smul {α : Type*} [MeasurableSpace α] (μ : Measure α) (c : ENNReal) (hc0 : c ≠ 0)
--    (hct : c ≠ ⊤) (s : Set α) (F : α → ℂ) :
--    (((c • μ) s).toReal : ℂ)⁻¹ * ∫ y in s, F y ∂(c • μ) = ((μ s).toReal : ℂ)⁻¹ * ∫ y in s, F y ∂μ := by
--  have hc : c.toReal ≠ 0 := ENNReal.toReal_ne_zero.mpr ⟨hc0, hct⟩
--  have hc' : ((c.toReal : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hc
--  rw [Measure.restrict_smul, integral_smul_measure, Measure.smul_apply, smul_eq_mul,
--    ENNReal.toReal_mul, Complex.ofReal_mul, mul_inv, Complex.real_smul]
--  calc _ = ((μ s).toReal : ℂ)⁻¹ * (∫ y in s, F y ∂μ) *
--        (((c.toReal : ℝ) : ℂ)⁻¹ * ((c.toReal : ℝ) : ℂ)) := by ring
--    _ = _ := by rw [inv_mul_cancel₀ hc', mul_one]
--
--lemma mean_haar {G : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
--    [MeasurableSpace G] [BorelSpace G] (μ ν : Measure G) [μ.IsAddHaarMeasure] [ν.IsAddHaarMeasure]
--    (s : Set G) (F : G → ℂ) :
--    ((μ s).toReal : ℂ)⁻¹ * ∫ y in s, F y ∂μ = ((ν s).toReal : ℂ)⁻¹ * ∫ y in s, F y ∂ν := by
--  haveI : ProperSpace G := FiniteDimensional.proper_real G
--  have h := Measure.isAddLeftInvariant_eq_smul ν μ
--  have hpos := Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure ν μ
--  rw [h, ENNReal.smul_def]
--  exact (mean_smul μ _ (ENNReal.coe_ne_zero.mpr hpos.ne') ENNReal.coe_ne_top s F).symm
--
--variable (X : Data E r) (la : Wt X.Ψ r)
--
--noncomputable def fjI (ξ : Fin r → E) (ν : X.Ψ → ℝ) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r)
--    (s : X.Ψ → ℝ) : ℂ :=
--  P (X.flow ξ (fun τ => (s τ : ℂ)) x) * cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * s τ)
-+variable (X : Data E r)
- 
- lemma flow_differentiable (ξ : Fin r → E) (x : Frame X.Ψ r) :
-     Differentiable ℂ (fun s : X.Ψ → ℂ => X.flow ξ s x) := by
-@@ -54,167 +29,4 @@
-   apply DifferentiableAt.const_mul
-   exact (differentiable_apply τ) s
- 
--lemma fjI_continuous (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r → E}
--    (hξ : herm X.Gm ξ ξ = 0) (ν : X.Ψ → ℝ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
--    Continuous (fjI X ξ ν P x) := by
--  have hflow0 : X.flow ξ (fun _ => (0 : ℂ)) x = x := by
--    funext τ
--    change X.flowMat ξ τ 0 * mat x τ = x τ
--    rw [flowMat_eq]
--    simp only [mul_zero, neg_zero, zero_smul, add_zero, one_mul]
--    rfl
--  have hmaps : ∀ s : X.Ψ → ℝ, X.flow ξ (fun τ => (s τ : ℂ)) x ∈ X.dom := by
--    intro s
--    have h0 := (flow_mem_dom_iff (X := X) hξ x hx (fun _ => (0 : ℂ))).mp (by rw [hflow0]; exact hx)
--    rw [flow_mem_dom_iff (X := X) hξ x hx]
--    simpa using h0
--  have hc1 : Continuous (fun s : X.Ψ → ℝ => X.flow ξ (fun τ => (s τ : ℂ)) x) :=
--    (flow_differentiable X ξ x).continuous.comp
--      (continuous_pi fun τ => Complex.continuous_ofReal.comp (continuous_apply τ))
--  have hc2 : Continuous (fun s : X.Ψ → ℝ => P (X.flow ξ (fun τ => (s τ : ℂ)) x)) :=
--    hP.1.continuousOn.comp_continuous hc1 hmaps
--  unfold fjI
--  exact hc2.mul (by fun_prop)
--
--lemma fjI_periodic (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r → E} (hξΛ : ξ ∈ X.Λ)
--    (hξ : herm X.Gm ξ ξ = 0) (ν : X.Ψ → ℝ)
--    (hν : ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k) {x : Frame X.Ψ r}
--    (hx : x ∈ X.dom) (p : X.Ψ → ℝ) (hp : p ∈ X.periods la) (s : X.Ψ → ℝ) :
--    fjI X ξ ν P x (p + s) = fjI X ξ ν P x s := by
--  have hflow0 : X.flow ξ (fun _ => (0 : ℂ)) x = x := by
--    funext τ
--    change X.flowMat ξ τ 0 * mat x τ = x τ
--    rw [flowMat_eq]
--    simp only [mul_zero, neg_zero, zero_smul, add_zero, one_mul]
--    rfl
--  have hmaps : ∀ s : X.Ψ → ℝ, X.flow ξ (fun τ => (s τ : ℂ)) x ∈ X.dom := by
--    intro s
--    have h0 := (flow_mem_dom_iff (X := X) hξ x hx (fun _ => (0 : ℂ))).mp (by rw [hflow0]; exact hx)
--    rw [flow_mem_dom_iff (X := X) hξ x hx]
--    simpa using h0
--  have hadd : X.flow ξ (fun τ => (((p + s) τ : ℝ) : ℂ)) x =
--      X.flow ξ (cR X p) (X.flow ξ (fun τ => (s τ : ℂ)) x) := by
--    funext τ
--    change X.flowMat ξ τ _ * mat x τ = X.flowMat ξ τ _ * mat (X.flow ξ _ x) τ
--    rw [mat_flow, ← mul_assoc, flowMat_mul (X := X) hξ]
--    congr 2
--    simp [cR]
--  unfold fjI
--  rw [hadd, sec_periodic (X := X) la P hP hξΛ hξ hp _ (hmaps s)]
--  congr 1
--  obtain ⟨k, hk⟩ := hν p hp
--  have hsplit : ∑ τ, (ν τ : ℂ) * (((p + s) τ : ℝ) : ℂ) =
--      ∑ τ, (ν τ : ℂ) * (p τ : ℂ) + ∑ τ, (ν τ : ℂ) * (s τ : ℂ) := by
--    rw [← Finset.sum_add_distrib]
--    refine Finset.sum_congr rfl fun τ _ => ?_
--    rw [Pi.add_apply]
--    push_cast
--    ring
--  rw [hsplit, mul_add, Complex.exp_add]
--  have hk' : cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * (p τ : ℂ)) = 1 := by
--    have h1 : ∑ τ, (ν τ : ℂ) * (p τ : ℂ) = (k : ℂ) / 2 := by
--      have h2 := congrArg (fun t : ℝ => (t : ℂ)) hk
--      push_cast at h2
--      linear_combination h2 / 2
--    rw [h1, show -(4 * (Real.pi : ℂ) * I) * ((k : ℂ) / 2) = ((-k : ℤ) : ℂ) * (2 * Real.pi * I) by
--      push_cast; ring]
--    exact Complex.exp_int_mul_two_pi_mul_I (-k)
--  rw [hk', one_mul]
--
--lemma exists_basis : ∃ ω : Module.Basis (Fin (Fintype.card X.Ψ)) ℝ (X.Ψ → ℝ),
--    Submodule.span ℤ (Set.range ω) = perL X la := by
--  classical
--  let b := Module.Free.chooseBasis ℤ (perL X la)
--  have hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (perL X la)) = Fintype.card X.Ψ := by
--    rw [← Module.finrank_eq_card_chooseBasisIndex, perL_rank]
--  refine ⟨(b.ofZLatticeBasis ℝ (perL X la)).reindex (Fintype.equivFinOfCardEq hcard), ?_⟩
--  rw [Module.Basis.range_reindex, Module.Basis.ofZLatticeBasis_span]
--
--theorem fj_eq_fourCoeff (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r → E} (hξ : X.IsIso ξ)
--    {x : Frame X.Ψ r} (hx : x ∈ X.dom) {n : ℕ} (ω : Module.Basis (Fin n) ℝ (X.Ψ → ℝ))
--    (hω : Submodule.span ℤ (Set.range ω) = perL X la) (ν : X.Ψ → ℝ) (k : Fin n → ℤ)
--    (hk : ∀ j, 2 * ∑ τ, ν τ * ω j τ = k j) :
--    X.fj la ξ ν P x = ReciprocityTheory.L2DbarEstimates.Y.fourCoeff
--      (fun t => P (X.flow ξ (fun τ => ∑ j, t j * (ω j τ : ℂ)) x)) 0 k := by
--  classical
--
--  have hper : X.periods la = (Submodule.span ℤ (Set.range ω)).toAddSubgroup := by
--    rw [hω]
--    rfl
--  have hcond : ∀ p ∈ X.periods la, ∃ k' : ℤ, 2 * ∑ τ, ν τ * p τ = k' := by
--    intro p hp
--    rw [hper] at hp
--    obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℤ).mp hp
--    refine ⟨∑ j, c j * k j, ?_⟩
--    have hc : ∀ τ, (∑ j, c j • ω j) τ = ∑ j, (c j : ℝ) * ω j τ := fun τ => by
--      simp [Finset.sum_apply, zsmul_eq_mul]
--    simp only [hc]
--    push_cast
--    simp only [← hk, Finset.mul_sum]
--    rw [Finset.sum_comm]
--    exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
--  have hF0 : IsAddFundamentalDomain (X.periods la) (ZSpan.fundamentalDomain ω) volume := by
--    rw [hper]
--    exact ZSpan.isAddFundamentalDomain ω volume
--  have hex : ∃ D : Set (X.Ψ → ℝ), MeasurableSet D ∧ IsAddFundamentalDomain (X.periods la) D volume ∧
--      0 < volume D ∧ volume D < ⊤ :=
--    ⟨_, ZSpan.fundamentalDomain_measurableSet ω, hF0,
--      pos_iff_ne_zero.mpr (ZSpan.measure_fundamentalDomain_ne_zero ω),
--      (ZSpan.fundamentalDomain_isBounded ω).measure_lt_top⟩
--  have hcount : ((X.periods la : Set (X.Ψ → ℝ))).Countable :=
--    (Set.countable_range (fun c : Fin n → ℤ => ∑ j, c j • ω j)).mono fun p hp => by
--      rw [hper] at hp
--      exact (Submodule.mem_span_range_iff_exists_fun ℤ).mp hp
--  haveI : Countable (X.periods la) := hcount.to_subtype
--  unfold Data.fj
--  rw [if_pos hcond, dif_pos hex]
--  obtain ⟨-, hD, -, -⟩ := hex.choose_spec
--  show ((volume hex.choose).toReal : ℂ)⁻¹ * ∫ s in hex.choose, fjI X ξ ν P x s = _
--
--  rw [hD.measure_eq hF0, hD.setIntegral_eq hF0 (f := fjI X ξ ν P x)
--    (fun g s => fjI_periodic X la P hP hξ.1 hξ.2.1 ν hcond hx g g.2 s)]
--
--  set T := ω.equivFunL.symm with hTdef
--  haveI : (Measure.map T volume).IsAddHaarMeasure := T.isAddHaarMeasure_map volume
--  rw [mean_haar volume (Measure.map T volume) (ZSpan.fundamentalDomain ω) (fjI X ξ ν P x)]
--  have hmp : MeasurePreserving T volume (Measure.map T volume) :=
--    T.continuous.measurable.measurePreserving volume
--  have hemb : MeasurableEmbedding T := T.toHomeomorph.measurableEmbedding
--  rw [← hmp.setIntegral_preimage_emb hemb _ (ZSpan.fundamentalDomain ω),
--    Measure.map_apply T.continuous.measurable (ZSpan.fundamentalDomain_measurableSet ω)]
--  have hpre : T ⁻¹' ZSpan.fundamentalDomain ω = Set.univ.pi (fun _ : Fin n => Set.Ico (0 : ℝ) 1) := by
--    ext t
--    have hTt : T t = ω.equivFun.symm t := rfl
--    have hrep : ∀ i, ω.repr (ω.equivFun.symm t) i = t i := fun i => by
--      rw [← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]
--    rw [Set.mem_preimage, ZSpan.mem_fundamentalDomain, Set.mem_univ_pi, hTt]
--    simp only [hrep]
--  have hvol : volume (Set.univ.pi (fun _ : Fin n => Set.Ico (0 : ℝ) 1)) = 1 := by
--    rw [Real.volume_pi_Ico]
--    simp
--  have hae : (Set.univ.pi fun _ : Fin n => Set.Ico (0 : ℝ) 1) =ᵐ[volume]
--      (Set.univ.pi fun _ : Fin n => Set.Ioc (0 : ℝ) 1) := by
--    rw [MeasureTheory.volume_pi]
--    exact Measure.univ_pi_Ico_ae_eq_Icc.trans Measure.univ_pi_Ioc_ae_eq_Icc.symm
--  rw [hpre, hvol, ENNReal.toReal_one, Complex.ofReal_one, inv_one, one_mul,
--    setIntegral_congr_set hae]
--  unfold ReciprocityTheory.L2DbarEstimates.Y.fourCoeff
--  congr 1
--  funext t
--  have hT : ∀ τ, (T t) τ = ∑ j, t j * ω j τ := fun τ => by
--    rw [show T t = ω.equivFun.symm t from rfl, Module.Basis.equivFun_symm_apply, Finset.sum_apply]
--    simp only [Pi.smul_apply, smul_eq_mul]
--  have hk' : ∀ j, (k j : ℂ) = 2 * ∑ τ, (ν τ : ℂ) * (ω j τ : ℂ) := fun j => by
--    have h2 := congrArg (fun r : ℝ => (r : ℂ)) (hk j)
--    push_cast at h2
--    exact h2.symm
--  unfold fjI
--  simp only [hT, Pi.zero_apply, Complex.ofReal_zero, zero_mul, add_zero, hk']
--  push_cast
--  congr 1
--  congr 1
--  simp only [Finset.mul_sum, Finset.sum_mul]
--  rw [Finset.sum_comm]
--  exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
--
- end ReciprocityTheory.ChartRestriction.G.FD.FlowMeanContinuity
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientDomain.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientDomain.lean
 @@ -1,5 +1,4 @@
@@ -5144,25 +4637,15 @@
    fun_prop
  
  lemma ech_add (χ : ι → Fin 2 → Fin 2 → ℂ) (t s : Fin N → ℝ) :
---- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean
-+++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean
-@@ -1,6 +1,5 @@
- import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MinimumGrowthBounds
- import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMeanContinuity
--import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.FourSignHolds
- 
- namespace ReciprocityTheory.ChartRestriction.G.FD
- 
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSupOf.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSupOf.lean
-@@ -1,3 +1,6 @@
+@@ -1,3 +1,5 @@
 +import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LogDOfPosBound
 +import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BoundedSectionAlgebra
-+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains
  import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicCoefficientSplitting
  
  namespace PI.FdFjNearSup.W
-@@ -20,31 +23,8 @@
+@@ -20,31 +22,8 @@
          cexp (4 * Real.pi * I * ∑ τ, (ν τ : ℂ) * (s τ : ℂ)) * X.fj la ξ ν P x
  
  theorem isIsoV_embV {r : ℕ} (X : Data E r) {ξ : Fin r → E} (h : X.IsIso ξ) :
@@ -5196,7 +4679,7 @@
  
  theorem pnorm_eq {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (Q : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
      X.pnorm la Q x = ‖Q x‖ * X.nfac la x := rfl
-@@ -52,26 +32,13 @@
+@@ -52,26 +31,13 @@
  theorem pnorm_nonneg {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (Q : Frame X.Ψ r → ℂ)
      {x : Frame X.Ψ r} (hx : x ∈ X.dom) : 0 ≤ X.pnorm la Q x := by
    rw [pnorm_eq]
@@ -5224,7 +4707,7 @@
    have he := isIsoV_embV X hξ
    have hd : X.flowV (X.embV ξ) (fun τ => (s τ : ℂ)) x ∈ X.dom :=
      (h1 r X _ he x hx _).1.2 fun τ => by simp
-@@ -79,7 +46,7 @@
+@@ -79,7 +45,7 @@
    obtain ⟨hlo, hhi⟩ := h2 r X _ he la x hx _ hd
    simp only [Complex.ofReal_im, zero_div, add_zero, inv_one, min_self, max_self,
      Real.one_rpow, Finset.prod_const_one] at hlo hhi
@@ -5233,7 +4716,7 @@
    have heq := le_antisymm hhi hlo
    rw [div_eq_one_iff_eq hn.ne'] at heq
    exact heq.symm
-@@ -91,15 +58,11 @@
+@@ -91,15 +57,11 @@
      (hP : ∀ x ∈ X.dom, X.pnorm la P x ≤ C) :
      ∀ x ∈ X.dom, X.pnorm la (X.fj la ξ ν P) x ≤ C := by
    intro x hx
@@ -5251,7 +4734,7 @@
    have hbound : ∀ s : X.Ψ → ℝ, ‖P (X.flow ξ (fun τ => (s τ : ℂ)) x) *
        cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * (s τ : ℂ))‖ ≤ C / X.nfac la x := by
      intro s
-@@ -113,15 +76,9 @@
+@@ -113,15 +75,9 @@
    split_ifs with h₁ h₂
    · obtain ⟨-, -, hpos, hfin⟩ := h₂.choose_spec
      have hV : 0 < (volume h₂.choose).toReal := ENNReal.toReal_pos hpos.ne' hfin.ne
@@ -5270,7 +4753,7 @@
    · simpa using hC0
    · simpa using hC0
  
-@@ -150,11 +107,11 @@
+@@ -150,11 +106,11 @@
    · rw [le_div_iff₀ h1ρ]
      linarith
  
@@ -5285,7 +4768,7 @@
    obtain ⟨-, hSS, hiso, hc1, hνc, ⟨x0, hx0, hfj0⟩, hw, hspw, -, -, -⟩ := hD
    obtain ⟨hρ0, hρ1, hρeq⟩ := rho_facts hc1 hw
    obtain ⟨ha0, hainv, halo, hahi, -⟩ := ab_facts hρ0 hρ1
-@@ -166,8 +123,14 @@
+@@ -166,8 +122,14 @@
    have hfjb : ∀ x ∈ X.dom, X.pnorm la (X.fj la ξ ν P) x ≤ max C 0 :=
      fj_pnorm_le X.toData la P ξ ν (max C 0) (le_max_right _ _) hflow
        (fun x hx => (hC x hx).trans (le_max_left _ _))
@@ -5294,7 +4777,7 @@
 +  have characterLaw (y) (hy : y ∈ X.dom) := h5 r X.toData _ hiso' (X.fj la ξ ν P)
 +    (h2 r X.toData la P ξ ν hSS hiso) (fun τ => (ν τ : ℂ)) y hy (h3 r X.toData la P ξ ν hSS hiso y hy)
 +  have htV (τ) : 0 < X.ttV (X.embV ξ) x0 τ :=
-+    one_div_pos.mpr (mul_pos (TwoSidedBoostBounds.c_pos X.toData τ) (X.maj_pos hx0 τ (hiso' τ).2))
++    one_div_pos.mpr (mul_pos (MajorantFamilyNorms.c_pos X.toData τ) (X.maj_pos hx0 τ (hiso' τ).2))
 +  have hν := BoundedSectionAlgebra.bounded_character_has_nonnegative_indices X.toData la (X.embV ξ) hiso' ν x0 hx0
 +    (X.fj la ξ ν P) hfj0 (max C 0) hfjb (characterLaw x0 hx0) h6 htV
 +      (fun s hs => (h1 r X.toData _ hiso' x0 hx0 s).1.2 fun τ =>
@@ -5302,7 +4785,7 @@
    have hN0 : ∀ y, 0 ≤ X.hatN la (X.fj la ξ ν P) y := fun y =>
      Real.sSup_nonneg fun t ⟨x'', hx'', _, ht⟩ => ht ▸ pnorm_nonneg X.toData la _ hx''
    have hNC : ∀ y, X.hatN la (X.fj la ξ ν P) y ≤ max C 0 := fun y =>
-@@ -192,7 +155,7 @@
+@@ -192,7 +154,7 @@
      exact htt τ
    have ttpos : ∀ τ, 0 < X.tt ξ x'' τ := fun τ => lt_of_lt_of_le ha0 (htx τ).1
  
@@ -5311,7 +4794,7 @@
    have hsim : ∀ τ, (s τ).im = 1 - X.tt ξ x'' τ := fun τ => by simp [hs]
    have hq : ∀ τ, 1 + (s τ).im / X.ttV (X.embV ξ) x'' τ = (X.tt ξ x'' τ)⁻¹ := by
      intro τ
-@@ -213,9 +176,8 @@
+@@ -213,9 +175,8 @@
      rw [one_div, inv_eq_one] at h11
      exact h11
  
@@ -5323,7 +4806,7 @@
    have hsum : 4 * (Real.pi : ℂ) * I * ∑ τ, (fun τ => (ν τ : ℂ)) τ * s τ =
        ((-(4 * Real.pi * Λ) : ℝ) : ℂ) := by
      rw [hΛdef]
-@@ -244,7 +206,7 @@
+@@ -244,7 +205,7 @@
      nlinarith [mul_nonneg hpr.le hc1.le, mul_nonneg hpr.le (by linarith : (0 : ℝ) ≤ w)]
  
    obtain ⟨-, hhi⟩ := h6 r X.toData _ hiso' la x'' hx'' s hy
@@ -5332,7 +4815,7 @@
    have hnx : X.nfac la x'' ≤ Real.exp 1 * X.nfac la (X.flowV (X.embV ξ) s x'') := by
      rw [← div_le_iff₀ hny]
      refine hhi.trans ?_
-@@ -257,7 +219,7 @@
+@@ -257,7 +218,7 @@
            · dsimp only
              rw [hq τ, inv_inv]
              refine Real.rpow_le_rpow (le_max_of_le_right (ttpos τ).le) (max_le ?_ ?_)
@@ -5341,7 +4824,7 @@
              · exact ((inv_anti₀ ha0 (htx τ).1).trans (le_of_eq hainv)).trans hahi
              · exact (htx τ).2.trans hahi
        _ = (1 + 3 * d6rh c1 w) ^ (∑ τ, X.spread la τ / 2) :=
-@@ -276,18 +238,13 @@
+@@ -276,18 +237,13 @@
  
    have hN := (hpN _ hy).trans (hNS _ hyD)
    rw [pnorm_eq] at hN ⊢
@@ -9756,162 +9239,6 @@
    rw [← Data.hermC_jp_left Y.toData hz, ← mul_assoc, two_tau_neg_xi0_mul_conj_eq_k0_sq τ, Complex.re_ofReal_mul]
  
  theorem Bop_Bop {z : Frame Y.Ψ r} (hz : z ∈ Y.dom) (u : Y.Ψ → Fin r → ℂ) :
---- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean
-+++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean
-@@ -1,143 +1,16 @@
--import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TwoSidedBoostBounds
-+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BoundedSectionAlgebra
-+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowDomainCriterionHolds
- 
- namespace ReciprocityTheory.ChartRestriction.G.FD
-+open NumberField
-+variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
- 
--open NumberField Complex MajorantConjugateTransfer TwoSidedBoostBounds
--open scoped ComplexConjugate
-+namespace MajorantConjugateTransfer
-+end MajorantConjugateTransfer
- 
--variable {E : Type} [Field E] [NumberField E] [IsCMField E]
--
--namespace MinimumGrowthBounds
--
--variable {r : ℕ} (X : Data E r)
--
--theorem minimumSq_nonneg {x : Frame X.Ψ r} (hx : x ∈ X.dom) : 0 ≤ X.firstMinimumSq x := by
--  apply Real.sInf_nonneg
--  rintro t ⟨v, _, _, rfl⟩
--  exact Finset.sum_nonneg fun τ _ =>
--    mul_nonneg (TwoSidedBoostBounds.c_pos (X := X) τ).le (MajorantConjugateTransfer.maj_nonneg (X := X) hx τ _)
--
--theorem minimumSq_two_sided_bounds {x y : Frame X.Ψ r} (hx : x ∈ X.dom) (hy : y ∈ X.dom) {k1 k2 : ℝ}
--    (hk1 : 0 ≤ k1) (hk2 : 0 < k2) (hlow : ∀ τ w, k1 * X.maj x τ w ≤ X.maj y τ w)
--    (hup : ∀ τ w, X.maj y τ w ≤ k2 * X.maj x τ w) :
--    k1 * X.firstMinimumSq x ≤ X.firstMinimumSq y ∧ X.firstMinimumSq y ≤ k2 * X.firstMinimumSq x := by
--  have hc : ∀ τ, 0 ≤ X.c τ := fun τ => (TwoSidedBoostBounds.c_pos (X := X) τ).le
--  have e : ∀ g' : (Fin r → E) → ℝ, (¬ ∃ v ∈ X.Λ, v ≠ 0) → {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g' v} = ∅ := by
--    intro g' hne
--    ext t
--    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
--    rintro ⟨v, hv, hv', _⟩
--    exact hne ⟨v, hv, hv'⟩
--  have key1 : ∀ (g h : (Fin r → E) → ℝ) (a : ℝ), 0 ≤ a → (∀ v, 0 ≤ g v) → (∀ v, a * g v ≤ h v) →
--      a * sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v} ≤ sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = h v} := by
--    intro g h a ha hg hgh
--    by_cases hne : ∃ v ∈ X.Λ, v ≠ 0
--    · obtain ⟨v0, hv0, hv0'⟩ := hne
--      refine le_csInf ⟨_, v0, hv0, hv0', rfl⟩ ?_
--      rintro t ⟨v, hv, hv', rfl⟩
--      have hb : BddBelow {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v} := ⟨0, by
--        rintro s ⟨w, _, _, rfl⟩
--        exact hg w⟩
--      exact (mul_le_mul_of_nonneg_left (csInf_le hb ⟨v, hv, hv', rfl⟩) ha).trans (hgh v)
--    · rw [e g hne, e h hne, Real.sInf_empty, mul_zero]
--  have key2 : ∀ (g h : (Fin r → E) → ℝ) (a : ℝ), 0 < a → (∀ v, 0 ≤ g v) → (∀ v, g v ≤ a * h v) →
--      sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v} ≤ a * sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = h v} := by
--    intro g h a ha hg hgh
--    by_cases hne : ∃ v ∈ X.Λ, v ≠ 0
--    · obtain ⟨v0, hv0, hv0'⟩ := hne
--      rw [← div_le_iff₀' ha]
--      refine le_csInf ⟨_, v0, hv0, hv0', rfl⟩ ?_
--      rintro t ⟨v, hv, hv', rfl⟩
--      rw [div_le_iff₀' ha]
--      have hb : BddBelow {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v} := ⟨0, by
--        rintro s ⟨w, _, _, rfl⟩
--        exact hg w⟩
--      exact (csInf_le hb ⟨v, hv, hv', rfl⟩).trans (hgh v)
--    · rw [e g hne, e h hne, Real.sInf_empty, mul_zero]
--  unfold ReciprocityTheory.ChartRestriction.G.FD.Data.firstMinimumSq
--  refine ⟨key1 _ _ k1 hk1 ?_ ?_, key2 _ _ k2 hk2 ?_ ?_⟩
--  · intro v
--    exact Finset.sum_nonneg fun τ _ => mul_nonneg (hc τ) (MajorantConjugateTransfer.maj_nonneg (X := X) hx τ _)
--  · intro v
--    rw [Finset.mul_sum]
--    exact Finset.sum_le_sum fun τ _ =>
--      (mul_left_comm _ _ _).trans_le (mul_le_mul_of_nonneg_left (hlow τ _) (hc τ))
--  · intro v
--    exact Finset.sum_nonneg fun τ _ => mul_nonneg (hc τ) (MajorantConjugateTransfer.maj_nonneg (X := X) hy τ _)
--  · intro v
--    rw [Finset.mul_sum]
--    exact Finset.sum_le_sum fun τ _ =>
--      (mul_le_mul_of_nonneg_left (hup τ _) (hc τ)).trans_eq (mul_left_comm _ _ _)
--
--theorem sqrt_rpow_le (A : ℝ) {k1 k2 L Ly : ℝ} (hk1 : 0 < k1) (hk12 : k1 ≤ k2) (hL : 0 ≤ L)
--    (h1 : k1 * L ≤ Ly) (h2 : Ly ≤ k2 * L) :
--    Real.sqrt Ly ^ (-A) ≤ max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * Real.sqrt L ^ (-A) := by
--  rcases hL.eq_or_lt with hL0 | hLpos
--  · subst hL0
--    have hLy : Ly = 0 := le_antisymm (by linarith) (by linarith)
--    subst hLy
--    simp only [Real.sqrt_zero]
--    by_cases hA : A = 0
--    · subst hA
--      simp
--    · rw [Real.zero_rpow (neg_ne_zero.mpr hA), mul_zero]
--  · have hs : ∀ z : ℝ, 0 ≤ z → Real.sqrt z ^ (-A) = z ^ (-A / 2) := by
--      intro z hz
--      rw [Real.sqrt_eq_rpow, ← Real.rpow_mul hz]
--      congr 1
--      ring
--    have hLy : 0 < Ly := lt_of_lt_of_le (mul_pos hk1 hLpos) h1
--    rw [hs Ly hLy.le, hs L hL]
--    have hLy_eq : Ly = Ly / L * L := (div_mul_cancel₀ Ly hLpos.ne').symm
--    have hs1 : k1 ≤ Ly / L := by
--      rw [le_div_iff₀ hLpos]
--      exact h1
--    have hs2 : Ly / L ≤ k2 := by
--      rw [div_le_iff₀ hLpos]
--      exact h2
--    have hspos : 0 < Ly / L := lt_of_lt_of_le hk1 hs1
--    rw [hLy_eq, Real.mul_rpow hspos.le hL]
--    apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hL _)
--    rcases le_total 0 (-A / 2) with hp | hp
--    · exact (Real.rpow_le_rpow hspos.le hs2 hp).trans (le_max_right _ _)
--    · exact (Real.rpow_le_rpow_of_nonpos hk1 hs1 hp).trans (le_max_left _ _)
--
--theorem nfac_pos (la : Wt X.Ψ r) {y : Frame X.Ψ r} (hy : y ∈ X.dom) : 0 < X.nfac la y := by
--  have hd : ∀ τ i, dmin X.Gm y τ i ≠ 0 := by
--    intro τ i h0
--    have h1 := (hy τ).2 i
--    rw [h0] at h1
--    simp at h1
--  unfold ReciprocityTheory.ChartRestriction.G.FD.Data.nfac
--  exact Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ =>
--    Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _
--
--theorem growth (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (C A : ℝ)
--    (hmod : ∀ z ∈ X.dom, X.pnorm la P z ≤ C * X.la1 z ^ (-A)) {x y : Frame X.Ψ r}
--    (hx : x ∈ X.dom) (hy : y ∈ X.dom) {k1 k2 : ℝ} (hk1 : 0 < k1) (hk12 : k1 ≤ k2)
--    (hlow : ∀ τ w, k1 * X.maj x τ w ≤ X.maj y τ w) (hup : ∀ τ w, X.maj y τ w ≤ k2 * X.maj x τ w)
--    {R : ℝ} (hR : X.nfac la x / X.nfac la y ≤ R) :
--    ‖P y‖ * X.nfac la x ≤ max C 0 * max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * R * X.la1 x ^ (-A) := by
--  have hny := nfac_pos X la hy
--  have hnx := nfac_pos X la hx
--  obtain ⟨b1, b2⟩ := minimumSq_two_sided_bounds X hx hy hk1.le (lt_of_lt_of_le hk1 hk12) hlow hup
--  have hla : X.la1 y ^ (-A) ≤ max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * X.la1 x ^ (-A) :=
--    sqrt_rpow_le A hk1 hk12 (minimumSq_nonneg X hx) b1 b2
--  have hq0 : 0 ≤ X.nfac la x / X.nfac la y := div_nonneg hnx.le hny.le
--  have hR0 : 0 ≤ R := le_trans hq0 hR
--  have hC0 : 0 ≤ max C 0 := le_max_right _ _
--  have hly : 0 ≤ X.la1 y ^ (-A) := Real.rpow_nonneg (Real.sqrt_nonneg _) _
--  have hPy : ‖P y‖ * X.nfac la y ≤ max C 0 * X.la1 y ^ (-A) :=
--    calc ‖P y‖ * X.nfac la y = X.pnorm la P y := rfl
--      _ ≤ C * X.la1 y ^ (-A) := hmod y hy
--      _ ≤ max C 0 * X.la1 y ^ (-A) := mul_le_mul_of_nonneg_right (le_max_left _ _) hly
--  have hny' := hny.ne'
--  calc ‖P y‖ * X.nfac la x = (‖P y‖ * X.nfac la y) * (X.nfac la x / X.nfac la y) := by
--        field_simp
--    _ ≤ (max C 0 * X.la1 y ^ (-A)) * R := mul_le_mul hPy hR hq0 (mul_nonneg hC0 hly)
--    _ ≤ (max C 0 * (max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * X.la1 x ^ (-A))) * R := by gcongr
--    _ = max C 0 * max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * R * X.la1 x ^ (-A) := by ring
--
--end MinimumGrowthBounds
-+theorem TwoSidedBoostBounds.c_pos (τ : X.Ψ) : 0 < X.c τ := by
-+  unfold Data.c
-+  have := norm_pos_iff.mpr ((map_ne_zero τ.1).mpr X.ξ0_ne)
-+  linarith
- 
- end ReciprocityTheory.ChartRestriction.G.FD
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatMulVec.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatMulVec.lean
 @@ -29,15 +29,8 @@

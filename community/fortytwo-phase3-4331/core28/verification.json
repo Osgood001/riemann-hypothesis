@@ -1,19 +1,15 @@
 {
   "core": 28,
-  "candidate": "core28-native041b10fc2ede",
+  "candidate": "core28-majorant91637523400d",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 150,
-  "local_normalized_tokens": 260070,
+  "submitted_files": 146,
+  "local_normalized_tokens": 257225,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "9c67ec8a2446c844c890f0f1951d6e14251ff1ec0124d4b5e51e04ec9b44794f",
+  "proof_tree_sha256": "c24888f187fe662beac9bc8411d076cd8beb81d72f8b0d4e4b7aee1b1f17bc00",
   "modified_files": {
-    "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/GROWCountStatement.lean": {
-      "before": "238d4b56550ce08b2f847ff21f3ce23486b5eeb734b71bd89d13ce58f0167c21",
-      "after": "e1c1816f9617b22a65d5da8fcff9f58bd8344496bee089b4e3b0d6cf503ac8a6"
-    },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": {
       "before": "bfb00cb2fd8be62544a7d71ea17a0c3602f0bd4ba4343b9ba85b3cac28d1fabd",
       "after": "57dac87523ee64769f3d5037973dc59a2c0330cda0b434aca3367b80b93a9aed"
@@ -110,10 +106,6 @@
       "before": "e1f4b74846939b0735b413a0c317fd0b4d7c38de72cbf791045ba216666b84cd",
       "after": "19579ddce091cd72a36cb9c26d33f007a17787f8a09c1b4157432e535069cb78"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMeanContinuity.lean": {
-      "before": "34dfca5e7663eea4e6d5441863afac233ff5c415e3553f5c7c765264a2ae5e90",
-      "after": "b2eecd17b7fdc812abd3befd535182bf8fca3c71acf28282fb37a48a560ac6f0"
-    },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientDomain.lean": {
       "before": "c864508055e2f688c41328ef48ab53f82be9f634b60fd028417294c533600e7b",
       "after": "cd86420140f511ade1b4c11044ad29910a8f3138abbf9b50e1f67fc3c00e148d"
@@ -142,13 +134,9 @@
       "before": "89a02a8bf994077c9352d5500ff5dc7029b73641123d299a18f457043386f3e7",
       "after": "8b4486f7b1536c2abfd4cb8be19989cd9d94eddb6d69ac0243d3519845e3e409"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
-      "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
-      "after": "eb36319eb4b1ea4b6f1080df1fdb8ccc880f064053b20c1a44baed1044e69952"
-    },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSupOf.lean": {
       "before": "9cd4b1a48536d397ba749af1f11192866915f903d690f64b42c738edd30d77cd",
-      "after": "e61505d60c9f248d473783d26915b9a1b70d4fe3cece5b5d7ee5320cbef01726"
+      "after": "7018434d1f5b6e2bf64996ce13ffb88b95e871b5d67592086d617c51b18ea78b"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/Inputs.lean": {
       "before": "f7b3bacf59b36d3e871c94b5aacb4d30ba2b0a661c76755a7dff3e29b3afecd2",
@@ -285,10 +273,6 @@
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantOperators.lean": {
       "before": "011d2de3aa72bbca29ac8cebe96c2f0116ee16ade123413eb45265a37ccbcaf4",
       "after": "9896722aba5b8232991969ea782d9c4445af2cd6c826a43aad7fe703d643222b"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean": {
-      "before": "5bfea73b18d352fb1bf6ca185c987490fd85f593e4d0f76ac64271c7d76d8dbf",
-      "after": "85075084566a384982d27236cee2e1a87a00eb953eb6eacfe2670c6b86c50932"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatMulVec.lean": {
       "before": "0c4c23cbd69f7697a9f299140033db8de3b1115ecee307fbca5e34ce9c3a3d1a",
@@ -477,136 +461,7 @@
   },
   "attribution": {
     "original_author": "Levent Alpöge",
-    "proof_edits": "Fortytwo Engine: Deepseek Flash V4.1 1017 and Codex",
-    "codex_proof_source_sha256": {
-      "ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.GROWCountStatement": "e1c1816f9617b22a65d5da8fcff9f58bd8344496bee089b4e3b0d6cf503ac8a6"
-    },
-    "credit_detail": "Fortytwo supplied the parent proof edits. Codex revised the listed mathematical proof sources and checked the resulting proof.",
-    "new_contribution": "Original Lean formalization by Levent Alpöge. Fortytwo removed the FourSignHolds import from FractionalSliceDomains; its retained checkpoint is byte-identical. Codex contributed the following additional reductions. The quotient basis already supplies orthonormal coordinates. Remove the auxiliary signed Gram-coordinate expansion after checking that no reachable module uses it. Use the linear majorant covector on the orthogonal quotient to prove vanishing directly by cancellation at the isotropic vector. Derive right orthogonality by conjugate linearity on a submodule span, and left orthogonality by the kernel of the covector. This dispenses with a second conjugate symmetry proof.",
-    "shared_module_attribution": {
-      "original_author": "Levent Alpöge",
-      "inherited_native_module": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FractionalSliceDomains",
-      "supervisor_edits": [
-        "ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.GROWCountStatement",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.AdmissibleHermitianColumns",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BabaiCovering",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BfSubRight",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BlockIdentityExpansion",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BoundedSectionAlgebra",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CoefficientHeightBoundOfLiftSupportPositivity",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CoefficientIndexLowerBound",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CoefficientPositivity",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ConjugateConjugate",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CountingExponentialSumHolds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.CuspCoefficientFlow",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.DiscrMulHermitianIntegral",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.DiscreteLatticeMinimum",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.DiscriminantTraceBounds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.EmbeddingHermitianPairs",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ExponentialGrowthExclusion",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FinrankEqTwoMulHalfDegree",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FinrankRieszBounds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FixedPointImaginarySpan",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowCoefficientBounds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowCoefficientDecayHolds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowIsotropicPairs",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMajorantFlags",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMatMulVec",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMeanContinuity",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientDomain",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientLattice",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientMatrices",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientSupportHolds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientsOfVectorGroup",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCubeIntegral",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCubeVolume",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.NearSupremumBounds.FdFjNearSupOf",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.NearSupremumBounds.Inputs",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.PointAssembly.DivLeExpOfAbsLogSubLe",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.PointAssembly.Frames",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.AprojEqZeroOfUz",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.BotMulVecExt",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.HermLinApply",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.KatoNormRelationTamePrime",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.TopOf",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainOfTransference",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.GramDeterminantReal",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.GramMatrixExistence",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.GramSchmidtEigenframe",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HCSumRight",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermCOrthonormalCoordinates",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermEqZeroOfTraceFormVanish",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermitianPairingAlgebra",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermitianTraceFormVanishing",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HolomorphicPeriodicityExtension",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IntegralTraceNormBounds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsIntegralCc",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicCombinations",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicIndexSums",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicOutsideLine",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LatticeMinorExistence",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LatticeSpanMembership",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LminorSubmatrixCastSucc",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LogDOfPosBound",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LowBlock",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LowerBlockMatrices",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.M3bNormHolds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajPos",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantBoundOrthogonalPart",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantFamilyNorms",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantOperators",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MinimumGrowthBounds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MmatMulVec",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MmatUnitary",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NoShortVectorLowerBoundHolds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.NsqMulVecLeOpN",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthogonalComplementLines",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalChartNormControlHolds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalFlagTranslateHolds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalShortVectorBoundOf",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PeriodLatticeCountable",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PerpBasisExistence",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PerpComponentCombination",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PerpLatticeTransfer",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PerpSpanRight",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PivotNeg",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PosCoordNe",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PosDefOfBound",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PositiveMinorUnits",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PositiveSpanMatrices",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.QuadraticCoefficientForms",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.QuadraticOffDiagonalBounds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.RealEmbeddingCharacters",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.RealLower2",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.RealTangentSpace",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ReducedLatticeShortBound",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SchwarzLemmaBallHolds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ShortVectorBoundOfCoefficientBounds",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SignTypeCancelIdentity",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SpanColsMul",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TraceIntegralBasis",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TransvectionPeriodicity",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UbasisAt",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnipotentCoefficientShift",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnipotentOnHyperbolicComplement",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnipotentSubOneMajorantBound",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnipotentVectorEqSmulComponent",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnipotentVectorGroup",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.UnitaryComplementMoveOfIsotropic",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.Transference",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.TransferenceA",
-        "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.ContinuousRl",
-        "ReciprocityTheory.SemistableReduction.ApproxBasis",
-        "ReciprocityTheory.SemistableReduction.ApproxBasisA",
-        "ReciprocityTheory.SemistableReduction.ApproxBasisB",
-        "ReciprocityTheory.SemistableReduction.ApproxGraphA",
-        "ReciprocityTheory.SemistableReduction.ApproxGraphB",
-        "ReciprocityTheory.SemistableReduction.ApproxGraphC",
-        "ReciprocityTheory.SemistableReduction.LatAll"
-      ]
-    },
-    "prior_candidate": "core28-fastquotientforms3e8f5adf2a",
-    "alias_reduction": {
+    "retained_native_contribution": {
       "native_model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
       "source": "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpBasisExistence.lean",
       "source_sha256": "491fd8bc827dd3146b9760171f0135cbb34222819f40a13bf9264ac2b0538369",
@@ -617,14 +472,26 @@
       "visible_events": 92,
       "parent_attempt": 103706,
       "contribution": "DeepSeek verified the unused ppos_sub alias and removed its import in PerpBasisExistence."
-    }
+    },
+    "parent_proof_id": "041b10fc2edeb205e0356054bcd7cb22e2851575f519fc4ef97ea581b5298b34",
+    "supervisor": "Codex",
+    "supervisor_contribution": "Codex used MajorantFamilyNorms.c_pos directly in the near-supremum bound. Four modules, including the earlier native FractionalSliceDomains edit and former GROWCountStatement proof, left this closure.",
+    "supervisor_changed_sources": {
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSupOf.lean": "7018434d1f5b6e2bf64996ce13ffb88b95e871b5d67592086d617c51b18ea78b"
+    },
+    "removed_since_parent": [
+      "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/GROWCountStatement.lean",
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMeanContinuity.lean",
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean",
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean"
+    ]
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-25T03:22:43.879466+00:00",
-    "receipt_sha256": "c09dce988ca03dc832f54bfd15ddc86456b806bac64f58cf645cc318958b0287",
-    "log_sha256": "1b3256b86c79c7551a30c88587d3513d71a0d3f43bb39166e4b68bbd4fb415ce",
+    "completed_utc": "2026-11-25T03:28:31.927432+00:00",
+    "receipt_sha256": "4da12f1842fa88abab9c8efe6d6466920a68ab3522986dc14d8b04ecbd60e303",
+    "log_sha256": "562579035241bddb7019d1c224e86963d0cc14b8f77a09f26b748efab39614ea",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -636,7 +503,6 @@
   "source_kind": "pinned_git_checkout",
   "target_sha256": "cf38951a23eeeb858e4f9017942214c3902bbb1b07e69e3cdf1843e098e07c2b",
   "pinned_source_files": {
-    "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/GROWCountStatement.lean": "238d4b56550ce08b2f847ff21f3ce23486b5eeb734b71bd89d13ce58f0167c21",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": "bfb00cb2fd8be62544a7d71ea17a0c3602f0bd4ba4343b9ba85b3cac28d1fabd",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BabaiCovering.lean": "c302192823d9a4eb0e1546aa7c4ac12825652847aca93aef728ca6a2ec326be9",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BfSubRight.lean": "91712167d4788bb5643a4aa58ee821313d585c5978851d3e51a49828611635c1",
@@ -669,7 +535,6 @@
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowIsotropicPairs.lean": "1783600f147574b5b825b7bbbe6e4f8f73154b39e3d0fd29fbf68b55207543cc",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMajorantFlags.lean": "1157a8624b71df8c8a39b25336be9c2456e97569d8c87a4b30cddc6497aa39d5",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMatMulVec.lean": "e1f4b74846939b0735b413a0c317fd0b4d7c38de72cbf791045ba216666b84cd",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMeanContinuity.lean": "34dfca5e7663eea4e6d5441863afac233ff5c415e3553f5c7c765264a2ae5e90",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientDomain.lean": "c864508055e2f688c41328ef48ab53f82be9f634b60fd028417294c533600e7b",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientLattice.lean": "2da69db479213006703f8431316754cfe2eea08e4c59a1748f089e084d469ed0",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientMatrices.lean": "260906e38ac5f41121f925021a5feb06f94d7aa903bfa0c7c08bc5b5323b479c",
@@ -677,7 +542,6 @@
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientsOfVectorGroup.lean": "4eea60c7f58fc8d1e1d0bb789af860ae3041fd154282e17ed9902a9f560fd987",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCubeIntegral.lean": "e8f01a88300c58e56c9e183d325c723232b8667468a503ea696b92e75f2129b6",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCubeVolume.lean": "89a02a8bf994077c9352d5500ff5dc7029b73641123d299a18f457043386f3e7",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSupOf.lean": "9cd4b1a48536d397ba749af1f11192866915f903d690f64b42c738edd30d77cd",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/Inputs.lean": "f7b3bacf59b36d3e871c94b5aacb4d30ba2b0a661c76755a7dff3e29b3afecd2",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/PointAssembly/DivLeExpOfAbsLogSubLe.lean": "411d1b572b65c630169670325bd63aef681d131f52d48d248f282ff5b7494dab",
@@ -725,7 +589,6 @@
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantBoundOrthogonalPart.lean": "15cd6e91a4865f405c324a62ddbcc845ae4cbe4f1ae7291784154bde8624cc1c",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantFamilyNorms.lean": "6393090023b0a87aac79786eaba087196bfbd9a4e1600e3331224b47310a33fe",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantOperators.lean": "011d2de3aa72bbca29ac8cebe96c2f0116ee16ade123413eb45265a37ccbcaf4",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean": "5bfea73b18d352fb1bf6ca185c987490fd85f593e4d0f76ac64271c7d76d8dbf",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatMulVec.lean": "0c4c23cbd69f7697a9f299140033db8de3b1115ecee307fbca5e34ce9c3a3d1a",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatUnitary.lean": "d596376c5174b3239d858511edb60be18373f4fbc61f977cff852df474543cb7",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/NoShortVectorLowerBoundHolds.lean": "3257241911e588cd682536a0544a7f7126a54355627a1e359e62533d75070c5b",
@@ -786,5 +649,5 @@
     "ReciprocityTheory/SemistableReduction/ApproxGraphC.lean": "3a8602ff7e879a3ec3888e189ea9b4aa1f39261ec7b3d5171189c77de42585fe",
     "ReciprocityTheory/SemistableReduction/LatAll.lean": "b3ad7388149b404a8691abafebaa8502a2b507961d8e8dad58f1dd744b82651e"
   },
-  "proof_id": "041b10fc2edeb205e0356054bcd7cb22e2851575f519fc4ef97ea581b5298b34"
+  "proof_id": "91637523400d401141c0a6257de67678b501342822ef987de222b8f44b9c2f27"
 }
