@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Sma
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.VolGe
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointHeightDualAndLinearComb
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRatSecTensor
 
 @[expose] public section
 
