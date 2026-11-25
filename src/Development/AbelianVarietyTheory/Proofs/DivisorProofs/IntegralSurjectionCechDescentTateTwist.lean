@@ -31,14 +31,17 @@ theorem eqv_cechAug_of_comp_iso (R : Type) [CommRing R] (F : Shv R) {V W T : Sch
   rw [hw] at h1
   exact (E.2.1 _ _ _ _ _).2.2 (E.1 _ _ _ hr) h1
 
-theorem b4 : B4 := by
-  intro q Y X f _ _ hq i
-  have E := GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)
-  refine GlobalTheory.T.equiv_of_stalkwise_base_change (ZMod q) (tw q i) X (cech f) (sch.obj X) (cechAug f) (sch.map (𝟙 X))
-    (GlobalTheory.T.tateTwist_finitary q i) ?_ ?_ ?_
+/-- Integral-surjective Čech descent is a degree-zero closed-fiber test for finitary coefficients. -/
+theorem integral_surjective_descent_of_closedFiberH0 {R : Type} [CommRing R] (F : Shv R) (hF : Finitary F)
+    {Y X : Scheme.{0}} (f : Y ⟶ X) [IsIntegralHom f] [Surjective f]
+    (hzero : ∀ (O : Type) [CommRing O] [IsLocalRing O] (s : Spec (CommRingCat.of O) ⟶ X),
+      IsStalk O s → IntegralClosedFiberH0 F O) : Eqv R (cechAug f) F := by
+  have E := GlobalTheory.T.etaleCohomologyEquivalence_basic_properties R F
+  refine GlobalTheory.T.equiv_of_stalkwise_base_change R F X (cech f) (sch.obj X) (cechAug f) (sch.map (𝟙 X))
+    hF ?_ ?_ ?_
   · intro k
     obtain ⟨Z, π, e, hπ, he⟩ := GlobalTheory.T.exists_representable_cech_level_of_stable @IsIntegralHom Y X f ‹_› k
-    haveI := hπ
+    have := hπ
     refine ⟨Z, π ≫ f, e, inferInstance, inferInstance, ?_⟩
     rw [CategoryTheory.Functor.map_id, Category.comp_id, he]
   · intro k
@@ -46,16 +49,26 @@ theorem b4 : B4 := by
     simp [sch]
   · intro O _ s hs
     obtain ⟨e₁, e₂, h⟩ := GlobalTheory.T.baseChange_cechNerveAugmentation_iso X X Y (𝟙 X) f (Over.mk s)
-    have hqO : IsUnit ((q : ℕ) : O) := by
-      have := hq.map (s.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of O)).hom).hom
-      simpa using this
-    have hg : Eqv _ (cechAug (pullback.snd f (pullback.fst (𝟙 X) (Over.mk s).hom))) (tw q i) :=
+    obtain ⟨hH, _⟩ := hs.1
+    have hg : Eqv _ (cechAug (pullback.snd f (pullback.fst (𝟙 X) (Over.mk s).hom))) F :=
       eqv_cechAug_of_comp_iso _ _ _ (pullback.snd (𝟙 X) s)
-        (GlobalTheory.T.eqv_cechAug_of_isIntegralHom_of_surjective_of_sh q i O hs.1 hqO _ _ inferInstance inferInstance)
+        (cechAug_eqv_of_closedFiberH0 F hF O hs.1 (hzero O s hs) _ _ inferInstance inferInstance)
     have hm : (bcMap (cechAug f) (sch.map (𝟙 X))).app (Over.mk s) =
         e₁.inv ≫ cechAug (pullback.snd f (pullback.fst (𝟙 X) (Over.mk s).hom)) ≫ e₂.hom := by
       rw [← h, Iso.inv_hom_id_assoc]
     rw [hm]
     exact (E.2.1 _ _ _ _ _).1 (E.1 _ _ _ inferInstance) ((E.2.1 _ _ _ _ _).1 hg (E.1 _ _ _ inferInstance))
+
+
+/-- The formalization's Tate sheaves satisfy integral-surjective descent at every modulus.
+At noninvertible stalks their primitive-root generators vanish. -/
+theorem integral_surjective_descent_tate (q : ℕ) (i : ℤ) {Y X : Scheme.{0}} (f : Y ⟶ X)
+    [IsIntegralHom f] [Surjective f] : Eqv (ZMod q) (cechAug f) (tw q i) :=
+  integral_surjective_descent_of_closedFiberH0 (tw q i) (GlobalTheory.T.tateTwist_finitary q i) f
+    (fun O _ _ _ hs => integralClosedFiberH0_tate q i O hs.1)
+
+theorem b4 : B4 := by
+  intro q Y X f _ _ _ i
+  exact integral_surjective_descent_tate q i f
 
 end GlobalTheory.EtC
