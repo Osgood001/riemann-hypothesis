@@ -17,7 +17,7 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.SqTop GlobalTh
 
 namespace GlobalTheory.SqTop
 
-theorem lBound_of : GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.CompletedLBoundedInStrips → FieldDat → LBound := by
+theorem lBound_of_reflection : GlobalTheory.LValNe.CMReflectionBounds → GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.CompletedLBoundedInStrips → FieldDat → LBound := by
   intro hFE hS hFD
   set c : ℝ := max 0 (Real.log ‖riemannZeta (3 / 2)‖) with hc
   obtain ⟨CF1, hB⟩ := GlobalTheory.T.gridSizes_log_bound c
@@ -48,17 +48,13 @@ theorem lBound_of : GlobalTheory.Published.HeckeFunctionalEquationAbs → Global
   have hz : 0 < ‖riemannZeta (3 / 2)‖ := norm_pos_iff.2 (riemannZeta_ne_zero_of_one_lt_re (by norm_num))
   rcases (by omega : s = 1 ∨ 2 ≤ s) with rfl | h2
   · obtain ⟨a, ha, haN⟩ := GlobalTheory.T.exists_cmValueCharacter_conductorExponents D G 1 _ χ hχ
-    have hA := GlobalTheory.T.norm_completedHeckeL_CM_one_le_phragmenLindelof D.host.E D.what₂.Tau (cmPhi D) hFE hS hFd.2.2.2.2.2.2.1 χ (fun τ => ((κ (π τ) : ℕ) : ℤ) + ((1 : ℕ) : ℤ)) a Λ
+    have hA := GlobalTheory.HeckeLOneBound.norm_heckeL_one_le_of_reflection D.host.E D.what₂.Tau (cmPhi D) hFE hS hFd.2.2.2.2.2.2.1 χ (fun τ => ((κ (π τ) : ℕ) : ℤ) + ((1 : ℕ) : ℤ)) a Λ
       hχ.1 hχ.2.1 hχ.2.2.1 (fun τ => by positivity) ha hΛ
     simp only [Nat.cast_one] at hpos h0 ⊢
     set N : ℕ := (discr D.host.E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k with hN
     set P : ℝ := ∏ τ, (1 + ((((κ (π τ) : ℕ) : ℤ) + ((1 : ℕ) : ℤ) : ℤ) : ℝ)) with hP
     have hP0 : 0 < P := Finset.prod_pos fun τ _ => by push_cast; positivity
-    have hN0 : (0 : ℝ) < N := by
-      by_contra hc'
-      have : (N : ℝ) = 0 := le_antisymm (not_lt.1 hc') (Nat.cast_nonneg _)
-      rw [this, mul_zero, zero_mul] at hA
-      linarith
+    have hN0 : (0 : ℝ) < N := by exact_mod_cast GlobalTheory.LValNe.discr_mul_conductor_pos D.host.E a
     have hNle : (N : ℝ) ≤ |((discr D.host.E : ℤ) : ℝ)| * (levQ G.pl : ℝ) ^ 2 := by
       rw [hN, Nat.cast_mul, Nat.cast_natAbs, Int.cast_abs]
       refine mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)
@@ -71,9 +67,15 @@ theorem lBound_of : GlobalTheory.Published.HeckeFunctionalEquationAbs → Global
       have := Int.one_le_abs (NumberField.discr_ne_zero D.host.E)
       have : (1 : ℝ) ≤ |((discr D.host.E : ℤ) : ℝ)| := by exact_mod_cast this
       linarith
-    have h1 : Real.log ‖Λ 1‖ ≤ Real.log (‖riemannZeta (3 / 2)‖ ^ n) + Real.log N + Real.log P := by
-      rw [← Real.log_mul (by positivity) hN0.ne', ← Real.log_mul (by positivity) hP0.ne']
-      exact Real.log_le_log hpos hA
+    have h1 : Real.log ‖Λ 1‖ ≤ Real.log (‖riemannZeta (3 / 2)‖ ^ n) + (1 / 4) * Real.log N + Real.log P / 2 := by
+      have hroot : Real.sqrt P = ∏ τ, Real.sqrt (1 + ((((κ (π τ) : ℕ) : ℤ) + ((1 : ℕ) : ℤ) : ℤ) : ℝ)) := by
+        exact Real.sqrt_prod _ (fun τ _ => by push_cast; positivity)
+      have hraw : ‖Λ 1‖ ≤ ‖riemannZeta (3 / 2)‖ ^ n * (N : ℝ) ^ (1 / 4 : ℝ) * Real.sqrt P := by
+        rwa [hroot]
+      have hlog := Real.log_le_log hpos hraw
+      rwa [Real.log_mul (by positivity) (Real.sqrt_pos.2 hP0).ne',
+        Real.log_mul (by positivity) (Real.rpow_pos_of_pos hN0 _).ne', Real.log_rpow hN0,
+        Real.log_sqrt hP0.le] at hlog
     have h2 : Real.log N ≤ Real.log |((discr D.host.E : ℤ) : ℝ)| + 2 * Real.log (levQ G.pl) := by
       calc Real.log N ≤ Real.log (|((discr D.host.E : ℤ) : ℝ)| * (levQ G.pl : ℝ) ^ 2) := Real.log_le_log hN0 hNle
         _ = _ := by rw [Real.log_mul hD0.ne' (by positivity), Real.log_pow]; push_cast; ring
@@ -93,6 +95,9 @@ theorem lBound_of : GlobalTheory.Published.HeckeFunctionalEquationAbs → Global
         _ = n * Real.log ‖riemannZeta (3 / 2)‖ := Real.log_pow _ _
         _ ≤ c * n := by nlinarith [(Nat.cast_nonneg n : (0:ℝ) ≤ n)]
     linarith
+
+theorem lBound_of : GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.CompletedLBoundedInStrips → FieldDat → LBound :=
+  fun hFE => lBound_of_reflection (.of_functionalEquation hFE)
 
 end GlobalTheory.SqTop
 

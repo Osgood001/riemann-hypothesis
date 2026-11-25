@@ -60,7 +60,8 @@ namespace GlobalTheory.LValNe
 
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 
-theorem nonempty_of_isCMType {φ : I → E →+* ℂ} (hφ : IsCMType φ) : Nonempty I := by
+omit [Fintype I] in
+theorem nonempty_of_isCMType [Fintype I] {φ : I → E →+* ℂ} (hφ : IsCMType φ) : Nonempty I := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace E) := inferInstance
   obtain ⟨i, -⟩ := hφ w.embedding
   exact ⟨i⟩
@@ -85,7 +86,53 @@ theorem archFactor_ne_zero {n : I → ℤ} {s : ℂ} (hs : ∀ i, Complex.Gamma 
   refine Finset.prod_ne_zero_iff.2 fun i _ => mul_ne_zero (mul_ne_zero two_ne_zero ?_) (hs i)
   rw [Ne, Complex.cpow_eq_zero_iff]; tauto
 
-theorem heckeL_ne_zero_int (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) (hB : CompletedLBoundedInStrips) [IsCMField E]
+theorem discr_mul_conductor_pos (E : Type) [Field E] [NumberField E]
+    (a : HeightOneSpectrum (𝓞 E) →₀ ℕ) :
+    0 < (discr E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k := by
+  refine Nat.mul_pos (Int.natAbs_pos.2 (discr_ne_zero E)) ?_
+  unfold Finsupp.prod
+  exact Finset.prod_pos fun v _ => pow_pos (Nat.pos_of_ne_zero fun hz =>
+    v.ne_bot (Ideal.absNorm_eq_zero_iff.1 hz)) _
+
+/-- Two one-sided comparisons with the dual completed function for positive CM weights.
+The boundary estimate is used only for anticyclotomic characters; the integer comparison
+does not require a root number or an identity on the entire plane. -/
+def CMReflectionBounds : Prop :=
+  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I]
+    (φ : I → E →+* ℂ), IsCMType φ → ∀ (χ : HChar E) (m : I → ℤ)
+    (a : HeightOneSpectrum (𝓞 E) →₀ ℕ) (Λ Λ' : ℂ → ℂ),
+    IsUnitary χ → HasInf χ φ m → (∀ i, 0 < m i) → (∀ v, ExpAt χ v (a v)) →
+    IsCompletedL χ (fun i => 2 * m i) Λ → IsCompletedL χ⁻¹ (fun i => -(2 * m i)) Λ' →
+      (TrivOnF χ → ∀ z : ℂ, z.re = -1 / 2 → ‖Λ z‖ ≤
+        (((discr E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k : ℕ) : ℝ) * ‖Λ' (1 - z)‖) ∧
+      ∀ k : ℤ, k ≤ 0 → (∀ i, 0 < k + m i) → ‖Λ' (1 - (k : ℂ))‖ ≤ ‖Λ k‖
+
+theorem CMReflectionBounds.of_functionalEquation
+    (h : GlobalTheory.Published.HeckeFunctionalEquationAbs) : CMReflectionBounds := by
+  intro E _ _ _ I _ φ hφ χ m a Λ Λ' hu hm hpos ha hΛ hΛ'
+  obtain ⟨i⟩ := nonempty_of_isCMType hφ
+  have hn : ∃ j, 2 * m j ≠ 0 := ⟨i, mul_ne_zero two_ne_zero (hpos i).ne'⟩
+  obtain ⟨ε, hε, hfe⟩ := h E I φ hφ χ (fun j => 2 * m j) a Λ Λ' hu hm hn ha hΛ hΛ'
+  let A : ℕ := (discr E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k
+  have hApos : 0 < A := discr_mul_conductor_pos E a
+  have hnorm (z : ℂ) : ‖Λ z‖ = (A : ℝ) ^ ((1 / 2 : ℝ) - z.re) * ‖Λ' (1 - z)‖ := by
+    rw [hfe z, norm_mul, norm_mul, hε, one_mul]
+    change ‖(A : ℂ) ^ (1 / 2 - z)‖ * _ = _
+    rw [Complex.norm_natCast_cpow_of_pos hApos]
+    congr 2
+    simp
+  constructor
+  · intro _ z hz
+    rw [hnorm, hz]
+    norm_num [A]
+  · intro k hk _
+    rw [hnorm]
+    have hk' : (k : ℝ) ≤ 0 := by exact_mod_cast hk
+    refine le_mul_of_one_le_left (norm_nonneg _) (Real.one_le_rpow ?_ ?_)
+    · exact_mod_cast hApos
+    · simpa only [Complex.intCast_re] using (show 0 ≤ (1 / 2 : ℝ) - k by linarith)
+
+theorem heckeL_ne_zero_int_of_reflection (hFE : CMReflectionBounds) (hB : CompletedLBoundedInStrips) [IsCMField E]
     {φ : I → E →+* ℂ} (hφ : IsCMType φ) {χ : HChar E} {m : I → ℤ} (hu : IsUnitary χ) (hm : HasInf χ φ m)
     (hpos : ∀ i, 0 < m i) {L : ℂ → ℂ} (hL : IsHeckeL χ L) (s : ℤ) (hs : ∀ i, 0 < s + m i) : L s ≠ 0 := by
   rcases le_or_gt 1 s with h1 | h1
@@ -119,8 +166,9 @@ theorem heckeL_ne_zero_int (hFE : GlobalTheory.Published.HeckeFunctionalEquation
     exact hL'.ne_zero_nat hu' (by omega)
   have hΛ'1 : Λ' (1 - (s : ℂ)) ≠ 0 := by
     rw [e1]; exact mul_ne_zero (archFactor_ne_zero g1) hL1
-  have hΛs : Λ s ≠ 0 := fun h0 =>
-    hΛ'1 ((GlobalTheory.Published.HeckeFEModel.zero_iff hFE hφ hu hm hn hΛ hΛ' s).1 h0)
+  obtain ⟨a, ha⟩ := GlobalTheory.Published.HeckeFEModel.exists_exponents χ
+  have href := (hFE E I φ hφ χ m a Λ Λ' hu hm hpos ha hΛ hΛ').2 s (by omega) hs
+  have hΛs : Λ s ≠ 0 := norm_pos_iff.mp ((norm_pos_iff.mpr hΛ'1).trans_le href)
 
   have g0 : ∀ i, Complex.Gamma ((s : ℂ) + ((|2 * m i| : ℤ) : ℂ) / 2) ≠ 0 := fun i => by
     rw [half_abs_two_mul _ (hpos i)]
@@ -128,6 +176,11 @@ theorem heckeL_ne_zero_int (hFE : GlobalTheory.Published.HeckeFunctionalEquation
     push_cast at this; exact this
   rw [completed_eq hΛ hL g0] at hΛs
   exact right_ne_zero_of_mul hΛs
+
+theorem heckeL_ne_zero_int (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) (hB : CompletedLBoundedInStrips) [IsCMField E]
+    {φ : I → E →+* ℂ} (hφ : IsCMType φ) {χ : HChar E} {m : I → ℤ} (hu : IsUnitary χ) (hm : HasInf χ φ m)
+    (hpos : ∀ i, 0 < m i) {L : ℂ → ℂ} (hL : IsHeckeL χ L) (s : ℤ) (hs : ∀ i, 0 < s + m i) : L s ≠ 0 :=
+  heckeL_ne_zero_int_of_reflection (.of_functionalEquation hFE) hB hφ hu hm hpos hL s hs
 
 end GlobalTheory.LValNe
 
@@ -139,7 +192,7 @@ theorem squareBottomHalfRankDiff_le_halfRank (D : D7) (i j : ℕ) : e0 D i j ≤
   unfold e0 halfRank botBig botSmall
   omega
 
-theorem lNe_square (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) (hB : CompletedLBoundedInStrips) {D : D7} {T : Type}
+theorem lNe_square_of_reflection (hFE : GlobalTheory.LValNe.CMReflectionBounds) (hB : CompletedLBoundedInStrips) {D : D7} {T : Type}
     {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} [IsCMField D.host.E] (hφ : IsCMType (cmPhi D)) {μ₀ : T} (hL : Lc.Is μ₀)
     (G : GridData Lc sc) (i j : Fin D.R.m) :
     (∀ t, ∃ Λ, IsHeckeL (nuH G t i j) Λ ∧ ∀ s : ℤ, 1 - (e0 D i j : ℤ) ≤ s → s ≤ halfRank D i j → Λ s ≠ 0) ∧
@@ -163,7 +216,7 @@ theorem lNe_square (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) (hB
       rw [e, Formalism.L2.Host.HChar.inf_mul, GlobalTheory.TypeValues.inf_eq_one (Lc.xiH t) hn hf k, mul_one]
       exact hv.1.2.2.1 k
     obtain ⟨Λ, hΛ⟩ := GlobalTheory.LValNe.exists_heckeL hφ hu hm hpos
-    refine ⟨Λ, hΛ, fun s hs1 hs2 => GlobalTheory.LValNe.heckeL_ne_zero_int hFE hB hφ hu hm hpos hΛ s fun τ => ?_⟩
+    refine ⟨Λ, hΛ, fun s hs1 hs2 => GlobalTheory.LValNe.heckeL_ne_zero_int_of_reflection hFE hB hφ hu hm hpos hΛ s fun τ => ?_⟩
     have a0 := (GlobalTheory.FunObj.SqNum.Model.kap_add D sc.cGap i j τ (Nat.zero_le (halfRank D i j))).1
     have a1 := GlobalTheory.FunObj.SqNum.Model.kap_add D sc.cGap i j τ (le_refl (halfRank D i j))
     have a2 := squareBottomHalfRankDiff_le_halfRank D i j
@@ -172,8 +225,15 @@ theorem lNe_square (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) (hB
     | none => exact fam_ok _ hv.1
     | some c => exact fam_ok _ (hv.2 c)
 
-theorem lNe_of_functionalEquation :
-    GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.CompletedLBoundedInStrips → FieldDat → LNe := by
+theorem lNe_square (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) (hB : CompletedLBoundedInStrips) {D : D7} {T : Type}
+    {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} [IsCMField D.host.E] (hφ : IsCMType (cmPhi D)) {μ₀ : T} (hL : Lc.Is μ₀)
+    (G : GridData Lc sc) (i j : Fin D.R.m) :
+    (∀ t, ∃ Λ, IsHeckeL (nuH G t i j) Λ ∧ ∀ s : ℤ, 1 - (e0 D i j : ℤ) ≤ s → s ≤ halfRank D i j → Λ s ≠ 0) ∧
+      ∀ c, ∃ Λ, IsHeckeL (fam G μ₀ i j c) Λ ∧ ∀ s : ℕ, 1 ≤ s → Λ s ≠ 0 :=
+  lNe_square_of_reflection (.of_functionalEquation hFE) hB hφ hL G i j
+
+theorem lNe_of_reflection :
+    GlobalTheory.LValNe.CMReflectionBounds → GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.CompletedLBoundedInStrips → FieldDat → LNe := by
   intro hFE hB hFD
   obtain ⟨CF0, h⟩ := hFD
   refine ⟨CF0, fun ε CF hCF => ?_⟩
@@ -181,6 +241,10 @@ theorem lNe_of_functionalEquation :
   refine ⟨C0, x₀, fun C hC D large₂ he hx hR T Lc μ₀ hL G => ?_⟩
   obtain ⟨hCM, -, hFd, -, -⟩ := h' C hC D large₂ he hx hR T Lc μ₀ hL G
   obtain ⟨-, -, -, -, -, -, hφ, -⟩ := hFd
-  exact fun i j => lNe_square hFE hB hφ hL G i j
+  exact fun i j => lNe_square_of_reflection hFE hB hφ hL G i j
+
+theorem lNe_of_functionalEquation :
+    GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.CompletedLBoundedInStrips → FieldDat → LNe :=
+  fun hFE => lNe_of_reflection (.of_functionalEquation hFE)
 
 end GlobalTheory.SqTop
