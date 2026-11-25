@@ -1,6 +1,7 @@
 module
 
 public import Mathlib
+public import Lemmata.OrbitSpans.Basic
 
 @[expose] public section
 
@@ -15,48 +16,25 @@ namespace RestrictedTensor
 variable {G : Type*} [Group G] {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
   [Module ℂ W]
 
-def orbitSpan (ρ : Representation ℂ G V) (v : V) : Subrepresentation ρ where
-  toSubmodule := Submodule.span ℂ (range fun g => ρ g v)
-  apply_mem_toSubmodule g x hx := by
-    induction hx using Submodule.span_induction with
-    | mem x hx =>
-      obtain ⟨h, rfl⟩ := hx
-      exact Submodule.subset_span ⟨g * h, by simp [map_mul]⟩
-    | zero => simp
-    | add x y _ _ hx hy => simpa using Submodule.add_mem _ hx hy
-    | smul c x _ hx => simpa using Submodule.smul_mem _ c hx
+def orbitSpan (ρ : Representation ℂ G V) (v : V) : Subrepresentation ρ :=
+  Bl.OrbitSpans.orbitSpan ρ v
 
 theorem mem_orbitSpan_self (ρ : Representation ℂ G V) (v : V) : v ∈ (orbitSpan ρ v).toSubmodule :=
-  Submodule.subset_span ⟨1, by simp⟩
+  Bl.OrbitSpans.mem_orbitSpan_self ρ v
 
 theorem orbitSpan_eq_top {ρ : Representation ℂ G V} [ρ.IsIrreducible] {v : V} (hv : v ≠ 0) :
     orbitSpan ρ v = ⊤ := by
-  rcases IsSimpleOrder.eq_bot_or_eq_top (orbitSpan ρ v) with h | h
-  · exfalso
-    apply hv
-    have := mem_orbitSpan_self ρ v
-    rw [h] at this
-    exact this
-  · exact h
+  exact Bl.OrbitSpans.orbitSpan_eq_top ρ v hv
 
 theorem mem_span_orbit {ρ : Representation ℂ G V} [ρ.IsIrreducible] {v : V} (hv : v ≠ 0) (x : V) :
     x ∈ Submodule.span ℂ (range fun g => ρ g v) := by
-  have := orbitSpan_eq_top (ρ := ρ) hv
-  have hx : x ∈ (⊤ : Subrepresentation ρ).toSubmodule := trivial
-  rw [← this] at hx
-  exact hx
+  change x ∈ (orbitSpan ρ v).toSubmodule
+  rw [orbitSpan_eq_top hv]
+  exact Submodule.mem_top
 
 theorem eq_zero_of_forall_apply {ρ : Representation ℂ G V} [ρ.IsIrreducible] {v : V} (hv : v ≠ 0)
     {l : Module.Dual ℂ V} (h : ∀ g, l (ρ g v) = 0) : l = 0 := by
-  ext x
-  have hx := mem_span_orbit (ρ := ρ) hv x
-  induction hx using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨g, rfl⟩ := hx
-    exact h g
-  | zero => simp
-  | add x y _ _ hx hy => simp [hx, hy]
-  | smul c x _ hx => simp [hx]
+  exact LinearMap.ext_on_range (congrArg Subrepresentation.toSubmodule (orbitSpan_eq_top hv)) h
 
 theorem eq_zero_of_forall_apply_act {ρ : Representation ℂ G V} [ρ.IsIrreducible]
     {l : Module.Dual ℂ V} (hl : l ≠ 0) {x : V} (h : ∀ g, l (ρ g x) = 0) : x = 0 := by
@@ -76,10 +54,8 @@ theorem orbitMap_single (ρ : Representation ℂ G V) (v : V) (g : G) (a : ℂ) 
 
 theorem orbitMap_mapDomain (ρ : Representation ℂ G V) (v : V) (h : G) (c : G →₀ ℂ) :
     orbitMap ρ v (Finsupp.mapDomain (h * ·) c) = ρ h (orbitMap ρ v c) := by
-  induction c using Finsupp.induction_linear with
-  | zero => simp [orbitMap]
-  | add c d hc hd => rw [Finsupp.mapDomain_add, map_add (f := _), hc, hd, map_add (f := _), map_add (f := _)]
-  | single g a => simp [Finsupp.mapDomain_single, orbitMap_single, map_mul]
+  exact LinearMap.congr_fun (Finsupp.lmapDomain_linearCombination ℂ (v := fun g => ρ g v)
+    (v' := fun g => ρ g v) (h * ·) (ρ h) (fun g => by simp [map_mul])) c
 
 theorem range_orbitMap (ρ : Representation ℂ G V) (v : V) :
     LinearMap.range (orbitMap ρ v) = Submodule.span ℂ (range fun g => ρ g v) := by
@@ -89,7 +65,7 @@ theorem linearForm_orbitMap (ρ : Representation ℂ G V) (v : V) (l : Module.Du
     (c : G →₀ ℂ) : l (ρ h (orbitMap ρ v c)) = c.sum fun g a => a * l (ρ (h * g) v) := by
   rw [orbitMap_apply, map_finsuppSum, map_finsuppSum]
   refine Finsupp.sum_congr fun g _ => ?_
-  rw [map_smul, map_smul, smul_eq_mul, map_mul, Module.End.mul_apply]
+  rw [map_smul, map_smul, smul_eq_mul, map_mul, mul_apply_eq_comp]
 
 theorem nonempty_equiv_of_matrixCoeff_eq {ρ : Representation ℂ G V} {σ : Representation ℂ G W}
     [ρ.IsIrreducible] [σ.IsIrreducible] {v : V} {l : Module.Dual ℂ V} {w : W}
@@ -110,7 +86,7 @@ theorem nonempty_equiv_of_matrixCoeff_eq {ρ : Representation ℂ G V} {σ : Rep
     exact Finsupp.sum_congr fun g _ => by rw [h]
   have hsurj : Function.Surjective (orbitMap ρ v) := by
     rw [← LinearMap.range_eq_top, range_orbitMap]
-    exact eq_top_iff.2 fun x _ => mem_span_orbit hv x
+    exact congrArg Subrepresentation.toSubmodule (orbitSpan_eq_top hv)
   let e := LinearMap.quotKerEquivOfSurjective (orbitMap ρ v) hsurj
   let F : V →ₗ[ℂ] W := ((LinearMap.ker (orbitMap ρ v)).liftQ (orbitMap σ w) hker).comp
     e.symm.toLinearMap
@@ -130,7 +106,7 @@ theorem nonempty_equiv_of_matrixCoeff_eq {ρ : Representation ℂ G V} {σ : Rep
     have h1 : F v = w := by
       have := hF (Finsupp.single 1 1)
       rwa [orbitMap_single, orbitMap_single, one_smul, one_smul, map_one,
-        Module.End.one_apply, map_one, Module.End.one_apply] at this
+        one_apply_eq_self, map_one, one_apply_eq_self] at this
     have h2 : F v = 0 := by
       have : Fi v = 0 := by rw [h0]; rfl
       exact this
