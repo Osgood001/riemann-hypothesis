@@ -1,18 +1,18 @@
 {
   "core": 28,
-  "candidate": "core28-majorant91637523400d",
+  "candidate": "core28-convexity639f70863449",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 146,
-  "local_normalized_tokens": 257225,
+  "local_normalized_tokens": 255936,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "c24888f187fe662beac9bc8411d076cd8beb81d72f8b0d4e4b7aee1b1f17bc00",
+  "proof_tree_sha256": "ef6a0d44132939d6e01d056fe53ddf4efecf3279bd1a5eb472ba3cb25c7219b0",
   "modified_files": {
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": {
       "before": "bfb00cb2fd8be62544a7d71ea17a0c3602f0bd4ba4343b9ba85b3cac28d1fabd",
-      "after": "57dac87523ee64769f3d5037973dc59a2c0330cda0b434aca3367b80b93a9aed"
+      "after": "25e14887617c1dc12c4148f906263a97a4a74af9e448b53eaa212a267ccd5f12"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BabaiCovering.lean": {
       "before": "c302192823d9a4eb0e1546aa7c4ac12825652847aca93aef728ca6a2ec326be9",
@@ -473,25 +473,27 @@
       "parent_attempt": 103706,
       "contribution": "DeepSeek verified the unused ppos_sub alias and removed its import in PerpBasisExistence."
     },
-    "parent_proof_id": "041b10fc2edeb205e0356054bcd7cb22e2851575f519fc4ef97ea581b5298b34",
+    "parent_proof_id": "91637523400d401141c0a6257de67678b501342822ef987de222b8f44b9c2f27",
     "supervisor": "Codex",
-    "supervisor_contribution": "Codex used MajorantFamilyNorms.c_pos directly in the near-supremum bound. Four modules, including the earlier native FractionalSliceDomains edit and former GROWCountStatement proof, left this closure.",
+    "supervisor_contribution": "The preceding verified proof used MajorantFamilyNorms.c_pos and omitted four unreachable source files. This successor removes four unused declarations from AdmissibleHermitianColumns while preserving its remaining statements and 146-file closure.",
     "supervisor_changed_sources": {
-      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSupOf.lean": "7018434d1f5b6e2bf64996ce13ffb88b95e871b5d67592086d617c51b18ea78b"
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": "25e14887617c1dc12c4148f906263a97a4a74af9e448b53eaa212a267ccd5f12"
     },
-    "removed_since_parent": [
-      "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/GROWCountStatement.lean",
-      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMeanContinuity.lean",
-      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean",
-      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean"
-    ]
+    "removed_since_parent": [],
+    "removed_declarations": [
+      "leadingMinor_add_rankOne",
+      "open_convex_aff",
+      "admissibleImaginary_eq_halfspaces",
+      "admissibleImaginary_open_convex"
+    ],
+    "majorant_parent_sha256": "91637523400d401141c0a6257de67678b501342822ef987de222b8f44b9c2f27"
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-25T03:28:31.927432+00:00",
-    "receipt_sha256": "4da12f1842fa88abab9c8efe6d6466920a68ab3522986dc14d8b04ecbd60e303",
-    "log_sha256": "562579035241bddb7019d1c224e86963d0cc14b8f77a09f26b748efab39614ea",
+    "completed_utc": "2026-11-25T03:50:25.922738+00:00",
+    "receipt_sha256": "61d277e383619f6ecd2ca3cf0736c6f4a4d626255b5a0725f6aed2e59cfe3798",
+    "log_sha256": "700bfb7d948f24f193b6ca4af69262662b9cec0897630c173f79f93664241c33",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -649,5 +651,5 @@
     "ReciprocityTheory/SemistableReduction/ApproxGraphC.lean": "3a8602ff7e879a3ec3888e189ea9b4aa1f39261ec7b3d5171189c77de42585fe",
     "ReciprocityTheory/SemistableReduction/LatAll.lean": "b3ad7388149b404a8691abafebaa8502a2b507961d8e8dad58f1dd744b82651e"
   },
-  "proof_id": "91637523400d401141c0a6257de67678b501342822ef987de222b8f44b9c2f27"
+  "proof_id": "639f708634495643e94758c0fe2979a37f0b301d2a93c54746ebd6a8e585ab05"
 }
