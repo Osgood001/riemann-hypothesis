@@ -26,4 +26,4 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
     intro y
     obtain ⟨a, h, b, k, e⟩ := hn y
     try intro hy; have := nsmul_mem hy n
-    grind [sgnRt, h _ hp, k _ hm, Submodule.add_mem_iff_left, add_comm]
+    grind [sgnRt, h _ hp, k _ hm, add_mem_cancel_left, add_mem_cancel_right]
