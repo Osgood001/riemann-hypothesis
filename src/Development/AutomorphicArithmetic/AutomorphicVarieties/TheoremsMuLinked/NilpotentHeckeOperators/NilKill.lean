@@ -46,7 +46,7 @@ private theorem nilKill_dc {A M A' M' G : Type} [CommRing A] [AddCommGroup M] [M
     [Module A' M'] [Group G] (ρ : Representation A G M) (ρ' : Representation A' G M') (K K' : Subgroup G) (x : G)
     (hx : FinOrb K K' x) (f : M →+ M') (hf : ∀ g m, f (ρ g m) = ρ' g (f m)) (m : M) :
     dc ρ' K K' x (f m) = f (dc ρ K K' x m) := by
-  haveI : Fintype (MulAction.orbit K (x : G ⧸ K')) := Set.Finite.fintype hx
+  have : Fintype (MulAction.orbit K (x : G ⧸ K')) := Set.Finite.fintype hx
   unfold dc
   set_option synthInstance.maxHeartbeats 100000 in
     rw [finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]
@@ -59,7 +59,7 @@ private theorem nilKill_ext {A N A' N' T : Type} [CommRing A] [AddCommGroup N] [
   have hinj : Function.Injective (θ' b).val := ((Module.End.isUnit_iff _).1 (θ' b).isUnit).1
   apply hinj
   have h := ha m
-  rw [map_mul, map_mul, Units.val_mul, Units.val_mul, Module.End.mul_apply, Module.End.mul_apply] at h
+  rw [map_mul, map_mul, Units.val_mul, Units.val_mul, mul_apply_eq_comp, mul_apply_eq_comp] at h
   rw [h, hb]
 
 private theorem nilKill_act {T W κ : Type} [CommGroup T] [AddCommGroup W] [Module ℂ W]
@@ -87,12 +87,12 @@ private theorem nilKill_loc (hG : GlobalTheory.Published.GeometricLemma) (hBZ : 
     (act : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] Module.End ℂ (fixd π (iwC k n C))) (hact : ∀ a, act (MvPolynomial.X a) = θY (t a))
     (F : MvPolynomial (κ ⊕ κ) ℂ) (hF : ∀ θ, IsTheta σ.ρ C θ → ∀ χ : (Fin n → kˣ) →* ℂˣ,
       (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (fixd σ.ρ (iwC k n C))) (χ t : ℂ)) ≠ ⊥ →
-      ∀ (S : Type) [CommRing S] [Algebra ℂ S] (φ : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] S), (∀ a, (φ (MvPolynomial.X (.inl a)) - algebraMap ℂ S (χ (t (.inl a)) : ℂ)) ^ n.factorial = 0) → (∀ a, φ (MvPolynomial.X (.inr a)) = algebraMap ℂ S (χ (t (.inr a)) : ℂ)) → φ F = 0) : act F = 0 := by
+      ∀ (S : Type) [CommRing S] [Algebra ℂ S] (φ : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] S), (∀ z : S, IsNilpotent z → z ^ n.factorial = 0) → (∀ a, (φ (MvPolynomial.X (.inl a)) - algebraMap ℂ S (χ (t (.inl a)) : ℂ)) ^ n.factorial = 0) → (∀ a, φ (MvPolynomial.X (.inr a)) = algebraMap ℂ S (χ (t (.inr a)) : ℂ)) → φ F = 0) : act F = 0 := by
   have hq : IsUnit (resCard k : ℂ) := (Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[k])).ne').isUnit
   obtain ⟨θ, hθ, -⟩ := thetaEx k n C ℂ σ.V σ.ρ hq
   obtain ⟨hfd, hrk, -⟩ := jqLine hG hBZ k n C σ.V σ.ρ σ.smooth σ.irred
   obtain ⟨actσ, hσ⟩ := nilKill_act θ t
-  have hnil := absNil _ _ κ θ t actσ hσ (fun a => by
+  have hnil := absNil_cap _ _ κ θ t actσ hσ (fun a => by
     obtain ⟨C', δ, i, h1, h2⟩ := ht a
     rw [h2]
     exact thetaFin k n ℂ σ.V σ.ρ C C' θ hθ δ h1 i) _ hrk F (hF θ hθ)
@@ -133,8 +133,9 @@ private theorem nilKill_loc (hG : GlobalTheory.Published.GeometricLemma) (hBZ : 
   obtain rfl : y' = y := Subtype.ext e
   exact hy'
 
-theorem UpperTheory.V.Th.nilKillX :
-    GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (Y : Type) [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ (GV n w) Y) (C : ∀ j, Subgroup 𝓀[(w j).adicCompletion L]ˣ) (Θ), IsThetaQ π C Θ → ∀ (j : Fin q) (σ : SmIrr (GLw n (w j))), IsoSum (π.comp (atJ n w j)) ⊤ σ → ∀ (κ : Type) (t : κ ⊕ κ → Fin n → ((w j).adicCompletion L)ˣ), (∀ a, ∃ (C' : Subgroup 𝓀[(w j).adicCompletion L]ˣ) (δ : ((w j).adicCompletion L)ˣ) (i : Fin n), IsGenMod _ C' δ ∧ t (.inr a) = Pi.mulSingle i δ) → ∀ (act : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] Module.End ℂ (fixd π (UC n w C))), (∀ a, act (MvPolynomial.X a) = Θ j (t a)) → ∀ F : MvPolynomial (κ ⊕ κ) ℂ, (∀ θ, IsTheta σ.ρ (C j) θ → ∀ χ : (Fin n → ((w j).adicCompletion L)ˣ) →* ℂˣ, (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (fixd σ.ρ (iwC _ n (C j)))) (χ t : ℂ)) ≠ ⊥ → ∀ (S : Type) [CommRing S] [Algebra ℂ S] (φ : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] S), (∀ a, (φ (MvPolynomial.X (.inl a)) - algebraMap ℂ S (χ (t (.inl a)) : ℂ)) ^ n.factorial = 0) → (∀ a, φ (MvPolynomial.X (.inr a)) = algebraMap ℂ S (χ (t (.inr a)) : ℂ)) → φ F = 0) → act F = 0 := by
+/-- In the local evaluator every nilpotent dies at the fixed-space dimension bound. -/
+theorem UpperTheory.V.Th.nilKillX_cap :
+    GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (Y : Type) [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ (GV n w) Y) (C : ∀ j, Subgroup 𝓀[(w j).adicCompletion L]ˣ) (Θ), IsThetaQ π C Θ → ∀ (j : Fin q) (σ : SmIrr (GLw n (w j))), IsoSum (π.comp (atJ n w j)) ⊤ σ → ∀ (κ : Type) (t : κ ⊕ κ → Fin n → ((w j).adicCompletion L)ˣ), (∀ a, ∃ (C' : Subgroup 𝓀[(w j).adicCompletion L]ˣ) (δ : ((w j).adicCompletion L)ˣ) (i : Fin n), IsGenMod _ C' δ ∧ t (.inr a) = Pi.mulSingle i δ) → ∀ (act : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] Module.End ℂ (fixd π (UC n w C))), (∀ a, act (MvPolynomial.X a) = Θ j (t a)) → ∀ F : MvPolynomial (κ ⊕ κ) ℂ, (∀ θ, IsTheta σ.ρ (C j) θ → ∀ χ : (Fin n → ((w j).adicCompletion L)ˣ) →* ℂˣ, (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (fixd σ.ρ (iwC _ n (C j)))) (χ t : ℂ)) ≠ ⊥ → ∀ (S : Type) [CommRing S] [Algebra ℂ S] (φ : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] S), (∀ z : S, IsNilpotent z → z ^ n.factorial = 0) → (∀ a, (φ (MvPolynomial.X (.inl a)) - algebraMap ℂ S (χ (t (.inl a)) : ℂ)) ^ n.factorial = 0) → (∀ a, φ (MvPolynomial.X (.inr a)) = algebraMap ℂ S (χ (t (.inr a)) : ℂ)) → φ F = 0) → act F = 0 := by
   intro hG hBZ L _ _ n q w Y _ _ π C Θ hΘ j σ hs κ t ht act hact F hF
   have hq : IsUnit (resCard ((w j).adicCompletion L) : ℂ) :=
     (Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[(w j).adicCompletion L])).ne').isUnit
@@ -155,3 +156,9 @@ theorem UpperTheory.V.Th.nilKillX :
     LinearMap.zero_apply, map_zero]
   rw [haY, hact]
   exact Subtype.ext (thetaLoc L n q w ℂ Y π C Θ hΘ j θY hY (t a) v _ rfl)
+
+theorem UpperTheory.V.Th.nilKillX :
+    GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (Y : Type) [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ (GV n w) Y) (C : ∀ j, Subgroup 𝓀[(w j).adicCompletion L]ˣ) (Θ), IsThetaQ π C Θ → ∀ (j : Fin q) (σ : SmIrr (GLw n (w j))), IsoSum (π.comp (atJ n w j)) ⊤ σ → ∀ (κ : Type) (t : κ ⊕ κ → Fin n → ((w j).adicCompletion L)ˣ), (∀ a, ∃ (C' : Subgroup 𝓀[(w j).adicCompletion L]ˣ) (δ : ((w j).adicCompletion L)ˣ) (i : Fin n), IsGenMod _ C' δ ∧ t (.inr a) = Pi.mulSingle i δ) → ∀ (act : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] Module.End ℂ (fixd π (UC n w C))), (∀ a, act (MvPolynomial.X a) = Θ j (t a)) → ∀ F : MvPolynomial (κ ⊕ κ) ℂ, (∀ θ, IsTheta σ.ρ (C j) θ → ∀ χ : (Fin n → ((w j).adicCompletion L)ˣ) →* ℂˣ, (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (fixd σ.ρ (iwC _ n (C j)))) (χ t : ℂ)) ≠ ⊥ → ∀ (S : Type) [CommRing S] [Algebra ℂ S] (φ : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] S), (∀ a, (φ (MvPolynomial.X (.inl a)) - algebraMap ℂ S (χ (t (.inl a)) : ℂ)) ^ n.factorial = 0) → (∀ a, φ (MvPolynomial.X (.inr a)) = algebraMap ℂ S (χ (t (.inr a)) : ℂ)) → φ F = 0) → act F = 0 := by
+  intro hG hBZ L _ _ n q w Y _ _ π C Θ hΘ j σ hs κ t ht act hact F hF
+  exact UpperTheory.V.Th.nilKillX_cap hG hBZ L n q w Y π C Θ hΘ j σ hs κ t ht act hact F
+    (fun θ hθ χ hχ S _ _ φ _ => hF θ hθ χ hχ S φ)

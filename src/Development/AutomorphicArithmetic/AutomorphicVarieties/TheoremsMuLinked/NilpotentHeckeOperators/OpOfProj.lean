@@ -26,8 +26,8 @@ private theorem opOf_proj {Λ Γ Q M : Type} [CommRing Λ] [Group Γ] [Group Q] 
     | zero => simp
     | add a b ha hb => rw [map_add (f := _), map_add (f := _), map_add (f := _), ha, hb]
     | single g c => simp [σ, ρ']
-  haveI := RingHomInvPair.of_ringEquiv σ
-  haveI := RingHomInvPair.of_ringEquiv_symm σ
+  have := RingHomInvPair.of_ringEquiv σ
+  have := RingHomInvPair.of_ringEquiv_symm σ
   let f : ρ.asModule ≃ₛₗ[(σ : MonoidAlgebra Λ Q →+* MonoidAlgebra Λ Γ)] ρ'.asModule :=
     { ρ.asModuleEquiv.toAddEquiv.trans ρ'.asModuleEquiv.symm.toAddEquiv with
       map_smul' := fun a m => by
@@ -56,7 +56,7 @@ private theorem opOf_dc {R G P : Type} [CommRing R] [Group G] [AddCommGroup P] [
   refine Finset.sum_congr rfl fun g _ => ?_
   obtain ⟨u, hu⟩ := QuotientGroup.mk_out_eq_mul K1 ((g.out : K) : G)
   show ρ (((g.out : K) : G) : G ⧸ K1).out m = _
-  rw [hu, map_mul, Module.End.mul_apply, hm u u.2]
+  rw [hu, map_mul, mul_apply_eq_comp, hm u u.2]
 
 private theorem opOf_tr {Λ R G P Γ σ : Type} [CommRing Λ] [CommRing R] [Algebra Λ R] [Group G] [AddCommGroup P]
     [Module R P] [Module Λ P] [IsScalarTower Λ R P] [Group Γ] [Finite Γ] (ρ : Representation R G P)
@@ -68,8 +68,8 @@ private theorem opOf_tr {Λ R G P Γ σ : Type} [CommRing Λ] [CommRing R] [Alge
     (Y : σ → Module.End R (fixd ρ K1)) (hY : ∀ p m, ρ' (e (γ p)) m = m + Y p m)
     (tr : fixd ρ K1 →ₗ[R] fixd ρ K) (htr : ∀ m, (tr m : P) = dc ρ K K1 1 m) :
     Function.Surjective tr ∧ LinearMap.ker tr = ⨆ p, LinearMap.range (Y p) := by
-  haveI : Finite (K ⧸ K1.subgroupOf K) := Finite.of_equiv Γ e.toEquiv
-  letI := Fintype.ofFinite (K ⧸ K1.subgroupOf K)
+  have : Finite (K ⧸ K1.subgroupOf K) := Finite.of_equiv Γ e.toEquiv
+  let := Fintype.ofFinite (K ⧸ K1.subgroupOf K)
   obtain ⟨h1, h2⟩ := projNorm Λ _ _ ρ' hP
   have hs : ∀ m, (tr m : P) = (∑ g, ρ' g m : fixd ρ K1) := fun m => by
     rw [htr, opOf_dc ρ K K1 m m.2, AddSubmonoidClass.coe_finsetSum]
@@ -90,20 +90,20 @@ private theorem opOf_tr {Λ R G P Γ σ : Type} [CommRing Λ] [CommRing R] [Alge
       refine iSup₂_le ?_
       rintro _ ⟨p, rfl⟩ _ ⟨v, rfl⟩
       refine Submodule.mem_iSup_of_mem (p := fun p => LinearMap.range (Y p)) p ⟨v, ?_⟩
-      rw [LinearMap.sub_apply, hY, Module.End.one_apply, add_sub_cancel_left]
+      rw [LinearMap.sub_apply, hY, one_apply_eq_self, add_sub_cancel_left]
     exact h3 (h2 _ hc m h0)
   · rintro _ ⟨m, rfl⟩
     have h4 : tr (ρ' (e (γ p)) m) = tr m := Subtype.ext (by
       rw [hs, hs]
       congr 1
       refine Fintype.sum_equiv (Equiv.mulRight (e (γ p))) _ _ fun g => ?_
-      rw [Equiv.coe_mulRight, map_mul, Module.End.mul_apply])
+      rw [Equiv.coe_mulRight, map_mul, mul_apply_eq_comp])
     rw [hY, map_add (f := _)] at h4
     exact add_eq_left.1 h4
 
 private theorem opOf_gen {l q n : ℕ} (hl : l.Prime) (a : Fin q → ℕ) :
     Subgroup.closure (Set.range fun p : Fin q × Fin n => (Pi.mulSingle p (Multiplicative.ofAdd 1) : Del l n a)) = ⊤ := by
-  haveI : ∀ p : Fin q × Fin n, NeZero (l ^ a p.1) := fun s => ⟨pow_ne_zero _ hl.ne_zero⟩
+  have : ∀ p : Fin q × Fin n, NeZero (l ^ a p.1) := fun s => ⟨pow_ne_zero _ hl.ne_zero⟩
   refine eq_top_iff.2 fun g _ => ?_
   rw [← Finset.univ_prod_mulSingle g]
   refine Subgroup.prod_mem _ fun s _ => ?_
@@ -120,7 +120,7 @@ private theorem opOf_cop {L : Type} [Field L] [NumberField L] (w : Plc L) {l : �
     refine (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).trans ?_
     exact (HeightOneSpectrum.valuation_of_algebraMap w _).trans (HeightOneSpectrum.intValuation_eq_one_iff.2 hw)
   have h2 : valuation (w.adicCompletion L) (l : w.adicCompletion L) = 1 := by
-    haveI : (Valued.v : Valuation (w.adicCompletion L) _).Compatible := Valuation.Compatible.ofValuation _
+    have : (Valued.v : Valuation (w.adicCompletion L) _).Compatible := Valuation.Compatible.ofValuation _
     exact (ValuativeRel.isEquiv (valuation (w.adicCompletion L)) Valued.v).eq_one_iff_eq_one.2 h1
   have h3 : IsUnit (l : 𝒪[w.adicCompletion L]) :=
     (Valuation.integer.integers _).isUnit_iff_valuation_eq_one.2 (by simpa using h2)
@@ -128,8 +128,8 @@ private theorem opOf_cop {L : Type} [Field L] [NumberField L] (w : Plc L) {l : �
     simpa using (h3.map (residue 𝒪[w.adicCompletion L])).ne_zero
   rw [hl.coprime_iff_not_dvd]
   intro hd
-  letI := Fintype.ofFinite 𝓀[w.adicCompletion L]
-  haveI := Fact.mk hl
+  let := Fintype.ofFinite 𝓀[w.adicCompletion L]
+  have := Fact.mk hl
   rw [resCard, Nat.card_eq_fintype_card] at hd
   exact h4 ((ringChar.spec _ _).2 (by
     have h5 := (prime_dvd_char_iff_dvd_card l).2 hd
@@ -145,11 +145,13 @@ private theorem opOf_le {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
 private theorem opOf_tow {Λ R P : Type} [CommRing Λ] [CommRing R] [Algebra Λ R] [AddCommGroup P]
     [Module R P] [Module Λ P] [IsScalarTower Λ R P] (S : Submodule R P) : IsScalarTower Λ R S := inferInstance
 
-theorem UpperTheory.V.Th.opOfX :
-    LocP → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 : s.Lev) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n) (B : UniversalOrdinaryDeterminantRing r) (J : Ideal B.B) (D : ℕ) (b : TWBase (pairOf B.u) J Empty D) (V : s.Lev) (h : (globOf r V).Hom (globOf r V0)) (q : ℕ) (w : Fin q → Plc L) (A : LevMod b h w) (x δ : ∀ j, ((w j).adicCompletion L)ˣ), (∀ j, ((l : ℕ) : 𝓞 L) ∉ (w j).asIdeal) → (∀ j, IsUnif (x j)) → (∀ j, IsGenMod _ (ellC l _) (δ j)) → ∀ (ph ta : Fin q → (globOf r V).G₀) (N : ℕ), LocOk A x δ ph ta → (∀ j, qj w j ≡ 1 [MOD l ^ N]) → ∃ A' : OpMod b h q N, OpRelX A' (qj w) ph ta (2 * n.factorial) := by
-  intro hP l hl L Ω _ _ _ _ _ _ s V0 O _ _ _ hO _ n r B J D b V h q w A x δ hw hx hδ ph ta N hok hN
+-- IsDomain and IsDiscreteValuationRing are both parameters of IsCoef.
+set_option linter.overlappingInstances false in
+theorem UpperTheory.V.Th.opOfX_of_le :
+    LocP → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 : s.Lev) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n) (B : UniversalOrdinaryDeterminantRing r) (J : Ideal B.B) (D : ℕ) (b : TWBase (pairOf B.u) J Empty D) (V : s.Lev) (h : (globOf r V).Hom (globOf r V0)) (q : ℕ) (w : Fin q → Plc L) (A : LevMod b h w) (x δ : ∀ j, ((w j).adicCompletion L)ˣ), (∀ j, ((l : ℕ) : 𝓞 L) ∉ (w j).asIdeal) → (∀ j, IsUnif (x j)) → (∀ j, IsGenMod _ (ellC l _) (δ j)) → ∀ (ph ta : Fin q → (globOf r V).G₀) (N : ℕ), LocOk A x δ ph ta → (∀ j, qj w j ≡ 1 [MOD l ^ N]) → ∀ E : ℕ, n.factorial ≤ E → ∃ A' : OpMod b h q N, OpRelX A' (qj w) ph ta E := by
+  intro hP l hl L Ω _ _ _ _ _ _ s V0 O _ _ _ hO _ n r B J D b V h q w A x δ hw hx hδ ph ta N hok hN E hE
   have hq : ∀ j, IsUnit (qj w j : A.R) := fun j => by
-    haveI := hO.char
+    have := hO.char
     have h1 : IsUnit (qj w j : ResidueField O) :=
       (CharP.isUnit_natCast_iff hl.out).2 (hl.out.coprime_iff_not_dvd.1 (opOf_cop (w j) hl.out (hw j)))
     have h2 : IsUnit (qj w j : O) := by
@@ -160,13 +162,13 @@ theorem UpperTheory.V.Th.opOfX :
   obtain ⟨hn, ρ', hρ', hpr⟩ := A.proj
   obtain ⟨e, he⟩ := delIso L n q w l δ hδ
   obtain ⟨hy, tr, htr, hu⟩ := trOf L n q w l A.R A.P A.ρ x δ T hδ
-  have h2 := rel2X hP l L Ω s V0 O n r B J D b V h q w A x δ hw hx hδ T ph ta hok
+  have h2 := rel2X_of_le hP l L Ω s V0 O n r B J D b V h q w A x δ hw hx hδ T ph ta hok E E hE (by omega)
   have h3 := twoOf hP l L Ω s V0 O n r B J D b V h q w A x δ hw hx hδ T ph ta hok
   have hg : ∀ j i m, ρ' (e (Pi.mulSingle (j, i) (Multiplicative.ofAdd 1))) m = T.act1 (1 + yV A.R j i) m := fun j i m => by
     obtain ⟨g, hg1, hg2⟩ := he j i
     exact Subtype.ext (by rw [hg2, hρ', hg1]; exact (hy j i m).symm)
   have hle : UIw1 l n w ≤ UIw n w := fun g hg j hj => opOf_le _ (hg j hj)
-  haveI : ∀ p : Fin q × Fin n, NeZero (l ^ padicValNat l (qj w p.1 - 1)) := fun s => ⟨pow_ne_zero _ hl.out.ne_zero⟩
+  have : ∀ p : Fin q × Fin n, NeZero (l ^ padicValNat l (qj w p.1 - 1)) := fun s => ⟨pow_ne_zero _ hl.out.ne_zero⟩
   obtain ⟨hs, hk⟩ := opOf_tr A.ρ (UIw n w) (UIw1 l n w) hle ρ' hρ' hpr e
     (fun p : Fin q × Fin n => Pi.mulSingle p (Multiplicative.ofAdd 1)) (opOf_gen hl.out fun j => padicValNat l (qj w j - 1))
     (fun p : Fin q × Fin n => T.act1 (yV A.R p.1 p.2)) (fun p m => (hg p.1 p.2 m).trans (by rw [map_add (f := _), map_one]; rfl)) tr htr
@@ -178,3 +180,9 @@ theorem UpperTheory.V.Th.opOfX :
            act1 := T.act1, actw := T.actw, a := fun j => padicValNat l (qj w j - 1), le_a := ha
            ρ := ρ'.comp e.toMonoidHom, ρ_gen := hg, proj := opOf_proj ρ' e hpr
            tr := tr, tr_surj := hs, tr_ker := hk, tr_u := hu }, h3, h2⟩
+
+set_option linter.overlappingInstances false in
+theorem UpperTheory.V.Th.opOfX :
+    LocP → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 : s.Lev) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n) (B : UniversalOrdinaryDeterminantRing r) (J : Ideal B.B) (D : ℕ) (b : TWBase (pairOf B.u) J Empty D) (V : s.Lev) (h : (globOf r V).Hom (globOf r V0)) (q : ℕ) (w : Fin q → Plc L) (A : LevMod b h w) (x δ : ∀ j, ((w j).adicCompletion L)ˣ), (∀ j, ((l : ℕ) : 𝓞 L) ∉ (w j).asIdeal) → (∀ j, IsUnif (x j)) → (∀ j, IsGenMod _ (ellC l _) (δ j)) → ∀ (ph ta : Fin q → (globOf r V).G₀) (N : ℕ), LocOk A x δ ph ta → (∀ j, qj w j ≡ 1 [MOD l ^ N]) → ∃ A' : OpMod b h q N, OpRelX A' (qj w) ph ta (2 * n.factorial) := by
+  intro hP l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ _ _ n r B J D b V h q w A x δ hw hx hδ ph ta N hok hN
+  exact UpperTheory.V.Th.opOfX_of_le hP l L Ω s V0 O n r B J D b V h q w A x δ hw hx hδ ph ta N hok hN _ (by omega)

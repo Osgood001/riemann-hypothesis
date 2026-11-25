@@ -22,9 +22,9 @@ private theorem absNil_eig {T W : Type} [CommGroup T] [AddCommGroup W] [Module �
       by_cases hsc : ∀ t, ∃ μ : ℂ, ∀ v ∈ S, (θ t : Module.End ℂ W) v = μ • v
       · obtain ⟨v, hv, hv0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hS
         exact ⟨v, hv, hv0, fun t => (hsc t).imp fun μ h => h v hv⟩
-      · push_neg at hsc
+      · push Not at hsc
         obtain ⟨t0, ht0⟩ := hsc
-        haveI : Nontrivial S := Submodule.nontrivial_iff_ne_bot.2 hS
+        have : Nontrivial S := Submodule.nontrivial_iff_ne_bot.2 hS
         obtain ⟨μ, hμ⟩ := Module.End.exists_eigenvalue ((θ t0 : Module.End ℂ W).restrict (fun v hv => hinv t0 v hv))
         obtain ⟨w, hw⟩ := hμ.exists_hasEigenvector
         have hw1 : (θ t0 : Module.End ℂ W) w = μ • (w : W) := by
@@ -59,8 +59,8 @@ private theorem absNil_eig {T W : Type} [CommGroup T] [AddCommGroup W] [Module �
   have hmul : ∀ s u, μ (s * u) = μ s * μ u := by
     intro s u
     apply hinj
-    rw [← hμ, map_mul, Units.val_mul, Module.End.mul_apply, hμ u, map_smul, hμ s, smul_smul, mul_comm]
-  have hone : μ 1 = 1 := hinj _ _ (by rw [← hμ, map_one, Units.val_one, Module.End.one_apply, one_smul])
+    rw [← hμ, map_mul, Units.val_mul, mul_apply_eq_comp, hμ u, map_smul, hμ s, smul_smul, mul_comm]
+  have hone : μ 1 = 1 := hinj _ _ (by rw [← hμ, map_one, Units.val_one, one_apply_eq_self, one_smul])
   have hne : ∀ s, μ s ≠ 0 := by
     intro s h
     have := hmul s s⁻¹
@@ -94,14 +94,15 @@ private theorem absNil_uniq {W : Type} [AddCommGroup W] [Module ℂ W]
     induction n with
     | zero => simp
     | succ n ih =>
-      rw [pow_succ' (u - c • 1) n, Module.End.mul_apply, ih, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, hd, ← sub_smul, smul_smul, pow_succ (d - c) n]
+      rw [pow_succ' (u - c • 1) n, mul_apply_eq_comp, ih, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, one_apply_eq_self, hd, ← sub_smul, smul_smul, pow_succ (d - c) n]
   rw [h k] at hk
   rcases smul_eq_zero.1 hk with h1 | h1
   · exact sub_eq_zero.1 (pow_eq_zero_iff'.1 h1).1
   · exact absurd h1 h0
 
-theorem UpperTheory.V.Th.absNil :
-    ∀ (T W κ : Type) [CommGroup T] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (θ : T →* (Module.End ℂ W)ˣ) (t : κ ⊕ κ → T) (act : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] Module.End ℂ W), (∀ a, act (MvPolynomial.X a) = θ (t a)) → (∀ a, ∃ m : ℕ, 0 < m ∧ θ (t (.inr a)) ^ m = 1) → ∀ (N : ℕ), Module.finrank ℂ W ≤ N → ∀ F : MvPolynomial (κ ⊕ κ) ℂ, (∀ χ : T →* ℂˣ, (⨅ s, Module.End.maxGenEigenspace (θ s : Module.End ℂ W) (χ s : ℂ)) ≠ ⊥ → ∀ (S : Type) [CommRing S] [Algebra ℂ S] (φ : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] S), (∀ a, (φ (MvPolynomial.X (.inl a)) - algebraMap ℂ S (χ (t (.inl a)) : ℂ)) ^ N = 0) → (∀ a, φ (MvPolynomial.X (.inr a)) = algebraMap ℂ S (χ (t (.inr a)) : ℂ)) → φ F = 0) → act F = 0 := by
+/-- The effective evaluation algebra inherits the dimension bound on every nilpotent element. -/
+theorem UpperTheory.V.Th.absNil_cap :
+    ∀ (T W κ : Type) [CommGroup T] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (θ : T →* (Module.End ℂ W)ˣ) (t : κ ⊕ κ → T) (act : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] Module.End ℂ W), (∀ a, act (MvPolynomial.X a) = θ (t a)) → (∀ a, ∃ m : ℕ, 0 < m ∧ θ (t (.inr a)) ^ m = 1) → ∀ (N : ℕ), Module.finrank ℂ W ≤ N → ∀ F : MvPolynomial (κ ⊕ κ) ℂ, (∀ χ : T →* ℂˣ, (⨅ s, Module.End.maxGenEigenspace (θ s : Module.End ℂ W) (χ s : ℂ)) ≠ ⊥ → ∀ (S : Type) [CommRing S] [Algebra ℂ S] (φ : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] S), (∀ z : S, IsNilpotent z → z ^ N = 0) → (∀ a, (φ (MvPolynomial.X (.inl a)) - algebraMap ℂ S (χ (t (.inl a)) : ℂ)) ^ N = 0) → (∀ a, φ (MvPolynomial.X (.inr a)) = algebraMap ℂ S (χ (t (.inr a)) : ℂ)) → φ F = 0) → act F = 0 := by
   intro T W κ _ _ _ _ θ t act hact hfin N hN F hF
   have hcomm : ∀ s u : T, Commute (θ s : Module.End ℂ W) (θ u : Module.End ℂ W) := by
     intro s u
@@ -141,13 +142,22 @@ theorem UpperTheory.V.Th.absNil :
         smul_mem' := by
           intro c p hp x hx
           show act (c * p) x = 0
-          rw [map_mul, Module.End.mul_apply, hp x hx, map_zero] }
+          rw [map_mul, mul_apply_eq_comp, hp x hx, map_zero] }
     have hmemI : ∀ p, p ∈ I ↔ ∀ x ∈ V, act p x = 0 := fun p => Iff.rfl
     have hFI : F ∈ I := by
       rw [← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.mkₐ_eq_mk ℂ]
-      refine hF χ' ?_ _ (Ideal.Quotient.mkₐ ℂ I) ?_ ?_
+      refine hF χ' ?_ _ (Ideal.Quotient.mkₐ ℂ I) ?_ ?_ ?_
       · rw [← hVeq]
         exact hV0
+      · intro z hz
+        obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective z
+        obtain ⟨m, hm⟩ := hz
+        rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem, hmemI] at hm ⊢
+        intro x hx
+        have he : x ∈ (act p).maxGenEigenspace 0 := by
+          apply (Module.End.mem_maxGenEigenspace _ _ _).2
+          exact ⟨m, by simpa using hm x hx⟩
+        simpa using absNil_pow (act p) 0 x he N hN
       · intro a
         rw [← AlgHom.commutes (Ideal.Quotient.mkₐ ℂ I), ← map_sub, ← map_pow, Ideal.Quotient.mkₐ_eq_mk,
           Ideal.Quotient.eq_zero_iff_mem, hmemI]
@@ -160,7 +170,7 @@ theorem UpperTheory.V.Th.absNil :
         intro x hx
         obtain ⟨m, hm, hm1⟩ := hfin a
         rw [map_sub, AlgHom.commutes, hact, Algebra.algebraMap_eq_smul_one, hχ, LinearMap.sub_apply,
-          LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]
+          LinearMap.smul_apply, one_apply_eq_self, sub_eq_zero]
         refine absNil_fin _ m hm ?_ _ x ((Submodule.mem_iInf _).1 hx _)
         rw [← Units.val_pow_eq_pow_val, hm1, Units.val_one]
     exact (hmemI F).1 hFI v hv
@@ -171,3 +181,9 @@ theorem UpperTheory.V.Th.absNil :
     trivial
   exact Submodule.iSup_induction (motive := fun x => act F x = 0) _ hw (fun χ x hx => key χ x hx) (map_zero _)
     (fun x y hx hy => by rw [map_add (f := _), hx, hy, add_zero])
+
+theorem UpperTheory.V.Th.absNil :
+    ∀ (T W κ : Type) [CommGroup T] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (θ : T →* (Module.End ℂ W)ˣ) (t : κ ⊕ κ → T) (act : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] Module.End ℂ W), (∀ a, act (MvPolynomial.X a) = θ (t a)) → (∀ a, ∃ m : ℕ, 0 < m ∧ θ (t (.inr a)) ^ m = 1) → ∀ (N : ℕ), Module.finrank ℂ W ≤ N → ∀ F : MvPolynomial (κ ⊕ κ) ℂ, (∀ χ : T →* ℂˣ, (⨅ s, Module.End.maxGenEigenspace (θ s : Module.End ℂ W) (χ s : ℂ)) ≠ ⊥ → ∀ (S : Type) [CommRing S] [Algebra ℂ S] (φ : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] S), (∀ a, (φ (MvPolynomial.X (.inl a)) - algebraMap ℂ S (χ (t (.inl a)) : ℂ)) ^ N = 0) → (∀ a, φ (MvPolynomial.X (.inr a)) = algebraMap ℂ S (χ (t (.inr a)) : ℂ)) → φ F = 0) → act F = 0 := by
+  intro T W κ _ _ _ _ θ t act hact hfin N hN F hF
+  exact UpperTheory.V.Th.absNil_cap T W κ θ t act hact hfin N hN F
+    (fun χ hχ S _ _ φ _ => hF χ hχ S φ)

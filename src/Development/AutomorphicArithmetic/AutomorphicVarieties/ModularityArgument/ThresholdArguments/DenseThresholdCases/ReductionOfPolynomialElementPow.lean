@@ -22,7 +22,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 private theorem exists_place_above_prime_pow (K : Type) [Field K] [NumberField K] (l : ℕ) [hl : Fact l.Prime] :
     ∃ v : HeightOneSpectrum (𝓞 K), ((l : ℕ) : 𝓞 K) ∈ v.asIdeal := by
   have hp : Prime (l : ℤ) := Nat.prime_iff_prime_int.1 hl.out
-  haveI : (Ideal.span {(l : ℤ)}).IsPrime := (Ideal.span_singleton_prime hp.ne_zero).2 hp
+  have : (Ideal.span {(l : ℤ)}).IsPrime := (Ideal.span_singleton_prime hp.ne_zero).2 hp
   obtain ⟨Q, hQ, hc⟩ := Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 K) (Ideal.span {(l : ℤ)})
     (by rw [(RingHom.injective_iff_ker_eq_bot (algebraMap ℤ (𝓞 K))).1 (RingHom.injective_int _)]; exact bot_le)
   have hm : ((l : ℕ) : 𝓞 K) ∈ Q := by
@@ -80,7 +80,7 @@ private theorem rep_second_relation_pow_eq_zero {n : ℕ} {K G : Type} [CommRing
   · congr 3
     funext k
     by_cases hk : k = i <;> simp [hk, rep_single_eq_smul_pow]
-  · simp [rep_single_eq_smul_pow, sub_smul]
+  · simp [rep_single_eq_smul_pow]
 private theorem reduction_of_polynomial_element_pow {n q : ℕ} {R G E : Type} [CommRing R] [Group G] [Ring E] [Algebra R E] (D : GDet n R G)
     (act : PUY R q n →ₐ[R] E) (Nq : Fin q → ℕ) (j : Fin q) (k : ℕ) (z : MonoidAlgebra (MvPolynomial (Fin n ⊕ Fin n) R) G)
     (z' : MonoidAlgebra (PUY R q n) G)
@@ -109,15 +109,17 @@ private theorem trace_vanishing_of_evaluation_pow {n : ℕ} {R K S G : Type} [Co
   rw [← MvPolynomial.coe_eval₂Hom, trace_map_comp_pow D _ _ (ι.comp θ) (by ext : 1; simp), hD']
   refine trace_eq_zero_of_rep_eq_zero_pow _ (MonoidAlgebra.mapRingHom G (ι.comp θ) z₀) _ ?_ h
   rw [← hD', trace_map_ring_hom_pow, h₀, map_zero]
-theorem UpperTheory.V.Z.Win.T2.level_relation_two_x :
-    _root_.UpperTheory.V.Th.LevelRelationTwoX := by
-  intro hP l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ _ _ n r B J D b V h q w A x δ h1 h2 h3 T ph ta ⟨ι, hsep, hloc⟩ j i
+-- The DVR and its domain parameter both supply the same proof of nontriviality.
+set_option linter.overlappingInstances false in
+theorem UpperTheory.V.Z.Win.T2.level_relation_two_x_of_le :
+    _root_.UpperTheory.V.Pa.LocPAlt → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 : s.Lev) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n) (B : UniversalOrdinaryDeterminantRing r) (J : Ideal B.B) (D : ℕ) (b : TWBase (pairOf B.u) J Empty D) (V : s.Lev) (h : (globOf r V).Hom (globOf r V0)) (q : ℕ) (w : Fin q → Plc L) (A : LevMod b h w) (x δ : ∀ j, ((w j).adicCompletion L)ˣ), (∀ j, ((l : ℕ) : 𝓞 L) ∉ (w j).asIdeal) → (∀ j, IsUnif (x j)) → (∀ j, IsGenMod _ (ellC l _) (δ j)) → ∀ (T : ThData l A.ρ x δ) (ph ta : Fin q → (globOf r V).G₀), _root_.UpperTheory.V.Pa.Lev.LocalLevelConditions A x δ ph ta → ∀ k E : ℕ, n.factorial ≤ k → n.factorial ≤ E + 1 → ∀ j i, T.act1 (fEl (qj w) (uV A.R) ^ k * (A.p.D.map (MvPolynomial.C : A.R →+* PUY A.R q n)).tr (twoPowerModulus E (ph j) (ta j) (uV A.R j) i (yV A.R j i))) = 0 := by
+  intro hP l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ _ _ n r B J D b V h q w A x δ h1 h2 h3 T ph ta ⟨ι, hsep, hloc⟩ k E hk hE j i
   obtain ⟨v⟩ : Nonempty (globOf r V).frame.Vl := (exists_place_above_prime_pow (Lp L) l).elim fun v hv => ⟨⟨v, hv⟩⟩
   have h₀ := A.p.Ord v (fun _ => 1) 1
   refine reduction_of_polynomial_element_pow A.p.D T.act1 (qj w) j _
-    (twoPowerModulus (2 * n.factorial) (ph j) (ta j) (fun i => MvPolynomial.X (.inl i)) i (MvPolynomial.X (.inr i))) _
+    (twoPowerModulus E (ph j) (ta j) (fun i => MvPolynomial.X (.inl i)) i (MvPolynomial.X (.inr i))) _
     ((map_ring_hom_second_relation_pow _ _ _ _ _ _ _).trans (by simp)) ?_
-  refine _root_.UpperTheory.V.Th.relOfX_alt hP l L Ω s V0 O n r B J D b V h q w A x δ h1 h2 h3 T ι hsep j _ fun y θ hθ χ hχ S _ _ U hU => ?_
+  refine _root_.UpperTheory.V.Th.relOfX_alt_cap hP l L Ω s V0 O n r B J D b V h q w A x δ h1 h2 h3 T ι hsep j _ fun y θ hθ χ hχ S _ _ U hcap hU => ?_
   rw [MvPolynomial.eval₂_mul]
   by_cases hreg : ∀ a a' : Fin n, a ≠ a' → (qj w j : ℂ) ^ (a : ℕ) * (χ (Pi.mulSingle a (x j)) : ℂ) ≠
       (qj w j : ℂ) ^ (a' : ℕ) * (χ (Pi.mulSingle a' (x j)) : ℂ) ∧ (qj w j : ℂ) ^ (a : ℕ) * (χ (Pi.mulSingle a (x j)) : ℂ) ≠
@@ -127,12 +129,17 @@ theorem UpperTheory.V.Z.Win.T2.level_relation_two_x :
     rw [map_ring_hom_second_relation_pow]
     simp only [MvPolynomial.eval₂Hom_X', Sum.elim_inl, Sum.elim_inr]
     refine rep_second_relation_pow_eq_zero _ _ _ _ _ _ _ ?_
-    have h5 := powRel ℂ S (algebraMap ℂ S) n n.factorial (2 * n.factorial) _ _ _ _ U i (by omega) hU
+    have h5 := powRel ℂ S (algebraMap ℂ S) n n.factorial E _ _ _ _ U i hE hU
       ((_root_.UpperTheory.V.Z.Win.relT' (hloc y j) _ le_rfl θ hθ χ hχ _ fun _ => rfl).2 hreg i)
     rw [Matrix.map_map, Matrix.map_map] at h5
     exact h5
   · refine mul_eq_zero_of_left ?_ _
     rw [← MvPolynomial.coe_eval₂Hom]
     simp only [map_pow, map_prod, map_mul, map_sub, map_natCast, MvPolynomial.eval₂Hom_X', Sum.elim_inl]
-    exact fNil ℂ S (algebraMap ℂ S) n n.factorial (qj w j) _ U hU hreg
+    exact pow_eq_zero_of_le hk (hcap _ ⟨_, fNil ℂ S (algebraMap ℂ S) n n.factorial (qj w j) _ U hU hreg⟩)
+
+theorem UpperTheory.V.Z.Win.T2.level_relation_two_x :
+    _root_.UpperTheory.V.Th.LevelRelationTwoX := by
+  intro hP l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ _ _ n r B J D b V h q w A x δ h1 h2 h3 T ph ta hok
+  exact UpperTheory.V.Z.Win.T2.level_relation_two_x_of_le hP l L Ω s V0 O n r B J D b V h q w A x δ h1 h2 h3 T ph ta hok _ _ (by omega) (by omega)
 end
