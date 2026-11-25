@@ -1,0 +1,22 @@
+{
+  "core": 25,
+  "proof_id": "df1b82cb01f2ece48a52c44217d5e466ebd82a91a33f8b5b13c97c99ff027d45",
+  "candidate": "core25-linuxrepairsdf1b82cb01f2",
+  "tokens": 4711169,
+  "characters": 16855317,
+  "editable_files": 2852,
+  "original_files": 818,
+  "source_changes": 2034,
+  "source_database_sha256": "38d219a6d3f8173f616ffc59a7694057cfd5db10576c2d4ccde0285ecfcbc2ba",
+  "original_repository": "https://github.com/tamnd/riemann-lean",
+  "original_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "original_directory": "lean/src",
+  "per_file_hashes_sha256": "58bc7a714966f9efc500d58fdf79f3b6cdd10fe4cdd46ff9915a6bad907d1f94",
+  "replacement_archives": [
+    "changes-0001.zip"
+  ],
+  "full_comparator_log_sha256": "81a8fe9c912e34dde3805899d98f1453f0efbda0e75e881ced2a35ce85c6ea3d",
+  "linux_raw_receipt_sha256": "942478bc915d7b72cf636416f5c7634e4592d32dfa50f10e7c4cc9dca8720fed",
+  "reference_kind": "published_statement_with_pinned_original_imports",
+  "proof_author_and_contributors": "Levent Alpöge supplied the original formalization and local-field arguments. Fortytwo wrote ThetaCN in research window cont004, and KCptPf and FiniteIdeleDecomp in cont007 of the same session. The three source edits survive unchanged. Codex reconstructed the compact proof and implemented the 36 independently checked source repairs. Codex repaired the complete sets of failing sources from successive Linux builds (42, 7, 3, 4 modules). The complete source passed the organizer Comparator and Lean 4.33.1 default kernel on Linux."
+}
