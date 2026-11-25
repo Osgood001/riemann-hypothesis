@@ -1,18 +1,18 @@
 {
   "core": 28,
-  "candidate": "core28-convexity639f70863449",
+  "candidate": "core28-inlineb44a2f11c4f6",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 146,
-  "local_normalized_tokens": 255936,
+  "local_normalized_tokens": 255800,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "ef6a0d44132939d6e01d056fe53ddf4efecf3279bd1a5eb472ba3cb25c7219b0",
+  "proof_tree_sha256": "08f2ae6c70cacfc6dc2d6aeb8e32f272137734210b217b5cdbcb46d43920b697",
   "modified_files": {
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": {
       "before": "bfb00cb2fd8be62544a7d71ea17a0c3602f0bd4ba4343b9ba85b3cac28d1fabd",
-      "after": "25e14887617c1dc12c4148f906263a97a4a74af9e448b53eaa212a267ccd5f12"
+      "after": "43a38ee132b5805cc84c2920d6c398ca206e6c6ff9a8186462837b0b88440662"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BabaiCovering.lean": {
       "before": "c302192823d9a4eb0e1546aa7c4ac12825652847aca93aef728ca6a2ec326be9",
@@ -84,7 +84,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FixedPointImaginarySpan.lean": {
       "before": "9995020f76f22998df8508b8fbc145c52c5de4d257ad33650ec4b432962aa335",
-      "after": "8c5e75f6b13a399ae6ca7e3d8803ff035a1141b6023bffcf9c8d7904a1c39b28"
+      "after": "aa47f5c2d8c1ac63fe6e716c0b3f400745a209430e05cee0db9d397da95f4fe5"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowCoefficientBounds.lean": {
       "before": "c9c6f58353d1bc482f8412e9e26c1cd46c31e7b54515195702cd6d1aab9a0174",
@@ -160,7 +160,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/HermLinApply.lean": {
       "before": "85f7b59e9cb2d1b22c7932f7a122416d3b6212c826bbf285b054819d7f40eb14",
-      "after": "953843f48e3ef5376f5fd9841e4a3cf73e99aa885773839a25346d9c0e0d94cd"
+      "after": "4f513ebc34c63d8bbcdf79e0b0b861de77b04e2bf1baded24be2b1bd6a6761a2"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/KatoNormRelationTamePrime.lean": {
       "before": "97fa7d63014885f265aaae99b1b99ba92eae06dfa5dd8757003d1e720cc9cd51",
@@ -240,7 +240,7 @@
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LminorSubmatrixCastSucc.lean": {
       "before": "c1860d88b7ebb92cdfa72524bad79d69b4a6627f2fead7cd77e10a38924c78a8",
-      "after": "2197e80bcea6cb5ca35dea56ebf6c0fff546b26203feebe873e92936131baee4"
+      "after": "e95414a2630f01a2e3041adb92ed53134d208e60cc383d5a03738e98ec58c9f3"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LogDOfPosBound.lean": {
       "before": "6bb6c9c4f69fccf5309fdc1c6bbd9473659c660205eac60123a78c8b96372a56",
@@ -473,27 +473,29 @@
       "parent_attempt": 103706,
       "contribution": "DeepSeek verified the unused ppos_sub alias and removed its import in PerpBasisExistence."
     },
-    "parent_proof_id": "91637523400d401141c0a6257de67678b501342822ef987de222b8f44b9c2f27",
+    "parent_proof_id": "639f708634495643e94758c0fe2979a37f0b301d2a93c54746ebd6a8e585ab05",
     "supervisor": "Codex",
-    "supervisor_contribution": "The preceding verified proof used MajorantFamilyNorms.c_pos and omitted four unreachable source files. This successor removes four unused declarations from AdmissibleHermitianColumns while preserving its remaining statements and 146-file closure.",
+    "supervisor_contribution": "Codex retained the near-supremum and shortened Hermitian-column proofs from the preceding verified source. Four complete receiving modules were shortened by using the flow-matrix, Hermitian linear-map, positive-Gram, and conjugation identities directly.",
     "supervisor_changed_sources": {
-      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": "25e14887617c1dc12c4148f906263a97a4a74af9e448b53eaa212a267ccd5f12"
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": "43a38ee132b5805cc84c2920d6c398ca206e6c6ff9a8186462837b0b88440662",
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/HermLinApply.lean": "4f513ebc34c63d8bbcdf79e0b0b861de77b04e2bf1baded24be2b1bd6a6761a2",
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LminorSubmatrixCastSucc.lean": "e95414a2630f01a2e3041adb92ed53134d208e60cc383d5a03738e98ec58c9f3",
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FixedPointImaginarySpan.lean": "aa47f5c2d8c1ac63fe6e716c0b3f400745a209430e05cee0db9d397da95f4fe5"
     },
     "removed_since_parent": [],
-    "removed_declarations": [
-      "leadingMinor_add_rankOne",
-      "open_convex_aff",
-      "admissibleImaginary_eq_halfspaces",
-      "admissibleImaginary_open_convex"
-    ],
-    "majorant_parent_sha256": "91637523400d401141c0a6257de67678b501342822ef987de222b8f44b9c2f27"
+    "receiver_receipts": {
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": "6209dff9f4d9c1240dd8b6d1306cb90f001dda149c2fd35bc2a0567cfdbd010b",
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/HermLinApply.lean": "35adb349a24e02daac2bc72add4be8ebe980835ad98f6c825551eeb6f294a504",
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LminorSubmatrixCastSucc.lean": "09838ee6baf49de32d6701c8bf01ba3edb61bd9d8e6f67e3b9cb18a15e6440e4",
+      "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FixedPointImaginarySpan.lean": "bb961fdd1c34deaf3f1cc2fddd0402d3430b8f5a37e2ac7841908960cfaf3a6b"
+    }
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-25T03:50:25.922738+00:00",
-    "receipt_sha256": "61d277e383619f6ecd2ca3cf0736c6f4a4d626255b5a0725f6aed2e59cfe3798",
-    "log_sha256": "700bfb7d948f24f193b6ca4af69262662b9cec0897630c173f79f93664241c33",
+    "completed_utc": "2026-11-25T04:37:36.830375+00:00",
+    "receipt_sha256": "890c581a4e20005bd9a6e35df1c3deab8726f25560025f51b4f94b8c4031fd83",
+    "log_sha256": "278ffbd47734383f36badfd7d1c40c2708f7cb06a95c11644d1674db8a05f64e",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -651,5 +653,5 @@
     "ReciprocityTheory/SemistableReduction/ApproxGraphC.lean": "3a8602ff7e879a3ec3888e189ea9b4aa1f39261ec7b3d5171189c77de42585fe",
     "ReciprocityTheory/SemistableReduction/LatAll.lean": "b3ad7388149b404a8691abafebaa8502a2b507961d8e8dad58f1dd744b82651e"
   },
-  "proof_id": "639f708634495643e94758c0fe2979a37f0b301d2a93c54746ebd6a8e585ab05"
+  "proof_id": "b44a2f11c4f6228eb2975aa3105d0daa528dff972548b78b938a346701d88c86"
 }

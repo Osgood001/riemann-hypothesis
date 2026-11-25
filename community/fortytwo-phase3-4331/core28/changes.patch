@@ -45,7 +45,25 @@
    ext a b
    simp only [gram, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, rk1, hv,
      vecMulVec_apply]
-@@ -88,96 +78,4 @@
+@@ -68,8 +58,6 @@
+     hermC_pair τ.1 X.Gm X.Gm_herm _ _ _ he, alpha_conj]
+   ring
+ 
+-lemma mat_flow (ξ : Fin r → E) (s : X.Ψ → ℂ) (x : Frame X.Ψ r) (τ : X.Ψ) :
+-    mat (X.flow ξ s x) τ = X.flowMat ξ τ (s τ) * mat x τ := rfl
+ 
+ def admissibleImaginary (ξ : Fin r → E) (x : Frame X.Ψ r) : Set (X.Ψ → ℝ) :=
+   {y | ∀ τ : X.Ψ, ∀ i : Fin (r + 1), 0 < psgn X.p0 i *
+@@ -78,7 +66,7 @@
+ lemma flow_mem_dom_iff {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (x : Frame X.Ψ r)
+     (hx : x ∈ X.dom) (s : X.Ψ → ℂ) :
+     X.flow ξ s x ∈ X.dom ↔ (fun τ => (s τ).im) ∈ admissibleImaginary X ξ x := by
+-  simp only [Data.dom, GG, Set.mem_setOf_eq, admissibleImaginary, dmin, mat_flow, gram_flowMat X hξ, det_mul,
++  simp only [Data.dom, GG, Set.mem_setOf_eq, admissibleImaginary, dmin, (show ∀ τ, mat (X.flow ξ s x) τ = X.flowMat ξ τ (s τ) * mat x τ from fun _ => rfl), gram_flowMat X hξ, det_mul,
+     det_flowMat (X := X) hξ, one_mul]
+   constructor
+   · intro h τ i
+@@ -88,96 +76,4 @@
  
  end gram
  
@@ -3206,7 +3224,24 @@
    rw [hV]
 --- a/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FixedPointImaginarySpan.lean
 +++ b/ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FixedPointImaginarySpan.lean
-@@ -141,12 +141,8 @@
+@@ -10,7 +10,6 @@
+ 
+ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (g : ℕ)
+ 
+-lemma cc_mul'' (x y : E) : cc (x * y) = cc x * cc y := map_mul (IsCMField.complexConj E) x y
+ 
+ lemma im_of_fixed {a : E} (ha : cc a = a) (τ : E →+* ℂ) : (τ a).im = 0 := by
+   have h : conj (τ a) = τ a := by
+@@ -74,7 +73,7 @@
+       have hm := mem_LZ_of X g !![0, η * a; -(η * a), 0]
+         (fun i k => by
+           fin_cases i <;> fin_cases k <;>
+-            simp [ha, RealEmbeddingCharacters.cc_zero', cc_mul'', hηcc, RealEmbeddingCharacters.cc_neg'])
++            simp [ha, RealEmbeddingCharacters.cc_zero', hηcc, RealEmbeddingCharacters.cc_neg'])
+         (fun i k => by fin_cases i <;> fin_cases k <;> simp [(hηi.mul hai), (hηi.mul hai).neg, isIntegral_zero])
+       convert hsub _ hm using 1
+       funext τ i k
+@@ -141,12 +140,8 @@
      have e : ∑ j, (n' j : ℝ) • th (eR j) = ∑ j, (n j : ℝ) • th (eR j) := by
        have := hn'.symm.trans hb'
        simpa only [hc] using this
@@ -5736,7 +5771,7 @@
  
  namespace UnipMove
  
-@@ -12,18 +13,12 @@
+@@ -12,21 +13,13 @@
  
  namespace DeltaValuation
  
@@ -5755,9 +5790,12 @@
 -  map_smul' k v := by rw [hermC_smul_left]; simp only [smul_eq_mul, RingHom.id_apply]; ring
 +    (Fin r → ℂ) →ₗ[ℂ] ℂ := K • GramDeterminantReal.hL τ G w
  
- lemma hermLin_apply {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (K : ℂ) (w v : Fin r → ℂ) :
-     hermLin τ G K w v = K * hermC τ G v w := rfl
-@@ -49,14 +44,22 @@
+-lemma hermLin_apply {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (K : ℂ) (w v : Fin r → ℂ) :
+-    hermLin τ G K w v = K * hermC τ G v w := rfl
+ 
+ lemma posPart_smul {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ) (v : Fin r → ℂ) :
+     X.posPart x τ (c • v) = Complex.normSq c * X.posPart x τ v := by
+@@ -49,14 +42,22 @@
    rw [e, Complex.re_ofReal_mul]
    ring
  
@@ -5786,7 +5824,7 @@
  
  end DeltaValuation
  
-@@ -67,11 +70,6 @@
+@@ -67,11 +68,6 @@
    have hΛp : ∀ μ, μ ∈ X.Λp ξ ↔ μ ∈ X.Λ ∧ herm X.Gm μ ξ = 0 := fun μ => by
      simp only [Data.Λp, AddSubgroup.mem_inf, Submodule.mem_toAddSubgroup, AddMonoidHom.mem_ker]
      rfl
@@ -5798,8 +5836,12 @@
    obtain ⟨f, hfΛ, hfadd, hfsmul, hfξ⟩ := hP5 r X.toData ξ hiso
    obtain ⟨F, hF⟩ := hext r X.toData ξ f hfadd hfsmul
    obtain ⟨cf, hFc⟩ : ∃ cf : Fin r → E, ∀ x, F x = ∑ a, x a * cf a :=
-@@ -97,13 +95,8 @@
-       simp only [δ', LinearMap.smul_apply, LinearMap.sub_apply, hermLin_apply, smul_eq_mul, smul_smul]
+@@ -94,16 +90,11 @@
+     have e1 : (((n' : ℂ)⁻¹ • δ' τ) (u τ)) • Data.emb τ.1 ξ = ((n' : ℂ)⁻¹) •
+         ((δ₀ τ (u τ) - (dE E : ℂ) * (-τ.1 X.ξ0) *
+           hermC τ.1 X.Gm (u τ) (X.ucomp z1 ξ (X.embV μ₀) τ)) • Data.emb τ.1 ξ) := by
+-      simp only [δ', LinearMap.smul_apply, LinearMap.sub_apply, hermLin_apply, smul_eq_mul, smul_smul]
++      simp only [δ', LinearMap.smul_apply, LinearMap.sub_apply, hermLin, GramDeterminantReal.hL_apply, smul_eq_mul, smul_smul]
      have hinv : ((n' : ℂ)⁻¹) = (((n' : ℝ)⁻¹ : ℝ) : ℂ) := by push_cast; rfl
      rw [e1, maj_smul, hinv, Complex.normSq_ofReal, div_pow]
 -    have hpos : (0 : ℝ) ≤ (n' : ℝ)⁻¹ * (n' : ℝ)⁻¹ := by positivity
@@ -5814,7 +5856,7 @@
    · intro μ hμ
      obtain ⟨hμΛ, hμξ⟩ := (hΛp μ).1 hμ
      obtain ⟨hμ₀Λ, hμ₀ξ⟩ := (hΛp μ₀).1 hμ₀
-@@ -112,7 +105,7 @@
+@@ -112,7 +103,7 @@
        have ha : (a : E) • μ ∈ X.Λ := by rw [← O_smul]; exact X.Λ.smul_mem a hμΛ
        obtain ⟨k, hk⟩ := X.EF_int _ ha μ₀ hμ₀Λ
        refine ⟨k, ?_⟩
@@ -5823,7 +5865,7 @@
        congr 1
        ring)
      refine ⟨(n' : E) * f μ + α, ?_, ?_⟩
-@@ -126,31 +119,16 @@
+@@ -126,31 +117,16 @@
        have hu : ∀ ν : Fin r → E, X.ucomp z1 ξ (X.embV ν) τ = Data.emb τ.1 ν -
            (X.Hf z1 τ (Data.emb τ.1 ν) (Data.emb τ.1 ξ) / X.Hf z1 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ)) •
              Data.emb τ.1 ξ := fun ν => rfl
@@ -5852,8 +5894,9 @@
          X.Hf z1 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) with hco
        have hδ' : δ' τ (X.ucomp z1 ξ (X.embV μ) τ) =
            -(n' : ℂ) * (τ.1 (F μ) - co) - (dE E : ℂ) * (-τ.1 X.ξ0) * τ.1 (herm X.Gm μ μ₀) := by
-         simp only [δ', δ₀, LinearMap.sub_apply, LinearMap.smul_apply, hermLin_apply, smul_eq_mul]
+-        simp only [δ', δ₀, LinearMap.sub_apply, LinearMap.smul_apply, hermLin_apply, smul_eq_mul]
 -        rw [hherm, hu μ, map_sub, map_smul, hl1, hl2, smul_eq_mul, mul_one]
++        simp only [δ', δ₀, LinearMap.sub_apply, LinearMap.smul_apply, hermLin, GramDeterminantReal.hL_apply, smul_eq_mul]
 +        rw [hherm, hu μ, map_sub, map_smul, hlin, hlin, hFξ, map_one, smul_eq_mul, mul_one]
        have hL : ((n' : ℂ) • (X.aproj z1 ξ (X.embV μ) - X.lineV ξ (fun τ =>
            (((n' : ℂ)⁻¹) • δ' τ) (X.ucomp z1 ξ (X.embV μ) τ)))) τ =
@@ -7889,7 +7932,16 @@
  
  theorem hermC_quad (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {n : ℕ} (γ : Fin n → ℂ)
      (f : Fin n → Fin r → ℂ) :
-@@ -227,14 +179,10 @@
+@@ -206,8 +158,6 @@
+ def colP (x : Frame X.Ψ r) (τ : X.Ψ) (a : Fin X.p0) : Fin r → ℂ :=
+   col (mat x τ) (Fin.castLE X.p0_le a)
+ 
+-theorem gramPos_apply (x : Frame X.Ψ r) (τ : X.Ψ) (a b : Fin X.p0) :
+-    X.gramPos x τ a b = hermC τ.1 X.Gm (X.colP x τ a) (X.colP x τ b) := rfl
+ 
+ theorem gramPos_isHermitian (x : Frame X.Ψ r) (τ : X.Ψ) : (X.gramPos x τ).IsHermitian := by
+   exact (gram_isHermitian τ.1 X.Gm_herm (mat x τ)).submatrix (Fin.castLE X.p0_le)
+@@ -227,16 +177,12 @@
  theorem ppos_eq (x : Frame X.Ψ r) (τ : X.Ψ) (u : Fin r → ℂ) : X.ppos x τ u =
      ∑ a, (∑ b, hermC τ.1 X.Gm u (X.colP x τ b) * (X.gramPos x τ)⁻¹ b a) • X.colP x τ a := rfl
  
@@ -7903,9 +7955,12 @@
 -    Matrix.nonsing_inv_mul _ (isUnit_det_of_posDef_fundamental_domains (X.gramPos_posDef hx τ))
 +    Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (X.gramPos_posDef hx τ).isUnit)
    rw [X.ppos_eq x τ u, hermC_sum_left]
-   simp_rw [hermC_smul_left, ← X.gramPos_apply x τ, Finset.sum_mul, mul_assoc]
+-  simp_rw [hermC_smul_left, ← X.gramPos_apply x τ, Finset.sum_mul, mul_assoc]
++  simp_rw [hermC_smul_left, ← (show ∀ a b, X.gramPos x τ a b = hermC τ.1 X.Gm (X.colP x τ a) (X.colP x τ b) from fun _ _ => rfl), Finset.sum_mul, mul_assoc]
    rw [Finset.sum_comm]
-@@ -255,33 +203,6 @@
+   simp_rw [← Finset.mul_sum, ← Matrix.mul_apply, hA, Matrix.one_apply]
+   simp
+@@ -255,33 +201,6 @@
    show hermC τ.1 X.Gm ((2 : ℂ) • X.ppos x τ u - u) w = _
    rw [hermC_sub_left, hermC_smul_left]
  
@@ -7939,7 +7994,7 @@
  
  theorem neg_of_perp {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) {e : Fin r → ℂ} (he : e ≠ 0)
      (hperp : ∀ b, hermC τ.1 X.Gm e (X.colP x τ b) = 0) : (hermC τ.1 X.Gm e e).re < 0 := by
-@@ -304,18 +225,20 @@
+@@ -304,18 +223,20 @@
    set α0 := g (Sum.inl none) with hα0def
    set vW := ∑ a, g (Sum.inl (some a)) • X.colP x τ a with hvW
    set vN := ∑ j, g (Sum.inr j) • col P (n' j) with hvN
@@ -7971,7 +8026,7 @@
    have hexp : hermC τ.1 X.Gm (vW + α0 • e) (vW + α0 • e) =
        hermC τ.1 X.Gm vW vW + α0 * conj α0 * hermC τ.1 X.Gm e e := by
      rw [hermC_add_left, hermC_add_right, hermC_add_right, hermC_smul_left, hermC_smul_left,
-@@ -325,12 +248,9 @@
+@@ -325,12 +246,9 @@
        ∑ a, ∑ b, g (Sum.inl (some a)) * X.gramPos x τ a b * conj (g (Sum.inl (some b))) := by
      rw [hvW]
      exact hermC_quad τ.1 X.Gm _ _
@@ -7987,7 +8042,7 @@
    have hre := congrArg Complex.re key
    simp only [Complex.add_re, Complex.neg_re, Complex.re_sum, Complex.mul_conj,
      Complex.re_ofReal_mul, Complex.ofReal_re] at hre
-@@ -348,17 +268,9 @@
+@@ -348,17 +266,9 @@
        (Finset.mem_univ _))
    have hα : (fun a => g (Sum.inl (some a))) = 0 := by
      by_contra hne
@@ -8008,7 +8063,7 @@
    have hα0 : α0 = 0 := by
      rw [hvW0, hvN0, add_zero, add_zero, smul_eq_zero] at hg
      exact hg.resolve_right he
-@@ -388,12 +300,7 @@
+@@ -388,12 +298,7 @@
  
  theorem ppos_smul_eq (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u : Fin r → ℂ) :
      X.ppos x τ (k • u) = k • X.ppos x τ u := by
@@ -8022,7 +8077,7 @@
  
  theorem ppos_sub (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
      X.ppos x τ (u - v) = X.ppos x τ u - X.ppos x τ v := by
-@@ -423,39 +330,39 @@
+@@ -423,39 +328,39 @@
  theorem Jz_apply (x : Frame X.Ψ r) (u : X.Ψ → Fin r → ℂ) (τ : X.Ψ) :
      X.Jz x u τ = Complex.I • X.jp x τ (u τ) := rfl
  
