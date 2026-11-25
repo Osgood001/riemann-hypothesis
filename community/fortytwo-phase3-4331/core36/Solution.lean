@@ -17,7 +17,7 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
     ∀ y ∈ lat hP $ sgnRt H false, n • y ∈ 𝒮 x ∘ inr := by
 
   intro hx hn
-  have := disjoint_lat hP (show H.rt0 ≠ -H.rt0 by grind [H.sqrt_neg_disc_sq, H.d_mod, cast_eq_zero])
+  have := disjoint_lat hP (show H.rt0 ≠ -H.rt0 by cases H; grind [cast_eq_zero])
 
 
   and_intros
