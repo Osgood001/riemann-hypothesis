@@ -165,6 +165,124 @@ structure FieldHas (G : GridData Lc sc) {K : Type} [Field K] (e : K →+* ℂ) :
 
   roots : ∀ v ∈ G.pl.S0, ∃ z : K, IsPrimitiveRoot z (Ideal.absNorm v.asIdeal ^ G.pl.depth sc v)
 
+private theorem exists_primitiveRoot_lcm_iff {ι M : Type*} [CommMonoid M]
+    (places : Finset ι) (degree : ι → ℕ) (hdegree : ∀ i ∈ places, degree i ≠ 0) :
+    (∃ z : M, IsPrimitiveRoot z (places.lcm degree)) ↔
+      ∀ i ∈ places, ∃ z : M, IsPrimitiveRoot z (degree i) := by
+  classical
+  constructor
+  · rintro ⟨z, hz⟩ i hi
+    obtain ⟨d, hd⟩ := Finset.dvd_lcm (f := degree) hi
+    have hn := Finset.lcm_ne_zero_iff.mpr hdegree
+    have hd0 : d ≠ 0 := by
+      intro h
+      exact hn (by simp [hd, h])
+    refine ⟨z ^ d, ?_⟩
+    simpa [hd, hd0] using hz.pow_of_dvd hd0 (Dvd.intro (degree i) (by rw [hd, mul_comm]))
+  · revert hdegree
+    induction places using Finset.induction_on with
+    | empty =>
+        intro _ _
+        exact ⟨1, by simp⟩
+    | @insert i places hi ih =>
+        intro hdegree h
+        obtain ⟨z, hz⟩ := h i (Finset.mem_insert_self _ _)
+        have hprev : ∀ j ∈ places, degree j ≠ 0 :=
+          fun j hj => hdegree j (Finset.mem_insert_of_mem hj)
+        obtain ⟨y, hy⟩ := ih hprev (fun j hj => h j (Finset.mem_insert_of_mem hj))
+        rw [Finset.lcm_insert]
+        exact ⟨_, hz.pow_mul_pow_lcm hy (hdegree i (Finset.mem_insert_self _ _))
+          (Finset.lcm_ne_zero_iff.mpr hprev)⟩
+
+private theorem exists_primitiveRoot_iff_dvd_torsionOrder
+    (K : Type*) [Field K] [NumberField K] (n : ℕ) [NeZero n] :
+    (∃ z : K, IsPrimitiveRoot z n) ↔ n ∣ NumberField.Units.torsionOrder K := by
+  constructor
+  · rintro ⟨ζ, hζ⟩
+    exact NumberField.Units.dvd_torsionOrder_of_isPrimitiveRoot hζ
+  · intro h
+    obtain ⟨μ, hμ⟩ : ∃ μ : NumberField.Units.torsion K,
+        orderOf μ = NumberField.Units.torsionOrder K := IsCyclic.exists_ofOrder_eq_natCard
+    rw [← IsPrimitiveRoot.iff_orderOf, ← IsPrimitiveRoot.coe_submonoidClass_iff,
+      ← IsPrimitiveRoot.coe_units_iff] at hμ
+    have hμ := hμ.map_of_injective (FaithfulSMul.algebraMap_injective (𝓞 K) K)
+    obtain ⟨d, hd⟩ := h
+    have hd0 : d ≠ 0 := by
+      intro hd0
+      exact NumberField.Units.torsionOrder_ne_zero K (by simp [hd, hd0])
+    refine ⟨((algebraMap (𝓞 K) K) (μ : (𝓞 K)ˣ)) ^ d, ?_⟩
+    simpa [hd, hd0] using hμ.pow_of_dvd hd0 (Dvd.intro n (by rw [hd, mul_comm]))
+
+
+/-- The least positive order supporting all of the grid's local root requirements. -/
+def rootOrder (G : GridData Lc sc) : ℕ :=
+  G.pl.S0.lcm fun v => Ideal.absNorm v.asIdeal ^ G.pl.depth sc v
+
+theorem rootOrder_ne_zero (G : GridData Lc sc) : rootOrder G ≠ 0 :=
+  Finset.lcm_ne_zero_iff.mpr fun v _ =>
+    pow_ne_zero _ (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)
+
+theorem FieldHas.iff_values_and_primitiveRoot {G : GridData Lc sc}
+    {K : Type} [Field K] (e : K →+* ℂ) :
+    FieldHas G e ↔
+      (∀ i, 1 ≤ i → i ≤ D.R.m → (G.ch.chiH i).ValuesIn 0 e) ∧
+        ∃ z : K, IsPrimitiveRoot z (rootOrder G) := by
+  have h := exists_primitiveRoot_lcm_iff (M := K) G.pl.S0
+    (fun v => Ideal.absNorm v.asIdeal ^ G.pl.depth sc v)
+    (fun v _ => pow_ne_zero _ (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot))
+  exact ⟨fun hG => ⟨hG.values, h.mpr hG.roots⟩, fun ⟨hv, hr⟩ => ⟨hv, h.mp hr⟩⟩
+
+/-- The roots clause is one divisibility test against the field's torsion order. -/
+theorem FieldHas.iff_values_and_dvd_torsionOrder {G : GridData Lc sc}
+    {K : Type} [Field K] [NumberField K] (e : K →+* ℂ) :
+    FieldHas G e ↔
+      (∀ i, 1 ≤ i → i ≤ D.R.m → (G.ch.chiH i).ValuesIn 0 e) ∧
+        rootOrder G ∣ NumberField.Units.torsionOrder K := by
+  let : NeZero (rootOrder G) := ⟨rootOrder_ne_zero G⟩
+  rw [FieldHas.iff_values_and_primitiveRoot, exists_primitiveRoot_iff_dvd_torsionOrder]
+
+/-- The cyclotomic part of the coefficient field, without the character values. -/
+def rootField (G : GridData Lc sc) : IntermediateField ℚ ℂ :=
+  IntermediateField.adjoin ℚ {Complex.exp (2 * Real.pi * Complex.I / rootOrder G)}
+
+theorem rootField_finrank (G : GridData Lc sc) :
+    Module.finrank ℚ (rootField G) = (rootOrder G).totient := by
+  let : NeZero (rootOrder G) := ⟨rootOrder_ne_zero G⟩
+  let : IsCyclotomicExtension {rootOrder G} ℚ (rootField G) :=
+    (Complex.isPrimitiveRoot_exp _ (rootOrder_ne_zero G)).intermediateField_adjoin_isCyclotomicExtension ℚ
+  exact IsCyclotomicExtension.Rat.finrank _ _
+
+private theorem primitiveRoot_iff_rootField_le (G : GridData Lc sc) (M : IntermediateField ℚ ℂ) :
+    (∃ z : M, IsPrimitiveRoot z (rootOrder G)) ↔ rootField G ≤ M := by
+  let : NeZero (rootOrder G) := ⟨rootOrder_ne_zero G⟩
+  have hz := Complex.isPrimitiveRoot_exp _ (rootOrder_ne_zero G)
+  change (∃ z : M, IsPrimitiveRoot z (rootOrder G)) ↔ IntermediateField.adjoin ℚ {_} ≤ M
+  rw [IntermediateField.adjoin_le_iff]
+  simp only [Set.singleton_subset_iff]
+  constructor
+  · rintro ⟨y, hy⟩
+    have hy := hy.map_of_injective M.val.injective
+    obtain ⟨d, -, hd⟩ := hy.eq_pow_of_pow_eq_one hz.pow_eq_one
+    rw [← hd]
+    exact M.pow_mem y.property d
+  · intro h
+    exact ⟨⟨_, h⟩, IsPrimitiveRoot.of_map_of_injective (f := M.val) hz M.val.injective⟩
+
+/-- The roots clause alone, independent of any character values. -/
+theorem rootField_le_iff_roots (G : GridData Lc sc) (M : IntermediateField ℚ ℂ) :
+    rootField G ≤ M ↔ ∀ v ∈ G.pl.S0, ∃ z : M, IsPrimitiveRoot z (Ideal.absNorm v.asIdeal ^ G.pl.depth sc v) :=
+  (primitiveRoot_iff_rootField_le G M).symm.trans <|
+    exists_primitiveRoot_lcm_iff G.pl.S0 (fun v => Ideal.absNorm v.asIdeal ^ G.pl.depth sc v)
+      (fun v _ => pow_ne_zero _ (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot))
+
+theorem FieldHas.rootField_le_iff {G : GridData Lc sc} (M : IntermediateField ℚ ℂ) :
+    FieldHas G M.val.toRingHom ↔
+      (∀ i, 1 ≤ i → i ≤ D.R.m → (G.ch.chiH i).ValuesIn 0 M.val.toRingHom) ∧
+        rootField G ≤ M := by
+  rw [FieldHas.iff_values_and_primitiveRoot]
+  apply and_congr_right'
+  exact primitiveRoot_iff_rootField_le G M
+
 theorem lambdaGrid_apply (G : GridData Lc sc) (l : ℕ) (j a : Fin D.R.m) :
     (lamOf G).lam0 l j a = Lc.C.mu0 j * Lc.C.delAt l / G.ch.chiH (a.1 + 1) := (div_eq_mul_inv _ _).symm
 
@@ -186,8 +304,6 @@ theorem FieldHas.map {G : GridData Lc sc} {K K' : Type} [Field K] [Field K'] {e'
 theorem exists_fieldHas (G : GridData Lc sc) :
     ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ FieldHas G M.val.toRingHom := by
   obtain ⟨c, -, hcm, -⟩ := GlobalTheory.Mem.HostCM.host_cm D.R D.host
-  have hpos : ∀ v : HeightOneSpectrum (𝓞 D.host.F), 0 < Ideal.absNorm v.asIdeal ^ G.pl.depth sc v := fun v =>
-    pow_pos (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)) _
   have h1 : ∀ a : Fin D.R.m, ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧
       (G.ch.chiH (a.1 + 1)).ValuesIn 0 M.val.toRingHom := fun a => by
     obtain ⟨n, hn, hi⟩ := lamOf_hasInfQ G a
@@ -198,13 +314,15 @@ theorem exists_fieldHas (G : GridData Lc sc) :
     rw [Int.cast_zero, zero_div] at this
     exact this
   choose Mc hMc hMc' using h1
-  choose Mr hMr hMr' using fun v : G.pl.S0 => GlobalTheory.Mem.FrameVal.exists_roots _ (hpos v)
-  refine ⟨(⨆ a, Mc a) ⊔ ⨆ v, Mr v, inferInstance, fun i a b => ?_, fun v hv => ?_⟩
-  · obtain ⟨i, rfl⟩ : ∃ k, i = k + 1 := ⟨i - 1, by omega⟩
-    exact GlobalTheory.Mem.FrameVal.valuesIn_mono (hMc' ⟨i, b⟩) ((le_iSup Mc _).trans le_sup_left)
-  · have hz := Complex.isPrimitiveRoot_exp _ (hpos v).ne'
-    exact ⟨⟨_, ((le_iSup Mr ⟨v, hv⟩).trans le_sup_right) (hMr' ⟨v, hv⟩ _ hz.pow_eq_one)⟩,
-      IsPrimitiveRoot.of_map_of_injective (f := IntermediateField.val _) hz Subtype.val_injective⟩
+  let : NeZero (rootOrder G) := ⟨rootOrder_ne_zero G⟩
+  let : IsCyclotomicExtension {rootOrder G} ℚ (rootField G) :=
+    (Complex.isPrimitiveRoot_exp _ (rootOrder_ne_zero G)).intermediateField_adjoin_isCyclotomicExtension ℚ
+  have : FiniteDimensional ℚ (rootField G) := IsCyclotomicExtension.finite_of_singleton (rootOrder G) ℚ (rootField G)
+  refine ⟨(⨆ a, Mc a) ⊔ rootField G, inferInstance, (FieldHas.rootField_le_iff _).mpr ⟨?_, le_sup_right⟩⟩
+  intro i a b
+  obtain ⟨i, rfl⟩ : ∃ k, i = k + 1 := ⟨i - 1, by omega⟩
+  exact GlobalTheory.Mem.FrameVal.valuesIn_mono (hMc' ⟨i, b⟩) ((le_iSup Mc _).trans le_sup_left)
+
 
 def TwistedPlaceChoiceLiesOverPair (D : D7) (c : NChoice D) : Prop :=
   (∀ w, GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted D w → D.ntw.l (c.twI w) = D.what₂.places.resChar w ∧
