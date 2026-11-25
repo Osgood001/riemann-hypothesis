@@ -9,16 +9,14 @@ open NumberField IsDedekindDomain MeasureTheory Measure Matrix GlobalTheory.Cusp
 
 theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
   intro E _ _ _ N
-  have pExp (u : ℝ) : posIdele (K := E) (exp u) (exp_pos u) = infId E (expU fun _ => (u : ℂ)) := by
+  have pExp (u : ℝ) : posIdele (exp u) (exp_pos u) = infId E (expU fun _ => (u : ℂ)) := by
     refine Units.ext $ Prod.ext ?_ ?_
     change _ = 1 - infEq E 1 + infEq E _
     simp
     funext w
     rw [← IdeleGroup.coe_infiniteProj, infiniteProj_posIdele]
-    change posRealElem w _ = _
-    simp [posRealElem, not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w),
-      mult, sqrt_sq (exp_pos u).le, expU, ofReal_exp, infEq]
-    rfl
+    simp [posRealToUnits, posRealElem, not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w),
+      mult, sqrt_sq (exp_pos u).le, expU, ofReal_exp, infEq] <;> rfl
     change _ = 1 - 0 + 0
     ext v
     simp [posIdele_finite]
@@ -40,10 +38,10 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
   have hunip (X : UPos N r → Ad E) : unipGL X = unip X := Units.ext rfl
   unfold IsCT
   rw [← BorelSpace.measurable_eq (α := BlockIx N r → Ad E)]
-  refine ⟨⟨ν, unipFundamentalDomain E N r, inferInstance, isAddFundamentalDomain_unipFundamentalDomain, by ext g; simp [ct, ctn, measureReal_def, unipMeasure_unipFundamentalDomain, constantTerm, hunip, ν]⟩, ?_⟩
+  refine ⟨⟨ν, _, inferInstance, isAddFundamentalDomain_unipFundamentalDomain, by ext g; simp [ct, ctn, measureReal_def, unipMeasure_unipFundamentalDomain, constantTerm, hunip, ν]⟩, ?_⟩
   rintro F ⟨μ, 𝓕, hμ, h𝓕, rfl⟩
+  have e := isAddLeftInvariant_eq_smul μ ν
   set s := addHaarScalarFactor μ ν
-  have e : μ = s • ν := isAddLeftInvariant_eq_smul μ ν
   refine ⟨s, by exact_mod_cast (addHaarScalarFactor_pos_of_isAddHaarMeasure μ ν).ne', funext fun g => ?_⟩
   simp [ct, e, restrict_smul, integral_smul_nnreal_measure, ← hunip, NNReal.smul_def,
     real_smul, ctn, measureReal_def, unipMeasure_unipFundamentalDomain,
