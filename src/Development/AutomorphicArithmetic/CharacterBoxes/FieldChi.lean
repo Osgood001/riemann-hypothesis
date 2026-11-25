@@ -22,16 +22,16 @@ private theorem conductor_divisor_bounds {M : ℕ} [NeZero M] {Q e b : ℕ} (hQ 
   have := Nat.le_of_dvd hM h3
   omega
 
-theorem UpperTheory.Top.fieldChi :
-    ∀ ψ : PChar, ∃ c e0 : ℕ, 1 ≤ c ∧ ∀ e ≥ e0, ∀ q d b : ℕ, HostHyp q d → q ≠ 3 → Nat.Coprime ψ.N (q * d) → 4 * ψ.N ≤ b →
+theorem UpperTheory.Top.fieldChi_bounded :
+    ∀ ψ : PChar, ∃ c e0 : ℕ, 1 ≤ c ∧ c ≤ Nat.card (Subgroup.zpowers ψ.χ) ∧ ∀ e ≥ e0, ∀ q d b : ℕ, HostHyp q d → q ≠ 3 → Nat.Coprime ψ.N (q * d) → 4 * ψ.N ≤ b →
       (∀ p : ℕ, p.Prime → p ≠ 2 → p ≤ b → jacobiSym (-(d : ℤ)) p = 1) →
       ∃ (φ : Frame) (H : HostAx φ), φ.e = e ∧ φ.ord = c * 2 ^ e ∧ H.q = q ∧ H.d = d ∧ φ.o = (Level.cyc ψ).o ∧ FieldRows H.toHostRaw b ∧
         H.QS ∣ Nat.lcm (2 ^ (e + 2)) ψ.N ∧ H.QS ≤ 4 * ψ.N * φ.ord ∧
         H.KeptInXp (Level.cyc ψ).KEPT ∧ H.ExceptionalCharacterKept (Level.cyc ψ).KEPT (Level.cyc ψ).psK ∧
         KerChi ψ H.toHostRaw ∧ TwistForm ψ H.toHostRaw := by
   intro ψ
-  obtain ⟨c, e1, hc1, -, hord⟩ := ordAny ψ.N (Subgroup.zpowers ψ.χ)
-  refine ⟨c, max e1 (max 2 (max (4 * ψ.N) (64 * Nat.card (Subgroup.zpowers ψ.χ)))), hc1,
+  obtain ⟨c, e1, hc1, hc, hord⟩ := ordAny ψ.N (Subgroup.zpowers ψ.χ)
+  refine ⟨c, max e1 (max 2 (max (4 * ψ.N) (64 * Nat.card (Subgroup.zpowers ψ.χ)))), hc1, hc,
     fun e he q d b hH hq3 hcop hb hsplit => ?_⟩
   simp only [ge_iff_le, max_le_iff] at he
   obtain ⟨he1, he2, heN, heK⟩ := he
@@ -62,3 +62,14 @@ theorem UpperTheory.Top.fieldChi :
   · exact ⟨AnyGrp.psQ _ e hH hcop he2 hs, AnyGrp.exists_sqq _ e hH hcop he2 hs, AnyGrp.exact _ e hH hcop he2 hs,
       AnyGrp.QS_le _ e h4M, hopow, hq3, hsplit, hsmall⟩
   · exact hQle.trans (Nat.mul_le_mul_left _ h2e)
+
+theorem UpperTheory.Top.fieldChi :
+    ∀ ψ : PChar, ∃ c e0 : ℕ, 1 ≤ c ∧ ∀ e ≥ e0, ∀ q d b : ℕ, HostHyp q d → q ≠ 3 → Nat.Coprime ψ.N (q * d) → 4 * ψ.N ≤ b →
+      (∀ p : ℕ, p.Prime → p ≠ 2 → p ≤ b → jacobiSym (-(d : ℤ)) p = 1) →
+      ∃ (φ : Frame) (H : HostAx φ), φ.e = e ∧ φ.ord = c * 2 ^ e ∧ H.q = q ∧ H.d = d ∧ φ.o = (Level.cyc ψ).o ∧ FieldRows H.toHostRaw b ∧
+        H.QS ∣ Nat.lcm (2 ^ (e + 2)) ψ.N ∧ H.QS ≤ 4 * ψ.N * φ.ord ∧
+        H.KeptInXp (Level.cyc ψ).KEPT ∧ H.ExceptionalCharacterKept (Level.cyc ψ).KEPT (Level.cyc ψ).psK ∧
+        KerChi ψ H.toHostRaw ∧ TwistForm ψ H.toHostRaw := by
+  intro ψ
+  obtain ⟨c, e₀, hc, -, h⟩ := fieldChi_bounded ψ
+  exact ⟨c, e₀, hc, h⟩
