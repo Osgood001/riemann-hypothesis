@@ -10,6 +10,23 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigThetaKern
 
 @[expose] public section
 
+namespace GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
+open NumberField
+
+/-- Every fixed second argument gives a bounded function of the first.
+No growth control across slices or positive-order rapid decay is required. -/
+def SmallThetaSliceBound : Prop :=
+  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+    (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) om om',
+    IsTriple B G X om om' → ∀ Φ ∈ G.M'.So B.ψ B.τ₁, ∀ h, ∃ C : ℝ,
+      ∀ g, ‖theta om' Φ g h‖ ≤ C
+
+theorem ThetaIntegralsAgree.smallThetaSliceBound (h : ThetaIntegralsAgree) : SmallThetaSliceBound := by
+  intro F E _ _ _ _ _ σ B a a' G X om om' hTr Φ hΦ t
+  obtain ⟨C, k, H⟩ := ((h.1 F E σ B a a' G X om om' hTr).1.2 Φ hΦ).1 0
+  exact ⟨C * (ht t : ℝ) ^ k, fun g => by simpa only [pow_zero, mul_one] using H g t⟩
+end GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
+
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.L2.DIV
 open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim
 open Formalism.L2.Host (HChar)
@@ -109,7 +126,7 @@ theorem kerSmall_inv {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (
   have hfull : ∀ (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)),
       IsSelfDualC V Λ → Submodule.IsFullLattice D.host.E Λ := by
     intro V Λ hΛ
-    haveI : Submodule.IsLattice D.host.E Λ := hΛ.1
+    have : Submodule.IsLattice D.host.E Λ := hΛ.1
     refine ⟨?_⟩
     obtain ⟨s, hs⟩ := hΛ.1.fg
     apply eq_top_iff.mpr
@@ -127,7 +144,7 @@ theorem kerSmall_inv {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (
         refine ⟨b + c, ?_⟩
         change (b : D.host.E) + c = _
         rw [hb, hc]
-        simp [f, map_add, add_mul, Finset.sum_add_distrib, mul_add]
+        simp [f, add_mul, Finset.sum_add_distrib, mul_add]
       smul_mem' := by
         rintro c x ⟨b, hb⟩
         refine ⟨RingOfIntegers.mapRingHom (starRingEnd D.host.E) c * b, ?_⟩
@@ -166,7 +183,7 @@ theorem kerSmall_inv {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (
     rw [← smul_assoc, smul_eq_mul, inv_mul_cancel₀ ha0, one_smul] at this
     exact this
   refine ⟨G.Λ (.grid i j), hfin.toFinset ∪ (locPl G t).image (fun PP => (_root_.IsDedekindDomain.HeightOneSpectrum.under (𝓞 D.host.F) PP)),
-    s0.1.fg, by letI := hfull _ _ s0; exact Submodule.IsFullLattice.span_eq_top, ?_⟩
+    s0.1.fg, by let := hfull _ _ s0; exact Submodule.IsFullLattice.span_eq_top, ?_⟩
   intro κ hκ u
   have hgd : ∀ v, v ∉ hfin.toFinset ∪ (locPl G t).image (fun PP => (_root_.IsDedekindDomain.HeightOneSpectrum.under (𝓞 D.host.F) PP)) → good v := by
     intro v hv
@@ -190,7 +207,7 @@ theorem kerSmall_inv {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (
   · show thetaKO (W.om (.mu t i j)) (u * κ) g _ = thetaKO (W.om (.mu t i j)) u g _
     unfold thetaKO
     have e1 : ((u * κ, g) : GA D (G.pS (.mu t i j)) × GA D (G.pT (.mu t i j))) = (u, g) * (κ, 1) := by simp
-    rw [e1, map_mul, Module.End.mul_apply]
+    rw [e1, map_mul, mul_apply_eq_comp]
     refine congrArg (fun x => W.om (.mu t i j) (u, g) x 0) ?_
     exact om_fock_fix _ _ _ _ _ _ _ hm W.θ_is _ _ _
       (fun v hv => ⟨s0, s1, (hgd v hv).1, (hgd v hv).2.1, (hgd v hv).2.2.1⟩) e _ he hoff _ _ _
@@ -199,11 +216,35 @@ theorem kerSmall_inv {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (
     unfold thetaKO
     have e2 : ((negGA _ g₁, u * κ) : GA D (G.pS (.chi (i : ℕ) j)) × GA D (G.pT (.chi (i : ℕ) j))) =
         (negGA _ g₁, u) * (1, κ) := by simp
-    rw [e2, map_mul, Module.End.mul_apply]
+    rw [e2, map_mul, mul_apply_eq_comp]
     refine congrArg (fun x => W.om (.chi (i : ℕ) j) (negGA _ g₁, u) x 0) ?_
     exact om_fock_fix _ _ _ _ _ _ _ hc W.θ_is _ _ _
       (fun v hv => ⟨isSelfDualC_neg s2, s0, (hgd v hv).1, (hgd v hv).2.2.2.1, (hgd v hv).2.2.2.2⟩) e _ he hoff _ _ _
       hv2.2.theta hv2.2.lat hth2 _ _ _ _ _ 1 κ (inK_one _ _ _) hκ
+
+/-- One regularizer away from the prescribed places works for every left argument. -/
+theorem exists_reg_at_all_left_of_slice_bound (hbound : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SmallThetaSliceBound) {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
+    (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (hst : SquareStanding G t) (M : Vol G) (hM : M.Is t) (Θ Θ')
+    (hΘ : IsMatched B t ρ i j Θ Θ') (g₁) (P : Finset (HeightOneSpectrum (𝓞 D.host.F))) :
+    ∃ v ∉ P, ∃ w : GA D (G.V (.grid i j)) →₀ ℂ, zdeg w ≠ 0 ∧
+      (∀ g, IntegrableOn (translates w (kerSmall W Θ' g g₁)) (M.fd _) (M.ν _)) ∧
+      ∀ b ∈ w.support, b ∈ Set.range (GlobalTheory.AdelicU.emb D.sp.cm.sig (G.V (.grid i j)).gram v) := by
+  obtain ⟨e, Bs, Γ', X, om, om', h, hTr, hv, hvP⟩ := GlobalTheory.RegAt.squareTriple_avoid hL W t i j hst P M hM
+  obtain ⟨z, Φ, a, C₀, hz, hΦ, hid, hsupp⟩ :=
+    GlobalTheory.RegAt.translates_kerSmall_le_theta_at hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ' X om om' h hTr hv
+  refine ⟨Bs.v₁, hvP, z, hz, ?_, hsupp⟩
+  intro g
+  obtain ⟨C, hC⟩ := hbound D.host.F D.host.E D.sp.cm.sig Bs _ _ Γ' X om om' hTr Φ hΦ
+    (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (g, g₁))
+  have hbd : ∀ u, ‖translates z (kerSmall W Θ' g g₁) u‖ ≤ |C₀| * C := fun u =>
+    (hid g u).trans ((mul_le_mul_of_nonneg_right (le_abs_self C₀) (norm_nonneg _)).trans
+      (mul_le_mul_of_nonneg_left (hC (a u)) (abs_nonneg C₀)))
+  have hWl := (hM.vtx (.grid i j) ⟨i.2.le, j.2.le⟩).haar_fund
+  have : IsFiniteMeasure ((M.ν (.grid i j)).restrict (M.fd (.grid i j))) :=
+    isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol _ _ _ hWl.1 hWl.2).ne
+  have hcont := GlobalTheory.SmallRoute.continuous_translates_kerSmall hL W B ρ t i j Θ Θ' hΘ g₁ z
+  exact Integrable.of_bound ((hcont.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable) _
+    (.of_forall hbd)
 
 theorem exists_reg_at (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree) {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (hst : SquareStanding G t) (M : Vol G) (hM : M.Is t) (Θ Θ')
@@ -211,50 +252,19 @@ theorem exists_reg_at (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMo
     ∃ v ∉ P, ∃ w : GA D (G.V (.grid i j)) →₀ ℂ, zdeg w ≠ 0 ∧
       IntegrableOn (translates w (kerSmall W Θ' g g₁)) (M.fd _) (M.ν _) ∧
       ∀ b ∈ w.support, b ∈ Set.range (GlobalTheory.AdelicU.emb D.sp.cm.sig (G.V (.grid i j)).gram v) := by
-  obtain ⟨e, Bs, Γ', X, om, om', h, hTr, hv, hvP⟩ := GlobalTheory.RegAt.squareTriple_avoid hL W t i j hst P M hM
-  obtain ⟨z, Φ, a, C₀, hz, hΦ, hid, hsupp⟩ :=
-    GlobalTheory.RegAt.translates_kerSmall_le_theta_at hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ' X om om' h hTr hv
-  have dec := (hK.1 D.host.F D.host.E D.sp.cm.sig Bs _ _ Γ' X om om' hTr).1
-  obtain ⟨C, k, hC⟩ := (dec.2 Φ hΦ).1 0
-  have hbd : ∀ u, ‖translates z (kerSmall W Θ' g g₁) u‖ ≤
-      |C₀| * |C| * (2 * GlobalTheory.Grow.quotHeight _ g * GlobalTheory.Grow.height _ g₁) ^ k := by
-    intro u
-    obtain ⟨γ, hγ, hle⟩ := GlobalTheory.Grow.exists_height_le_two_mul_quotHeight _ g
-    have e1 : translates z (kerSmall W Θ' g g₁) u = translates z (kerSmall W Θ' (γ * g) g₁) u := by
-      simp only [translates, GlobalTheory.ZConvLeft.kerSmall_rat_left hL W B ρ t i j Θ Θ' hΘ g₁ γ hγ]
-    rw [e1]
-    have h1 := hC (a u) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁))
-    rw [pow_zero, mul_one] at h1
-    have h2 := GlobalTheory.BlockHeight.ht_blkU_le _ _ e h.JWW (γ * g) g₁
-    have h3 : (0 : ℝ) ≤ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁)) : ℝ) := NNReal.coe_nonneg _
-    have h4 : (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁)) : ℝ) ≤
-        2 * GlobalTheory.Grow.quotHeight _ g * GlobalTheory.Grow.height _ g₁ :=
-      h2.trans (mul_le_mul_of_nonneg_right hle (GlobalTheory.Grow.height_pos _ _).le)
-    calc _ ≤ C₀ * ‖GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om' Φ (a u) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁))‖ := hid _ _
-      _ ≤ |C₀| * ‖GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om' Φ (a u) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁))‖ :=
-          mul_le_mul_of_nonneg_right (le_abs_self C₀) (norm_nonneg _)
-      _ ≤ |C₀| * (|C| * (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁)) : ℝ) ^ k) :=
-          mul_le_mul_of_nonneg_left (h1.trans (mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg h3 k)))
-            (abs_nonneg C₀)
-      _ ≤ _ := by
-          rw [← mul_assoc]
-          exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h3 h4 k) (mul_nonneg (abs_nonneg C₀) (abs_nonneg C))
-  have hWl := (hM.vtx (.grid i j) ⟨i.2.le, j.2.le⟩).haar_fund
-  haveI : IsFiniteMeasure ((M.ν (.grid i j)).restrict (M.fd (.grid i j))) :=
-    isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol _ _ _ hWl.1 hWl.2).ne
-  have hcont := GlobalTheory.SmallRoute.continuous_translates_kerSmall hL W B ρ t i j Θ Θ' hΘ g₁ z
-  exact ⟨Bs.v₁, hvP, z, hz, Integrable.of_bound ((hcont.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable) _
-    (.of_forall hbd), hsupp⟩
-
+  obtain ⟨v, hv, w, hw, hi, hs⟩ := exists_reg_at_all_left_of_slice_bound hK.smallThetaSliceBound hL
+    W B ρ t i j hst M hM Θ Θ' hΘ g₁ P
+  exact ⟨v, hv, w, hw, hi g, hs⟩
 
 open GlobalTheory.SmallConst in
-theorem reg_const (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree) {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
+/-- The integral of every integrable translate is its degree times a unique scalar. -/
+theorem existsUnique_reg_const_of_slice_bound (hbound : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SmallThetaSliceBound) {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (hst : SquareStanding G t) (M : Vol G) (hM : M.Is t) (Θ Θ')
     (hΘ : IsMatched B t ρ i j Θ Θ') (g g₁) :
-    ∃ J : ℂ, ∀ z, IntegrableOn (translates z (kerSmall W Θ' g g₁)) (M.fd _) (M.ν _) →
+    ∃! J : ℂ, ∀ z, IntegrableOn (translates z (kerSmall W Θ' g g₁)) (M.fd _) (M.ν _) →
       ∫ u in M.fd _, translates z (kerSmall W Θ' g g₁) u ∂M.ν _ = zdeg z * J := by
   classical
-  have k2 := exists_reg_at hK hL W B ρ t i j hst M hM Θ Θ' hΘ g g₁
+  have k2 := exists_reg_at_all_left_of_slice_bound hbound hL W B ρ t i j hst M hM Θ Θ' hΘ g₁
   obtain ⟨Λ, S, hfg, hsp, hright⟩ := kerSmall_inv hL W B ρ t i j Θ Θ' hΘ g g₁
   choose b' Pb hPb hKb using fun b => GlobalTheory.T.exists_finiteSupport_mul_latticeStabilizer (G.V (.grid i j)) Λ hfg hsp S b
   have hinv := kerSmall_rat_mid W B ρ t i j Θ Θ' hΘ g g₁
@@ -263,10 +273,11 @@ theorem reg_const (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
     have := hright _ (hKb b) (u * b' b)
     rw [← this, mul_assoc, mul_inv_cancel_left]
   have hfd := (hM.vtx (.grid i j) ⟨i.2.le, j.2.le⟩).haar_fund
-  haveI := hfd.1
+  have := hfd.1
   have key := zdeg_mul_integral_comm (G.V (.grid i j)) (M.ν _) (M.fd _) hfd.2 f hinv
   obtain ⟨v₀, -, w₀, hw₀, hi₀, hs₀⟩ := k2 ∅
-  refine ⟨(∫ u in M.fd _, translates w₀ f u ∂M.ν _) / zdeg w₀, fun z hz => ?_⟩
+  refine ⟨(∫ u in M.fd _, translates w₀ f u ∂M.ν _) / zdeg w₀, fun z hz => ?_, fun J hJ =>
+    (eq_div_iff hw₀).2 ((mul_comm J _).trans (hJ w₀ (hi₀ g)).symm)⟩
   have hz'f : translates (z.mapDomain b') f = translates z f := by
     funext u
     simp only [translates]
@@ -287,12 +298,19 @@ theorem reg_const (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
     obtain ⟨x', rfl⟩ := hs x hx
     obtain ⟨y', rfl⟩ := hs₀ y hy
     exact GlobalTheory.AdelicU.commute_emb _ _ x' (GlobalTheory.AdelicU.proj_emb_ne _ _ hv0 y')
-  have e1 := key w _ c1 hi (by rw [hz'f]; exact hz)
-  have e2 := key w w₀ c2 hi hi₀
+  have e1 := key w _ c1 (hi g) (by rw [hz'f]; exact hz)
+  have e2 := key w w₀ c2 (hi g) (hi₀ g)
   rw [hz'f, hz'd] at e1
   rw [mul_div_assoc', eq_div_iff hw₀]
   apply mul_left_cancel₀ hw
   linear_combination zdeg w₀ * e1 - zdeg z * e2
+
+theorem reg_const (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree) {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
+    (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (hst : SquareStanding G t) (M : Vol G) (hM : M.Is t) (Θ Θ')
+    (hΘ : IsMatched B t ρ i j Θ Θ') (g g₁) :
+    ∃ J : ℂ, ∀ z, IntegrableOn (translates z (kerSmall W Θ' g g₁)) (M.fd _) (M.ν _) →
+      ∫ u in M.fd _, translates z (kerSmall W Θ' g g₁) u ∂M.ν _ = zdeg z * J :=
+  (existsUnique_reg_const_of_slice_bound hK.smallThetaSliceBound hL W B ρ t i j hst M hM Θ Θ' hΘ g g₁).exists
 
 end GlobalTheory.ThetaRegularizationComparison
 
