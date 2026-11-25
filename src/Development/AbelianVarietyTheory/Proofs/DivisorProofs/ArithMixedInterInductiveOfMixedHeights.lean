@@ -66,8 +66,10 @@ theorem arMix_of_mixHt : ArchInteg →
   obtain ⟨Φ₀, hΦ₀, -⟩ := GlobalTheory.T.exists_linear_functional_of_symmetric_multiadditive k X p D F (fun K K' hK => hT.iso _ K K' _ le_rfl hgen hK)
     (fun K e => hT.symm _ K e _ le_rfl hgen) (fun A B K => hT.add D A B K _ le_rfl hgen) (Option ι) F'
 
-  have hpow : ∀ m : Option ι → ℤ, Φ (lin (fun o => (m o : ℝ)) ^ (D + 1)) =
-      Φ₀.toAddMonoidHom ((∑ o, m o • (MvPolynomial.X o : MvPolynomial (Option ι) ℝ)) ^ (D + 1)) := by
+  have hpow (i : Fin (D + 1)) :
+      let m : Option ι → ℤ := fun o => o.elim 1 (fun j => GlobalTheory.centeredPencilWeights D i * n j)
+      Φ (lin (fun o => (m o : ℝ)) ^ (D + 1)) =
+        Φ₀.toAddMonoidHom ((∑ o, m o • (MvPolynomial.X o : MvPolynomial (Option ι) ℝ)) ^ (D + 1)) := by
     intro m
     obtain ⟨g, hg, hg'⟩ := GlobalTheory.T.exists_arithHeight_eq_mixedHeight_diagonal hAI k X p D hX T hT (comb F' m)
     have h₁ : (comb F' m).IsSelfInter (T (D + 1) (fun _ => comb F' m) (genericPoint X)) :=
@@ -76,8 +78,8 @@ theorem arMix_of_mixHt : ArchInteg →
     rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin] at h₂
     rw [HermLB.IsSelfInter.unique hX (hΦ.1 m) h₁, ← lin_intCast]
     exact h₂.symm
-  have hpol := GlobalTheory.polarisation_mixed_term_of_powers (MvPolynomial (Option ι) ℝ) Φ₀.toAddMonoidHom ι MvPolynomial.X D Φ hpow n
-  rw [hpol]
+  rw [GlobalTheory.polarisation_first_mixed_term_on_centered_pencil (MvPolynomial (Option ι) ℝ)
+    Φ₀.toAddMonoidHom ι MvPolynomial.X D Φ n hpow]
 
   let m₀ : Option ι → ℤ := fun o => o.elim 1 0
   let m₁ : Option ι → ℤ := fun o => o.elim 0 n
@@ -86,7 +88,7 @@ theorem arMix_of_mixHt : ArchInteg →
     rw [Fin.prod_univ_succ]
     simp only [Fin.cons_zero, Fin.cons_succ, Finset.prod_const, Finset.card_univ, Fintype.card_fin, lin_intCast,
       Fintype.sum_option, m₀, m₁, Option.elim, zero_smul, zero_add, one_smul]
-    simp only [Pi.zero_apply, Int.cast_zero, Int.cast_one, zsmul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, mul_one, one_mul]
+    simp only [Pi.zero_apply, Int.cast_zero, zsmul_eq_mul, zero_mul, Finset.sum_const_zero, add_zero]
     ring
   have hval : Φ₀.toAddMonoidHom ((∑ i, n i • (MvPolynomial.X (some i) : MvPolynomial (Option ι) ℝ)) ^ D *
       MvPolynomial.X none) = T (D + 1) (Fin.cons M (fun _ => comb L n)) (genericPoint X) := by
