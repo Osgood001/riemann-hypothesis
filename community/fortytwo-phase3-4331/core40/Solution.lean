@@ -12,7 +12,7 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
   expose_names
   have torEq (f : Fin N → ℝ) :
       tor E f = infGL E N (diagUnits N fun i => expU fun _ => f i) := by
-    apply Units.ext
+    ext1
     change diagonal _ = 1 - Matrix.map 1 (CuspRep.sInf E) + (diagonal _).map _
     simp only [← diagonal_one, diagonal_map (map_zero _), diagonal_sub, diagonal_add]
     congr 1
