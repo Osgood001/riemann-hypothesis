@@ -101,9 +101,9 @@ theorem isPartialZeta_zetaOfClass (C : ClassGroup (𝓞 F)) :
   rw [e]
   constructor
   · intro h
-    rw [if_pos h, inv_mul_cancel₀ card_classGroup_ne_zero]
+    rw [ite_eq_left h, inv_mul_cancel₀ card_classGroup_ne_zero]
   · intro h
-    rw [if_neg h, mul_zero]
+    rw [ite_eq_right h, mul_zero]
 
 theorem isPartialZeta_zetaOfClassInv (C : ClassGroup (𝓞 F)) :
     GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.IsPartialZeta C (zetaOfClassInv C) := by
@@ -119,9 +119,9 @@ theorem isPartialZeta_zetaOfClassInv (C : ClassGroup (𝓞 F)) :
   rw [e]
   constructor
   · intro h
-    rw [if_pos h.symm, inv_mul_cancel₀ card_classGroup_ne_zero]
+    rw [ite_eq_left h.symm, inv_mul_cancel₀ card_classGroup_ne_zero]
   · intro h
-    rw [if_neg (Ne.symm h), mul_zero]
+    rw [ite_eq_right (Ne.symm h), mul_zero]
 
 theorem functionalEquation_classHecke [IsTotallyReal F] (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ)
     (D : (Ideal (𝓞 F))⁰) (hD : (D : Ideal (𝓞 F)) = differentIdeal ℤ (𝓞 F))
@@ -137,20 +137,100 @@ theorem functionalEquation_classHecke [IsTotallyReal F] (ψ : AddChar (Additive 
   rw [← hD, coeff_classHecke ψ _ (nonZeroDivisors.coe_ne_zero D)] at h
   exact h
 
-end GlobalTheory.CompanionTheory.Hypotheses₂
+open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization
 
-theorem GlobalTheory.CompanionTheory.Hypotheses₂.partialZetaFunctionalEquation : GlobalTheory.Published.PartialZetaFunctionalEquation := by
-  intro F _ _ _ C C' D hD hC
-  refine ⟨GlobalTheory.CompanionTheory.Hypotheses₂.zetaOfClass C, GlobalTheory.CompanionTheory.Hypotheses₂.zetaOfClassInv C',
-    GlobalTheory.CompanionTheory.Hypotheses₂.isPartialZeta_zetaOfClass C, GlobalTheory.CompanionTheory.Hypotheses₂.isPartialZeta_zetaOfClassInv C', fun s h1 h2 => ?_⟩
-  rw [GlobalTheory.CompanionTheory.Hypotheses₂.zetaOfClass, GlobalTheory.CompanionTheory.Hypotheses₂.zetaOfClassInv, Finset.mul_sum, Finset.mul_sum]
+/-- The Tate-completed ideal-class partial zeta function, including the removable Gamma poles. -/
+def completedZetaOfClass (C : ClassGroup (𝓞 F)) (s : ℂ) : ℂ :=
+  ∑ ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ,
+    ((Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * ψ (Additive.ofMul C⁻¹)) * (classHecke ψ).completedLFunction s
+
+private theorem classHecke_neg (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ) :
+    classHecke (-ψ) = (classHecke ψ)⁻¹ := by
+  ext x
+  change (-ψ) _ = (((classCircle ψ (IdeleClassGroup.toClassGroup x))⁻¹ : Circle) : ℂ)
+  rw [Circle.coe_inv, coe_classCircle, AddChar.neg_apply]
+  exact AddChar.map_neg_eq_inv _ _
+
+theorem completedZetaOfClass_eq (C : ClassGroup (𝓞 F)) {s : ℂ} (hs : classGamma F s ≠ 0) :
+    completedZetaOfClass C s = (dF F : ℂ) ^ (s / 2) * classGamma F s * zetaOfClass C s := by
+  rw [completedZetaOfClass, zetaOfClass, Finset.mul_sum]
   refine Finset.sum_congr rfl fun ψ _ => ?_
-  have h := GlobalTheory.CompanionTheory.Hypotheses₂.functionalEquation_classHecke ψ D hD s h1 h2
+  have hU := standardOpenSubgroup_le_ker ψ
+  rw [(classHecke ψ).completedLFunction_eq_mul_continuedLFunction (by rwa [classGamma_eq _ hU]),
+    classGamma_eq _ hU, discrNormConductor_eq_dF_of_unramified F _ hU]
+  ring
+
+private theorem classHecke_normPole (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ)
+    {s : ℂ} (hs0 : s ≠ 0) (hs1 : s ≠ 1) {τ : ℝ}
+    (hτ : ∀ x : IdeleGroup F,
+      ((classHecke ψ).toIdele x : ℂ) = ((ideleModule F x : ℝ) : ℂ) ^ ((τ : ℂ) * Complex.I)) :
+    s ≠ -((τ : ℂ) * Complex.I) ∧ s ≠ 1 - (τ : ℂ) * Complex.I := by
+  let w : InfinitePlace F := Classical.arbitrary _
+  have hs : ∀ t : {x : ℝ // 0 < x}, (classHecke ψ).toIdele (moduleSection w t) = 1 :=
+    fun t => MonoidHom.mem_ker.1 (standardOpenSubgroup_le_ker ψ (moduleSection_mem_standardOpenSubgroup w t))
+  have h0 := archExponent_unique w (classHecke ψ) (τ := 0) (fun t => by simp [hs t])
+  have hτ0 : τ = 0 := (archExponent_eq_of_forall hτ w).symm.trans h0
+  simpa [hτ0] using And.intro hs0 hs1
+
+theorem analyticAt_completedZetaOfClass (C : ClassGroup (𝓞 F)) {s : ℂ}
+    (hs0 : s ≠ 0) (hs1 : s ≠ 1) : AnalyticAt ℂ (completedZetaOfClass C) s := by
+  let U := {z : ℂ | z ≠ 0} ∩ {z : ℂ | z ≠ 1}
+  have hU : IsOpen U := isOpen_ne.inter isOpen_ne
+  apply DifferentiableOn.analyticAt (s := U) _ (hU.mem_nhds ⟨hs0, hs1⟩)
+  apply DifferentiableOn.fun_sum
+  intro ψ _
+  apply DifferentiableOn.const_mul
+  intro z hz
+  by_cases h : ∃ τ : ℝ, ∀ x : IdeleGroup F,
+      ((classHecke ψ).toIdele x : ℂ) = ((ideleModule F x : ℝ) : ℂ) ^ ((τ : ℂ) * Complex.I)
+  · obtain ⟨τ, hτ⟩ := h
+    obtain ⟨h0, h1⟩ := classHecke_normPole ψ hz.1 hz.2 hτ
+    exact (HeckeCharacter.differentiableAt_completedLFunction_of_forall hτ h0 h1).differentiableWithinAt
+  · exact ((classHecke ψ).differentiable_completedLFunction h).differentiableOn _ hz
+
+theorem completedZetaOfClass_functionalEquation (C C' : ClassGroup (𝓞 F)) (D : (Ideal (𝓞 F))⁰)
+    (hD : (D : Ideal (𝓞 F)) = differentIdeal ℤ (𝓞 F)) (hC : C * C' = ClassGroup.mk0 D)
+    (s : ℂ) (hs0 : s ≠ 0) (hs1 : s ≠ 1) :
+    completedZetaOfClass C s = completedZetaOfClass C' (1 - s) := by
+  classical
+  unfold completedZetaOfClass
+  refine Fintype.sum_equiv (Equiv.neg _) _ _ fun ψ => ?_
+  have hU := standardOpenSubgroup_le_ker ψ
+  have h := (classHecke ψ).completedLFunction_eq_rootNumber_mul (s := s)
+    fun _ hτ => classHecke_normPole ψ hs0 hs1 hτ
+  rw [rootNumber_eq_coeff_different F _ hU, ← hD, coeff_classHecke ψ _ (nonZeroDivisors.coe_ne_zero D)] at h
   have e : ψ (Additive.ofMul C⁻¹) * ψ (Additive.ofMul (ClassGroup.mk0 D)) = ψ (Additive.ofMul C') := by
     rw [← AddChar.map_add_eq_mul, ← ofMul_mul, ← hC, inv_mul_cancel_left]
-  calc _ = ((Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * ψ (Additive.ofMul C⁻¹)) *
-        ((GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF F : ℂ) ^ (s / 2) * Complex.Gammaℝ s ^ Module.finrank ℚ F *
-          (GlobalTheory.CompanionTheory.PartialZeta.classHecke ψ).continuedLFunction s) := by ring
-    _ = _ := by
-      rw [h, ← e]
-      ring
+  change _ = (_ * (-ψ) _) * (classHecke (-ψ)).completedLFunction (1 - s)
+  rw [classHecke_neg, h]
+  simp only [AddChar.neg_apply, ← ofMul_inv, inv_inv]
+  rw [← e]
+  ring
+
+/-- The ideal-class functional equation with the archimedean factors of the actual signature. -/
+theorem partialZetaFunctionalEquation_signature (C C' : ClassGroup (𝓞 F)) (D : (Ideal (𝓞 F))⁰)
+    (hD : (D : Ideal (𝓞 F)) = differentIdeal ℤ (𝓞 F)) (hC : C * C' = ClassGroup.mk0 D) :
+    ∃ Z Z' : ℂ → ℂ, IsPartialZeta C Z ∧ IsPartialZeta C' Z' ∧
+      ∀ s : ℂ, classGamma F s ≠ 0 → classGamma F (1 - s) ≠ 0 →
+        (dF F : ℂ) ^ (s / 2) * classGamma F s * Z s =
+          (dF F : ℂ) ^ ((1 - s) / 2) * classGamma F (1 - s) * Z' (1 - s) := by
+  refine ⟨zetaOfClass C, zetaOfClass C', isPartialZeta_zetaOfClass C, isPartialZeta_zetaOfClass C',
+    fun s hs ht => ?_⟩
+  have h0 : s ≠ 0 := fun h => hs (h ▸ classGamma_zero F)
+  have h1 : s ≠ 1 := by rintro rfl; simp [classGamma_zero] at ht
+  rw [← completedZetaOfClass_eq C hs, ← completedZetaOfClass_eq C' ht]
+  exact completedZetaOfClass_functionalEquation C C' D hD hC s h0 h1
+
+theorem partialZetaFunctionalEquation : GlobalTheory.Published.PartialZetaFunctionalEquation := by
+  intro F _ _ _ C C' D hD hC
+  obtain ⟨Z, Z', hZ, hZ', h⟩ := partialZetaFunctionalEquation_signature C C' D hD hC
+  refine ⟨Z, Z', hZ, hZ', fun s hs ht => ?_⟩
+  have nz (t : ℂ) (h : ∀ n : ℕ, t ≠ -2 * n) : classGamma F t ≠ 0 := by
+    rw [classGamma_of_totallyReal]
+    apply pow_ne_zero
+    intro h0
+    obtain ⟨n, hn⟩ := Complex.Gammaℝ_eq_zero_iff.mp h0
+    exact h n (by simpa using hn)
+  simpa only [classGamma_of_totallyReal] using h s (nz s hs) (nz (1 - s) ht)
+
+end GlobalTheory.CompanionTheory.Hypotheses₂

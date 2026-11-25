@@ -34,21 +34,52 @@ theorem infiniteParams_eq_zero {F : Type*} [Field F] [NumberField F] (χ : Hecke
     hχ (infiniteEmbedding_mem_standardOpenSubgroup w a)
   simp [HeckeCharacter.infiniteComponent_apply, h]
 
+open NumberField.InfinitePlace
+
+/-- The archimedean factor for ordinary ideal classes of any number field. -/
+noncomputable def classGamma (F : Type*) [Field F] [NumberField F] (s : ℂ) : ℂ :=
+  Complex.Gammaℝ s ^ nrRealPlaces F * Complex.Gammaℂ s ^ nrComplexPlaces F
+
+variable {F : Type*} [Field F] [NumberField F]
+
+theorem classGamma_eq (χ : HeckeCharacter F) (hχ : standardOpenSubgroup F ≤ χ.toIdele.ker)
+    (s : ℂ) : χ.gammaFactor s = classGamma F s := by
+  classical
+  rw [HeckeCharacter.gammaFactor, InfinitePlace.prod_eq_prod_mul_prod]
+  have h (w : InfinitePlace F) : χ.infiniteGamma w s =
+      if w.IsReal then Complex.Gammaℝ s else Complex.Gammaℂ s := by
+    simp [HeckeCharacter.infiniteGamma, HeckeCharacter.infiniteWeight, HeckeCharacter.infiniteTau,
+      infiniteParams_eq_zero χ hχ w]
+  simp_rw [h]
+  have hr (w : {w : InfinitePlace F // w.IsReal}) :
+      (if w.val.IsReal then Complex.Gammaℝ s else Complex.Gammaℂ s) = Complex.Gammaℝ s :=
+    ite_eq_left w.property
+  have hc (w : {w : InfinitePlace F // w.IsComplex}) :
+      (if w.val.IsReal then Complex.Gammaℝ s else Complex.Gammaℂ s) = Complex.Gammaℂ s :=
+    ite_eq_right (InfinitePlace.not_isReal_iff_isComplex.mpr w.property)
+  simp_rw [hr, hc]
+  simp [classGamma, nrRealPlaces, nrComplexPlaces]
+
+theorem classGamma_of_totallyReal [IsTotallyReal F] (s : ℂ) :
+    classGamma F s = Complex.Gammaℝ s ^ Module.finrank ℚ F := by
+  have h := InfinitePlace.card_add_two_mul_card_eq_rank F
+  simpa [classGamma, IsTotallyReal.nrComplexPlaces_eq_zero] using
+    congrArg (fun n : ℕ => Complex.Gammaℝ s ^ n) h
+
+theorem classGamma_zero (F : Type*) [Field F] [NumberField F] : classGamma F 0 = 0 := by
+  have hr : Complex.Gammaℝ 0 = 0 := Complex.Gammaℝ_eq_zero_iff.mpr ⟨0, by norm_num⟩
+  have hc : Complex.Gammaℂ 0 = 0 := by simp [Complex.Gammaℂ]
+  have h := InfinitePlace.card_add_two_mul_card_eq_rank F
+  have hpos : 0 < Module.finrank ℚ F := Module.finrank_pos
+  by_cases hr0 : nrRealPlaces F = 0
+  · have hc0 : nrComplexPlaces F ≠ 0 := by omega
+    simp [classGamma, hr, hc, hr0, hc0]
+  · simp [classGamma, hr, hr0]
+
 theorem gammaFactor_eq_of_unramified : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (χ : HeckeCharacter F), standardOpenSubgroup F ≤ χ.toIdele.ker →
     ∀ s : ℂ, χ.gammaFactor s = Complex.Gammaℝ s ^ Module.finrank ℚ F := by
   intro F _ _ _ χ hχ s
-  have hw : ∀ w : InfinitePlace F, χ.infiniteGamma w s = Complex.Gammaℝ s := fun w ↦ by
-    have hr : w.IsReal := IsTotallyReal.isReal w
-    have hp := infiniteParams_eq_zero χ hχ w
-    simp [HeckeCharacter.infiniteGamma, hr, HeckeCharacter.infiniteTau,
-      HeckeCharacter.infiniteWeight, hp]
-  have hcard : Fintype.card (InfinitePlace F) = Module.finrank ℚ F := by
-    have h1 := InfinitePlace.card_add_two_mul_card_eq_rank F
-    have h2 := InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces F
-    have h3 := IsTotallyReal.nrComplexPlaces_eq_zero F
-    omega
-  rw [HeckeCharacter.gammaFactor, Finset.prod_congr rfl fun w _ ↦ hw w, Finset.prod_const,
-    Finset.card_univ, hcard]
+  rw [classGamma_eq χ hχ, classGamma_of_totallyReal]
 
 end GlobalTheory.CompanionTheory.PartialZeta
