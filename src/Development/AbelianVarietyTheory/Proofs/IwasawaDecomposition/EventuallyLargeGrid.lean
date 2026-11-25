@@ -48,7 +48,7 @@ namespace GlobalTheory.Mem.LiteralAutomorphy
 theorem evLgG_gridA_of_exGrid : ExGrid → ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → EvLgG (GridA CF) := by
   classical
   intro h
-  obtain ⟨CF0, hCF⟩ := h
+  obtain ⟨CF0, hCF⟩ := h.single_algebraic_witness
   refine ⟨CF0, fun CF hC => ?_⟩
   refine ⟨1 / 100, by norm_num, fun eps C8 C5 c6 Cb _ _ _ _ => ?_⟩
   obtain ⟨x₀, hx⟩ := hCF eps CF hC
@@ -57,21 +57,18 @@ theorem evLgG_gridA_of_exGrid : ExGrid → ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF →
   have hS := fun (P : Pre) (f : Fr P) (Ξ : Set (Formalism.L2.Host.HChar P.host.E)) (hΞ : Ξ.Finite) =>
     hx K.s hKe hKx P f Ξ hΞ
   refine ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅,
-    fun P f _ _ Ξ => if hΞ : Ξ.Finite then Classical.choose (hS P f Ξ hΞ) else ∅, ?_, ?_, ?_⟩
+    fun P f _ _ Ξ => if hΞ : Ξ.Finite then {Classical.choose (hS P f Ξ hΞ)} else ∅, ?_, ?_, ?_⟩
   · intro B f F z hz
     simp at hz
   · intro B f F F₀ Ξ z hz
     by_cases hΞ : Ξ.Finite
-    · simp only [dif_pos hΞ] at hz
-      exact (Classical.choose_spec (hS B f Ξ hΞ)).1 z hz
-    · simp [dif_neg hΞ] at hz
+    · simp only [dite_eq_left hΞ, Finset.mem_singleton] at hz
+      exact hz.symm ▸ (Classical.choose_spec (hS B f Ξ hΞ)).1
+    · simp [hΞ] at hz
   · intro B f T _ hHas _ _ C W V S N G
     have hfin := (GlobalTheory.Mem.Top.TwFin.tw_fin B f T).1
     have hspec := (Classical.choose_spec (hS B.toPre f (T.set f) hfin)).2
     refine hspec ⟨B, C, W, V, S, N, G⟩ f (T.set f) rfl HEq.rfl HEq.rfl ?_
-    intro z hz
-    have h2 := hHas.2 z
-    simp only [dif_pos hfin] at h2
-    exact h2 hz
+    exact hHas.2 _ (by simp [hfin])
 
 end GlobalTheory.Mem.LiteralAutomorphy

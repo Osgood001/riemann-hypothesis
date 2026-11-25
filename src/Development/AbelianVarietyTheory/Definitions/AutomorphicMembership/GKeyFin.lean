@@ -141,6 +141,42 @@ def ExGrid : Prop := ∃ CF0 : ℝ, ∀ ε CF : ℝ, CF0 ≤ CF → ∃ x₀ : �
     ∀ (X : Stages) (f' : Fr X.B.toPre) (Ξ' : Set (HChar X.B.host.E)), X.B.toPre = P → HEq f' f → HEq Ξ' Ξ →
       (∀ z ∈ S, z ∈ Set.range X.toD7.what₂.embLL) → GridAt s CF X f' Ξ'
 
+open IntermediateField in
+/-- A finite collection of algebraic tests for membership in a complex subfield
+can be replaced by a single algebraic test. -/
+private theorem exists_single_algebraic_test (S : Finset ℂ)
+    (hS : ∀ z ∈ S, IsAlgebraic ℚ z) :
+    ∃ a : ℂ, IsAlgebraic ℚ a ∧
+      ∀ L : Subfield ℂ, a ∈ L ↔ ∀ z ∈ S, z ∈ L := by
+  let K := adjoin ℚ (S : Set ℂ)
+  let : FiniteDimensional ℚ K := finiteDimensional_adjoin fun z hz => (hS z hz).isIntegral
+  obtain ⟨a, ha⟩ := Field.exists_primitive_element ℚ K
+  have hK : adjoin ℚ {(a : ℂ)} = K := by
+    rw [← lift_adjoin_simple ℚ K a, ha, lift_top]
+  refine ⟨a, IntermediateField.isAlgebraic_iff.mp (Algebra.IsAlgebraic.isAlgebraic a), fun L => ?_⟩
+  let F : IntermediateField ℚ ℂ := L.toIntermediateField (fun q => SubfieldClass.ratCast_mem L q)
+  change (a : ℂ) ∈ F ↔ (S : Set ℂ) ⊆ F
+  rw [← adjoin_simple_le_iff, hK]
+  exact adjoin_le_iff
+
+/-- For each finite character set one algebraic number suffices for all compatible stages.
+This is a test for membership in the coefficient field, not a bound on the size of the grid. -/
+theorem ExGrid.single_algebraic_witness (h : ExGrid) :
+    ∃ CF0 : ℝ, ∀ ε CF : ℝ, CF0 ≤ CF → ∃ x₀ : ℝ, ∀ s : Scale, s.eps = ε → x₀ ≤ s.x →
+      ∀ (P : Pre) (f : Fr P) (Ξ : Set (HChar P.host.E)), Ξ.Finite →
+        ∃ a : ℂ, IsAlgebraic ℚ a ∧
+          ∀ (X : Stages) (f' : Fr X.B.toPre) (Ξ' : Set (HChar X.B.host.E)),
+            X.B.toPre = P → HEq f' f → HEq Ξ' Ξ →
+              a ∈ Set.range X.toD7.what₂.embLL → GridAt s CF X f' Ξ' := by
+  obtain ⟨CF0, hCF⟩ := h
+  refine ⟨CF0, fun ε CF hCF0 => ?_⟩
+  obtain ⟨x₀, hx⟩ := hCF ε CF hCF0
+  refine ⟨x₀, fun s hε hs P f Ξ hΞ => ?_⟩
+  obtain ⟨S, hS, hgrid⟩ := hx s hε hs P f Ξ hΞ
+  obtain ⟨a, ha, hmem⟩ := exists_single_algebraic_test S hS
+  exact ⟨a, ha, fun X f' Ξ' hP hf hΞ' haX =>
+    hgrid X f' Ξ' hP hf hΞ' ((hmem X.toD7.what₂.embLL.fieldRange).mp haX)⟩
+
 def GridA (CF : ℝ) : AtP := fun K B f T => ∀ (C : Cols B) (W : RowsRest B C) (V : DivStage B C W) (S : SStage B C W)
   (N : NStage B C W) (G : GJStage B C), GridAt K.s CF ⟨B, C, W, V, S, N, G⟩ f (T.set f)
 
