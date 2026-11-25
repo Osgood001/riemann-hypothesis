@@ -53,4 +53,24 @@ theorem bilinForm_bijective_of_nondegenerate_mod (X : Type) [AddCommGroup X] [Mo
   simp only [LinearMap.smul_apply, smul_eq_mul] at hy
   exact mul_left_cancel₀ (by exact_mod_cast hk.ne') hy
 
+
+/-- Testing saturation at prime levels suffices to identify a unimodular integral form. -/
+theorem bilinForm_bijective_of_nondegenerate_mod_prime (X : Type) [AddCommGroup X] [Module.Free ℤ X]
+    [Module.Finite ℤ X] (E : LinearMap.BilinForm ℤ X)
+    (h : ∀ (p : ℕ) (a : X), p.Prime → (∀ b, (p : ℤ) ∣ E a b) → ∃ a', a = (p : ℤ) • a') :
+    Function.Bijective E := by
+  apply bilinForm_bijective_of_nondegenerate_mod
+  intro k
+  induction k using induction_on_primes with
+  | zero => simp
+  | one => simp
+  | prime_mul p k hp ih =>
+    intro a hpk hd
+    have hp0 : (p : ℤ) ≠ 0 := by exact_mod_cast hp.ne_zero
+    obtain ⟨x, rfl⟩ := h p a hp fun b => dvd_trans (by simp) (hd b)
+    obtain ⟨y, rfl⟩ := ih x (Nat.pos_of_mul_pos_left hpk) fun b => by
+      simpa only [Nat.cast_mul, map_smul, LinearMap.smul_apply, smul_eq_mul,
+        mul_dvd_mul_iff_left hp0] using hd b
+    exact ⟨y, by rw [Nat.cast_mul, mul_smul]⟩
+
 end GlobalTheory

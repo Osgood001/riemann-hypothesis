@@ -48,8 +48,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
-theorem thetaUnifAV_of_laws :
-    Out.CubeSt → Out.MulNSt → Out.WeilSt → Out.WeilNondegSt → Out.GlobalSectionsRankAlgClosed → ThetaUnifAV := by
+/-- Prime-level Weil nondegeneracy over ℂ suffices for complex theta uniformization. -/
+theorem thetaUnifAV_of_prime_laws :
+    Out.CubeSt → Out.MulNSt → Out.WeilSt → (∀ P, WeilNondegAtPrimes P) → Out.GlobalSectionsRankAlgClosed → ThetaUnifAV := by
   intro hcube hmul hpair hnd hsec
   have hval := @valAt'_rules
   have hvalaff := @existsUnique_point_of_ringHom
@@ -76,8 +77,10 @@ theorem thetaUnifAV_of_laws :
     @hlocframe @hglobframe @hautfactor hahform
   have hthg := @ThetaGroupFrame.thetaGrp_in_frame hval hholprod
   have hweil := @WeilExp.weilIs_exp_riemannForm hpair hval hvalext hsmred hthg
-  have hunimod := @bilinForm_bijective_of_nondegenerate_mod
-  have hperf := @riemannForm_bijective_of_weilNondeg hnd hunimod hweil
+  have hperf := fun (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g)
+      (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (Ef : LinearMap.BilinForm ℤ u.Λ) hc =>
+    riemannForm_bijective_of_weilNondegAtPrimes P u Ef (hnd P)
+      (fun p hp a b => hweil P u Hm χ Ef hc p a b 1 hp.pos)
   have hsecfn := @sections_pow_theta_functions hval hvalext hsmred
   have hfshift := @fourierCoeff_unitCube_translate_of_entire_periodic
   have hfvan := @entire_periodic_eq_zero_of_fourierCoeff_eq_zero hfshift
@@ -89,5 +92,11 @@ theorem thetaUnifAV_of_laws :
   have hisah := @isAH_of_polarisation hval hpos hindep hsecfn
   have hseconto := @ThetaOnto.theta_from_section hval hdim hindep hsecfn
   exact thetaUnifAV_of_parts hexp htan hendo hframe hweil hperf hsecfn hseconto hisah
+
+theorem thetaUnifAV_of_laws :
+    Out.CubeSt → Out.MulNSt → Out.WeilSt → Out.WeilNondegSt → Out.GlobalSectionsRankAlgClosed → ThetaUnifAV := by
+  intro hcube hmul hpair hnd
+  exact thetaUnifAV_of_prime_laws hcube hmul hpair
+    (fun P p hp => hnd ℂ P p (by exact_mod_cast hp.ne_zero))
 
 end GlobalTheory
