@@ -12,20 +12,15 @@ private lemma pderiv_td_succ_le {σ : Type u_1} (i : σ) (q : MvPolynomial σ Co
     (h : MvPolynomial.pderiv i q ≠ 0) :
     (MvPolynomial.pderiv i q).totalDegree + 1 ≤ q.totalDegree := by
   classical
-  have hne : (MvPolynomial.pderiv i q).support.Nonempty := by
-    rwa [Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]
-  obtain ⟨m, hm, hmax⟩ :=
-    Finset.exists_mem_eq_sup _ hne (fun s : σ →₀ ℕ => s.sum fun _ e => e)
-  have hc : AddMonoidAlgebra.coeff q (m + Finsupp.single i 1) ≠ 0 := by
-    intro h0
-    have h1 := MvPolynomial.mem_support_iff.mp hm
-    rw [MvPolynomial.coeff_pderiv, h0, zero_mul] at h1
-    exact h1 rfl
-  have hle := MvPolynomial.le_totalDegree (MvPolynomial.mem_support_iff.mpr hc)
-  rw [Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl),
-    Finsupp.sum_single_index rfl] at hle
-  rw [MvPolynomial.totalDegree, hmax]
-  exact hle
+  have hdeg : (MvPolynomial.pderiv i q * MvPolynomial.X i).totalDegree ≤ q.totalDegree := by
+    apply MvPolynomial.totalDegree_le_of_support_subset
+    rw [MvPolynomial.support_mul_X]
+    intro m hm
+    obtain ⟨s, hs, rfl⟩ := Finset.mem_map.mp hm
+    rw [MvPolynomial.mem_support_iff, MvPolynomial.coeff_pderiv] at hs
+    exact MvPolynomial.mem_support_iff.mpr (left_ne_zero_of_mul hs)
+  rwa [MvPolynomial.totalDegree_mul_of_isDomain h (MvPolynomial.X_ne_zero i),
+    MvPolynomial.totalDegree_X] at hdeg
 
 theorem goal1 :
   ∀ {σ : Type u_1} (i : σ) (q L : MvPolynomial.{u_1, 0} σ Complex),
@@ -37,10 +32,8 @@ theorem goal1 :
       (MvPolynomial.totalDegree.{0, u_1} q) := by
   intro σ i q L hL
   by_cases h : MvPolynomial.pderiv i q = 0
-  · rw [h, zero_mul, MvPolynomial.totalDegree_zero]
-    exact Nat.zero_le _
-  · have hk := pderiv_td_succ_le i q h
-    refine (MvPolynomial.totalDegree_mul _ _).trans ?_
-    omega
+  · simp [h]
+  · exact (MvPolynomial.totalDegree_mul _ _).trans
+      ((Nat.add_le_add_left hL _).trans (pderiv_td_succ_le i q h))
 
 end Bl.PartialDerivativeDegree
