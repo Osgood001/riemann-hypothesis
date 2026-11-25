@@ -50,40 +50,61 @@ open IsDedekindDomain NumberField
 
 namespace GlobalTheory.LevelChars
 
+private def killSubgroupEquiv {G : Type*} [CommGroup G] (H : Subgroup G) :
+    {ψ : G →* ℂˣ | H ≤ ψ.ker} ≃ (G ⧸ H →* ℂˣ) :=
+  (Equiv.subtypeEquivRight fun ψ ↦ by
+    change H ≤ ψ.ker ↔ ψ ∈ (MonoidHom.domRestrictHom H ℂˣ).ker
+    simp [MonoidHom.mem_ker, MonoidHom.domRestrict_eq_one_iff, IsConcreteLE.le_iff]).trans
+    (MonoidHom.domRestrictHomKerEquiv ℂˣ H).toEquiv
+
+/-- The characters trivial on a finite-index subgroup are as numerous as its cosets. -/
+theorem card_chars {G : Type*} [CommGroup G] (H : Subgroup G) [H.FiniteIndex] :
+    Nat.card {ψ : G →* ℂˣ | H ≤ ψ.ker} = H.index := by
+  have : Finite (G ⧸ H) := Subgroup.finite_quotient_of_finiteIndex
+  exact (Nat.card_congr (killSubgroupEquiv H)).trans
+    (CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity (G ⧸ H) ℂ)
+
 theorem finite_chars {G : Type} [CommGroup G] (H : Subgroup G) [H.FiniteIndex] :
     {ψ : G →* ℂˣ | H ≤ ψ.ker}.Finite := by
-  classical
-  have : Finite (G ⧸ H) := Subgroup.finite_quotient_of_finiteIndex
-  have : NeZero (Nat.card (G ⧸ H)) := ⟨Nat.card_pos.ne'⟩
-  let f : {ψ : G →* ℂˣ | H ≤ ψ.ker} → (G ⧸ H → rootsOfUnity (Nat.card (G ⧸ H)) ℂ) := fun ψ q =>
-    ⟨QuotientGroup.lift H ψ.1 ψ.2 q, by
-      rw [mem_rootsOfUnity, ← map_pow, pow_card_eq_one', map_one]⟩
-  have hf : Function.Injective f := by
-    rintro ⟨ψ, hψ⟩ ⟨ψ', hψ'⟩ h
-    refine Subtype.ext (MonoidHom.ext fun g => ?_)
-    have := congrArg (fun F => ((F (QuotientGroup.mk g) : rootsOfUnity _ ℂ) : ℂˣ)) h
-    simpa [f] using this
-  exact Set.finite_coe_iff.1 (Finite.of_injective f hf)
+  apply Set.finite_coe_iff.mp
+  apply Nat.finite_of_card_ne_zero
+  rw [card_chars H]
+  exact Subgroup.FiniteIndex.index_ne_zero
 
-theorem heckeFin_of
-    (hA : ∀ (L : Type) [Field L] [NumberField L] (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ) (ψ : Formalism.L2.Host.HChar L),
-      (∀ k : Lˣ, ψ.inf k = 1) → (∀ v, v ∉ S → ψ.UnrAt v) → (∀ v ∈ S, ψ.LevelLe v N) → ∀ a ∈ levSub L S N, ψ.1 a = 1)
-    (hC : ∀ (L : Type) [Field L] [NumberField L] (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ), S.Finite →
-      ((Units.map (algebraMap L (AdeleRing (𝓞 L) L)).toMonoidHom).range ⊔ levSub L S N).FiniteIndex) :
-    ∀ (L : Type) [Field L] [NumberField L] (I : Type) [Fintype I] (φ : I → L →+* ℂ) (n : I → ℤ)
-    (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ), S.Finite →
-    {χ : Formalism.L2.Host.HChar L | χ.HasInf φ n ∧ (∀ v, v ∉ S → χ.UnrAt v) ∧ ∀ v ∈ S, χ.LevelLe v N}.Finite := by
-  intro L _ _ I _ φ n S N hS
-  classical
-  rcases Set.eq_empty_or_nonempty {χ : Formalism.L2.Host.HChar L | χ.HasInf φ n ∧ (∀ v, v ∉ S → χ.UnrAt v) ∧
-    ∀ v ∈ S, χ.LevelLe v N} with h | ⟨χ0, hχ0⟩
-  · rw [h]; exact Set.finite_empty
-  have := hC L S N hS
-  refine ((finite_chars ((Units.map (algebraMap L (AdeleRing (𝓞 L) L)).toMonoidHom).range ⊔ levSub L S N)).preimage (f := fun χ : Formalism.L2.Host.HChar L => (χ * χ0⁻¹).1)
-    (fun χ _ χ' _ h => mul_right_cancel (Subtype.ext h))).subset ?_
-  intro χ hχ
-  show _ ≤ MonoidHom.ker _
-  refine sup_le ?_ fun a ha => MonoidHom.mem_ker.2 (hA L S N (χ * χ0⁻¹) (fun k => ?_) (fun v hv x hx => ?_) (fun v hv x hx hle => ?_) a ha)
+/-- A family of distinct characters with ratios trivial on a subgroup has at most the
+index of the subgroup many members. -/
+theorem finite_card_le_index_of_charRatios {G : Type} {A : Type*} [CommGroup G]
+    (H : Subgroup G) [H.FiniteIndex] (S : Set A) (ψ : A → G →* ℂˣ)
+    (hψ : Function.Injective ψ)
+    (h : ∀ a ∈ S, ∀ b ∈ S, H ≤ (ψ a * (ψ b)⁻¹).ker) :
+    S.Finite ∧ Nat.card S ≤ H.index := by
+  rcases S.eq_empty_or_nonempty with rfl | ⟨a₀, ha₀⟩
+  · simp
+  let ratio : S → {χ : G →* ℂˣ | H ≤ χ.ker} :=
+    fun a ↦ ⟨ψ a * (ψ a₀)⁻¹, h a a.property a₀ ha₀⟩
+  have hinj : Function.Injective ratio := fun a b hab ↦
+    Subtype.ext (hψ (mul_right_cancel (congrArg Subtype.val hab)))
+  have := (finite_chars H).to_subtype
+  refine ⟨Set.finite_coe_iff.mp (Finite.of_injective ratio hinj), ?_⟩
+  calc
+    Nat.card S ≤ Nat.card {χ : G →* ℂˣ | H ≤ χ.ker} :=
+      Nat.card_le_card_of_injective ratio hinj
+    _ = H.index := card_chars H
+
+/-- Two Hecke characters with the same infinity type and conductor bounds agree on
+the principal idèles and the prescribed level subgroup. -/
+theorem raySubgroup_le_ker_ratio
+    {L : Type} [Field L] [NumberField L] {I : Type} [Fintype I]
+    {φ : I → L →+* ℂ} {n : I → ℤ} {S : Set (HeightOneSpectrum (𝓞 L))} {N : ℕ}
+    (hA : ∀ ψ : Formalism.L2.Host.HChar L, (∀ k : Lˣ, ψ.inf k = 1) →
+      (∀ v, v ∉ S → ψ.UnrAt v) → (∀ v ∈ S, ψ.LevelLe v N) →
+      ∀ a ∈ levSub L S N, ψ.1 a = 1)
+    {χ χ0 : Formalism.L2.Host.HChar L}
+    (hχ : χ.HasInf φ n ∧ (∀ v, v ∉ S → χ.UnrAt v) ∧ ∀ v ∈ S, χ.LevelLe v N)
+    (hχ0 : χ0.HasInf φ n ∧ (∀ v, v ∉ S → χ0.UnrAt v) ∧ ∀ v ∈ S, χ0.LevelLe v N) :
+    (Units.map (algebraMap L (AdeleRing (𝓞 L) L)).toMonoidHom).range ⊔ levSub L S N ≤
+      ((χ * χ0⁻¹).1).ker := by
+  refine sup_le ?_ fun a ha => MonoidHom.mem_ker.2 (hA (χ * χ0⁻¹) (fun k => ?_) (fun v hv x hx => ?_) (fun v hv x hx hle => ?_) a ha)
   · rintro _ ⟨k, rfl⟩
     exact MonoidHom.mem_ker.2 ((χ * χ0⁻¹).2.2 k)
   · have e : χ.inf k = χ0.inf k := Units.ext ((hχ.1 k).trans (hχ0.1 k).symm)
@@ -92,5 +113,33 @@ theorem heckeFin_of
     rw [hχ.2.1 v hv x hx, hχ0.2.1 v hv x hx, inv_one, one_mul]
   · change χ.loc v x * (χ0.loc v x)⁻¹ = 1
     rw [hχ.2.2 v hv x hx hle, hχ0.2.2 v hv x hx hle, inv_one, one_mul]
+
+/-- Prescribing the infinity type and local conductor bounds leaves at most one
+character per dual character of the finite idele-class quotient. -/
+theorem heckeFin_card_le_of
+    (hA : ∀ (L : Type) [Field L] [NumberField L] (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ) (ψ : Formalism.L2.Host.HChar L),
+      (∀ k : Lˣ, ψ.inf k = 1) → (∀ v, v ∉ S → ψ.UnrAt v) → (∀ v ∈ S, ψ.LevelLe v N) → ∀ a ∈ levSub L S N, ψ.1 a = 1)
+    (hC : ∀ (L : Type) [Field L] [NumberField L] (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ), S.Finite →
+      ((Units.map (algebraMap L (AdeleRing (𝓞 L) L)).toMonoidHom).range ⊔ levSub L S N).FiniteIndex) :
+    ∀ (L : Type) [Field L] [NumberField L] (I : Type) [Fintype I] (φ : I → L →+* ℂ) (n : I → ℤ)
+    (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ), S.Finite →
+    {χ : Formalism.L2.Host.HChar L | χ.HasInf φ n ∧ (∀ v, v ∉ S → χ.UnrAt v) ∧ ∀ v ∈ S, χ.LevelLe v N}.Finite ∧
+    Nat.card {χ : Formalism.L2.Host.HChar L | χ.HasInf φ n ∧ (∀ v, v ∉ S → χ.UnrAt v) ∧ ∀ v ∈ S, χ.LevelLe v N} ≤
+      ((Units.map (algebraMap L (AdeleRing (𝓞 L) L)).toMonoidHom).range ⊔ levSub L S N).index := by
+  intro L _ _ I _ φ n S N hS
+  classical
+  have := hC L S N hS
+  refine finite_card_le_index_of_charRatios _ _ Subtype.val Subtype.val_injective ?_
+  exact fun _ hχ _ hχ0 ↦ raySubgroup_le_ker_ratio (hA L S N) hχ hχ0
+
+theorem heckeFin_of
+    (hA : ∀ (L : Type) [Field L] [NumberField L] (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ) (ψ : Formalism.L2.Host.HChar L),
+      (∀ k : Lˣ, ψ.inf k = 1) → (∀ v, v ∉ S → ψ.UnrAt v) → (∀ v ∈ S, ψ.LevelLe v N) → ∀ a ∈ levSub L S N, ψ.1 a = 1)
+    (hC : ∀ (L : Type) [Field L] [NumberField L] (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ), S.Finite →
+      ((Units.map (algebraMap L (AdeleRing (𝓞 L) L)).toMonoidHom).range ⊔ levSub L S N).FiniteIndex) :
+    ∀ (L : Type) [Field L] [NumberField L] (I : Type) [Fintype I] (φ : I → L →+* ℂ) (n : I → ℤ)
+    (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ), S.Finite →
+    {χ : Formalism.L2.Host.HChar L | χ.HasInf φ n ∧ (∀ v, v ∉ S → χ.UnrAt v) ∧ ∀ v ∈ S, χ.LevelLe v N}.Finite :=
+  fun L _ _ I _ φ n S N hS ↦ (heckeFin_card_le_of hA hC L I φ n S N hS).1
 
 end GlobalTheory.LevelChars
