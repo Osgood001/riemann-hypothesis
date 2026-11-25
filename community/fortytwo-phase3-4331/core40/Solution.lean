@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain MeasureTheory Measure Matrix GlobalTheory.Cusp
 
 theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
   intro E _ _ _ N
-  have pExp (u : ℝ) : posIdele (exp u) (exp_pos u) = infId E (expU fun _ => (u : ℂ)) := by
+  have pExp (u : ℝ) : posIdele (exp u) (exp_pos u) = infId E (expU fun _ => u) := by
     refine Units.ext $ Prod.ext ?_ ?_
     change _ = 1 - infEq E 1 + infEq E _
     simp
