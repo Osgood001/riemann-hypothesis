@@ -1,14 +1,42 @@
 {
   "core": 14,
-  "candidate": "core14-stockb17f2b0ca022",
+  "candidate": "core14-stockd6889ccc4538",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1102,
-  "local_normalized_tokens": 1671517,
+  "local_normalized_tokens": 1589269,
   "published_baseline_tokens": 3467872,
-  "proof_tree_sha256": "a142d649251b45c5494b0e8f6a8ba73df3b0ab71190125e12ae04f41fbc78376",
+  "proof_tree_sha256": "fee026d44d769207b1ea8316a09b08319944ba6147255f9081e9a2a0f09c096d",
   "modified_files": {
+    "Development/AbelianVarietyTheory/BlockTheory/DivisorBase/BlockEmbeddingFactors.lean": {
+      "before": "2b7e72fc14c8441b12d4ad6a6f486c5d26f3d4f0c1f8d17255dc2a72fd0e7978",
+      "after": "f1842eac7a7df0edc62e7b461b569116242fd115af4b749c71604ac62e3256e1"
+    },
+    "Development/AbelianVarietyTheory/BlockTheory/DivisorBase/CuspidalProductMultiplicity.lean": {
+      "before": "33e591936cfd9d23dc6b5d0ec2eb69361cf9b5b5b1f91dfc1b1828ae182cb7a4",
+      "after": "385118164f38ba291d6e1a292335b8dc185403e90bdf2c428f3e2eab6689eb8d"
+    },
+    "Development/AbelianVarietyTheory/BlockTheory/DivisorBase/GenericMultiplicityOne.lean": {
+      "before": "3bba36e3dbdb803797cc87694297506db193ef622ac384a6d56f9b457f76d92b",
+      "after": "95a217a0f6ca353286b0b2b6feccebefc99c3a5d6f73f2d0d360d3ddee3aafc8"
+    },
+    "Development/AbelianVarietyTheory/BlockTheory/ExistenceTori/AdmissibleHarmonicLattice.lean": {
+      "before": "603718323a537d0094b6560fde6dc5e24eab835021b5e2688f76791bcbf33255",
+      "after": "48ea36cb8a2b361e136dad5229100ec79d1520cad5e7876f5b633fa116536859"
+    },
+    "Development/AbelianVarietyTheory/BlockTheory/TorsionBlocks/SelfDualLatticeMass.lean": {
+      "before": "440027085e1f24f95bf63d5db1bdfab3a50a8891b7b3a07d2c2dd324af00fdbb",
+      "after": "43b90442e6f479139b1baf31884e2f8f356384f6d0a09bf8cbba90e19758e206"
+    },
+    "Development/AbelianVarietyTheory/Definitions/Foundations/IsHermND.lean": {
+      "before": "aa5e9b680667b45d8c0cf789ee3eca02553e2a8b7d261c23b8f5b98969cbcdd9",
+      "after": "536714ff6a85f90c2f91e1d26acbd9190bff941ddaf07bdd8f4094ad5f687b6f"
+    },
+    "Development/AbelianVarietyTheory/Definitions/Foundations/NormOneSevenOneTwo.lean": {
+      "before": "cb0cf271dc9f2bac637d0884a528026c91f9cf2e244e933c539653959eef801c",
+      "after": "1eec2988249b8657f31343675d5903961e42709a40d8c37494033deabe381c8f"
+    },
     "Development/AbelianVarietyTheory/Definitions/SemilocalFrames/AdaptSelf.lean": {
       "before": "d6b5eb53446b362a59db0635fb25a30f011976a7b40e964b3550386cc8b1c7b3",
       "after": "4b6fa48d0c9e997dfd11b35e7a1ba56803d14494931fb5c6e8dd1703c9d0b346"
@@ -25,9 +53,29 @@
       "before": "05c633d7e619d916d6041040f1a0fc0711da10bb31f42984cacd40631cb290a6",
       "after": "fad98c9fa22181bb2c0487e499a96ddaca3dd52c409e60fd83f607df938bc9bb"
     },
+    "Development/AbelianVarietyTheory/Proofs/CharacterTheory/AsAlgebraHomSurjectiveOfFinrankIntertwiningMapEq.lean": {
+      "before": "a643c56fddc7f6ee9ee127aef4cdebd7677b58ed35418f5c53a8bb42ab6ea141",
+      "after": "b0915441b3b759b549afdea664417a90f8011b05b6f1010d3f920bd6e0ab8f1e"
+    },
     "Development/AbelianVarietyTheory/Proofs/DivisorProofs/ChiIdemMulLvlIdemBaseNeZero.lean": {
       "before": "72ef9261e6b97fe2abaea2987ddee8465ec30a5fd2178f83737a8d295a7198b5",
       "after": "cad82b51ef1cb229314b606daaf51846f8c8dcec1b50b6d47163afb880f519a2"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenEqBotOfBlockCutCuspidal.lean": {
+      "before": "37f6f6d658ec36e1e32a48500011140a4d4c92960d74beccc576861f23f77aab",
+      "after": "c75e1b97bdf848af109b4a45acf9cbaa8413e25e426f31b856e08a4558582ba7"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenEqBotOfBlockCutCuspidalStatement.lean": {
+      "before": "8c24df7d3899fcf92c931beba594b175aea7aaa5a02b422d7c88222e47166d8b",
+      "after": "68a91b7529b480fe9854a9ea7cac0c845aa1fb59558e31a382f7f22500463d93"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenEqBotOfRootInUnipotentRadical.lean": {
+      "before": "3e3fd2bba54dd94073e15bd6c4d13d3bfbca63e37d0435a8d58f5ef1b666bb42",
+      "after": "aaf1e9be1ac1d45daef4b9c50cff59fe17b8b85f5cec28d23ee8855a0f7182a2"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenEqBotOfRootInUnipotentRadicalStatement.lean": {
+      "before": "bcab2b202b94d7f34774c00548d7a2085281fa5cc0b9720f925b71f84df91e48",
+      "after": "ba3e1eb125f5fbe8d5dce966d7e52989e80f2e462e853e59344fd73e10639013"
     },
     "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenSortingPermEqLeviWhittaker.lean": {
       "before": "8fea616da530d2e8f2a18ad1651c5d1c5d714d84d5114df4f395d3c7c03f5d28",
@@ -57,6 +105,14 @@
       "before": "7bcb10154f86b3b14e8bb3251f8b79e871e13c2d044a707e5e82802a64b344f0",
       "after": "ba61a4981b9c6453e0b34983db93de71585234815df0d13e24cd5599cbbc0933"
     },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/FinrankEigenCoindMackeyDoubleCosets.lean": {
+      "before": "5e9a8a26f27a0944fc61bfa4519319507d8d0171017c016b1f809f97f580bca1",
+      "after": "42e21b9d712cd72b6bf4f362686e4f7a8c1b7ed2a9c14c104e38ab0d7779ca89"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/FinrankEigenCoindMackeyDoubleCosetsStatement.lean": {
+      "before": "ec291dcc6555e1df962672523f46af8a3e267318050008c4343447222186b958",
+      "after": "5aa9cd22a69f742642efce0f39f8829c8aa9b694c3e998ea5e8def2f6015058f"
+    },
     "Development/AbelianVarietyTheory/Proofs/DivisorProofs/FinrankLeOne.lean": {
       "before": "fe4fb31aae3fe6863492dca88a72c243b2fdfd707f40191e9f3267edbb2f6689",
       "after": "11f82c7e01ead84c2e287e548fc134d77223b38e7051ba8b4c1dbe6f08955ec1"
@@ -64,6 +120,14 @@
     "Development/AbelianVarietyTheory/Proofs/DivisorProofs/GenericMultOneDimOf.lean": {
       "before": "9aba2add482d846cc0c7fa7e4d8b3e4a0859b1b8f9663d622495c9ec5faae1e3",
       "after": "90fc5e1cecc3bd2c7721d3cb8f2ad9f937710a45e884fbaced3c2fc46c97633a"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/GoodCharsGoodFamilyOfProductIrreducible.lean": {
+      "before": "97a87896ff249946eee5a3bbf4aa9be718193ed82228704a8a120ea1678143bd",
+      "after": "3aed39ffb1f6e930574149943be4edd3d6903486a35da3ae871ba4716796717c"
+    },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/GoodFamilyOfRealised.lean": {
+      "before": "0687cd462e91ef7780b180ed11dcedf13ebc018e979de6f0a0a4cabb8252914c",
+      "after": "e8c9d88acd2ea7c1f97a959776f1c312bfa18e4c90f1c0832f896aead2cb2b1e"
     },
     "Development/AbelianVarietyTheory/Proofs/DivisorProofs/HarishChandraInductionCuspidalParabolicProduct.lean": {
       "before": "517228fccdaecc30b0a11bacd2eb73db2f39b3106d1fc3eb634a11303aa7403d",
@@ -101,6 +165,10 @@
       "before": "a8d8c89f45e9cbea312704256bae9e6ad0ea4819324190d4ff7018a4e5bfbf80",
       "after": "6f5e39abc41d16138e0b814d65ed935f6e3de73ee252f2c91e8330e9387465ea"
     },
+    "Development/AbelianVarietyTheory/Proofs/DivisorProofs/SumCoeffChiIdemMul.lean": {
+      "before": "8aa683796f7ecb86d6704b359e4a36b50a7c5f4b524ac39b8e7ffdb8014a622e",
+      "after": "8b7a19f795960689ed6767ae99477d76a3dcf9d55db57a190a9d9a895be438ae"
+    },
     "Development/AbelianVarietyTheory/Proofs/DivisorProofs/WhittakerSpaceDimFiniteGLLeOne.lean": {
       "before": "3bc4ce85960fa2768993f041743a89a5e7dea9affeaa40b1d5c3920733df242a",
       "after": "89c05f119f5f5bfdeee85500abab4b61c04dc27a6fe9bff1a57e24c6ba576557"
@@ -137,6 +205,14 @@
       "before": "9144850774542b6502bcf2b90b2266ff5656723fa8ea0cf818c2e2b44a4027b3",
       "after": "4479088427ff6ed09d1f294b19ad1e84220a7faf017661e4f9f7729664f0e9dd"
     },
+    "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkEx.lean": {
+      "before": "6fdc823bb2c89b592eed275725eec5fae33abdc51de7488eb9fb6cb571536205",
+      "after": "ddbae0489d3a8b1f44dd7e65f3e1de4711d25c115e7edcf5081d21c85113bd82"
+    },
+    "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkG.lean": {
+      "before": "453c5c12ad62557cb798b927fa78fd1a01e78a9050330bbcb0ad97b6d36d5366",
+      "after": "1dfd21829b46a94e9fdb08f8b64073e89831bfbe3dcd2624a3e87b8c8c89ba98"
+    },
     "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkGl.lean": {
       "before": "f968ce06056ca8326be9b449b4717cab0f7d9e81354503b3427e928480816443",
       "after": "b8b804a7de69d19c697fcecb55abcde75c516c84dcb57a0c4683f2723c54bc10"
@@ -144,6 +220,10 @@
     "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkIRROfJoinEx.lean": {
       "before": "d0c01faabb00137b7e5dd217b9a7554a49deacfb8805aad506089a15fc392fc7",
       "after": "a35d21bc4857cd6657c1d313d71c3bf9aa0b6127f0e9a0cba73482d779182bd3"
+    },
+    "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/PrimesInProgressionsRelativeError.lean": {
+      "before": "a59b85fc19f7d28b434dc6c10442a69361116bf5eca0ee79c63c0a9823cc37e7",
+      "after": "43393b2dd4bfd6d389029d2137fa02ca35a13526f8d031eede90d882991a49a1"
     },
     "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/SelectionClosedOfWuDecay.lean": {
       "before": "816d157ea0926ba4d6c246238248b94902963e12b83249f4650dda0eb94bad1a",
@@ -161,6 +241,34 @@
       "before": "34267d1fb32812fab5a3d9a19ec2bcc1d41202b43a842dd7ba5b7083fb81f1d5",
       "after": "e771b3999debdb242a7a44e9c5b2bee83a62561ddae0dbee02b7ba34795ee79c"
     },
+    "Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/CayleyIndependent.lean": {
+      "before": "3d978c735537c3814398339a49dd2cc90fdb53c35f6d5f6611387cee34778b3a",
+      "after": "821877dea0fb92da7d56f2f3a00003b1cc6d4600e8946b8c035137f72cdef7ad"
+    },
+    "Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/HasLabelTransportEquiv.lean": {
+      "before": "3e2ae1c6b18c6a15f9b00c1ba6eac50d2ad61211fd9bb3d46a7797ba8f5adc27",
+      "after": "e3147784d214cf8bfee878fc6a765a81957cee1938ddfc490a006bf131c00651"
+    },
+    "Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/TwoBlockEqZeroIff.lean": {
+      "before": "16ea70feb40f26acf3fe64f1b46be1f5d133ea51c06725b96dadcf28d659744c",
+      "after": "42f0e3e7558ecfca207a75b3bffcd947db455fe39f7a3748a853ea72a537aa79"
+    },
+    "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/LogDerivSeriesOfExplicit.lean": {
+      "before": "27513e0fda72b38a8703d5608feb5f4f15b048ad297d93b845ba730ce23e0afe",
+      "after": "5b009621635872f507fba4ed51706b0c23fd8d8389ea73273f6c38bbf11671f9"
+    },
+    "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/PrimeIdealsCountingBounds.lean": {
+      "before": "973ae562f834e0e0f02d8e578806608743a2096ca6124a79f18cfa20ef53cdb2",
+      "after": "6bba970ceecc251a0ce15718ea169c6154964cfe9c5946923d3baa0ea2db908a"
+    },
+    "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/Psi0ZeroFreeRegionBound.lean": {
+      "before": "9b880d17346526ba2d32e20935c08e3c7e8134405c10b735f2e7108ba4c1b9a0",
+      "after": "b50b25bd8257abbe2802f54acde98b27523727f16482f64bd2313150adb70911"
+    },
+    "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/Psi0ZeroFreeRegionBoundStatement.lean": {
+      "before": "4323d27b915147695ced8ae60f5046a7ff95a21dbda3a357be8f246f75a031a0",
+      "after": "f039502b492b54e599644a8447f211a3df24f0d01a868b9fba0799cf9fa6e78e"
+    },
     "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/AdmissibleFalseIffFirstInvariant.lean": {
       "before": "9f7e54b58b5a50536ce5c63aa3c2a9746726ea289e54ee0f51a1263630e24c2a",
       "after": "ce0ac0ce86c2afa4a26af8eb36ca71ce19cee2bde147b7dfa082cbc55a4f8029"
@@ -169,9 +277,17 @@
       "before": "ee11a3ad5da00960b91d9a451045fb9ba334560c04a4989adf240ec67e6b478c",
       "after": "d98d0eeb0f239f1834050e0e0f1bc7634142bd73a02f54dfcc207c0dc01fe483"
     },
+    "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/ExistsNeZeroSmulMemOfMemSpan.lean": {
+      "before": "f852bc580bdb944d860882d3988c64108436576b55f58b248e7981085d51963e",
+      "after": "13f91a83d05044a64ea8b86f8f90c047832a24accb55045db13a424a855ffc49"
+    },
     "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/ExistsPowLeHalfPart.lean": {
       "before": "f6768ad9972a6a5f88bd24c8df0f8c07e259d969a5372b46aaaa6155dfc7cd25",
       "after": "9bbcb12f95d031d7d31b6198b7ae5740b8d981284791770f144d9599cf29f88c"
+    },
+    "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/DetEmbUnitriA.lean": {
+      "before": "854b9e3c0569ad1c6ec0200ee23cd6daf48663feb06bab9dcd2395c6f20fe20c",
+      "after": "7f310ed67c9cea46cd033c622c659033157a9907a6145a2de2e43f1b3156e3c2"
     },
     "Development/AutomorphicArithmetic/PrimitiveCosets/LevelGmLeOnFamilyScales.lean": {
       "before": "978ad99fd0d9e2dc25af57715030516195b629ccd9d5a114451fc5402f1d1426",
@@ -185,13 +301,33 @@
       "before": "c37a51fd244c4812302bf5d816a248e119ec9ed84089869752267ae741a61705",
       "after": "769fe2fbb932ec370ae8f21267be3e32c2705d8ef4485e98eb97174ed61ba189"
     },
+    "Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/TieTwRecOf.lean": {
+      "before": "00b92846fb1a8102b19931aef846216d96e7ccbda2e2e439968152d086cb5e4d",
+      "after": "1afd59284740ea0538703e25ac5d1e7e563706e66296c8b1d90aa251c3f18281"
+    },
     "Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/TopShape.lean": {
       "before": "9647d4cbe444f79de90c7a5371801e83c58a040499bf03fd61faf37be9e6eaa3",
       "after": "3ca71ad0cde1a36d2a57620d626bb13593ed8ccb2ed7db4e3b5de18616f619c5"
     },
+    "Formalism/HarderNarasimhan/FinalCor.lean": {
+      "before": "bf254838b816f6031062c44b3c1d0e2231a0e3c18a09bcc14c1b863976c89c3d",
+      "after": "f8de28d6ee20cdad54939a199281ef03e99ae927a2bd16a37f581a561af7ac70"
+    },
+    "Formalism/LocalToGlobal/Columns/TiedVal.lean": {
+      "before": "33bcb4270bfac761fd9ebdcfef0245f47dc8081d1bd9f2792a9d995ec53b060d",
+      "after": "2bc0fdc6c7883f7f1c2ac8d16d213e95ae427511ed0c6f62862d7a8f0e2b1a9f"
+    },
+    "Formalism/LocalToGlobal/Columns/TiedValRat.lean": {
+      "before": "4130645fbb18260fee58594919f25eba5b0c79a3945b44f54dd9020282fd217d",
+      "after": "fbe7825a62d8a0fc47ff4f90ba7f1390eb11c53bb2f4c9b22cffdb9cb946e76d"
+    },
     "Formalism/LocalToGlobal/Divisibility/DivisibilityRemainder/NoColumnCase/LvlWire.lean": {
       "before": "06d6c50dfe427dc392c567a2b05258c99ce691bf37db91a2a0ad30b8023673c8",
       "after": "184aa393692a82722b8f0c02d6ce9541a977751a35e28b979541bebf86205563"
+    },
+    "Formalism/LocalToGlobal/Divisibility/DivisibilityRemainder/RationalColumns/RationalFamilyRemainingClosed.lean": {
+      "before": "d60dc9df95107c59d283ee3149a066e40058ae4adcdd4e3c9c0a91aeb4b8b028",
+      "after": "df354a541f0725e860b1b1f5b00ad05531f5cce33e9ad3e92f773e98619baa71"
     },
     "Formalism/LocalToGlobal/Divisibility/DivisibilityRemainder/RemainderBounds/FinalAll.lean": {
       "before": "0db939b8dd6afe6515a8c2d2ef9f92eb2a6a416c42927a0780781f2a595dab59",
@@ -208,6 +344,18 @@
     "Formalism/LocalToGlobal/Divisibility/DivisibilityRemainder/ValueBounds/SlopeMaxB.lean": {
       "before": "5fc367c30a5c0739e688aa1cef55c5cc538b796bba8892a05e2e2c8ac90b83a5",
       "after": "64aafca0c7d4d018ca57bbb4f54361f2f390da3c257c012271d67ecf8cfbca69"
+    },
+    "Formalism/LocalToGlobal/Divisibility/QLocTied.lean": {
+      "before": "e44a9a8167fd064c86eda71929a8627289b85ffd1f4e2bdf287e401b0ce2b2b0",
+      "after": "a971844cc89934dd24900d74b7d4c3d709d05ce73412bcff542ee3a225728360"
+    },
+    "Formalism/LocalToGlobal/GlobalTheory/ActAllCancelInv.lean": {
+      "before": "714f262a0b66de34db95ba46e7f4949384dca0d8da683b47b0336cf515090662",
+      "after": "66286ee269049b63ade044d89b84475242d21da103cbad83ee2eecd86b82c9ae"
+    },
+    "Formalism/LocalToGlobal/GlobalTheory/CoordinateLengths/IsCrdExists.lean": {
+      "before": "fab4b138ae7efdb5496aa3b838aa409a8ec22abc68ee38692dcaba9252d71c55",
+      "after": "1e1aa7d76bd8408662179eceb5cf9ce44cf7981fbc1a91f9b4d37c02dc31307f"
     },
     "Formalism/LocalToGlobal/GlobalTheory/GL4/PClsTie.lean": {
       "before": "1beb72c61ac5c791dbfc36e9cc777d4661a71b136443fadca6711a8950eefa46",
@@ -237,6 +385,10 @@
       "before": "1892bdd833f036803ca1e1f40f21193b512342d08dd4429df3ccb7317cc218ba",
       "after": "4561bb74fe9e1aa5b4a226128f38e37dd82500eb051ac7d603ff4b0333bbc427"
     },
+    "Formalism/LocalToGlobal/GlobalTheory/GL6/AdmissibleStabilisersOfCompatibleForms.lean": {
+      "before": "02bbbbe412d914046572b2b8469846f6f3c6dd07003b8e2c24a9c095243a117f",
+      "after": "2cabc2cd8d2521d33066e4a269463eff75e01e16b83d4569ce53a7715f7a5f50"
+    },
     "Formalism/LocalToGlobal/GlobalTheory/GL6/CongruenceNoKernelOfLevelZeroIdentities.lean": {
       "before": "1f4b5ee3912494ce65e380c7b58e775699759d439b06482322489539355d19e6",
       "after": "d164a27f54b561d17641c1c82bf47ab80df815a1d7ea7df348e379d8e17e0375"
@@ -252,6 +404,14 @@
     "Formalism/LocalToGlobal/GlobalTheory/GL6/FrobeniusNoKernelOfHeckeRamified.lean": {
       "before": "e5b8db3a0e8a4e106d497a5670f3e6d5913cfaf6bf296108c69fd4352ea65062",
       "after": "ac98f7e279cc04063e47fb1898d02b7a6e8e728411a9ca4eb61cbe49aeb8901c"
+    },
+    "Formalism/LocalToGlobal/GlobalTheory/GL6/IntegralTensorBasisLinIndep.lean": {
+      "before": "b3663f882bef2c9cb1691beab5ce543079b36948d942cc900cc3170a41481715",
+      "after": "292d11a7bb9b5bf5f280ae9f9304ca3d9b9cd30c3898247ab7f1a9b480b159f0"
+    },
+    "Formalism/LocalToGlobal/GlobalTheory/GL6/LocalBasisChangeDecompCompatible.lean": {
+      "before": "03ae91fc06f62f414adce69fefd09ae8ceb149d3dfe55d3fa077b3876be361cb",
+      "after": "d4f03deb81588ca040fd4cef8b78c93e63de81381b6e5928c73937910474469d"
     },
     "Formalism/LocalToGlobal/GlobalTheory/GL6/PDnDil.lean": {
       "before": "3d02a37bd5bf018a2af2b3de5434e57c9308e862691976330764311fecb45335",
@@ -280,6 +440,14 @@
     "Formalism/LocalToGlobal/GlobalTheory/GL6/RndLinkAdmTOf.lean": {
       "before": "c5d0fe47a750a83860abd08b25c7a55e05b18fb18e73b9309d79fc45406ff9ab",
       "after": "21d1e66d706731d28a1a54f2caa03d53d014954451bbfc9341aedce0499ec6de"
+    },
+    "Formalism/LocalToGlobal/GlobalTheory/GL6/WeylLengthDiagonalUnitUniformiser.lean": {
+      "before": "36bfd42b3ebc6b066607c305d516bd497c545d2622acc0b62c7390bd72fdeff3",
+      "after": "1e717b8ceaedda6b9dad86608212d294b731d624fec70c545839204dd69b8ea3"
+    },
+    "Formalism/LocalToGlobal/GlobalTheory/NatInvMemIntW.lean": {
+      "before": "189beeb29348ac9dfeb9cf549af96791d6aa687b09dcee1fbc8ca2995e0ba64a",
+      "after": "844c6714221cef1b68504592b7f12c59cae9e5e7e4796b053c070917a23adf02"
     },
     "Formalism/LocalToGlobal/GlobalTheory/UnramifiedDiagonal/HeckeRamifiedZeroOfMatchingsAndDu.lean": {
       "before": "4630418ccc423555139bb86a469447deb7266d35deb9085fc50f65dfb6abcfa7",
@@ -321,6 +489,14 @@
       "before": "fe58b415d33faed718338295d742b776890e8a3322505cda36acd31a81e7d70b",
       "after": "70c2317ebb531c6b07278dc5f00803aecf7ab02560d7246216f7bb37703f4d15"
     },
+    "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/MRatSpanOf.lean": {
+      "before": "b3c2374b5917f7cf4752ed6a25fddfb14c3420c02e80b17462ffc3015bbdfbb6",
+      "after": "b0070f9fcab5e440697ccceac0d12bd3a16eb57b42b70b82626470d597f5a0ab"
+    },
+    "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/MRatSpanRec.lean": {
+      "before": "d855ebabcb1d7f02a2385e570aec87963308fd922cbbbc23fd93272e62d44550",
+      "after": "390fd669e20ce18da2f622ad2e5046bde3b45b93880bcc124858a14a77efc456"
+    },
     "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/RecAct.lean": {
       "before": "8ae6f30c13edefb946124d7378da21a4b5750e058caefbce591f62476c9155e9",
       "after": "79025be2de2f663ea22add41860f0b560d6a9cf12bad57e8bacd34c0c741ed24"
@@ -332,6 +508,26 @@
     "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/ValUniqOf.lean": {
       "before": "cb9ea4b54b169a25045a26e707d4c46a7e8eba5923e882f40f2908de7548b546",
       "after": "ca62b79fcf4ddc16b48485b9bd0dacc2beab7bdca35280f4bed0518a97574fd5"
+    },
+    "Formalism/LocalToGlobal/IndefiniteReal/DoubleCosetOperators/GoodPartLeTypeSubspace.lean": {
+      "before": "f4ae827f286a575be07ed4c73fd490ef544a7c0c63537a878c5f2b1602385319",
+      "after": "deac75303dd551df9ce6999e51b1954dcf3c052256b9daaa86964260a2aea8bc"
+    },
+    "Formalism/LocalToGlobal/IndefiniteReal/DoubleCosetOperators/HkCore.lean": {
+      "before": "464ff7f4d08acc0294f6ce6c9f25d520c3fc2bd92acafb648f73ce58c252a3bc",
+      "after": "ac28f109e8252918dc86b986882a8d00b51e971c8b5014240cf9b2c7b7ac1fc2"
+    },
+    "Formalism/LocalToGlobal/IndefiniteReal/DoubleCosetOperators/NHkRow.lean": {
+      "before": "9cedfcb232b7b1b4a2ad07a4f22a0979e74a07c5ca3d3bc3ff1ea3bfaa5fc699",
+      "after": "6c90b4d20a8bfb4a7560a0475b4719edc46ea0f62ead73ed0e177644dda66f9c"
+    },
+    "Formalism/LocalToGlobal/InpAtOf.lean": {
+      "before": "01d33e06ef19b4915a0abf8c5bd533f542135ee3a623b3ec5b9a5ebb1ab9cfcd",
+      "after": "1c5d2ffc89de925c1dd40901c540cbe01180ef2256bee1b3a7bf7206ede292c1"
+    },
+    "Formalism/LocalToGlobal/LatticeGeometry/GeometryDefinitions/PClassE.lean": {
+      "before": "254eb982c50877b84e9107e4256cd2553ae751a3e285dcdcd57fb87375a47cc8",
+      "after": "e7948498cf80ab444f84c29d9a59898e01ab2caedbc9a6078d8fe580f4a0f0ae"
     },
     "Formalism/LocalToGlobal/NormalizedHeckeFactors/BaseRowsEqRecordRows.lean": {
       "before": "8572ff706f2d0614a64d724316c41a197e44dc1d52c39a9fa60f2b3386fb1087",
@@ -356,6 +552,10 @@
     "Formalism/LocalToGlobal/NormalizedHeckeFactors/EtaClosed.lean": {
       "before": "fec24f5aa1d3960a9175d36753e5f88da21fd2c128e4f35e9f62333e21ab44fe",
       "after": "e5fe4c7f4dfefdd689f7d87aee9c0cbd2177f8fbb2f78992c2e780a427474b88"
+    },
+    "Formalism/LocalToGlobal/NormalizedHeckeFactors/ExtNRowsGen.lean": {
+      "before": "4b3d69fdce17e42c1258c5f737ade0e0178870964d39e8741c36e36a47124c4b",
+      "after": "c4ff0349090ccd6559f02da89367f169c56438b884066da324aacc850ce80f9e"
     },
     "Formalism/LocalToGlobal/NormalizedHeckeFactors/HostConj.lean": {
       "before": "656789a24e71c049b25ae95b563981cdce0535b8424becbdf8c6bed0229ed6ce",
@@ -405,9 +605,33 @@
       "before": "1bcf03b507f3d2a313d14835fbd6b9e804852f2c378e9418a7969ccbe4cc052c",
       "after": "a850c09244d4df099065cf06fcb24e7a56a36092bb81c07c24d30a83a2775a25"
     },
+    "Formalism/LocalToGlobal/TieTwRecOf.lean": {
+      "before": "be49baaca612a67e4ab2ade39e8cf896753a9f7e9822fdd355cf8cc2f72a5578",
+      "after": "25edf1eec2b924622f13cf601b52ca96c51901dd4ad25e93fd87a3605db94833"
+    },
     "Formalism/LocalToGlobal/Wire4F.lean": {
       "before": "51fa0c663340bea6bb3fe903acac9ee362fd72c37987400bdae5737da6395a0f",
       "after": "b7d78fb3aa09140abd0688e82d0ecfbef69a80eb429b8ed4cb57ececa4324fc8"
+    },
+    "Formalism/PeriodIntegrals/DivisionRowsRationalLattice.lean": {
+      "before": "6171d1175194f1147562bb8b0811a85c6675fd4ddb64d8497763bf2bd9c7aadf",
+      "after": "fc3df4f5996a15aa7a1aa5bf8713b62b00e1d5dfe12631b51b8aed9cf2ce74d3"
+    },
+    "Formalism/PeriodIntegrals/ExplicitFormulaCounts/DvConv.lean": {
+      "before": "3062590c7f41bf1abe13eb9f42cead4d6a5209d7ae19fc973b2c8fca9eed79b7",
+      "after": "d711a7923a772d1d8ec32730908d78a57083a0612a224ede8d2933949dcb91fa"
+    },
+    "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvFormEq.lean": {
+      "before": "da2bc379d061f8c0ef4363666724d07354fcf9254bd33089a1dadfd8c7e59929",
+      "after": "aa9c61603314aae1ea5ce57b32bae05a94766be341a8b99fd60f5f07fe2532a0"
+    },
+    "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvGLatHerm.lean": {
+      "before": "9a6758e74701656b3daeb0e6ba3678c9edcaa36f9470c0f3d4ee137d6860e127",
+      "after": "b3e82703cdf6fbc78151c0c0e672171caa899ba3371d83206d581322a0e715b8"
+    },
+    "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvGLatProj.lean": {
+      "before": "3243b8c35a50ac86b5cca41cf32c2737f744bece8b2a67e3de9c691784036a3a",
+      "after": "b8b4b6e84681470c2bdea3f1260cf50d954b1cce2f2034eb1e467a0cf8119417"
     },
     "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvIdxCalc.lean": {
       "before": "3c4fa9d35203136782c0e580678e51b2064cb15209f80931ff77c26a182d5fd1",
@@ -457,6 +681,10 @@
       "before": "1d7dd2e876d6740b54a1d0e37e6298322e54113d460718fe4b042a44d026c480",
       "after": "e8d9c22a84bd09773d0f6388240d90410a1efe4c704e924d9f1e14f0edc01d37"
     },
+    "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/GTScale.lean": {
+      "before": "4f0e3eb9019ecd97dda6b0f1def7cfadba99a14fb85f41ae48595e0127f01012",
+      "after": "dc203e2c166a792b97960d092e1360509a13b2b1e24b4d68e542644c135c7d76"
+    },
     "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/SchurFock.lean": {
       "before": "64a8905a3a8083382e6f7edb5403cb17be984df15c629967ef1a9c6bb0e82d16",
       "after": "291d08b8c79330f817a289d868ecd3b241f4a69fea4cdabccf63e615b0d364e7"
@@ -501,6 +729,10 @@
       "before": "61b038cfcf326c9179579d7c83813447841354c4c7823704b1aba9148e01cb54",
       "after": "8e05d2614c26419496d9850379533eed6131ab9531859bbd5834e039fdcd969d"
     },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/ExtremalFacts.lean": {
+      "before": "dd47c269c9f866709466e84c14484e20d3614a3803c04d46f8a113cf430815d6",
+      "after": "b1723f6c15517018f243450e0cb7822582f705327250ea90b53e30cdfd3e5ae1"
+    },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/ExtremalFactsProofA.lean": {
       "before": "09b5511846c286921969f4f7f95f3bbe09057233ccf21b60aadc611801fb5fdb",
       "after": "cf4f51fe09a5e43305fe3728093cdc2901565b33aaa04a034220dbdff44597d8"
@@ -544,6 +776,10 @@
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/AdjBase.lean": {
       "before": "bc1a0d5b182a79e75dafb5aee60793ad9990398e40cb45847a8854eb125f3522",
       "after": "adcdeb9b381551eb97198125d67a7d0130283fc4440551e98c5fc0da8721dd51"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/Assembly.lean": {
+      "before": "251a4638949abcf72c1aec063def035dcc27b971d61ecdf66c92748b76fa5916",
+      "after": "615568458c26852598c990c9721d65f53a225668e0cdebac02def6f51d68deac"
     },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/Capelli2_2.lean": {
       "before": "f3cd1c4a55fab84706271cc9d5a0fd4ad7a06888ea92d42d2c9b41a8d56726fd",
@@ -609,6 +845,10 @@
       "before": "6beeb8779e200cc174438ef822bffd67f8052c68a79c7167ccdcf20d76df4930",
       "after": "540b73c75d07bd4258610e9d6825648301c724333b5eb1d4ba6b60a36b9aa9b4"
     },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/LiftDefs.lean": {
+      "before": "a6c195ff7a1d096edb8aea928b8da2a8e4422eaee7dbac6b983f747982a05806",
+      "after": "102bef42d75642b5524f70209357977312dea3fc8f035dc624c3e956f6ce270f"
+    },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/LiftEqvDiv.lean": {
       "before": "61633af4d15069e1d1cd1890e39e5519cf6ea0dba27617baf8675dab23427059",
       "after": "30f1070553073aa9030663106a3876e443aa62241f8aec0d0eada6251483e861"
@@ -628,6 +868,10 @@
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/LiftTupleB.lean": {
       "before": "c78b08b148956e23599a1d1a0af5df4fb66104942f97e1593d410dcacebba92a",
       "after": "2edc8152c054f1fcf7c576cc7020f9bbfbeebc9c266e04ec360ca1bb4de93d38"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/LiftTupleC.lean": {
+      "before": "98b6f4825d99a69f7534ed00f5c775adb270b36b7f5bf214f7cab6e6290a4317",
+      "after": "c3a8776b0a4d62fb4ccf1c217bd40989a389fd0069af2fdd1ae8ae5bdc95d614"
     },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/LiftTupleE.lean": {
       "before": "73aaae4a4c43c021775ca2c6e44535738c71ba94e8322f868c465f3872487856",
@@ -649,6 +893,14 @@
       "before": "a2a46bc4c6a64d36e8e22173569fa03c30235285ce1b8e9ee969fc16072ad1d4",
       "after": "55aa2a644b1a947536f976fabf1709583a1891ae1c791788721a28dbf47d7596"
     },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/ZScalarVanish.lean": {
+      "before": "88a9d4fd1ef571c47801f8e700155446c40ace11f7d37c6d427cc1b4640b3d25",
+      "after": "b2993a51fc99736380de9904e13211c6249faba272b43a6638954c8753c286ce"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinTopCoefficient/CardEraseIccMin.lean": {
+      "before": "133e4cbfcf3dd953579cd30b34d70ef4af55f3fc10ea4a7f32a96dd60827a964",
+      "after": "97d3fa58ea19a38de7a16e0d1ee92157f6796c31ecadd721cedeb6ed721b8e86"
+    },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinTopCoefficient/InterlacingDefectEqCard.lean": {
       "before": "e5828ffc127577404d88edd3b537b77ae636426bf48dc72fbf232b8c4bdb1ced",
       "after": "3c4f864b04c09138d25915d4672e5dfd9344529c3da9e5bf112ac393216442bf"
@@ -656,6 +908,18 @@
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinTopCoefficient/NumMore.lean": {
       "before": "0b51b6f9543e19a99f46bff2f4e541408f6ee20b3738c55679f80013304b56e3",
       "after": "45af6bc1248eadbf92f40f5f4ccf4d0e047ecb541c5043523ff2af33c4195324"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/HermitianGroupLattices/AsAlgebraHomEG.lean": {
+      "before": "97efae316f72f5ad713da631daf1dcb4c84ff233f8d09d84cd89b52ca53adcb3",
+      "after": "8630b9ce4fb2e75cdca460b2d1d9fcab4799f0da138e7e4b74c7cc161b37c6dd"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/HermitianGroupLattices/IsCMFormEOf.lean": {
+      "before": "002563c8bfc9f9d906638215eeeb48f37cec1afe544e8165b118dd77fd94b4da",
+      "after": "65c111375d3e2df7561ecd70354068f0c9f4f92ec64301144169b4247d61ac32"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/HermitianGroupLattices/StarMapTraceOfPowEqOne.lean": {
+      "before": "a74c5bc3bf024a1808e51a774d9f222012f54d337cd4744374917d797a51445d",
+      "after": "fa1674a4951477be8f94c607f7147b10100a4a17cb2d07c8670aeba56866b98b"
     },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/LatticeIndexDeterminant/NegLogValuation.lean": {
       "before": "26da0bcf69d4845584c118d49105a3e08476cffc788a1ee5474008bc69e827d4",
@@ -681,6 +945,10 @@
       "before": "3a1abf7a59337591c538492dca190ec28a448635dcc473a6464fecbdfe6061fa",
       "after": "7c1187fec8962ed366eb98f56603567988f9a540052ab6613d8fcf5c47ee5301"
     },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionGramMatrices/AlgebraMapNeZeroOfNotMem.lean": {
+      "before": "c62f2be63e05729832836af0a1951482e490e51ea1dc124c847299c501b8e38a",
+      "after": "2e062141a83ce7a8dd89330f4ce5d6f09983ab7365039e56d86ab82121f966db"
+    },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionGramMatrices/DvProjGramOf.lean": {
       "before": "70c3514243bb53875de829c2be5374130c2d06b3454905f517ed44ab8b2835e0",
       "after": "1aaa39c58b417e8e9edf53a5f08cbd0d7548e2123916f56ee50b8bcea6383d38"
@@ -688,6 +956,26 @@
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionGramMatrices/IdxDet.lean": {
       "before": "6324dfa760484b0eb9bb5526fbd93ca9761688e9f06dcacd01c4127c57d4f3c2",
       "after": "3b01930342e2c61f4cbf300619811d09570e7e477c0b20ce7cc20a4bb196c39b"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionLattices/CGIntegral.lean": {
+      "before": "a97002f254f29332bca179e2b33f8d213ba505a5d98bb183b0ba07ff8ab34f84",
+      "after": "44ae449b4cc5f5def19c8945c16b210474befbee41b72837b8b056ad6aff2dd2"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionLattices/FinrankIntertw.lean": {
+      "before": "0e08ea78f5de8fb9eb64f38164522d4795e69372a3aa0570a014e6407bac3efc",
+      "after": "dc911f194f2ed143ea0cc08831d39d3c986d039a975ad8e65d25cb7f03de0f21"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionLattices/IsIntegralTraceOfPow.lean": {
+      "before": "ad92e4addb1ab6031dc9edf429a84dd996ef2cfa187ea61323d495d1242ab546",
+      "after": "b57aa35bd40a902ed6a768190f6c009d276f338494e9d2ec01a7898771337abc"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionLattices/MajAtZeroRight.lean": {
+      "before": "a87443d1dc25ec593088a3be208109fcb6fe36bbda834ad7d9cc309d142e5993",
+      "after": "e2dc54a904bf39a455ff3592ddd5f45c5264fb275c7015514154e14db80cbbbf"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionLattices/StarMapTraceOfPowEqOne.lean": {
+      "before": "3e26f81b1bed03f6aa8d5fd1e126e89bf777023129caf3bc1f2a2d5a3efbcdec",
+      "after": "e4d240f8206d24486070858280c97849e9c6a5bbd1b11541c54cfbca7f037943"
     },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionRows/Adapted.lean": {
       "before": "94f398e5c6a594e134f11ccfd20bb59ddb8a3dffb345d6850414f56f80f95f9e",
@@ -737,6 +1025,10 @@
       "before": "2071a65b49d5d7486f153ccdd1ac21bc47bbdda8331669c00da9fc18e2351e29",
       "after": "544ea85da06c4c6f565d799b3f4a023e0f18f9881d854659e103f895a81f6cc2"
     },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/RationalKernels/AsAlgApply.lean": {
+      "before": "17d13ccb0493ff4b36dca179886940e9e914c4308653690bdc4ce3cdedc02550",
+      "after": "dc11943297a73b8a302eefe81b22971e1effcd4f524945ccc642bb7968a419ba"
+    },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/RationalKernels/OfMulEps.lean": {
       "before": "6e5e5fb11eda7b537712f17c3cce4c06b4160fda214b43dc30f7843af15bb259",
       "after": "c632291b4faa5290677d81ee58e641b9d3e7c97381ea68f0b0eb8ceb1689564a"
@@ -749,9 +1041,17 @@
       "before": "573b2597e7d8d9bf89a92ae1d54e7c5c77b3c2b8291eb92fc7fb92a494a114d1",
       "after": "cfc9c50e08e5a514b7bd54308e401e0ce3b32113ee16d4a6cb945cb9ec01f027"
     },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/ConstructionB.lean": {
+      "before": "6129c05f69ac342e2bf41d5c0713a3634099e87324da37245f159fe043eed0a3",
+      "after": "0cbbd61c4a8b2dc6955edfaba0472df2f7a49064c5e15988c7c89be2586c1711"
+    },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/ConstructionC.lean": {
       "before": "b2bc72d38241b436bdd5bf2aa0860b2f3d85e2cd61b705f745230c71f3007436",
       "after": "701504ac2cdb452addbedc0467f13a18d7f8beef5e4d71df44c69075c5ded789"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/CrRowActRowAct.lean": {
+      "before": "58e6d679b2f60c1758d4f461764ed8df81c66c9c180c93ee8ee98775f3afc816",
+      "after": "500124e472d41fa73d6adf08182a01b2b7c692fd29a5afadccc38830babc20d4"
     },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/CzDiagUnitary.lean": {
       "before": "3f27ca4c867cdaad39c6172adc0066265d7db890b5a775376816e8b809e60d39",
@@ -760,6 +1060,18 @@
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/SchurFockOf.lean": {
       "before": "3a8e7de062f21af78d3fa029402d0cb54451d14425dc94b59a6ef410738bc7ee",
       "after": "2fd9e01fc419f84e501a8e5902ce1e73a75b8e2e62c0206237f62c5419c6b415"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TraceFormEquality/ExistsSumEqOne.lean": {
+      "before": "a0558c6a09541078952f7e36521a5fe24b63cd402e8b722da69649bb38c02f44",
+      "after": "a747d87ea680cf7ed9dcc09452863ed2c5f1326bd1d1dbd22a17bbd1a075060c"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TraceFormEquality/FormEqImage.lean": {
+      "before": "5f589162d17d5c9c99bbca4c9b0e8b8e55ccd716da41ae1c4a53f21f849a1d7c",
+      "after": "ef7d9f2d789ff2c26d4d6d5936543508abadef4777e29caec6064cbbc0fcd750"
+    },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/AsAlgebraHomMemSpan.lean": {
+      "before": "2a6e57fd85ad5ac5d59d49574f2149ec9cc980147ec6a285bc92eba864d92a43",
+      "after": "102d9936c4b6973cb22d6490ebe8e78f0b86e11fe2e1ec3248355f5060918357"
     },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/BlockHyp.lean": {
       "before": "0c81d56e15138dfd10b7392474d3419c6ecdce459a34f61971ce8f113c870454",
@@ -809,6 +1121,10 @@
       "before": "0c4bfcd5e8455c90dd125a4419879d2f60c3915da083d729f0baea7bbb186197",
       "after": "2f014336bea71b74990e3e0d9f9e385a8b0e33902cc3f4d7768cc98f07a6f4c5"
     },
+    "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/UnitPowerNormScale/NormUnitsZpowSq.lean": {
+      "before": "b5768659a9e7d7902632dfad79eff44cb3b2fae968b7c271c43edbdcf3bf4684",
+      "after": "8e26c26cb145b0d945c7065e2a14a64512be66c6e0fbe92cfce5791e161d936e"
+    },
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/UnramifiedSameDiagonal/DnDiaSame0FHolds.lean": {
       "before": "c752384cca5e47d4a8b216147d160e8c98136a12aefc4431518f038d3de90955",
       "after": "fd418b24a0a56ce2fe1efa2a23192813e8cbb584d99c2a3f603593e30d9fb56d"
@@ -816,6 +1132,22 @@
     "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/UnramifiedSameDiagonal/EqualDiagonalEntriesAll.lean": {
       "before": "c06a2ab3ae09cfa481bdccb1d8f03b5b71a88aafb371ca33c3a53cb63fbe63a9",
       "after": "beecd131d1ffacd2ae60a130a1c0afdf13eef4269330fe00b095a48aa9656bdf"
+    },
+    "Formalism/SharpRestriction/AdmissibleParameterJoins/DIVfromGLc.lean": {
+      "before": "23da997ae3e4da188d1625e9e1bd77d5b9d5b0bfbb33af55b833607401f820ca",
+      "after": "fed21f448bd2b0e89775ea454b4b2d98f5d4ea3b0935094c91d31e046671d0c9"
+    },
+    "Formalism/SharpRestriction/AdmissibleParameterJoins/DIVfromGLe.lean": {
+      "before": "a0d30fe155fd03b881fe6b5c43a0e4ec43c433353df121e3b2dabcdaa660c945",
+      "after": "483009745e64db4ac8c2465d1955165aa54b8b6c4acd49fc471744142b822d36"
+    },
+    "Formalism/SharpRestriction/AdmissibleParameterJoins/DIVfromGLf.lean": {
+      "before": "e68cc945489e3426e4e7e859ca1d2788a260bd1dcc0d99606f81d9a434bc58ee",
+      "after": "37c974eceffb9a80bb87db85f1751dd120c0e4e5fe911eba4297d70636ff2921"
+    },
+    "Formalism/SharpRestriction/AdmissibleParameterJoins/DIVfromGLn.lean": {
+      "before": "910e12e823a2bcc86cb50fc5c75799b4fdad91413ae3e3665dc0486a0f0d7cb0",
+      "after": "9358960d1c88248873feb61f6c53103da1709ece25afff08f762173402acb6a6"
     },
     "Formalism/SharpRestriction/AdmissibleParameterJoins/GandSl.lean": {
       "before": "d4f5d1fa92d69155754cbdbb4efa7f2e9afc893e301158625c5195a7534fcc78",
@@ -857,9 +1189,33 @@
       "before": "50a5772ad26bb88c9873d019df01b739d84777d73e6c44df0c6c4e8bc931993d",
       "after": "e2364a97165f8a36cdb802823116bb8cacc42dc88619c126785713aeb6482690"
     },
+    "Formalism/SharpRestriction/GlobalSchurBounds/AdmittedWeylDimension.lean": {
+      "before": "f94f154705cfdc54e40029527e07c962e979b7574349243afa652ef2e0e12ff4",
+      "after": "7411a174ddb4624de5378bfe8393f074ed6a423e98b3bfe4450cfa6937af6000"
+    },
     "Formalism/SharpRestriction/GlobalSchurBounds/AlgebraicJets.lean": {
       "before": "98dc19aefabea7d3449b91f142bf42c2641801b749025ad27395c99cd44a99ca",
       "after": "5d636899631a1ab26236082de232b856572152654fc149dc996eeb92ba282de2"
+    },
+    "Formalism/SharpRestriction/GlobalSchurBounds/GlobalRankLatticeProofs/CountHypothesesIffText.lean": {
+      "before": "b0708cabfe45bfa06a83b3d7151f9c79d5597ddfe1c3e16a7caccbc10e42d2a5",
+      "after": "031069278261a58ec9128e93fa66cac12ef111aeb1541f5077c98d8179f3ecd3"
+    },
+    "Formalism/SharpRestriction/GlobalSchurBounds/GlobalRankLatticeProofs/UnitTraceSumBounds/ClosedRankTiesFC2S.lean": {
+      "before": "e05793c4c485b62d3d8dc8c9f51c894d939103d5f3fe001df38731eb18a8ae11",
+      "after": "38cc9fd87dc8ad0ec8c6b722ab35f56461d1ce9d73db5881994e23335b9c4fce"
+    },
+    "Formalism/SharpRestriction/GlobalSchurBounds/GlobalRankLatticeProofs/UnitTraceSumBounds/LwAdmWeyl.lean": {
+      "before": "e950e198d51836f99cf70efdd5a2f160be4d0a064ecbd2539371da2d4fe69592",
+      "after": "b461b0bc17a5c55febf28645c12d417aa50007854afa2987165fa2714287dc9e"
+    },
+    "Formalism/SharpRestriction/GlobalSchurBounds/GlobalRankLatticeProofs/UnitTraceSumBounds/LwRankTies.lean": {
+      "before": "8482c6436c1bea01949e0ea7cad22c3f2ee994b6b9b2e10a3b5e0f450165e743",
+      "after": "591d96f6dfb1b4e5042e8c8a03af894aab06c2a1211770c49c5690901139abcc"
+    },
+    "Formalism/SharpRestriction/GlobalSchurBounds/GlobalRankLatticeProofs/UnitTraceSumBounds/RankConditionsOfLayerTwo.lean": {
+      "before": "9050905ee78909a2e01a8c530561b0245282246cc4111633db715037381078f1",
+      "after": "16f7a15d9c6376f9300d623c01229fdc9cfe0e8e2ced0f796d8f72e159b51eae"
     },
     "Formalism/SharpRestriction/GlobalSchurBounds/LogXLowerFamilyOfTheorems.lean": {
       "before": "bf2ecd34e87411e67f767c23b8c3ec6a62fcd34738138a63c326d58f12e5f431",
@@ -897,9 +1253,25 @@
       "before": "ef678ed9da3439c0d9706bd2c061c0b396a6e4c78d7bcf6854fb2db4647e2405",
       "after": "5333251067458d8378bbd121eff5720b207be74efe409e20402b570e5b5bfc59"
     },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/AnyAdj.lean": {
+      "before": "1f3f5500c5811af41b22e97de861983206ecac34b95543f31d382a954d3648db",
+      "after": "bdc40a751766c3917faa5bc8d733668e90b6f4aab16099194ea62b4c5358cbd4"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/AnyCap.lean": {
+      "before": "02b13329b45873047208c5f0a02c77098d08f3c83b33189cbac4de6d6f6a435f",
+      "after": "285414895ee0e9cfb8a3eee1d1205cf3e008c5dcb63b70a95ae1cc9a8422870d"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/AnyCapA.lean": {
+      "before": "f6a7b39c164bae2ff26c840c4b7732ca5f3362f5fd44795058a11181af4b99f8",
+      "after": "aab5b643da4070ea3cfd68996c7f688da6624423ad2fecbaf9319f4738fedd5f"
+    },
     "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/FunctA.lean": {
       "before": "6cc5c6e5698e6239958bb8a4df708e5690ef2932060312ba4877d8cd7708fd36",
       "after": "9c90b3e124e0e9993b21cfeb2b13e1be78c8208c20e237d5b4aa3d9e4069e0cd"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/InfCharData.lean": {
+      "before": "31e0267a61db4e0136e953efabd4494d36dc29c4cd4a3aab2087ed8155b768a6",
+      "after": "d85bf7901b7c66dd8282a50fcedee1201c5afa66e58ce3d0aa55aeb2c54c89e9"
     },
     "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/PsiFunct.lean": {
       "before": "5cb406459dfd1e6ad91114f52c769b73aa7d661c54dc0135b5034febdcda1675",
@@ -916,6 +1288,34 @@
     "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/SigZeroTop.lean": {
       "before": "8a7cbbebf384e66782785cb3ab1d44fa3d19846710c2feb90827d1f31c44cb11",
       "after": "c24b656474eb07a143dbfd56e4efa70fe420ebc1f52cfaeccad3eca0811bf841"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/ExceptionalGroupG2/ExistenceG2/AnyDec.lean": {
+      "before": "40ef3e122014c7cee4770737350a2e255e96617eb33046b75293b6108f2612a9",
+      "after": "91b2db1c47885c2c245eee0751b59999c8ed728b54cee00a6c6951a5ec93e52b"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/ExceptionalGroupG2/ExistenceG2/FinalExists.lean": {
+      "before": "c3d3ea18e9fc3e02ade8787a00ae24cc1f0ddec3aec933d7e02762b6c8da319a",
+      "after": "bcc84d84e7bec0da28227ae26bb7df23282c5fc84640278b921bf7d2cd3643cb"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/ExceptionalGroupG2/ExistenceG2/InfChar.lean": {
+      "before": "72bd7993d2618d83cd54a636fdb16588ce30bd226692c5533abee57ab56f0100",
+      "after": "2cf6458039803bd1236cd8c6406f494cb6e78edc26b3439ec02e0912c9f40328"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/ExceptionalGroupG2/HarishChandraMultiplicityBound.lean": {
+      "before": "7454ef32dc14079a62fdd2c179bc4f7ff49c5751a3817e1555c6942e393d47d2",
+      "after": "bcf520b7ae08993d51ddea4d2ce3d20103fdbf23a0c476e7374ba649f4f21e7c"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/FormalDegree/FdCons.lean": {
+      "before": "1904f3c702e2959098a72e2633cf671915927e5bff015341122daa64031f2c4f",
+      "after": "f7df3beb1d66dad7cb526db270d3559788890514143c161dc3ce009fb1701a96"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/HighestWeights/UniqueU.lean": {
+      "before": "3bb4bb8f06c0d6b31626d0ed1cd29d37d614fb127a7fe86b7b7076fb01d0b521",
+      "after": "f8259ce4f14773c86319c2aff7042b2ccdc9178d0609a8389a72cd7523f8a6cf"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/KTypeLemma/StdGapOfGapLap.lean": {
+      "before": "9f4cebf5f9a846c6a29bb081e9c084a2d08b4e3669c611edfa979b180d0532d1",
+      "after": "dfff2b16ee92c28198a9f6e8755d159fd456bbc5691eeb795a4fffed6ec200ce"
     },
     "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/LaplaceFoundations/NChart.lean": {
       "before": "778d6362839332e0c8be0eb01feb29a7dd7895c3e0fb537274cfcf5dfae432dc",
@@ -941,6 +1341,10 @@
       "before": "f4159300a3f8350a44970496501a7b395148ab274b072a6c3017158c93468f64",
       "after": "cefb66d3e7491cb29c7b906cbc3cd1edf85c910e60d2c2da73a33436d6247102"
     },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/ReproducingKernels/IntegralNormSqCoef.lean": {
+      "before": "2e83ca778ae0da0a4091bd2e0c58e2ad2328839f36f3c958e741d0955e5c595c",
+      "after": "f95d207e9edfeb7418f8865d51ce5744e30704f2fca79ea6b6cf304fa834170a"
+    },
     "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/ReproducingKernels/OneLeGN.lean": {
       "before": "56271912127523ecbc86dba930f3111920c0d2eedb024ff20bbd0a6723993eec",
       "after": "182ad5f334acbe18e337e923e79cb637f11c9641363036611aa52e547abe2151"
@@ -948,6 +1352,18 @@
     "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/ReproducingKernels/ProductBoundOfFactorBounds.lean": {
       "before": "7c7f434a414bbd2a8f81f503e2199ba859552e5e22c13349b9941fce57c32bdc",
       "after": "f0b40617fb817e44af4bad01374d3774099a6d0f53cd9305bb2a17f481171556"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/BesselIntegralSquareIntegrable.lean": {
+      "before": "cf13f6328005af809f1734d3b0d2df87fc2a49acec7940b371777f332f873a1e",
+      "after": "5af36cb63f2d9773356acf3a9ca925c009867685978de9641ee9794e4527d388"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/CayleyIndepA.lean": {
+      "before": "2ffe2959eae7f6838b2841ff9a21219dbb413cf8d932baf126ef5db7901772e4",
+      "after": "5e16ceb0a8e0258ba8cb4b9508e6cec0d7d60fb6f29e8e6140722ccc9732a75c"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/ClosedSubgroupsStatement.lean": {
+      "before": "a0d70746483add41c10fd108ad7de8e509d8b5e16265f7d7f3ae687a34e08212",
+      "after": "1b354a816656df9beaa4d00ba5adeffb87c7e119bf07072ad3fcd1f8d7836657"
     },
     "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/GapBigLap.lean": {
       "before": "5993bad383bf21f996189dec6ff6fce483d9650a835b9367c819150f202312d0",
@@ -957,9 +1373,21 @@
       "before": "0be56f58303db0124bcfdb7e3c72cf318666149a7a69f8dcc8e35bd37f6162e8",
       "after": "b24b8ccb39c6272f49492b01c0f6a15e669385efecbad8c2ad94ca57c9cf1c57"
     },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/Groups.lean": {
+      "before": "f7bae58d48c88088593e256a03050234f78e41bb3ddd38ce349c97f2974d9adc",
+      "after": "2b6592659e8a7c91d8d29720de18c2e56e55d88c59ac24aa751c8894bfb6741c"
+    },
     "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/HaarMap.lean": {
       "before": "92ee9482fcddc003b47a297aff77c5bd5c4373b10ff5cc84220ebcfb30a98bca",
       "after": "fe0d4ec979f649b1004d5fbb2459b7472036c50f473d9fa9c64f1c77862141c8"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/HaarUniq.lean": {
+      "before": "6dba534624a1ea02b306f2d6f8b03ca02f725849b8b71d143af4be06e79e25b7",
+      "after": "c893e28cafc633c905a78c9a1ef2d3f8e8cd52723970c3fa350d8e3a01df48c7"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/NonvanishingHypotheses.lean": {
+      "before": "d6d909a66125b49766ab2df8fe47fe4c7f97b344eda4225971934447ec323005",
+      "after": "78984c47a227893d2f036a0c39411707bc979c8b55ede6fcda26c83cf2afc82f"
     },
     "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/SchurB.lean": {
       "before": "340d2713c0f3713c1ecf6532287e6897be7c768630ab93968af8082ad7f26e9d",
@@ -976,10 +1404,14 @@
     "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/TransportInt.lean": {
       "before": "ca400f0b8a11abc282d9385b5e818309692f62f65f1b4f40225bfb4343e11205",
       "after": "b485cd75703c43786eee373a4f5317a8fbec9c213dfd99a18b12d1e9f6dc3206"
+    },
+    "ReciprocityTheory/ReductiveGroups/DiscreteSeries/MultiplicityOne/HermitianMeasures/OrbitIntegralAbsConvergent.lean": {
+      "before": "655dd6b961c2cd7caf2ab66000332e03947f9524b4e26368b30f5191005d534c",
+      "after": "e7f6f199f816c23a1beb76e371467d8df907af34d63e36b4c2751d5b4155baa0"
     }
   },
   "hosted_score": null,
-  "proof_id": "b17f2b0ca022c694e537755b0c9ba5878bd9a1e1208b4238dfabd9a69fd50afb",
+  "proof_id": "d6889ccc453842da20bb609baa5002f404325f6a9a775a3b7a102ecac226b78e",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "source_url": "https://github.com/tamnd/riemann-lean/tree/af705e0d9a5904326eb0693310e36d9484df7f8f/lean/src",
   "source_kind": "pinned_git_checkout",
@@ -2094,7 +2526,7 @@
       "model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
       "session": "1795516990-slot05-core14-1795531416790916000",
       "tool_call": "call_09ab19c6809345efac769c2d70d66a83_0",
-      "contribution": "Wrote and executed the declaration-pruning algorithm. The final source retains 228 exact edited files."
+      "contribution": "Wrote and executed the declaration-pruning algorithm. The final source retains 328 exact edited files."
     },
     "subsequent_checkpoint": {
       "session": "1795516990-slot06-core14-1795550352064101000",
@@ -2102,15 +2534,27 @@
       "contribution": "Selected the measured checkpoint carrying the earlier pruning edits."
     },
     "surviving_native_edited_sources": {
+      "Formalism/LocalToGlobal/InpAtOf.lean": "1c5d2ffc89de925c1dd40901c540cbe01180ef2256bee1b3a7bf7206ede292c1",
       "Formalism/LocalToGlobal/Wire4F.lean": "b7d78fb3aa09140abd0688e82d0ecfbef69a80eb429b8ed4cb57ececa4324fc8",
+      "Formalism/LocalToGlobal/TieTwRecOf.lean": "25edf1eec2b924622f13cf601b52ca96c51901dd4ad25e93fd87a3605db94833",
+      "Formalism/HarderNarasimhan/FinalCor.lean": "f8de28d6ee20cdad54939a199281ef03e99ae927a2bd16a37f581a561af7ac70",
       "Formalism/SharpRestriction/SmoothDesignExistence/LatticeIndexTer.lean": "e140fc417a0d2b686287fe62a94a9552c2b81bf11befdca01a296fff07325458",
       "Formalism/SharpRestriction/SmoothDesignExistence/FamilyLevelPrimeInputsOfSizes.lean": "291b21bd4a4abd13a09b8516b00da1c5b8560708c139e22c3137d12658cc1173",
+      "Formalism/SharpRestriction/AdmissibleParameterJoins/DIVfromGLe.lean": "483009745e64db4ac8c2465d1955165aa54b8b6c4acd49fc471744142b822d36",
+      "Formalism/SharpRestriction/AdmissibleParameterJoins/DIVfromGLc.lean": "fed21f448bd2b0e89775ea454b4b2d98f5d4ea3b0935094c91d31e046671d0c9",
+      "Formalism/SharpRestriction/AdmissibleParameterJoins/DIVfromGLn.lean": "9358960d1c88248873feb61f6c53103da1709ece25afff08f762173402acb6a6",
       "Formalism/SharpRestriction/AdmissibleParameterJoins/GandSl.lean": "86ecd36754a656b3227a4d10162d59fbdf045a9494abdbd80a379df9ba84c33a",
+      "Formalism/SharpRestriction/AdmissibleParameterJoins/DIVfromGLf.lean": "37c974eceffb9a80bb87db85f1751dd120c0e4e5fe911eba4297d70636ff2921",
+      "Formalism/SharpRestriction/GlobalSchurBounds/AdmittedWeylDimension.lean": "7411a174ddb4624de5378bfe8393f074ed6a423e98b3bfe4450cfa6937af6000",
       "Formalism/SharpRestriction/GlobalSchurBounds/TheoremThreeFamilyOfGappedMultiplicity.lean": "fdf04158308e8f776105962782ffb2d3d14655997b962db0c05afcef5695754e",
       "Formalism/SharpRestriction/GlobalSchurBounds/AlgebraicJets.lean": "5d636899631a1ab26236082de232b856572152654fc149dc996eeb92ba282de2",
       "Formalism/SharpRestriction/LevelLetterCocycles/ThetaScalarFamilyOfEigenvalue.lean": "530695ff48bbd39a01195534992eed694228b9bd1013b3f2e0523a9f8f88de40",
       "Formalism/SharpRestriction/CuspSpanNormBounds/FrobeniusCoefficientMemLp/MemLpFrobCoef.lean": "13d73d735764cc185541a813ebaecdeb7090e1d66022bc13bdd632acfb0db07d",
       "Formalism/SharpRestriction/CuspSpanNormBounds/FrobeniusCoefficientMemLp/DegIUp.lean": "a20e96cc94b13be920cd6f996eb8bb5200f76c9d27719b122ce21de200e24499",
+      "Formalism/SharpRestriction/GlobalSchurBounds/GlobalRankLatticeProofs/CountHypothesesIffText.lean": "031069278261a58ec9128e93fa66cac12ef111aeb1541f5077c98d8179f3ecd3",
+      "Formalism/SharpRestriction/GlobalSchurBounds/GlobalRankLatticeProofs/UnitTraceSumBounds/LwAdmWeyl.lean": "b461b0bc17a5c55febf28645c12d417aa50007854afa2987165fa2714287dc9e",
+      "Formalism/SharpRestriction/GlobalSchurBounds/GlobalRankLatticeProofs/UnitTraceSumBounds/ClosedRankTiesFC2S.lean": "38cc9fd87dc8ad0ec8c6b722ab35f56461d1ce9d73db5881994e23335b9c4fce",
+      "Formalism/SharpRestriction/GlobalSchurBounds/GlobalRankLatticeProofs/UnitTraceSumBounds/RankConditionsOfLayerTwo.lean": "16f7a15d9c6376f9300d623c01229fdc9cfe0e8e2ced0f796d8f72e159b51eae",
       "Formalism/SharpRestriction/RamificationFrobenius/TotientGaloisClasses/Landau.lean": "2757f593c0ed5cb1fde53a9a44cfe9ec723fdf1e55006b0f291e96f0a705b982",
       "Formalism/SharpRestriction/RamificationFrobenius/TotientGaloisClasses/TopDefs.lean": "ec4a8c28453585c779641c204a0dea171a83d19536edcb77277732a5c2589808",
       "Formalism/SharpRestriction/RamificationFrobenius/TotientGaloisClasses/TopWin.lean": "9d6f9ddebb5790328b35a354905d9f6edd984bf230e873c8a3b4df6c050571e2",
@@ -2119,16 +2563,21 @@
       "Formalism/SharpRestriction/Divisibility/ChainOperators/ClosedPartStatementHolds.lean": "c98945d17266417ae6b217a076c72c6213033a30085c993b2c98b387ae002a25",
       "Formalism/SharpRestriction/Divisibility/SlopeExcess/ExcSplitOfGMod.lean": "fd0b3a76cf6b4fe4c7d39de6a41775123ddc41a3ce50da9e7e14b06928698253",
       "Formalism/SharpRestriction/Divisibility/SlopeExcess/FamilyStatementOfScaledLemmas.lean": "885b1047471406eb7ca8ed500540b150b922579c6285c9904e04e7769725bd14",
+      "Formalism/PeriodIntegrals/ExplicitFormulaCounts/DvConv.lean": "d711a7923a772d1d8ec32730908d78a57083a0612a224ede8d2933949dcb91fa",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvTransfer.lean": "851b9a1e59eb08ba2f6de232de38bf668b7cd05b3f60988e89d2dc7a5a9a7e2e",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/GTBranch.lean": "c96111c9b6a20f8412f7bac5ee4064dbc45e620c4cfa1f3fff02dbd0a67b9f41",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvTransferIdx.lean": "eaceadb19a8b59b24f9302b648ac81aa5c2aeae8ffbe77aec537d7729fb28146",
+      "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvGLatProj.lean": "b8b4b6e84681470c2bdea3f1260cf50d954b1cce2f2034eb1e467a0cf8119417",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvProjA.lean": "4188cdb682c36c60f1695fb9e0f2034ba2e59dabf54931da49a0789fe25185a8",
+      "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvGLatHerm.lean": "b3e82703cdf6fbc78151c0c0e672171caa899ba3371d83206d581322a0e715b8",
+      "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvFormEq.lean": "aa9c61603314aae1ea5ce57b32bae05a94766be341a8b99fd60f5f07fe2532a0",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/SchurFock.lean": "291d08b8c79330f817a289d868ecd3b241f4a69fea4cdabccf63e615b0d364e7",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvIdxCalc.lean": "f37f4a564cf736662399e19d03b02f67f1ea5eeed346a04eaa31cab040db6d98",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/GTLower.lean": "e8d9c22a84bd09773d0f6388240d90410a1efe4c704e924d9f1e14f0edc01d37",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvProjC.lean": "240b9fee3a00644a7777703a69b66b979b003514acd0eeff2c2d12e17d46d23b",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvProjB.lean": "5e52903d3c11387441702044c65afe6174baee626af6a30b85ba22d9100f8e2a",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/GTCoefTop.lean": "4b5c004b9673f2349dac8c38d73b3e120fbc899a0192614bac7b7d5447759b65",
+      "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/GTScale.lean": "dc203e2c166a792b97960d092e1360509a13b2b1e24b4d68e542644c135c7d76",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvProjRows.lean": "609c81026b84583b060e17432b6edbb2e04c608b99e50c23e563609e396bbe96",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvRatKer.lean": "d970b02daaa299c990ede28e791229234a375f0edad39cd8a6134b1781deeb90",
       "Formalism/PeriodIntegrals/OrbitalBoundsConclusion/DvProjGram.lean": "fd8c564220946c591f27c4ca0e779f4ff5acc913469e6a6b5acc209ae3fcd030",
@@ -2145,12 +2594,15 @@
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/ConstructionIo.lean": "9b2b3588526495e22d97411729a67981d858e618a1bcc4ecfd65ff023fd5302c",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/LiftFock.lean": "ab84a0a0bc6fd33c91299188fda7f20d7c089d47d70d2405ca1439080f5420aa",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/Capelli2_2.lean": "be65abbd4e67e7a954ceeba59850a959b929f25c8518ba82b88bd78a12a8bcdc",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/ZScalarVanish.lean": "b2993a51fc99736380de9904e13211c6249faba272b43a6638954c8753c286ce",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/RowsZStrictMono.lean": "c88a783faab66bbf6f863af0aeda79d55ed7c79fe43a41a4c0e6a25897a1b271",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/LiftTupleB.lean": "2edc8152c054f1fcf7c576cc7020f9bbfbeebc9c266e04ec360ca1bb4de93d38",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/Assembly.lean": "615568458c26852598c990c9721d65f53a225668e0cdebac02def6f51d68deac",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/MultisetProdNormLeOne.lean": "5908233279f78dbe686f207a801fd57b83966eea2b93b365b66a4a98b005f39a",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/CapelliZ.lean": "b4500fc402016c5b4376c9ad7d15c63e6c237345b2754ec00d7759aa4694ea7e",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/AdjBase.lean": "adcdeb9b381551eb97198125d67a7d0130283fc4440551e98c5fc0da8721dd51",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/IoXiHw.lean": "e0bedccc93ec59389ff6a3d9a4145e68fad3338c220224b1c1ef2eae36a5f136",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/LiftTupleC.lean": "c3a8776b0a4d62fb4ccf1c217bd40989a389fd0069af2fdd1ae8ae5bdc95d614",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/LiftTuple.lean": "122ed2c135e8a836a3c453037ddd6d33d887361ac591c22adb61f39124964dd1",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/ConstructionXi.lean": "035f2272f065bd56cd2d26c65e6592c2c7665164a8e9585de25a6041222eff08",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinLowering/SqActMemNabla.lean": "55aa2a644b1a947536f976fabf1709583a1891ae1c791788721a28dbf47d7596",
@@ -2164,6 +2616,8 @@
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/MajorantVanishing/MajAtZeroRight.lean": "0b40bb8018bce33ec18b2f912810fee1fc6c5b2debb6ed15e105822201652a04",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/FormalDegreeGap/DimensionBoundOfGapUniform.lean": "46de0ab2b051e9d140012f39530899d00d6e4a848c8b7d856e2da5370ea5c7e0",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/FormalDegreeGap/DimensionFamilyOfWeylMultiplicity.lean": "3bb0db1bf38567f38576213436dbd57f9599440c68d4d770799c9cc7e85c88b8",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TraceFormEquality/FormEqImage.lean": "ef7d9f2d789ff2c26d4d6d5936543508abadef4777e29caec6064cbbc0fcd750",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TraceFormEquality/ExistsSumEqOne.lean": "a747d87ea680cf7ed9dcc09452863ed2c5f1326bd1d1dbd22a17bbd1a075060c",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionRows/Adapted.lean": "80c6830caf8ad5382119d26501f8f22ace5c50587a873279f3f3cf7e07303c0b",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionRows/ValLeOneOfMemRange.lean": "544ea85da06c4c6f565d799b3f4a023e0f18f9881d854659e103f895a81f6cc2",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionRows/MulVecInjectiveOfKer.lean": "b9405e131985ae3e71eb766b7485317bb3e9b92db063a41d8828c398af3c9f91",
@@ -2176,8 +2630,12 @@
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionRows/Pieces.lean": "719cec1d68f69da1f056480b99effe279ac7e1a271e9cc3347db57b6243094c3",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionRows/Development.lean": "40320d0493683860b1ba3aeac641295ed0dc83abb4c1864fa85dd136e60e56b6",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionRows/Pairing.lean": "b98a84ab6865cfe38530830f5a42631655e37e781ea7726e33535abe974a7383",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinTopCoefficient/CardEraseIccMin.lean": "97d3fa58ea19a38de7a16e0d1ee92157f6796c31ecadd721cedeb6ed721b8e86",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinTopCoefficient/NumMore.lean": "45af6bc1248eadbf92f40f5f4ccf4d0e047ecb541c5043523ff2af33c4195324",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinTopCoefficient/InterlacingDefectEqCard.lean": "3c4f864b04c09138d25915d4672e5dfd9344529c3da9e5bf112ac393216442bf",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/HermitianGroupLattices/AsAlgebraHomEG.lean": "8630b9ce4fb2e75cdca460b2d1d9fcab4799f0da138e7e4b74c7cc161b37c6dd",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/HermitianGroupLattices/IsCMFormEOf.lean": "65c111375d3e2df7561ecd70354068f0c9f4f92ec64301144169b4247d61ac32",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/HermitianGroupLattices/StarMapTraceOfPowEqOne.lean": "fa1674a4951477be8f94c607f7147b10100a4a17cb2d07c8670aeba56866b98b",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/RenameTauHomogB.lean": "7b65c8184cd3948105c5dac9c6db5e7df8e2c7988b42eb4e3b86f0e03842abfd",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/CoeffRowActDiagA.lean": "4296fa8b79ffb42dba315842236522d8bf623714f43f08bbb8caf3f772ec2560",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/ProdMkPtA.lean": "52e794c4fd9d1eab407062f06c90c8143ad484e32ae1c5f1d55f05a2f095cf66",
@@ -2191,21 +2649,32 @@
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/FockFRowActRight.lean": "e0a88bcd22d22cb3c221d5acf21e7b0aa2b082e18e71f20278090bdbea1ee6eb",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/FixedLineProofA.lean": "f2b631d914c44ca928a3d5ef69fe5f02002acddf86ef903c2c50b526760db1f8",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/ExtremalFactsProofA.lean": "cf4f51fe09a5e43305fe3728093cdc2901565b33aaa04a034220dbdff44597d8",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/ExtremalFacts.lean": "b1723f6c15517018f243450e0cb7822582f705327250ea90b53e30cdfd3e5ae1",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/GTBranchOf.lean": "fceea4f73849b4fee0f42ad7293d6a281fded68b593ed02c52a0e8a491ff8e21",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/ConstructionA.lean": "03479bc54384a7d3432d135989cc32107ea28f2e57aa6871775ba25121495f0b",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/GelfandTsetlinBranching/FockFEqSumOfSubsetB.lean": "14c1bd663db77e3dbb95d0694d5440ce490b754ca68a923a20bfed3e3d3e2ffa",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/UnramifiedSameDiagonal/EqualDiagonalEntriesAll.lean": "beecd131d1ffacd2ae60a130a1c0afdf13eef4269330fe00b095a48aa9656bdf",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/UnramifiedSameDiagonal/DnDiaSame0FHolds.lean": "fd418b24a0a56ce2fe1efa2a23192813e8cbb584d99c2a3f603593e30d9fb56d",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionLattices/CGIntegral.lean": "44ae449b4cc5f5def19c8945c16b210474befbee41b72837b8b056ad6aff2dd2",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionLattices/MajAtZeroRight.lean": "e2dc54a904bf39a455ff3592ddd5f45c5264fb275c7015514154e14db80cbbbf",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionLattices/IsIntegralTraceOfPow.lean": "b57aa35bd40a902ed6a768190f6c009d276f338494e9d2ec01a7898771337abc",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionLattices/FinrankIntertw.lean": "dc911f194f2ed143ea0cc08831d39d3c986d039a975ad8e65d25cb7f03de0f21",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionLattices/StarMapTraceOfPowEqOne.lean": "e4d240f8206d24486070858280c97849e9c6a5bbd1b11541c54cfbca7f037943",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionGramMatrices/AlgebraMapNeZeroOfNotMem.lean": "2e062141a83ce7a8dd89330f4ce5d6f09983ab7365039e56d86ab82121f966db",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionGramMatrices/IdxDet.lean": "3b01930342e2c61f4cbf300619811d09570e7e477c0b20ce7cc20a4bb196c39b",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/ProjectionGramMatrices/DvProjGramOf.lean": "1aaa39c58b417e8e9edf53a5f08cbd0d7548e2123916f56ee50b8bcea6383d38",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/UnitPowerNormScale/NormUnitsZpowSq.lean": "8e26c26cb145b0d945c7065e2a14a64512be66c6e0fbe92cfce5791e161d936e",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/ConstructionB.lean": "0cbbd61c4a8b2dc6955edfaba0472df2f7a49064c5e15988c7c89be2586c1711",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/ConstructionC.lean": "701504ac2cdb452addbedc0467f13a18d7f8beef5e4d71df44c69075c5ded789",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/CfEqSumOfSubset.lean": "b5135946f755d049588bf1fcac5671040690f09a3bbfe61fe2f960614e4369d6",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/CrRowActRowAct.lean": "500124e472d41fa73d6adf08182a01b2b7c692fd29a5afadccc38830babc20d4",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/CzDiagUnitary.lean": "d089f3f206c638f7a727245249270011f7e5dce307159aed240257f96cfcaba3",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/SchurFockOf.lean": "2fd9e01fc419f84e501a8e5902ce1e73a75b8e2e62c0206237f62c5419c6b415",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/SchurOrthogonality/ConstructionA.lean": "cfc9c50e08e5a514b7bd54308e401e0ce3b32113ee16d4a6cb945cb9ec01f027",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/LengthIndex/LenAtEqZero.lean": "56c7f606ece48629bebc8970d96167544f68ad688341631d75f2a705c5487d48",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/LengthIndex/MemDualLat.lean": "e5d32c3663b33844368c7c594d5ec5021eb5e57ff4a860e67193a59eb389edbf",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/LengthIndex/IdxEqLen.lean": "c4c0877031e1386442ea5b8c4bad6fbde41416bee118f1ed680f2373f4f924e1",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/RationalKernels/AsAlgApply.lean": "dc11943297a73b8a302eefe81b22971e1effcd4f524945ccc642bb7968a419ba",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/RationalKernels/OfMulEps.lean": "c632291b4faa5290677d81ee58e641b9d3e7c97381ea68f0b0eb8ceb1689564a",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/PerS.lean": "5d724b8399b818cf21735fbfd48809f6e97432c1b5e1a0911ee58ae1bada5242",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/BlockHyp.lean": "589782e1678bea818b48ea6601de8dae8e240a977bd5ac02e0d96501a85ae8a1",
@@ -2214,13 +2683,18 @@
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/GroupDataExists.lean": "ed961117b6443089254136583a6eb07f63f05eb60afc2f1ad59b7bcd9ca7828a",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/BlockMain.lean": "0737bbcd25b0046f5bd81d258c468bf43d8a77939952654800cfc9ac84eae791",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/SumIndexFormula.lean": "66424f4772a23f339468188461f319e81e014070376309332bb3a4c469470898",
+      "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/AsAlgebraHomMemSpan.lean": "102d9936c4b6973cb22d6490ebe8e78f0b86e11fe2e1ec3248355f5060918357",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/DvTransferIdxOfIdxCalc.lean": "cc04e4dafc4a880bd02f07f770bca0c1b2c81e19a0152fa54e0e1ee1dc24632e",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/DvTransferIdxOfIdx.lean": "4147959183cee524d28703eae39dc6aded2bef6a5d4484a9e16ac591f61faff1",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/DvTransferIdxOf.lean": "7fba0a3e64cda77fc6d28c0961a71e8bd8b96cb2c32c0ff4c88f563558586104",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/FinsumEqLogNorm.lean": "1c55834b7bd2d725500ae61491dc1f5e096da4ad4d8344083a79cd32eebe24b6",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/TransferIndices/MemOOfIsIntegral.lean": "fe305f73f1cc3c24d56e6cb65cf669960af40a5fb5fee7e81923d84741c48957",
       "Formalism/PeriodIntegrals/UnitaryGroupMassFormula/PowerSpans/SpanPowSmul.lean": "7c1187fec8962ed366eb98f56603567988f9a540052ab6613d8fcf5c47ee5301",
+      "Formalism/LocalToGlobal/GlobalTheory/ActAllCancelInv.lean": "66286ee269049b63ade044d89b84475242d21da103cbad83ee2eecd86b82c9ae",
+      "Formalism/LocalToGlobal/GlobalTheory/NatInvMemIntW.lean": "844c6714221cef1b68504592b7f12c59cae9e5e7e4796b053c070917a23adf02",
+      "Formalism/LocalToGlobal/Divisibility/QLocTied.lean": "a971844cc89934dd24900d74b7d4c3d709d05ce73412bcff542ee3a225728360",
       "Formalism/LocalToGlobal/NormalizedHeckeFactors/CoverMain.lean": "7b4b99e3b33c949255b0760be9453327df4516f49425c406b65a365c7660c4e2",
+      "Formalism/LocalToGlobal/NormalizedHeckeFactors/ExtNRowsGen.lean": "c4ff0349090ccd6559f02da89367f169c56438b884066da324aacc850ce80f9e",
       "Formalism/LocalToGlobal/NormalizedHeckeFactors/BaseRowsEqRecordRows.lean": "2ad0579eafbc48d0ac70afbb141b5bb9b73f14b156c0e236466c04ddc9c7c3f4",
       "Formalism/LocalToGlobal/NormalizedHeckeFactors/HostConj.lean": "098cbbbbd2af341ced95d80a4819d13c166cbfbbc858d76de385081ec5ec5b22",
       "Formalism/LocalToGlobal/NormalizedHeckeFactors/CoverF.lean": "484b84ec7843587d8a1d43126a9292c4b9315da502db43b22e15e8c2d0ff3624",
@@ -2228,18 +2702,24 @@
       "Formalism/LocalToGlobal/NormalizedHeckeFactors/EtaClosed.lean": "e5fe4c7f4dfefdd689f7d87aee9c0cbd2177f8fbb2f78992c2e780a427474b88",
       "Formalism/LocalToGlobal/NormalizedHeckeFactors/CoverFP.lean": "fb8431c7f60e2c4c2fa1017d2ef332d698449bf6684cf87c297c72e2b984fc72",
       "Formalism/LocalToGlobal/NormalizedHeckeFactors/RankZeroOfLevelThree.lean": "b155ecc8902b94f7782622271b09f3c53b0fafff04d3fea3a769c5170f3a038d",
+      "Formalism/LocalToGlobal/Columns/TiedValRat.lean": "fbe7825a62d8a0fc47ff4f90ba7f1390eb11c53bb2f4c9b22cffdb9cb946e76d",
+      "Formalism/LocalToGlobal/Columns/TiedVal.lean": "2bc0fdc6c7883f7f1c2ac8d16d213e95ae427511ed0c6f62862d7a8f0e2b1a9f",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/ColSpanMap.lean": "336958d6649b11821e085fe919b80689ea33612cf95ee5aba5e45691ebdc240d",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/CastGLSymmBc.lean": "88f70d93d881db4457c68595c9c01f310b7250d1310cc1839c7c370072223fe1",
+      "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/MRatSpanOf.lean": "b0070f9fcab5e440697ccceac0d12bd3a16eb57b42b70b82626470d597f5a0ab",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/ValUniqOf.lean": "ca62b79fcf4ddc16b48485b9bd0dacc2beab7bdca35280f4bed0518a97574fd5",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/CmpLApply.lean": "ebf24fd11b07b4e1732b2a86d8837a253d6ca92785204e932b5dc47c291434a9",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/IsLatTupSmulIff.lean": "dfba653d650664c3af258c4f01a58da877ee6c840b3bc214bc40452f259bec92",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/CmpCMemFunMod.lean": "9c060890a12714f67b0fb211012e590be7e03a0dc606de5ef8f953c5ee95db6e",
+      "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/MRatSpanRec.lean": "390fd669e20ce18da2f622ad2e5046bde3b45b93880bcc124858a14a77efc456",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/RecAct.lean": "79025be2de2f663ea22add41860f0b560d6a9cf12bad57e8bacd34c0c741ed24",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/LatticeComparisonCompatible.lean": "70c2317ebb531c6b07278dc5f00803aecf7ab02560d7246216f7bb37703f4d15",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/RecThm.lean": "76a5209cbd80dd1e6b7a3f2690b82a03815d935106185ee94ea31362547c3467",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/FramesTr.lean": "1fcd0bcda10f9a7d8f226e9f1d50a23811b619d4b2dc4713c371062063f72d8a",
       "Formalism/LocalToGlobal/GroupLattices/ComparisonMaps/CmpCMemMIff.lean": "5ee9fc4db4501f93dfcb4351b8475d1ca5fa132fcd732eeb35b197711c08fca0",
+      "Formalism/LocalToGlobal/LatticeGeometry/GeometryDefinitions/PClassE.lean": "e7948498cf80ab444f84c29d9a59898e01ab2caedbc9a6078d8fe580f4a0f0ae",
       "Formalism/LocalToGlobal/Divisibility/DivisibilityRemainder/RemainderBounds/FinalAll.lean": "777c13cace8bee10cdb9b0a007c03be0e9f4bdd1a225edb1332e05ee4bd94a31",
+      "Formalism/LocalToGlobal/Divisibility/DivisibilityRemainder/RationalColumns/RationalFamilyRemainingClosed.lean": "df354a541f0725e860b1b1f5b00ad05531f5cce33e9ad3e92f773e98619baa71",
       "Formalism/LocalToGlobal/Divisibility/DivisibilityRemainder/NoColumnCase/LvlWire.lean": "184aa393692a82722b8f0c02d6ce9541a977751a35e28b979541bebf86205563",
       "Formalism/LocalToGlobal/Divisibility/DivisibilityRemainder/ValueBounds/SlopeMaxB.lean": "64aafca0c7d4d018ca57bbb4f54361f2f390da3c257c012271d67ecf8cfbca69",
       "Formalism/LocalToGlobal/Divisibility/DivisibilityRemainder/SharpFunctions/FunTop.lean": "4cb78c79f890de4e266eca1046891ce519bcc947d9a32c4c6654497f5803bc1f",
@@ -2252,6 +2732,9 @@
       "Formalism/LocalToGlobal/SiegelLatticeTheory/FlagStabilizerTensors/RootLatticeThresholds/ThresholdOrder.lean": "4199c54a5a86db8328b94f4665d3e4726e53e8dce61f6e2de6bbe5d1a09819a6",
       "Formalism/LocalToGlobal/SiegelLatticeTheory/FlagStabilizerTensors/RootLatticeThresholds/ThresholdAtPlaceBounds.lean": "f87a4bb89ca4094c38a07ed8b8136a118f0895c7277b32c9ccc0ce5b57c2d0f7",
       "Formalism/LocalToGlobal/SiegelLatticeTheory/FlagStabilizerTensors/RootLatticeThresholds/ThresholdBounds.lean": "225eadbcc0e687d556835cb6ef15e702d722c00061fa7503708539c9b444082b",
+      "Formalism/LocalToGlobal/IndefiniteReal/DoubleCosetOperators/GoodPartLeTypeSubspace.lean": "deac75303dd551df9ce6999e51b1954dcf3c052256b9daaa86964260a2aea8bc",
+      "Formalism/LocalToGlobal/IndefiniteReal/DoubleCosetOperators/NHkRow.lean": "6c90b4d20a8bfb4a7560a0475b4719edc46ea0f62ead73ed0e177644dda66f9c",
+      "Formalism/LocalToGlobal/IndefiniteReal/DoubleCosetOperators/HkCore.lean": "ac28f109e8252918dc86b986882a8d00b51e971c8b5014240cf9b2c7b7ac1fc2",
       "Formalism/LocalToGlobal/GlobalTheory/UnramifiedTrace/DUAllOfPt.lean": "8a6dd43f3b79812303fba626963951d86ef48c3a34c28a7e8aada5be4192c89d",
       "Formalism/LocalToGlobal/GlobalTheory/GL6/PRUpLoc.lean": "de86631652e17d68021d987ef422ede0e15bf8682e2c3619f07643e3ae1d30ee",
       "Formalism/LocalToGlobal/GlobalTheory/GL6/FrameTranslate.lean": "766bb20d0ff1ab81072649a3568c84bbedaf6c65545eb75805b3095809c1ad6c",
@@ -2264,6 +2747,11 @@
       "Formalism/LocalToGlobal/GlobalTheory/GL6/PDnDil.lean": "5e66bc28bc4235d2265f1481bc78e104ce6af5966ecf36e5b5a6ac076c43727e",
       "Formalism/LocalToGlobal/GlobalTheory/GL6/FrobeniusNoKernelOfHeckeRamified.lean": "ac98f7e279cc04063e47fb1898d02b7a6e8e728411a9ca4eb61cbe49aeb8901c",
       "Formalism/LocalToGlobal/GlobalTheory/GL6/AdelicFunctionExtendsFromClasses.lean": "4561bb74fe9e1aa5b4a226128f38e37dd82500eb051ac7d603ff4b0333bbc427",
+      "Formalism/LocalToGlobal/GlobalTheory/GL6/AdmissibleStabilisersOfCompatibleForms.lean": "2cabc2cd8d2521d33066e4a269463eff75e01e16b83d4569ce53a7715f7a5f50",
+      "Formalism/LocalToGlobal/GlobalTheory/GL6/WeylLengthDiagonalUnitUniformiser.lean": "1e717b8ceaedda6b9dad86608212d294b731d624fec70c545839204dd69b8ea3",
+      "Formalism/LocalToGlobal/GlobalTheory/GL6/LocalBasisChangeDecompCompatible.lean": "d4f03deb81588ca040fd4cef8b78c93e63de81381b6e5928c73937910474469d",
+      "Formalism/LocalToGlobal/GlobalTheory/GL6/IntegralTensorBasisLinIndep.lean": "292d11a7bb9b5bf5f280ae9f9304ca3d9b9cd30c3898247ab7f1a9b480b159f0",
+      "Formalism/LocalToGlobal/GlobalTheory/CoordinateLengths/IsCrdExists.lean": "1e1aa7d76bd8408662179eceb5cf9ce44cf7981fbc1a91f9b4d37c02dc31307f",
       "Formalism/LocalToGlobal/GlobalTheory/GL4/PFrames.lean": "1fd51f674bc8c42a1996b7bbdb82fae9489560731cc87216676d156077e3247e",
       "Formalism/LocalToGlobal/GlobalTheory/GL4/PClsTieP.lean": "371c2e49fcc4f0773dffa39d464f58b38369c95c8eb5d4a4febcfc1799bcd922",
       "Formalism/LocalToGlobal/GlobalTheory/GL4/PClsTieInt.lean": "4f77ce92ee79cd5334428ed90cd6919b11d9d5997171ac9d1767f0bde25f5695",
@@ -2271,75 +2759,119 @@
       "Formalism/LocalToGlobal/GlobalTheory/GL4/PClsTieAll.lean": "2139c770112645560e524ec40725173a90c164d1363686585cba4f9cf6677813",
       "Formalism/LocalToGlobal/GlobalTheory/GL4/PClsTie.lean": "21a36e998d838bb3bb20dd7dc6d0194c1eac490e1439f435f430c6328bbec430",
       "Formalism/LocalToGlobal/GlobalTheory/UnramifiedDiagonal/HeckeRamifiedZeroOfMatchingsAndDu.lean": "9769da81b868d80514e7182b4011b149543c93153b2a357d458c67165693ea26",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/HighestWeights/UniqueU.lean": "f8259ce4f14773c86319c2aff7042b2ccdc9178d0609a8389a72cd7523f8a6cf",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/PsiFunct.lean": "b0c671f2c636358f5dd581243f9580637383dbce8946877ea4c5cd9b3ddd31e7",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/SigZeroFdeg.lean": "624dadd8a790f8457923fbdee5379493643098025f3e052e0565b3394a3ebad8",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/SigZeroCayley.lean": "6d6732896e93ad4749067731541a683028ff7a545c39ea87dabc5fc86aa4f152",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/InfCharData.lean": "d85bf7901b7c66dd8282a50fcedee1201c5afa66e58ce3d0aa55aeb2c54c89e9",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/FunctA.lean": "9c90b3e124e0e9993b21cfeb2b13e1be78c8208c20e237d5b4aa3d9e4069e0cd",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/AnyAdj.lean": "bdc40a751766c3917faa5bc8d733668e90b6f4aab16099194ea62b4c5358cbd4",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/AnyCapA.lean": "aab5b643da4070ea3cfd68996c7f688da6624423ad2fecbaf9319f4738fedd5f",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/SigZeroTop.lean": "c24b656474eb07a143dbfd56e4efa70fe420ebc1f52cfaeccad3eca0811bf841",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/DiscreteSeriesExistence/AnyCap.lean": "285414895ee0e9cfb8a3eee1d1205cf3e008c5dcb63b70a95ae1cc9a8422870d",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/Transport.lean": "37d916a07c06a1b0fc9d425b9340ffab369583986453df4c47454c52c2aa1d59",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/TransportGeo.lean": "5e78b9e22ae3dc072f8b8c360c4fdd260c1b50634df9cc8a5ca70a4db51f9beb",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/TransportInt.lean": "b485cd75703c43786eee373a4f5317a8fbec9c213dfd99a18b12d1e9f6dc3206",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/ExceptionalGroupG2/HarishChandraMultiplicityBound.lean": "bcf520b7ae08993d51ddea4d2ce3d20103fdbf23a0c476e7374ba649f4f21e7c",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/FormalDegree/FdCons.lean": "f7df3beb1d66dad7cb526db270d3559788890514143c161dc3ce009fb1701a96",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/ExceptionalGroupG2/ExistenceG2/InfChar.lean": "2cf6458039803bd1236cd8c6406f494cb6e78edc26b3439ec02e0912c9f40328",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/ExceptionalGroupG2/ExistenceG2/AnyDec.lean": "91b2db1c47885c2c245eee0751b59999c8ed728b54cee00a6c6951a5ec93e52b",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/ExceptionalGroupG2/ExistenceG2/FinalExists.lean": "bcc84d84e7bec0da28227ae26bb7df23282c5fc84640278b921bf7d2cd3643cb",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/ReproducingKernels/DecRepro.lean": "fbea8b6c7f8325244d33b717c0f90b0d1e151ecb3e48b6879bdf3c29d4bc7503",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/ReproducingKernels/ProductBoundOfFactorBounds.lean": "f0b40617fb817e44af4bad01374d3774099a6d0f53cd9305bb2a17f481171556",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/ReproducingKernels/HpkMulVecMulVec.lean": "cefb66d3e7491cb29c7b906cbc3cd1edf85c910e60d2c2da73a33436d6247102",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/ReproducingKernels/DecDerivA.lean": "5496def983f1f039fee9d0805eaa6769c1afbe8ef7984ee0b4a80c5c1aec1b3e",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/ReproducingKernels/DecDeriv.lean": "3a27cd157b6618b8f7ef7e91d99d41c9904f6bf202c5fbbf6821c18e76efda73",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/ReproducingKernels/IntegralNormSqCoef.lean": "f95d207e9edfeb7418f8865d51ce5744e30704f2fca79ea6b6cf304fa834170a",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/ReproducingKernels/OneLeGN.lean": "182ad5f334acbe18e337e923e79cb637f11c9641363036611aa52e547abe2151",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/LaplaceFoundations/NChart.lean": "f421779cf095faf9b8e237ac470bd59c1b4f1c610c118826ccd8918db8be7765",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/GapBigLap.lean": "3ed6fee3315d7d23a0375a2f140f1962240eed8daef15c7be35f4f1b803e096e",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/ClosedSubgroupsStatement.lean": "1b354a816656df9beaa4d00ba5adeffb87c7e119bf07072ad3fcd1f8d7836657",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/Groups.lean": "2b6592659e8a7c91d8d29720de18c2e56e55d88c59ac24aa751c8894bfb6741c",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/GapNum.lean": "b24b8ccb39c6272f49492b01c0f6a15e669385efecbad8c2ad94ca57c9cf1c57",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/SchurB.lean": "b71453c70015af762d541074a312214b0335c1c64d9bf1686a18fe184f270f4d",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/HaarMap.lean": "fe0d4ec979f649b1004d5fbb2459b7472036c50f473d9fa9c64f1c77862141c8",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/HaarUniq.lean": "c893e28cafc633c905a78c9a1ef2d3f8e8cd52723970c3fa350d8e3a01df48c7",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/SpectralGap/NonvanishingHypotheses.lean": "78984c47a227893d2f036a0c39411707bc979c8b55ede6fcda26c83cf2afc82f",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/KTypeLemma/StdGapOfGapLap.lean": "dfff2b16ee92c28198a9f6e8755d159fd456bbc5691eeb795a4fffed6ec200ce",
       "ReciprocityTheory/ReductiveGroups/DiscreteSeries/LaplaceOperators/LaplaceFoundations/OneParameterSubgroups/ExpChart.lean": "9b1fa9653be1d4e6922ab4753acb7977f1d760f8f7e35ed0f65078f5ce3987b5",
+      "ReciprocityTheory/ReductiveGroups/DiscreteSeries/MultiplicityOne/HermitianMeasures/OrbitIntegralAbsConvergent.lean": "e7f6f199f816c23a1beb76e371467d8df907af34d63e36b4c2751d5b4155baa0",
       "Development/AutomorphicArithmetic/PrimitiveCosets/WindowInequalityOfArtinInputs.lean": "a63ae334421f385174cd092495bdcea1d6ca7e3a5e6c327bf6830f2637cb4f3a",
       "Development/AutomorphicArithmetic/PrimitiveCosets/LevelGmLeOnFamilyScales.lean": "de7fe34f3c1df2df0b79eddf92101ef5acad8844436195a002003e35ab0b5e8c",
+      "Development/AutomorphicArithmetic/ThetaCorrespondence/ThetaPairLifts/ThirdPlaceSeries/TieTwRecOf.lean": "1afd59284740ea0538703e25ac5d1e7e563706e66296c8b1d90aa251c3f18281",
+      "Development/AutomorphicArithmetic/IntegralCasts/CapelliIdentities/DetEmbUnitriA.lean": "7f310ed67c9cea46cd033c622c659033157a9907a6145a2de2e43f1b3156e3c2",
+      "Development/AbelianVarietyTheory/Definitions/Foundations/NormOneSevenOneTwo.lean": "1eec2988249b8657f31343675d5903961e42709a40d8c37494033deabe381c8f",
+      "Development/AbelianVarietyTheory/Definitions/Foundations/IsHermND.lean": "536714ff6a85f90c2f91e1d26acbd9190bff941ddaf07bdd8f4094ad5f687b6f",
       "Development/AbelianVarietyTheory/Definitions/SemilocalFrames/FlagPairDefinitePartLattice.lean": "b7598126b274f67c106b07d5ca3260ee2b3da7fff75ce7964ae282b582861439",
       "Development/AbelianVarietyTheory/Definitions/SemilocalFrames/AdaptSelf.lean": "4b6fa48d0c9e997dfd11b35e7a1ba56803d14494931fb5c6e8dd1703c9d0b346",
       "Development/AbelianVarietyTheory/Definitions/SemilocalFrames/ChartGen.lean": "2ea8260b058ee3d07575911cdda548043e4dacd81e8c38f6fbeaeb1869ede240",
+      "Development/AbelianVarietyTheory/BlockTheory/DivisorBase/GenericMultiplicityOne.lean": "95a217a0f6ca353286b0b2b6feccebefc99c3a5d6f73f2d0d360d3ddee3aafc8",
+      "Development/AbelianVarietyTheory/BlockTheory/DivisorBase/CuspidalProductMultiplicity.lean": "385118164f38ba291d6e1a292335b8dc185403e90bdf2c428f3e2eab6689eb8d",
+      "Development/AbelianVarietyTheory/BlockTheory/DivisorBase/BlockEmbeddingFactors.lean": "f1842eac7a7df0edc62e7b461b569116242fd115af4b749c71604ac62e3256e1",
+      "Development/AbelianVarietyTheory/BlockTheory/TorsionBlocks/SelfDualLatticeMass.lean": "43b90442e6f479139b1baf31884e2f8f356384f6d0a09bf8cbba90e19758e206",
+      "Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/TwoBlockEqZeroIff.lean": "42f0e3e7558ecfca207a75b3bffcd947db455fe39f7a3748a853ea72a537aa79",
+      "Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/CayleyIndependent.lean": "821877dea0fb92da7d56f2f3a00003b1cc6d4600e8946b8c035137f72cdef7ad",
+      "Development/AbelianVarietyTheory/Proofs/InertiaEigenvalues/HasLabelTransportEquiv.lean": "e3147784d214cf8bfee878fc6a765a81957cee1938ddfc490a006bf131c00651",
       "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/AdmissibleFalseIffFirstInvariant.lean": "ce0ac0ce86c2afa4a26af8eb36ca71ce19cee2bde147b7dfa082cbc55a4f8029",
       "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/ExistsMulMemOfMemSpan.lean": "d98d0eeb0f239f1834050e0e0f1bc7634142bd73a02f54dfcc207c0dc01fe483",
+      "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/ExistsNeZeroSmulMemOfMemSpan.lean": "13f91a83d05044a64ea8b86f8f90c047832a24accb55045db13a424a855ffc49",
       "Development/AbelianVarietyTheory/Proofs/UnitaryExistence/ExistsPowLeHalfPart.lean": "9bbcb12f95d031d7d31b6198b7ae5740b8d981284791770f144d9599cf29f88c",
+      "Development/AbelianVarietyTheory/Proofs/CharacterTheory/AsAlgebraHomSurjectiveOfFinrankIntertwiningMapEq.lean": "b0915441b3b759b549afdea664417a90f8011b05b6f1010d3f920bd6e0ab8f1e",
+      "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/LogDerivSeriesOfExplicit.lean": "5b009621635872f507fba4ed51706b0c23fd8d8389ea73273f6c38bbf11671f9",
+      "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/PrimeIdealsCountingBounds.lean": "6bba970ceecc251a0ce15718ea169c6154964cfe9c5946923d3baa0ea2db908a",
+      "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/Psi0ZeroFreeRegionBoundStatement.lean": "f039502b492b54e599644a8447f211a3df24f0d01a868b9fba0799cf9fa6e78e",
+      "Development/AbelianVarietyTheory/Proofs/IwasawaDecomposition/Psi0ZeroFreeRegionBound.lean": "b50b25bd8257abbe2802f54acde98b27523727f16482f64bd2313150adb70911",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenSortingPermEqLeviWhittakerStatement.lean": "91f046a05c47d1fcf1debb71d1c145cacfefa7275ea7967d6239f19f36b7316c",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/FinrankCommonFixedLeOneOfCommutingHeckeStatement.lean": "ba61a4981b9c6453e0b34983db93de71585234815df0d13e24cd5599cbbc0933",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/WhittakerSpaceDimParabolicInductionCuspidalEqOne.lean": "06036f9c56de1a3033327ae4d83061a5238bb766e0e6d5273d6ea024911113eb",
+      "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenEqBotOfRootInUnipotentRadical.lean": "aaf1e9be1ac1d45daef4b9c50cff59fe17b8b85f5cec28d23ee8855a0f7182a2",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/IsCuspIndProdCharOfIsProdCuspChar.lean": "276f97c018dea12c642df83a0e6ca87707d6ac5be149c86cbf52753d08732f46",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/LeviWhittakerEqOneOfCuspidal.lean": "0aab1a69bf9ee33710bf6e8826ca17aceb4ba0bfdedfc5ddcb65a6a15547e541",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/OneVectorOfMultiplicityOne.lean": "28fa5f5012ff15b47a6178e27f9716e60f5fbae3b95774ea313e5b7ff2188767",
+      "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenEqBotOfBlockCutCuspidal.lean": "c75e1b97bdf848af109b4a45acf9cbaa8413e25e426f31b856e08a4558582ba7",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/HeckeCommOfIrreducibleMultiplicityLeOne.lean": "cf511989e085f2e96ad92abd423c28e9f1ce50f3d27c38ebefa8f1116c079bd8",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/HeckeCommOfIrreducibleMultiplicityLeOneStatement.lean": "51fa128fe2eec2baab04c5ef88642510ba5b202486dab6bd63405db904d2d6c0",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/IsCuspProdCharTransport.lean": "2e8251593ea2252b113335299e726b3e93e4411d52b259139a1ecefb23020676",
+      "Development/AbelianVarietyTheory/Proofs/DivisorProofs/FinrankEigenCoindMackeyDoubleCosets.lean": "42e21b9d712cd72b6bf4f362686e4f7a8c1b7ed2a9c14c104e38ab0d7779ca89",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/DegenerateWhittakerDimParabolicInductionCuspidalStatement.lean": "f06615130eac4ceeef25ee0085ac932f73d42dabc382d863015ea97f6fd43537",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/LeviWhittakerEqOneOfCuspidalStatement.lean": "11bd273b21c2964ffb3cd30b949e8ad22d0f2e86ee3710957e091cac56e978a0",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/GenericMultOneDimOf.lean": "90fc5e1cecc3bd2c7721d3cb8f2ad9f937710a45e884fbaced3c2fc46c97633a",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CuspidalIdempotentCharacters.lean": "c04ecaacb168839f48be85ae018308311423898c744bf309f72ae6a1fd0d873a",
+      "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenEqBotOfRootInUnipotentRadicalStatement.lean": "ba3e1eb125f5fbe8d5dce966d7e52989e80f2e462e853e59344fd73e10639013",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/HarishChandraInductionCuspidalParabolicProduct.lean": "8be49799d4ac9ac389d19ff6c4d8f1b431be2c7c6041b3890532369cbfd7f8c1",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/DegenerateWhittakerDimParabolicInductionCuspidal.lean": "403076c161a7e28c8cddac99c5ab6654bf3d8b2cd016fba7e69673c4af85ae13",
+      "Development/AbelianVarietyTheory/Proofs/DivisorProofs/SumCoeffChiIdemMul.lean": "8b7a19f795960689ed6767ae99477d76a3dcf9d55db57a190a9d9a895be438ae",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/WhittakerSpaceDimParabolicInductionCuspidalEqOneStatement.lean": "3333d9e8660c6ce27d04d46a058910aef93c5524971c062650f0307e4d8bbb78",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/WhittakerSpaceDimFiniteGLLeOne.lean": "89c05f119f5f5bfdeee85500abab4b61c04dc27a6fe9bff1a57e24c6ba576557",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenSortingPermEqLeviWhittaker.lean": "b462d7ad620c2cb2b28d3cc43cc23afaaec7dfcda6a8bfb27826b30b59c7f0f3",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/FinrankLeOne.lean": "11f82c7e01ead84c2e287e548fc134d77223b38e7051ba8b4c1dbe6f08955ec1",
+      "Development/AbelianVarietyTheory/Proofs/DivisorProofs/FinrankEigenCoindMackeyDoubleCosetsStatement.lean": "5aa9cd22a69f742642efce0f39f8829c8aa9b694c3e998ea5e8def2f6015058f",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/OneWhittakerVectorDimHolds.lean": "6f5e39abc41d16138e0b814d65ed935f6e3de73ee252f2c91e8330e9387465ea",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/ChiIdemMulLvlIdemBaseNeZero.lean": "cad82b51ef1cb229314b606daaf51846f8c8dcec1b50b6d47163afb880f519a2",
+      "Development/AbelianVarietyTheory/Proofs/DivisorProofs/CoindEigenEqBotOfBlockCutCuspidalStatement.lean": "68a91b7529b480fe9854a9ea7cac0c845aa1fb59558e31a382f7f22500463d93",
+      "Development/AbelianVarietyTheory/Proofs/DivisorProofs/GoodCharsGoodFamilyOfProductIrreducible.lean": "3aed39ffb1f6e930574149943be4edd3d6903486a35da3ae871ba4716796717c",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/WhittakerSpaceDimFiniteGLLeOneStatement.lean": "9e0754cada5e8e541194a4d0ec8c268b7d15538426ed5acde6bd7bb02d57a2d3",
       "Development/AbelianVarietyTheory/Proofs/DivisorProofs/FinrankCommonFixedLeOneOfCommutingHecke.lean": "8263144e9422362892169da4a27b6dc0b3a1333ca08d077ed299eb060e418a93",
       "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/WireSel.lean": "e771b3999debdb242a7a44e9c5b2bee83a62561ddae0dbee02b7ba34795ee79c",
+      "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkEx.lean": "ddbae0489d3a8b1f44dd7e65f3e1de4711d25c115e7edcf5081d21c85113bd82",
       "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkBrest.lean": "dbaf5a67a72e3e1e487b67299c4fbfed281efaee324c7754e873ddf2a216b852",
       "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkIRROfJoinEx.lean": "a35d21bc4857cd6657c1d313d71c3bf9aa0b6127f0e9a0cba73482d779182bd3",
       "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkAlt.lean": "fd1b793e952675a2976cbbeb5f5901a80edd9e6c079e512a985ea85f47cf52f8",
       "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/SelectionClosedOfWuDecay.lean": "8f0f2999db2d3ba9b8d2e82d6f2eec08daf8b336ec3946f768d98455450af991",
       "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/ClosedFamilyAdmissibleTwistLink.lean": "a72d8907609174317212b391c9debe34b3b7dbe07b6feb0f2b856705527a2148",
       "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkEta.lean": "4479088427ff6ed09d1f294b19ad1e84220a7faf017661e4f9f7729664f0e9dd",
-      "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/SmallLevelRankEqClosedOfLevelProjectionSurjective.lean": "3b5aeedb244b8ee64d81b135ea47b1cb60d7972c0d604dbef2b3e57d75150b29"
+      "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/SmallLevelRankEqClosedOfLevelProjectionSurjective.lean": "3b5aeedb244b8ee64d81b135ea47b1cb60d7972c0d604dbef2b3e57d75150b29",
+      "Development/AbelianVarietyTheory/Proofs/GlobalInterpolation/LinkG.lean": "1dfd21829b46a94e9fdb08f8b64073e89831bfbe3dcd2624a3e87b8c8c89ba98"
     },
     "supervisor": "Codex",
-    "supervisor_contribution": "Restored declarations to satisfy their recorded source and kernel dependencies, reconstructed the reachable source, and restored 175 original release sources to reduce the required original-cache rebuilds from 737 to 327."
+    "supervisor_contribution": "Restored declarations to satisfy their recorded source and kernel dependencies, reconstructed the reachable source, and restored 67 original release sources to reduce the required original-cache rebuilds from 737 to 486."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-25T09:23:32.396792+00:00",
-    "receipt_sha256": "b6304cd16c0b51df9754c3ed97b8c21b56c14af0920adb3d94460c9d96109a19",
-    "log_sha256": "3a8c9cf14d57791a59d9a04f925ea3656c604997a729e697ff9794284b9d4cb7",
+    "completed_utc": "2026-11-25T10:15:02.295369+00:00",
+    "receipt_sha256": "db5dd596b8481af95772cd8cccc63d8213f00afce4c6f12dbb82563994858275",
+    "log_sha256": "66319b36ca7b4df43c61d1b6986fd09848c5555e75fc26e971156cdc8150591d",
     "permitted_axioms": [
       "propext",
       "Quot.sound",

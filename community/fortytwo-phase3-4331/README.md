@@ -12,7 +12,7 @@ For Core 41, Codex narrowed the imports in Levent Alpöge’s `DiscreteSeriesWey
 
 | Core | Editable Lean files | Baseline tokens | Verified local tokens | Tokens saved |
 | ---: | ---: | ---: | ---: | ---: |
-| 14 | 1,102 | 3,467,872 | 1,671,517 | 1,796,355 |
+| 14 | 1,102 | 3,467,872 | 1,589,269 | 1,878,603 |
 | 15 | 28,473 | 60,808,488 | 47,870,200 | 12,938,288 |
 | 17 | 30,501 | 48,886,000 | 48,885,898 | 102 |
 | 18 | 33,702 | 75,331,745 | 74,343,508 | 988,237 |
