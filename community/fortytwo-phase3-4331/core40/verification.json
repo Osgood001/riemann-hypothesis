@@ -1,74 +1,47 @@
 {
   "core": 40,
-  "candidate": "core40-domain343da0843e43",
+  "candidate": "core40-domain6a20ca6e7dde",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 501,
+  "local_normalized_tokens": 417,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "df7f86bc46153c85c0086f5335212e6bd7fd68704c5fd37efcd05d45de7fd892",
+  "proof_tree_sha256": "06fca22ba3986560e7e7fb97ba542509d581ac33e80e2b548739202fc3ccb83b",
   "modified_files": {},
   "attribution": {
-    "original_author": "Levent Alpöge",
-    "proof_edits": "Mikko Nyman / Fable 5.2, Astra 6.2, Neon 4, Carbon 4 via Claude Code + Codex + Antigravity (public starting proof), Fortytwo Engine: Deepseek Flash V4.1 1017, and Codex",
-    "external_references": [
-      "https://riemann.verifytask.cn/api/attempt/103701",
-      "https://play.bohrium.com/submission/103701",
-      "https://play.bohrium.com/submission/103322",
-      "https://riemann.verifytask.cn/api/attempt/102851",
-      "https://play.bohrium.com/submission/102851"
+    "formalization": "Levent Alpöge and original authors",
+    "public_parent": {
+      "public_url": "https://github.com/MarvinDontPanic/riemann-hypothesis/blob/41740f7aa9a1ae961cbbffce4364fadd9a110aed/community/marvin-core-reductions/core40/Solution.lean",
+      "source_sha256": "c19d29736fb8c4c73b3e0407d70d0e828781797b8c2b50858f43a171b11af6b8",
+      "git_blob": "037b462361e1ee7ebdcd5dfaf56869c4c7d67e32",
+      "commit": "41740f7aa9a1ae961cbbffce4364fadd9a110aed",
+      "author": "MarvinDontPanic",
+      "supervisor_changes": [
+        "compared diagonal entries by congruence and function extensionality, then split each product",
+        "applied congruence to the split-centre equality before reducing it to diagonal entries"
+      ]
+    },
+    "prior_contributors": [
+      "Mikko Nyman and collaborators (#103701)",
+      "Vladyslav Larin and Fortytwo (#103322, #104025 and PR 19)"
     ],
-    "public_method_context": {
-      "author": "Mikko Nyman",
-      "model": "Fable 5.2, Astra 6.2, Neon 4, Carbon 4",
-      "harness": "Claude Code + Codex + Antigravity",
-      "attempt": 103701,
-      "normalized_tokens": 565,
-      "characters": 2751,
-      "source_url": "https://riemann.verifytask.cn/api/attempt/103701",
-      "source_kind": "complete new side of publicly published organizer Lean diff",
-      "sha256": "a77382248ffde3ab0db815fb14850dedc6a95feef3225d939772b2c9fd4d1a66"
+    "inherited_native_work": {
+      "model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+      "direct_witness_call": "call_95c78cb8fab84d17933c177d656dcc50_0",
+      "original_session_sha256": "36d89728ffce07d53ef15025505dc20d5671d603c1375bcec8f3d9e3b6fcccc6",
+      "role": "Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work. The public parent also preserves the recorded native simplifier unfolding in the infinite-place projection."
     },
-    "new_contribution": "Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators shortened the torus and Haar arguments in #103701 and explicitly credit Fortytwo #103322. Codex applied the equality of the complete mapped matrix. For a second fundamental domain the proof now uses absolute continuity of additive Haar measures directly. The positive Haar scalar is used only to provide the nonzero proportionality factor. The unchanged target and formalization are by Levent Alpöge. The Borel identification for adelic block coordinates is applied directly to the constant-term equation.",
-    "native_contribution_draft_sha256": "ac0bfb090db4f54327e05652aa993daec193ee9b38fa20f1038558e76a57c93f",
-    "adapted_solution_sha256": "70f14f4d940ff03fc8fa5795d317b6d019976a78219e80b8fe1b6f3c2af63812",
-    "native_contribution_note": "Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators shortened the torus and Haar arguments in #103701 and explicitly credit Fortytwo #103322. Codex applied the equality of the complete mapped matrix. For a second fundamental domain the proof now uses absolute continuity of additive Haar measures directly. The positive Haar scalar is used only to provide the nonzero proportionality factor. The unchanged target and formalization are by Levent Alpöge. The Borel identification for adelic block coordinates is applied directly to the constant-term equation.",
-    "public_source_note": "Core 40. Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators shortened the torus and Haar arguments in #103701 and explicitly credit Fortytwo #103322. Codex applied the equality of the complete mapped matrix. For a second fundamental domain the proof now uses absolute continuity of additive Haar measures directly. The positive Haar scalar is used only to provide the nonzero proportionality factor. The unchanged target and formalization are by Levent Alpöge. The Borel identification for adelic block coordinates is applied directly to the constant-term equation. [Published starting proof](https://riemann.verifytask.cn/api/attempt/103701)",
-    "prior_public_lineage": "Pi / Gemini 4 Neon via Antigravity published the earlier one-file proof in #102851. Fortytwo and Codex revised it in #103322, which Mikko Nyman expressly credits in #103701.",
-    "parent_candidate": "core40-domaind5a650ee2fc4",
-    "direct_witness_reduction": {
-      "native_model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-      "visible_native_events": 98,
-      "visible_trace_sha256": "a862c45038c037422d364ac4e97976264409cb9ed2a23e08063685c0be8a82f9",
-      "native_tool_call": "call_95c78cb8fab84d17933c177d656dcc50_0",
-      "prior_source_sha256": "49bacb436f1fea77c0060fb9b89511d36f0ea73e2b9ac496ba2853d94bbb8cfd",
-      "native_contribution": "DeepSeek supplied the direct fundamental-domain witness and eliminated the dependent existential with rintro.",
-      "supervisor_contribution": "Codex combined those two steps with the accepted diagonal argument, the explicit field type, and the function equality proof."
-    },
-    "supervisor_finite_idele_reduction": "Codex applied extensionality at each finite place and simplified with posIdele_finite.",
-    "positive_idele_edit": {
-      "native_model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
-      "visible_native_events": 129,
-      "visible_trace_sha256": "36d89728ffce07d53ef15025505dc20d5671d603c1375bcec8f3d9e3b6fcccc6",
-      "native_source_action": "call_8ea3be8629aa49b9b7c0858c4ecfdb01_0",
-      "trace_end": "call_d744e282c10b47a4b034d1a7dddc5ec0_0",
-      "retained_native_contribution": "allowing the field of the positive idele to be inferred and using the model’s posRealToUnits unfolding in the infinite-place projection",
-      "supervisor_repair": "Codex preserved the preliminary change/simp normalizations and used the native unfolding with reflexivity."
-    },
-    "supervisor_haar_scalar": "Codex moved the local scalar definition after the Haar equality theorem.",
-    "supervisor_domain_inference": "Codex inferred the specific fundamental domain from its explicit original domain proof.",
-    "supervisor_constant_term": "Codex unfolded ctn and normalized the mass of the unipotent fundamental domain once before both constant-term claims.",
-    "supervisor_exponential_coercion": "Codex let the expected complex exponential infer the real-to-complex coercion in pExp."
+    "current_source": "Levent Alpöge and the original authors supplied the formalization. MarvinDontPanic’s public PR 43 generalized the torus identity to an arbitrary function from Fin N to the reals. This lets one simplification prove the split-centre and lattice identities. Marvin credited Mikko Nyman and collaborators (#103701) and the earlier Fortytwo submissions (#103322, #104025) and PR 19. Earlier Fortytwo work supplied the explicit fundamental-domain proof and the dependent existential elimination. Both survive through the credited public parent. The attached original session documents this inherited work. The public parent also preserves the recorded native simplifier unfolding in the infinite-place projection. For this derivative, Codex compared diagonal entries by congruence and function extensionality, then split each product and applied congruence to the split-centre equality before reducing it to diagonal entries. The unchanged organizer Comparator and Lean default kernel accepted this exact proof. Public parent: https://github.com/MarvinDontPanic/riemann-hypothesis/blob/41740f7aa9a1ae961cbbffce4364fadd9a110aed/community/marvin-core-reductions/core40/Solution.lean"
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-25T01:38:43.375927+00:00",
-    "elapsed_seconds": 169.822,
+    "completed_utc": "2026-11-25T04:45:13.043515+00:00",
+    "elapsed_seconds": 154.796,
     "frozen_files": 1405,
-    "log_sha256": "906476fbbc31f5a6c55716ecc86623456e1d2961756c3aea50e2eae284012008",
+    "log_sha256": "17d4159c46416cb095256f8d50cbb3ae5a2dc29e90b09a3245be1fa790e31bf2",
     "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
     "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e",
     "permitted_axioms": [
@@ -82,5 +55,5 @@
   "source_kind": "pinned_git_checkout",
   "target_sha256": "db42504120a3ee7af320c76aa8b682751b0a5d8b1ce67e7421c8712da699851f",
   "pinned_source_files": {},
-  "proof_id": "343da0843e432404657d9b9dd604709f697c0f56f88c2666c52af91573ca166e"
+  "proof_id": "6a20ca6e7ddeb93081a9c9aa3ce2e29e6de3f6002d098fc391e6914169d18413"
 }
