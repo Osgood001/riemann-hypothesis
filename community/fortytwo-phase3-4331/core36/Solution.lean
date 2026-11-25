@@ -16,10 +16,10 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
     (∀ y ∈ lat hP $ sgnRt H true, n • y ∈ 𝒮 x ∘ inl) ∧
     ∀ y ∈ lat hP $ sgnRt H false, n • y ∈ 𝒮 x ∘ inr := by
 
-  rintro ⟨hp, hm⟩ hn
+  intro hx hn
   have := disjoint_lat hP (show H.rt0 ≠ -H.rt0 by grind [H.sqrt_neg_disc_sq, H.d_mod, Nat.cast_eq_zero])
 
-  simp [← mem_coe, ← range_subset_iff, ← span_le] at hp hm
+  simp [IsPure, ← mem_coe, ← range_subset_iff, ← span_le] at hx
   simp_all [disjoint_def, range_eq, mem_sup, SetLike.le_def, comp_def]
 
   and_intros
