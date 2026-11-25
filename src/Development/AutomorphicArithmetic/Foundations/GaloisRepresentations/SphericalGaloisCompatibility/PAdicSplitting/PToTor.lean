@@ -55,22 +55,38 @@ private theorem split_of_padic {E : Type} [Field E] [NumberField E] [IsCMField E
     rw [← ne_eq, Ideal.ramificationIdx'_ne_one_iff hle, hmap, Ideal.span_le] at hne
     exact hsq (by simpa using hne)
 
-private theorem dvd_of_support {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin N) k) V) (s : Multiset (IrrGL (k := k)))
-    (hs : HasSupport ρ s) (y : IrrGL (k := k)) (hy : y ∈ s) : y.1 ∣ N.factorial := by
-  have h1 : 0 < y.1 := (hs.isCusp hy).1
-  have h2 := hs.sum_fst
-  have h3 : y.1 ≤ (s.map Sigma.fst).sum := Multiset.single_le_sum (by simp) _ (Multiset.mem_map_of_mem _ hy)
-  rw [h2, Fintype.card_fin] at h3
-  exact Nat.dvd_factorial h1 h3
+/-- The degrees that are multiples of all constituent ranks of a local representation
+are exactly the multiples of a single positive integer. -/
+theorem UpperTheory.Gal.ToralGalois.R2.exists_support_degree
+    {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
+    {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin N) k) V) :
+    ∃ d : ℕ, 0 < d ∧ ∀ e : ℕ, d ∣ e ↔
+      ∀ (s : Multiset (IrrGL (k := k))), HasSupport ρ s → ∀ y ∈ s, y.1 ∣ e := by
+  classical
+  let sizes := (Finset.Icc 1 N).filter fun r =>
+    ∃ (s : Multiset (IrrGL (k := k))), HasSupport ρ s ∧ ∃ y ∈ s, y.1 = r
+  refine ⟨sizes.lcm id, Nat.pos_of_ne_zero (Finset.lcm_ne_zero_iff.mpr ?_), fun e => ?_⟩
+  · intro r hr
+    exact Nat.ne_of_gt (Finset.mem_Icc.mp (Finset.mem_filter.mp hr).1).1
+  · rw [Finset.lcm_dvd_iff]
+    constructor
+    · intro h s hs y hy
+      have hle : y.1 ≤ (s.map Sigma.fst).sum :=
+        Multiset.single_le_sum (by simp) _ (Multiset.mem_map_of_mem _ hy)
+      rw [hs.sum_fst, Fintype.card_fin] at hle
+      exact h y.1 (Finset.mem_filter.mpr
+        ⟨Finset.mem_Icc.mpr ⟨(hs.isCusp hy).1, hle⟩, s, hs, y, hy, rfl⟩)
+    · intro h r hr
+      obtain ⟨s, hs, y, hy, rfl⟩ := (Finset.mem_filter.mp hr).2
+      exact h s hs y hy
 
 theorem UpperTheory.Gal.ToralGalois.R2.toTor :
     UpperTheory.Gal.InertialTypesAlt.SuppBC → UpperTheory.Gal.NearKilling.UnrField → UpperTheory.Gal.NearKilling.AllLift → UpperTheory.Gal.NearKilling.IneNorm → InfLifts → RecChars → UpperTheory.Zero.LLC.RecTExists → ToTor := by
   intro hSupp hUnr hLift hIne hInf hChars hRec E Ω _ _ _ _ _ _ l _ ι n hn π χ hs r hr w σ hσ hQ hM A h rc hrc
   obtain ⟨p, hp, i, hi⟩ := hQ
-  haveI := hp
+  have := hp
   obtain ⟨hq, hsp⟩ := split_of_padic w p i hi
-  have hf : 0 < n.factorial := Nat.factorial_pos n
+  obtain ⟨d, hf, hd⟩ := UpperTheory.Gal.ToralGalois.R2.exists_support_degree σ.ρ
   have hSfin : {u : HeightOneSpectrum (𝓞 E) | ¬ ∃ B, (CG.mk π).HasSat u B}.Finite := by
     have h := Filter.eventually_cofinite.1
       (GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep GlobalTheory.automorphicFormsFiniteGL E n π)
@@ -78,15 +94,15 @@ theorem UpperTheory.Gal.ToralGalois.R2.toTor :
   obtain ⟨Xf, hXT, hXw, -⟩ := hUnr E Ω w hsp _ hf _ hSfin
   obtain ⟨P, χ', hPL, hPs, hPr⟩ := hLift E Ω l n hn π χ hs _ (fun u hu => not_not.1 hu) Xf hXT
   obtain ⟨w', h', -⟩ := GlobalTheory.AboveL.exists_isPlaceOver_of_tower E Xf.K Ω A w h
-  haveI : w'.asIdeal.LiesOver w.asIdeal := ⟨(GlobalTheory.AboveL.comap_eq_of_placeOver h h').symm⟩
+  have : w'.asIdeal.LiesOver w.asIdeal := ⟨(GlobalTheory.AboveL.comap_eq_of_placeOver h h').symm⟩
   have hXfix := (hXw A h).1
   have hnorm := (hXw A h).2 w' h'
   obtain ⟨σ', hσ', -⟩ := LocEx.exists_isLocComp GlobalTheory.automorphicFormsFiniteGL Xf.K n P w'
   obtain ⟨art, hart⟩ := GlobalTheory.localArtinExists_holds E Ω A w h
   obtain ⟨art', hart'⟩ := GlobalTheory.localArtinExists_holds Xf.K Ω A w' h'
   obtain ⟨g, hg1, -⟩ := hIne E Xf.K Ω A w w' h h' hXfix art art' hart hart'
-  obtain ⟨ξ, hξ, hT, hU⟩ := hSupp E Ω n hn π { K := Xf.K, π := P } hPL A w w' h h' p i hi hXfix σ σ' hσ hσ' hM.1 n.factorial
-    (by rw [hnorm, hq]) (fun s hs y hy => dvd_of_support _ s hs y hy)
+  obtain ⟨ξ, hξ, hT, hU⟩ := hSupp E Ω n hn π { K := Xf.K, π := P } hPL A w w' h h' p i hi hXfix σ σ' hσ hσ' hM.1 d
+    (by rw [hnorm, hq]) ((hd d).mp (dvd_refl d))
   obtain ⟨-, hTS, hTP⟩ := id hT
   obtain ⟨rc', hrc'⟩ := hRec Xf.K Ω A w' h'
   have hCh := hChars Xf.K Ω A w' h' n σ' ξ hξ hTS
