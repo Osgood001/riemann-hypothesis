@@ -1,0 +1,22 @@
+{
+  "core": 19,
+  "proof_id": "2a4bc643a789ee0a63f37e3962e89f27da3fdbc89059519f57887306279671d3",
+  "candidate": "native-2a4bc643a789ee0a",
+  "tokens": 8579041,
+  "characters": 31209328,
+  "editable_files": 6453,
+  "original_files": 4985,
+  "source_changes": 1468,
+  "source_database_sha256": "38d219a6d3f8173f616ffc59a7694057cfd5db10576c2d4ccde0285ecfcbc2ba",
+  "original_repository": "https://github.com/tamnd/riemann-lean",
+  "original_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
+  "original_directory": "lean/src",
+  "per_file_hashes_sha256": "c3ab2b917a1d83785b7ec267f7c4b87f4904d67fa78c0aeb432b3baf513e4f31",
+  "replacement_archives": [
+    "changes-0001.zip"
+  ],
+  "full_comparator_log_sha256": "91498ee825f4e8b87d4faa2b89a699d400eaa961b2700f0ad0d9e5c52b3ca35a",
+  "linux_raw_receipt_sha256": "f5677d44cac65ce1ef83fe9367e6f707c29d5bb395b6c3ed4b38e39f0652d856",
+  "reference_kind": "published_statement_with_pinned_original_imports",
+  "proof_author_and_contributors": "Levent Alpöge and the original formalization authors provided the underlying proof. Parent core19-sliced3e148877 (3e1488779718e1626b71ec6726fef537ca6dbac941e84ed3cdddc508497e9193). Levent Alpöge supplied the upstream formalization. Codex reconstructed and reduced the exact parent source from the historical campaign.  The original Fortytwo researcher narrowed the determinant-character imports and removed an unused divisor import. The public selection includes the complete original dependency study and both source-writing results. The two corresponding command bodies remain in the preserved private transcript; replay of their three replacements reproduced both file hashes. Codex assembled the exact sources and validated the full Linux verifier receipt. The complete candidate passed the organizer Comparator and Lean 4.33.1 default kernel using published statement with pinned original imports. Source ID 2a4bc643a789ee0a63f37e3962e89f27da3fdbc89059519f57887306279671d3."
+}
