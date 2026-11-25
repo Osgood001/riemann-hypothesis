@@ -20,8 +20,8 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
       mult, sqrt_sq (exp_pos u).le, expU, ofReal_exp, infEq]
     rfl
     change _ = 1 - 0 + 0
-    simp
-    exact FiniteAdeleRing.ext _ $ posIdele_finite _ _
+    ext v
+    simp [posIdele_finite]
   have hdiag (f : _) (M : _)
       (hM : M.1 = diagonal fun i _ => cexp (f i)) : infGL E N M = tor E f := by
     have entry A : matN N (sInf E) A = A.map _ := rfl
