@@ -1,6 +1,7 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.TubeMeasures.DisjointTubes.CompSt
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.FlagVolume
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SelfDualLatticeNegTransposeGramStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteUnitaryPartIsInvertibleUnitaryAdelicStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanMatrixUnitaryGroupPreservesGramStatement
@@ -33,7 +34,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace MainStatements.Tam.C
 
-theorem sum_muF_le (hT : TubeSt) (D : D7) (V : HSp D) (r : ℕ) (hr : V.rank = r) (Comp : Type) [Fintype Comp]
+theorem sum_muF_le_flag (hT : TubeSt) (D : D7) (V : HSp D) (r : ℕ) (hr : V.rank = r) (Comp : Type) [Fintype Comp]
     (X : Comp → Data D.host.E r)
     (dict : GA D V → Σ k, Frame (X k).Ψ r) (Kf : Subgroup (GA D V))
     (th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : ℕ)
@@ -44,7 +45,7 @@ theorem sum_muF_le (hT : TubeSt) (D : D7) (V : HSp D) (r : ℕ) (hr : V.rank = r
     (x0 : ∀ k, Frame (X k).Ψ r) (FF : ∀ k, Set (ReciprocityTheory.L2DbarEstimates.V (nd (X k))))
     (hF : ∀ k, IsOrth (X k) (x0 k) ∧ IsFundSet (X k) (x0 k) (FF k)) :
     ∑ k, muF (X k) (x0 k) (FF k) ≤ ENNReal.ofReal ((16 : ℝ) ^ (D.R.f * r ^ 2) * (M : ℝ) ^ (2 * D.R.f * r ^ 2) *
-      (ReciprocityTheory.ChartRestriction.DS.volU r ^ D.R.f * Formalism.MainNotions.StandardLattice.massI D r)) := by
+      (ReciprocityTheory.ChartRestriction.DS.flagVolume r ^ D.R.f * Formalism.MainNotions.StandardLattice.massI D r)) := by
   subst hr
   classical
   obtain ⟨x1, hx1, hact⟩ := hD.2.2.1
@@ -66,14 +67,14 @@ theorem sum_muF_le (hT : TubeSt) (D : D7) (V : HSp D) (r : ℕ) (hr : V.rank = r
       (fun τ => if h : τ ∈ (X k).Ψ then archM V (th k ⟨τ, h⟩) (gA k) else 1) (x0 k) (y k) (FF k) (FF' k)
       (hX'Gm k) (hX'p0 k) ?_ ?_ ?_ (hF k).1 (hy k) (hF k).2 (hFF' k)
     · intro τ hτ
-      simp only [dif_pos hτ]
+      simp only [dite_eq_left hτ]
       rw [hG k]
       exact GlobalTheory.T.archimedeanMatrix_unitaryGroup_preserves_gram D V τ _ (hth k ⟨τ, hτ⟩) (gA k)
     · intro γ hγ
       obtain ⟨γ', h1, h2⟩ := GlobalTheory.T.arithmeticGroup_conj_rational_principalCongruence D V Comp X dict Kf th M x1 hK hth hD (fun c => (hx1 c).1) hact hG k (gA k)
         (hgA k) (Λk k) (hΛk k).1 γ hγ
       refine ⟨γ', (hX'Γ k γ').2 (by rw [hG k]; exact h1), fun τ hτ => ?_⟩
-      simp only [dif_pos hτ]
+      simp only [dite_eq_left hτ]
       exact h2 τ hτ
     · intro γ' hγ'
       have h1 := (hX'Γ k γ').1 hγ'
@@ -81,7 +82,7 @@ theorem sum_muF_le (hT : TubeSt) (D : D7) (V : HSp D) (r : ℕ) (hr : V.rank = r
       obtain ⟨γ, hγ, h2⟩ := GlobalTheory.T.principalCongruence_conj_mem_arithmeticGroup D V Comp X dict Kf th M x1 hK hth hD (fun c => (hx1 c).1) hact hG k (gA k)
         (hgA k) (Λk k) (hΛk k).1 (hΛk k).2.2.2 γ' h1
       refine ⟨γ, hγ, fun τ hτ => ?_⟩
-      simp only [dif_pos hτ]
+      simp only [dite_eq_left hτ]
       exact h2 τ hτ
   have hdist := GlobalTheory.T.componentRepresentatives_injective_doubleCoset D V Comp X dict Kf th M gA hK hth hD (fun k => by rw [hgA k])
   have hΓ' : ∀ k γ, γ ∈ (X' k).Γ ↔ IsUStab (X' k).Gm (X' k).Λ γ ∧ ∀ x ∈ (X' k).Λ, ∃ z ∈ (X' k).Λ,
@@ -93,26 +94,78 @@ theorem sum_muF_le (hT : TubeSt) (D : D7) (V : HSp D) (r : ℕ) (hr : V.rank = r
   have hCc := fun k => GlobalTheory.T.covolume_realSpecialUnitary_eq_flagDomain_mass D.host.E V.rank (X' k) (y k) (FF' k) (by omega) (hdet k) (hy k) (hFF' k)
   have hTube := hT D V P Q hs hsig h2 M hM Comp X' gA y hdist (fun k => ⟨(hX'Gm k).trans (hG k),
     fun τ => by rw [hX'Ψ k]; exact hΨ k τ, by rw [hX'Λ k]; exact (hΛk k).1, hΓ' k, hy k⟩)
-  have hC1 : (1 : ℝ) ≤ ((2 : ℝ) ^ (V.rank * (V.rank - 1) / 2) * (2 * Real.pi) ^ (V.rank - 1) *
-      Real.sqrt V.rank) ^ fdeg D.host.E := by
-    apply one_le_pow₀
-    have h1 : (1 : ℝ) ≤ 2 ^ (V.rank * (V.rank - 1) / 2) := one_le_pow₀ (by norm_num)
-    have h2' : (1 : ℝ) ≤ (2 * Real.pi) ^ (V.rank - 1) := one_le_pow₀ (by linarith [Real.pi_gt_three])
-    have h3 : (1 : ℝ) ≤ Real.sqrt V.rank := by
-      rw [show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]
-      exact Real.sqrt_le_sqrt (by exact_mod_cast (by omega : 1 ≤ V.rank))
-    exact one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h1 h2') h3
-  rw [Finset.sum_congr rfl (fun k _ => hμ k)]
-  refine le_trans (Finset.sum_le_sum fun k _ => ?_) hTube
-  rw [← hCc k]
-  exact le_mul_of_one_le_left' (by rw [← ENNReal.ofReal_one]; exact ENNReal.ofReal_le_ofReal hC1)
+
+  have hfin : Module.finrank ℚ D.host.E = 2 * D.R.f := by
+    rw [D.host.finrank_cmField]
+    unfold Ranks.f Ranks.n
+    ring
+  have hdeg : fdeg D.host.E = D.R.f := by unfold fdeg; omega
+  have hpos := ReciprocityTheory.ChartRestriction.DS.flagScale_pos (show 0 < V.rank by omega)
+  have hpow := pow_pos hpos D.R.f
+  apply (ENNReal.mul_le_mul_iff_right (ENNReal.ofReal_ne_zero_iff.mpr hpow) ENNReal.ofReal_ne_top).1
+  rw [Finset.sum_congr rfl (fun k _ => hμ k), Finset.mul_sum]
+  refine (le_of_eq (Finset.sum_congr rfl fun k _ => ?_)).trans (hTube.trans_eq ?_)
+  · simpa [ReciprocityTheory.ChartRestriction.DS.flagScale, hdeg] using hCc k
+  · rw [← ENNReal.ofReal_mul hpow.le]
+    congr 1
+    rw [ReciprocityTheory.ChartRestriction.DS.flagVolume, div_pow]
+    field_simp
+
+theorem sum_muF_le (hT : TubeSt) (D : D7) (V : HSp D) (r : ℕ) (hr : V.rank = r) (Comp : Type) [Fintype Comp]
+    (X : Comp → Data D.host.E r)
+    (dict : GA D V → Σ k, Frame (X k).Ψ r) (Kf : Subgroup (GA D V))
+    (th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : ℕ)
+    (hK : IsLevelK V M Kf) (hth : ∀ k τ, Formalism.MainNotions.StandardLattice.IsInfEmb τ.1 (th k τ)) (hD : DictIsUnif V dict Kf th hr)
+    (hm : ∀ k, ModelW V hr (X k)) (hM : 3 ≤ M)
+    (hΨ : ∀ k (τ : D.host.E →+* ℂ), τ ∈ (X k).Ψ ↔ ∃ ρ, τ = tauE D ρ)
+    (P Q : ℕ) (hs : V.SigOK) (hsig : ∀ τ, V.sig τ = (P, Q)) (h2 : 2 ≤ r)
+    (x0 : ∀ k, Frame (X k).Ψ r) (FF : ∀ k, Set (ReciprocityTheory.L2DbarEstimates.V (nd (X k))))
+    (hF : ∀ k, IsOrth (X k) (x0 k) ∧ IsFundSet (X k) (x0 k) (FF k)) :
+    ∑ k, muF (X k) (x0 k) (FF k) ≤ ENNReal.ofReal ((16 : ℝ) ^ (D.R.f * r ^ 2) * (M : ℝ) ^ (2 * D.R.f * r ^ 2) *
+      (ReciprocityTheory.ChartRestriction.DS.volU r ^ D.R.f * Formalism.MainNotions.StandardLattice.massI D r)) := by
+
+  have key := sum_muF_le_flag hT D V r hr Comp X dict Kf th M hK hth hD hm hM hΨ P Q hs hsig h2 x0 FF hF
+  refine key.trans (ENNReal.ofReal_le_ofReal ?_)
+  have hm0 : 0 ≤ Formalism.MainNotions.StandardLattice.massI D r := by
+    unfold Formalism.MainNotions.StandardLattice.massI Formalism.HermitianLatticesTheory.mass
+    split_ifs
+    · exact Finset.sum_nonneg fun _ _ => by positivity
+    · exact le_rfl
+  have hv : ReciprocityTheory.ChartRestriction.DS.flagVolume r ≤ ReciprocityTheory.ChartRestriction.DS.volU r := by
+    exact div_le_self (by unfold ReciprocityTheory.ChartRestriction.DS.volU; positivity)
+      (ReciprocityTheory.ChartRestriction.DS.one_le_flagScale (by omega))
+  gcongr
+  exact ReciprocityTheory.ChartRestriction.DS.flagVolume_nonneg r
+
+private theorem flag_mass_bound {f r M : ℕ} {mass cap : ℝ} (hr : 2 ≤ r)
+    (hv : 0 ≤ ReciprocityTheory.ChartRestriction.DS.flagVolume r) (hm : mass ≤ cap) (hc : 0 ≤ cap) :
+    (16 : ℝ) ^ (f * r ^ 2) * M ^ (2 * f * r ^ 2) *
+      (ReciprocityTheory.ChartRestriction.DS.flagVolume r ^ f * mass) ≤
+    (M : ℝ) ^ (2 * f * r ^ 2) * (if 5 ≤ r then (4 : ℝ) else 6) ^ (2 * f * r ^ 2) * cap := by
+  have h (a b : ℝ) (hv' : ReciprocityTheory.ChartRestriction.DS.flagVolume r ≤ a ^ (r ^ 2))
+      (hab : 16 * a = b ^ 2) :
+      (16 : ℝ) ^ (f * r ^ 2) * M ^ (2 * f * r ^ 2) *
+        (ReciprocityTheory.ChartRestriction.DS.flagVolume r ^ f * mass) ≤
+        (M : ℝ) ^ (2 * f * r ^ 2) * b ^ (2 * f * r ^ 2) * cap := by
+    have hvm := (mul_le_mul_of_nonneg_left hm (pow_nonneg hv f)).trans
+      (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hv hv' f) hc)
+    calc _ ≤ (16 : ℝ) ^ (f * r ^ 2) * M ^ (2 * f * r ^ 2) * ((a ^ (r ^ 2)) ^ f * cap) := by gcongr
+         _ = _ := by
+           rw [← pow_mul, Nat.mul_comm (r ^ 2) f, show 2 * f * r ^ 2 = 2 * (f * r ^ 2) by ring,
+             pow_mul b, ← hab, mul_pow]
+           ring
+  split_ifs with h5
+  · exact h 1 4 (by simpa using ReciprocityTheory.ChartRestriction.DS.flagVolume_le_one h5) (by norm_num)
+  · exact h (9 / 4) 6 (ReciprocityTheory.ChartRestriction.DS.flagVolume_le_nine_quarters_pow hr) (by norm_num)
 
 end MainStatements.Tam.C
 
 open MainStatements.Tam
 
-theorem MainStatements.Tam.comp : TubeSt → NumSt → CompSt := by
-  intro hT hN D j H Dw l Xo c U dict hL σ hσ x0 FF hF
+theorem MainStatements.Tam.comp_flag_exact : TubeSt → CompStBound fun D M =>
+    (16 : ℝ) ^ (D.R.f * D.R.r ^ 2) * (M : ℝ) ^ (2 * D.R.f * D.R.r ^ 2) *
+      (ReciprocityTheory.ChartRestriction.DS.flagVolume D.R.r ^ D.R.f * Formalism.MainNotions.StandardLattice.massI D D.R.r) := by
+  intro hT D j H Dw l Xo c U dict hL σ hσ x0 FF hF
   obtain ⟨Kf, th, hr, hK, hth, hD, -⟩ := hL.dictU σ hσ
   obtain ⟨hr', hm⟩ := hL.modelW σ hσ
   have hunf := hL.unf σ hσ
@@ -123,40 +176,61 @@ theorem MainStatements.Tam.comp : TubeSt → NumSt → CompSt := by
     rw [(hunf.2.1 k).2 τ]
     simpa using hf
   have h2r : 2 ≤ D.R.r := Formalism.L2.Geo.two_le_r D
-  have key := MainStatements.Tam.C.sum_muF_le hT D (D.sp.W j) D.R.r hr (U σ).Comp (U σ).X (dict σ) Kf th l.M hK hth hD hm
+  have key := MainStatements.Tam.C.sum_muF_le_flag hT D (D.sp.W j) D.R.r hr (U σ).Comp (U σ).X (dict σ) Kf th l.M hK hth hD hm
     l.three_le hΨ (D.R.sigW j).1 (D.R.sigW j).2 (D.sp.W_sig j) (fun τ => D.sp.W_sigval j hL.inR.1 hL.inR.2 τ) h2r
     x0 FF hF
-  refine key.trans (ENNReal.ofReal_le_ofReal ?_)
+
+  exact key
+
+theorem MainStatements.Tam.comp_flag (hT : TubeSt) : CompStBound fun D M => flagMassLev D.host.E D.R.r M := by
+  apply (comp_flag_exact hT).mono
+  intro D M
+  have h2r := Formalism.L2.Geo.two_le_r D
   have hfin : Module.finrank ℚ D.host.E = 2 * D.R.f := by
     rw [D.host.finrank_cmField]
     unfold Ranks.f Ranks.n
     ring
-  obtain ⟨hv0, hv1⟩ := hN D.R.r h2r
-  have hvnn : 0 ≤ ReciprocityTheory.ChartRestriction.DS.volU D.R.r := le_trans (by positivity) hv0
-  have hA : ReciprocityTheory.ChartRestriction.DS.volU D.R.r ^ D.R.f ≤ (13 : ℝ) ^ (D.R.f * D.R.r ^ 2) := by
-    rw [mul_comm, pow_mul]
-    exact pow_le_pow_left₀ hvnn hv1 _
-  have hAnn : 0 ≤ ReciprocityTheory.ChartRestriction.DS.volU D.R.r ^ D.R.f := pow_nonneg hvnn _
-  have hB : Formalism.MainNotions.StandardLattice.massI D D.R.r ≤ massB D.host.E D.R.r := GlobalTheory.mass_stdLat_le D.host.E (fun _ => rfl) D.R.r
-  have hBnn : 0 ≤ massB D.host.E D.R.r := by unfold massB; positivity
-  have hAB : ReciprocityTheory.ChartRestriction.DS.volU D.R.r ^ D.R.f * Formalism.MainNotions.StandardLattice.massI D D.R.r ≤
-      (13 : ℝ) ^ (D.R.f * D.R.r ^ 2) * massB D.host.E D.R.r := by
-    rcases le_total 0 (Formalism.MainNotions.StandardLattice.massI D D.R.r) with h | h
-    · exact mul_le_mul hA hB h (by positivity)
-    · exact le_trans (mul_nonpos_of_nonneg_of_nonpos hAnn h) (by positivity)
-  unfold massLev2
+  have hmass := GlobalTheory.mass_stdLat_le D.host.E (fun _ => rfl) D.R.r
+  have hcap : 0 ≤ massB D.host.E D.R.r := by unfold massB; positivity
+  unfold flagMassLev
   rw [hfin]
-  have h15 : (15 : ℝ) ^ (2 * D.R.f * D.R.r ^ 2) = 225 ^ (D.R.f * D.R.r ^ 2) := by
-    rw [mul_assoc, pow_mul]; norm_num
-  rw [h15]
-  have h208 : (16 : ℝ) ^ (D.R.f * D.R.r ^ 2) * 13 ^ (D.R.f * D.R.r ^ 2) ≤ 225 ^ (D.R.f * D.R.r ^ 2) := by
-    rw [← mul_pow]; exact pow_le_pow_left₀ (by norm_num) (by norm_num) _
-  calc (16 : ℝ) ^ (D.R.f * D.R.r ^ 2) * (l.M : ℝ) ^ (2 * D.R.f * D.R.r ^ 2) *
-        (ReciprocityTheory.ChartRestriction.DS.volU D.R.r ^ D.R.f * Formalism.MainNotions.StandardLattice.massI D D.R.r)
-      ≤ (16 : ℝ) ^ (D.R.f * D.R.r ^ 2) * (l.M : ℝ) ^ (2 * D.R.f * D.R.r ^ 2) *
-        ((13 : ℝ) ^ (D.R.f * D.R.r ^ 2) * massB D.host.E D.R.r) := by gcongr
-    _ = (l.M : ℝ) ^ (2 * D.R.f * D.R.r ^ 2) * ((16 : ℝ) ^ (D.R.f * D.R.r ^ 2) * 13 ^ (D.R.f * D.R.r ^ 2)) *
-        massB D.host.E D.R.r := by ring
-    _ ≤ (l.M : ℝ) ^ (2 * D.R.f * D.R.r ^ 2) * 225 ^ (D.R.f * D.R.r ^ 2) * massB D.host.E D.R.r := by gcongr
+  exact C.flag_mass_bound h2r (ReciprocityTheory.ChartRestriction.DS.flagVolume_nonneg _) hmass hcap
+
+/-- Eventually the flag factor absorbs the entire constant in the tube bound,
+uniformly in the field degree and the level. -/
+theorem MainStatements.Tam.comp_large_rank (hT : TubeSt) : CompStLargeRank := by
+  obtain ⟨R, hR⟩ := Filter.eventually_atTop.1
+    ((ReciprocityTheory.ChartRestriction.DS.tendsto_pow_sq_mul_flagVolume 16 (by norm_num)).eventually_le_const zero_lt_one)
+  refine ⟨R, fun D hr => ((comp_flag_exact hT) D).mono fun M => ?_⟩
+  have hfin : Module.finrank ℚ D.host.E = 2 * D.R.f := by
+    rw [D.host.finrank_cmField]
+    unfold Ranks.f Ranks.n
+    ring
+  have hw := ReciprocityTheory.ChartRestriction.DS.flagVolume_nonneg D.R.r
+  have hf : (16 : ℝ) ^ (D.R.f * D.R.r ^ 2) * ReciprocityTheory.ChartRestriction.DS.flagVolume D.R.r ^ D.R.f ≤ 1 := by
+    rw [Nat.mul_comm, pow_mul, ← mul_pow]
+    exact pow_le_one₀ (mul_nonneg (by positivity) hw) (hR _ hr)
+  have hcap : 0 ≤ massB D.host.E D.R.r := by unfold massB; positivity
+  have hm : Formalism.MainNotions.StandardLattice.massI D D.R.r ≤ massB D.host.E D.R.r :=
+    GlobalTheory.mass_stdLat_le D.host.E (fun _ => rfl) D.R.r
+  rw [hfin]
+  calc _ = (M : ℝ) ^ (2 * D.R.f * D.R.r ^ 2) *
+        ((16 : ℝ) ^ (D.R.f * D.R.r ^ 2) * ReciprocityTheory.ChartRestriction.DS.flagVolume D.R.r ^ D.R.f *
+          Formalism.MainNotions.StandardLattice.massI D D.R.r) := by ring
+       _ ≤ _ := by
+         apply mul_le_mul_of_nonneg_left _ (by positivity)
+         exact (mul_le_mul_of_nonneg_left hm (mul_nonneg (by positivity) (pow_nonneg hw _))).trans
+           (mul_le_of_le_one_left hcap hf)
+
+theorem MainStatements.Tam.comp_of_flag (h : CompStBound fun D M => flagMassLev D.host.E D.R.r M) :
+    CompSt := by
+  apply h.mono
+  intro D M
+  unfold flagMassLev massLev2
+  have hb : 0 ≤ massB D.host.E D.R.r := by unfold massB; positivity
+  split_ifs <;> gcongr <;> norm_num
+
+theorem MainStatements.Tam.comp : TubeSt → NumSt → CompSt :=
+  fun hT _ => comp_of_flag (comp_flag hT)
 
 end

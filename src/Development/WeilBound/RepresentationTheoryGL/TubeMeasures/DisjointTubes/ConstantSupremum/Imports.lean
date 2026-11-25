@@ -16,7 +16,13 @@ namespace MainStatements.Tam.Plug
 
 theorem low : LowSt := MainStatements.Tam.low MainStatements.Tam.vol MainStatements.Tam.stab MainStatements.Tam.num
 
-theorem comp : CompSt := MainStatements.Tam.comp (tube0 MainStatements.Tam.vol MainStatements.Tam.stab MainStatements.Tam.idx) MainStatements.Tam.num
+theorem comp_flag : CompStBound fun D M => flagMassLev D.host.E D.R.r M :=
+  MainStatements.Tam.comp_flag (tube0 MainStatements.Tam.vol MainStatements.Tam.stab MainStatements.Tam.idx)
+
+theorem comp_large_rank : CompStLargeRank :=
+  MainStatements.Tam.comp_large_rank (tube0 MainStatements.Tam.vol MainStatements.Tam.stab MainStatements.Tam.idx)
+
+theorem comp : CompSt := MainStatements.Tam.comp_of_flag comp_flag
 
 theorem size : SizeSt := MainStatements.Tam.size
 
