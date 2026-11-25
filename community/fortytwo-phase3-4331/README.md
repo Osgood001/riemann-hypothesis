@@ -12,7 +12,7 @@ For Core 41, Codex narrowed the imports in Levent Alpöge’s `DiscreteSeriesWey
 
 | Core | Editable Lean files | Baseline tokens | Verified local tokens | Tokens saved |
 | ---: | ---: | ---: | ---: | ---: |
-| 14 | 1,121 | 3,467,872 | 2,150,099 | 1,317,773 |
+| 14 | 1,102 | 3,467,872 | 1,671,517 | 1,796,355 |
 | 15 | 28,473 | 60,808,488 | 47,870,200 | 12,938,288 |
 | 17 | 30,501 | 48,886,000 | 48,885,898 | 102 |
 | 18 | 33,702 | 75,331,745 | 74,343,508 | 988,237 |
@@ -49,3 +49,5 @@ The script checks the archive, applies the Lean edits, follows imports within th
 Fast cores record their upstream Git revision and per-file SHA-256 values in `verification.json`. Pass the upstream checkout’s `src` directory as the second argument, for example `python3.14 reconstruct.py 26 /path/to/riemann-lean/src /tmp/core26-proof`.
 
 [Organizer source shards](https://github.com/Osgood001/riemann-hypothesis/releases/tag/v2026.11.23-shards)
+
+Core 14 uses the pinned upstream checkout recorded in its verification file. Run `python3.14 reconstruct.py 14 /path/to/riemann-lean/lean/src /tmp/core14-proof` from this directory.
