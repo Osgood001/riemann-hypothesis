@@ -14,56 +14,41 @@ theorem goal1 :
   LT.lt.{0} 0 δ →
     DifferentiableOn.{0, u_1, u_2} Complex f (Metric.ball.{u_1} y δ) →
       (∀ (z : E), Membership.mem.{u_1, u_1} (Metric.ball.{u_1} y δ) z → LE.le.{0} (Norm.norm.{u_2} (f z)) M) →
-        LE.le.{0} (Norm.norm.{max u_2 u_1} (fderiv.{0, u_1, u_2} Complex f y)) (HDiv.hDiv.{0, 0, 0} M δ) := by
+        LE.le.{0} (Norm.norm.{max u_2 u_1}
+          (@fderiv.{0, u_1, u_2} Complex Complex.instDenselyNormedField.toNontriviallyNormedField
+            E inst.toAddCommGroup inst_1.toModule
+            inst.toSeminormedAddCommGroup.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+            F inst_2.toAddCommGroup inst_3.toModule
+            inst_2.toSeminormedAddCommGroup.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace f y))
+          (HDiv.hDiv.{0, 0, 0} M δ) := by
   intro E F _ _ _ _ f y δ M hδ hf hM
-  have hM0 : 0 ≤ M := (norm_nonneg _).trans (hM y (Metric.mem_ball_self hδ))
-  have hdy : DifferentiableAt ℂ f y :=
-    hf.differentiableAt (Metric.isOpen_ball.mem_nhds (Metric.mem_ball_self hδ))
-  refine ContinuousLinearMap.opNorm_le_bound _ (div_nonneg hM0 hδ.le) fun v => ?_
-  rcases eq_or_ne v 0 with rfl | hv
-  · simp
-  have hvpos : 0 < ‖v‖ := norm_pos_iff.mpr hv
-  have hline : ∀ t : ℂ, HasDerivAt (fun t : ℂ => y + t • v) v t := by
-    intro t
-    simpa using ((hasDerivAt_id t).smul_const v).const_add y
-  have hmaps : ∀ t : ℂ, ‖t‖ * ‖v‖ < δ → y + t • v ∈ Metric.ball y δ := by
-    intro t ht
-    rw [Metric.mem_ball, dist_eq_norm]
-    simpa [norm_smul] using ht
-  have hr : ∀ r : ℝ, 0 < r → r < δ → ‖fderiv ℂ f y v‖ * r ≤ M * ‖v‖ := by
-    intro r hr0 hrδ
-    have hgd : DifferentiableOn ℂ (fun t : ℂ => f (y + t • v)) (Metric.ball 0 (δ / ‖v‖)) := by
-      intro t ht
-      have ht' : ‖t‖ * ‖v‖ < δ := by
-        rw [Metric.mem_ball, dist_zero_right, lt_div_iff₀ hvpos] at ht
-        exact ht
-      exact ((hf.differentiableAt (Metric.isOpen_ball.mem_nhds (hmaps t ht'))).comp t
-        (hline t).differentiableAt).differentiableWithinAt
-    have hR : 0 < r / ‖v‖ := div_pos hr0 hvpos
-    have hcl : DiffContOnCl ℂ (fun t : ℂ => f (y + t • v)) (Metric.ball 0 (r / ‖v‖)) := by
-      refine DifferentiableOn.diffContOnCl (hgd.mono ?_)
-      rw [closure_ball _ hR.ne']
-      exact Metric.closedBall_subset_ball ((div_lt_div_iff_of_pos_right hvpos).2 hrδ)
-    have hderiv : deriv (fun t : ℂ => f (y + t • v)) 0 = fderiv ℂ f y v := by
-      have h := hdy.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℂ) (hline 0) (by simp)
-      exact h.deriv
-    have hb : ∀ z ∈ Metric.sphere (0 : ℂ) (r / ‖v‖), ‖f (y + z • v)‖ ≤ M := by
-      intro z hz
-      apply hM
-      apply hmaps
-      rw [mem_sphere_zero_iff_norm] at hz
-      rw [hz, div_mul_cancel₀ _ hvpos.ne']
-      exact hrδ
-    have h := Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hR hcl hb
-    rw [hderiv, div_div_eq_mul_div, le_div_iff₀ hr0] at h
-    exact h
-  have ht : Filter.Tendsto (fun r : ℝ => ‖fderiv ℂ f y v‖ * r) (nhdsWithin δ (Set.Iio δ))
-      (nhds (‖fderiv ℂ f y v‖ * δ)) :=
-    ((continuous_const.mul continuous_id).tendsto δ).mono_left nhdsWithin_le_nhds
-  have hev : ∀ᶠ r in nhdsWithin δ (Set.Iio δ), ‖fderiv ℂ f y v‖ * r ≤ M * ‖v‖ := by
-    filter_upwards [Ioo_mem_nhdsLT hδ] with r h1 using hr r h1.1 h1.2
-  have hlim := le_of_tendsto ht hev
-  rw [div_mul_eq_mul_div, le_div_iff₀ hδ]
-  exact hlim
+  let reflect : E → E := fun z => y + (y - z)
+  have hcenter : reflect y = y := by simp [reflect]
+  have hreflect : Set.MapsTo reflect (Metric.ball y δ) (Metric.ball y δ) := by
+    intro z hz
+    simpa only [Metric.mem_ball, dist_eq_norm, reflect, add_sub_cancel_left, norm_sub_rev y z]
+      using hz
+  -- The odd part about y has the same derivative at y and is bounded by M.
+  let g : E → F := fun z => (1 / 2 : ℂ) • (f z - f (reflect z))
+  have hr : HasFDerivAt reflect (-ContinuousLinearMap.id ℂ E) y :=
+    ((hasFDerivAt_id y).const_sub y).const_add y
+  have hfy := (hf.differentiableAt (Metric.ball_mem_nhds y hδ)).hasFDerivAt
+  have hfr : HasFDerivAt (f ∘ reflect) (-fderiv ℂ f y) y := by
+    have h : HasFDerivAt f (fderiv ℂ f y) (reflect y) := hcenter.symm ▸ hfy
+    simpa only [ContinuousLinearMap.comp_neg, ContinuousLinearMap.comp_id] using h.comp y hr
+  have hg : HasFDerivAt g (fderiv ℂ f y) y := by
+    change HasFDerivAt ((1 / 2 : ℂ) • (f - f ∘ reflect)) (fderiv ℂ f y) y
+    simpa [sub_neg_eq_add, ← two_smul ℂ, smul_smul] using
+      (hfy.sub hfr).const_smul (1 / 2 : ℂ)
+  have hdiff : DifferentiableOn ℂ g (Metric.ball y δ) :=
+    (hf.sub (hf.comp (by fun_prop) hreflect)).const_smul _
+  have hgcenter : g y = 0 := by simp [g, hcenter]
+  have hmaps : Set.MapsTo g (Metric.ball y δ) (Metric.closedBall (g y) M) := by
+    intro z hz
+    rw [hgcenter, Metric.mem_closedBall, dist_zero_right]
+    dsimp [g]
+    rw [norm_smul, norm_div, norm_one, Complex.norm_two]
+    linarith only [norm_sub_le (f z) (f (reflect z)), hM z hz, hM _ (hreflect hz)]
+  simpa only [hg.fderiv] using Complex.norm_fderiv_le_div_of_mapsTo_ball hdiff hmaps hδ
 
 end Bl.general_b_fact_second_bis_form
