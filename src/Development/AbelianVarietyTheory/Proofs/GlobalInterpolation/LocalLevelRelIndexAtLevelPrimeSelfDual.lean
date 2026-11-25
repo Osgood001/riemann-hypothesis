@@ -1,6 +1,7 @@
 module
 
 public import Mathlib
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.PointwiseStabiliserParametrisationBijective
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SelfDualStabiliserIndex
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SplittingProjection
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ValuedAlgebraMapLtOneIff
@@ -23,6 +24,31 @@ noncomputable section
 
 open NumberField IsDedekindDomain Matrix Formalism.UG Formalism.BasicNotions Formalism.MainNotions.StandardLattice
 open scoped TensorProduct
+
+namespace GlobalTheory.UniIndexPrime
+
+/-- Index of the upper unitriangular group in rank k over a residue field of order q. -/
+def colResidueIndex (q k : ℕ) : ℕ := ∏ j ∈ Finset.Icc 1 k, (q ^ j - 1)
+
+theorem index_upperUni_field (κ : Type) [Field κ] [Finite κ] (k : ℕ) :
+    (Subgroup.closure (upperUni k κ)).index = colResidueIndex (Nat.card κ) k := by
+  let := Fintype.ofFinite κ
+  have e : uniSub k κ = Formalism.DoubleCosetMeasures.upUniG κ k := by
+    ext x
+    exact mem_uniSub x
+  rw [closure_eq]
+  apply Nat.eq_of_mul_eq_mul_right (Nat.card_pos (α := uniSub k κ))
+  rw [Subgroup.index_mul_card, e, Nat.mul_comm (colResidueIndex _ _)]
+  simpa only [colResidueIndex, Nat.card_eq_fintype_card] using
+    Formalism.FourierDecayAlt.P.gamma_factor_product κ k
+
+theorem colResidueIndex_prime {p : ℕ} (hp : p.Prime) (k : ℕ) :
+    (colResidueIndex p k : ℝ) = idxColLoc p k := by
+  let : Fact p.Prime := ⟨hp⟩
+  simpa only [index_upperUni_field, Nat.card_zmod] using
+    index_upperUni (ZMod p) p k hp (Nat.card_zmod p)
+
+end GlobalTheory.UniIndexPrime
 
 namespace GlobalTheory.LevelIndex
 
@@ -144,7 +170,7 @@ theorem finite_over {p : ℕ} (hp : p.Prime) :
 theorem not_mem_both {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (h : p ≠ q) (v : HeightOneSpectrum (𝓞 F))
     (h1 : (p : 𝓞 F) ∈ v.asIdeal) (h2 : (q : 𝓞 F) ∈ v.asIdeal) : False := by
   obtain ⟨a, b, e⟩ : IsCoprime (p : 𝓞 F) (q : 𝓞 F) := Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 h)
-  exact (Ideal.ne_top_iff_one _).1 v.isPrime.ne_top (e ▸ add_mem (Ideal.mul_mem_left _ _ h1)
+  exact (Ideal.ne_top_iff_one _).1 v.isMaximal.ne_top (e ▸ add_mem (Ideal.mul_mem_left _ _ h1)
     (Ideal.mul_mem_left _ _ h2))
 
 theorem prod_over {p : ℕ} (hp : p.Prime) {f : ℕ}
@@ -198,13 +224,15 @@ variable {gp : Fin 2 → ℕ}
     {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C : ColumnChain R ι hc} {A : ColumnsAtT R C}
     {clsLat : ∀ i, C.cls i → Submodule (𝓞 E) (sp.X i).V} (L : ColLevel R F E sp gp C A clsLat)
 
-theorem relIndex_at_g {N : Submodule (𝓞 E) (Fin R.k → E)}
+/-- At an auxiliary place, the local index uses the size of its residue field,
+not its rational residue characteristic. -/
+theorem relIndex_at_g_residue {N : Submodule (𝓞 E) (Fin R.k → E)}
     (hN : HasFrames sp N) (i : Fin 2)
-    (hp : (gp i).Prime) (v : HeightOneSpectrum (𝓞 F)) (hs : Nat.card (𝓞 F ⧸ v.asIdeal) = gp i)
+    (v : HeightOneSpectrum (𝓞 F))
     (hv : (gp i : 𝓞 F) ∈ v.asIdeal)
     (h : L.Uloc v ≤ levelVL sp.cm.sig sp.gram0 v N) :
-    (((L.Uloc v).relIndex (levelVL sp.cm.sig sp.gram0 v N) : ℕ) : ℝ) =
-      idxColLoc (gp i) R.k := by
+    (L.Uloc v).relIndex (levelVL sp.cm.sig sp.gram0 v N) =
+      UniIndexPrime.colResidueIndex (Nat.card (𝓞 F ⧸ v.asIdeal)) R.k := by
   obtain ⟨b, hb, hbN⟩ := hN.2.2 v
   have hsw := L.splitG_sig i v hv
   have hint := GlobalTheory.mem_intV_iff_of_splitting _ _ sp.cm v (GlobalTheory.ringEquiv_adicCompletion_mem_integers_iff _ v) _ hsw
@@ -237,7 +265,20 @@ theorem relIndex_at_g {N : Submodule (𝓞 E) (Fin R.k → E)}
   rw [e] at hu
   rw [relIndex_eq_of_symm hu h (hU ▸ pull_mono _ _ _ (congPre_le _ _ _)), hU, relIndex_pull hsur, iwU,
     GlobalTheory.CongIndex.relIndex_congPre _ _ _ (FaithfulSMul.algebraMap_injective _ _)]
-  exact GlobalTheory.UniIndexPrime.index_upperUni _ _ _ hp ((card_residue v).trans hs)
+  have : Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) :=
+    Formalism.UG.P.glint_finite_residueField v
+  exact (UniIndexPrime.index_upperUni_field (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) R.k).trans
+    (congrArg (fun q => UniIndexPrime.colResidueIndex q R.k) (card_residue v))
+
+theorem relIndex_at_g {N : Submodule (𝓞 E) (Fin R.k → E)}
+    (hN : HasFrames sp N) (i : Fin 2)
+    (hp : (gp i).Prime) (v : HeightOneSpectrum (𝓞 F)) (hs : Nat.card (𝓞 F ⧸ v.asIdeal) = gp i)
+    (hv : (gp i : 𝓞 F) ∈ v.asIdeal)
+    (h : L.Uloc v ≤ levelVL sp.cm.sig sp.gram0 v N) :
+    (((L.Uloc v).relIndex (levelVL sp.cm.sig sp.gram0 v N) : ℕ) : ℝ) =
+      idxColLoc (gp i) R.k := by
+  rw [relIndex_at_g_residue L hN i v hv h, hs]
+  exact UniIndexPrime.colResidueIndex_prime hp R.k
 
 theorem local_level_relIndex_at_level_prime_selfDual {N : Submodule (𝓞 E) (Fin R.k → E)}
     (v : HeightOneSpectrum (𝓞 F)) (hs : Nat.card (𝓞 F ⧸ v.asIdeal) = A.T)
@@ -280,16 +321,27 @@ theorem exists_glue (v : HeightOneSpectrum (𝓞 F))
   rw [Formalism.UG.P.afsplit_coe_bc_prV, Formalism.UG.P.afsplit_coe_bc_prV, Formalism.UG.P.afsplitU_coe,
     Formalism.UG.P.afsplitC_prV_ne v w hw]
 
-theorem relIndex_level (hp : ∀ i, (gp i).Prime) (hne : gp 0 ≠ gp 1) {f : ℕ}
-    (hg : ∀ i, Nat.card {v : HeightOneSpectrum (𝓞 F) // (gp i : 𝓞 F) ∈ v.asIdeal} = f ∧
-      ∀ v : HeightOneSpectrum (𝓞 F), (gp i : 𝓞 F) ∈ v.asIdeal → Nat.card (𝓞 F ⧸ v.asIdeal) = gp i)
-    (hT : Nat.card {v : HeightOneSpectrum (𝓞 F) // (A.T : 𝓞 F) ∈ v.asIdeal} = f ∧
-      ∀ v : HeightOneSpectrum (𝓞 F), (A.T : 𝓞 F) ∈ v.asIdeal → Nat.card (𝓞 F ⧸ v.asIdeal) = A.T)
+/-- The total auxiliary factor runs over the actual primes of F above p. -/
+def auxiliaryIndex {p : ℕ} (hp : p.Prime) (k : ℕ) : ℝ :=
+  ∏ v ∈ (finite_over (F := F) hp).toFinset, (UniIndexPrime.colResidueIndex (Nat.card (𝓞 F ⧸ v.asIdeal)) k : ℝ)
+
+theorem auxiliaryIndex_of_split {p f : ℕ} (hp : p.Prime) (k : ℕ)
+    (hc : Nat.card {v : HeightOneSpectrum (𝓞 F) // (p : 𝓞 F) ∈ v.asIdeal} = f)
+    (hr : ∀ v : HeightOneSpectrum (𝓞 F), (p : 𝓞 F) ∈ v.asIdeal → Nat.card (𝓞 F ⧸ v.asIdeal) = p) :
+    auxiliaryIndex (F := F) hp k = idxColLoc p k ^ f :=
+  prod_over hp hc _ _ fun v hv => by
+    rw [hr v hv]
+    exact UniIndexPrime.colResidueIndex_prime hp k
+
+/-- The relative index for column levels, without requiring the three rational primes
+to split completely in the base field. The local model at T supplies its residue size. -/
+theorem relIndex_level_residue (hp : ∀ i, (gp i).Prime) (hne : gp 0 ≠ gp 1)
     (hfr : ∀ N, IsSelfDualLat (sp.cm.sig : E →+* E) sp.gram0 N → HasFrames sp N)
     (H : HasOverLattice L) {N : Submodule (𝓞 E) (Fin R.k → E)}
     (hN₁ : IsSelfDualLat (sp.cm.sig : E →+* E) sp.gram0 N) (hUK : L.U ≤ levelAfL sp.cm.sig sp.gram0 N) :
     ((L.U.relIndex (levelAfL sp.cm.sig sp.gram0 N) : ℕ) : ℝ) =
-      idxColLoc (gp 0) R.k ^ f * idxColLoc (gp 1) R.k ^ f * ((A.T : ℝ) ^ R.k - 1) ^ f := by
+      auxiliaryIndex (F := F) (hp 0) R.k * auxiliaryIndex (F := F) (hp 1) R.k *
+        ((A.T : ℝ) ^ R.k - 1) ^ Nat.card {v : HeightOneSpectrum (𝓞 F) // (A.T : 𝓞 F) ∈ v.asIdeal} := by
   classical
   obtain ⟨hTg, N₀, hN₀, hloc, hle₀, -⟩ := H
   have hN := hfr N hN₁
@@ -307,19 +359,25 @@ theorem relIndex_level (hp : ∀ i, (gp i).Prime) (hne : gp 0 ≠ gp 1) {f : ℕ
     (levelAfL sp.cm.sig sp.gram0 N) L.U (fun v => levelVL sp.cm.sig sp.gram0 v N) L.Uloc
     (((finite_over (hp 0)).toFinset ∪ (finite_over (hp 1)).toFinset) ∪ (finite_over hT').toFinset)
     (fun v x hx => exists_glue v x hx.1) hK L.U_eq (fun v hv => by
-      simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or] at hv
+      simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_or] at hv
       have e : L.Uloc v = levelVL sp.cm.sig sp.gram0 v N₀ := by
         rw [L.Uloc_hyp v hv.1.1 hv.1.2 hv.2]
         exact congrArg (level _ _) (hN₀.2.2.2.2.2 v hv.2).symm
       rw [← Subgroup.relIndex_eq_one, relIndex_selfDual hN hN₀' v (hle v) (hle₀ v), e,
         Subgroup.relIndex_self])
-  rw [hidx, Nat.cast_prod, Finset.prod_union, Finset.prod_union,
-    prod_over (hp 0) (hg 0).1 _ _ fun v hv => relIndex_at_g L hN 0 (hp 0) v ((hg 0).2 v hv) hv (hle v),
-    prod_over (hp 1) (hg 1).1 _ _ fun v hv => relIndex_at_g L hN 1 (hp 1) v ((hg 1).2 v hv) hv (hle v),
-    prod_over hT' hT.1 _ ((A.T : ℝ) ^ R.k - 1) fun v hv => by
+  have hg : ∀ i : Fin 2, ∏ v ∈ (finite_over (F := F) (hp i)).toFinset,
+      (((L.Uloc v).relIndex (levelVL sp.cm.sig sp.gram0 v N) : ℕ) : ℝ) = auxiliaryIndex (F := F) (hp i) R.k := by
+    intro i
+    refine Finset.prod_congr rfl fun v hv => ?_
+    exact_mod_cast relIndex_at_g_residue L hN i v (by simpa using hv) (hle v)
+  rw [hidx, Nat.cast_prod, Finset.prod_union, Finset.prod_union, hg 0, hg 1,
+    prod_over hT' rfl _ ((A.T : ℝ) ^ R.k - 1) fun v hv => by
       obtain ⟨φ, hφ⟩ := hloc v hv
+      have hc : Nat.card (𝓞 F ⧸ v.asIdeal) = A.T := by
+        obtain ⟨_, _, _, _, _, _, _, _, _, ε, _⟩ := hφ
+        exact (card_residue v).symm.trans ((Nat.card_congr ε.symm.toEquiv).trans (L.fM_card v hv))
       rw [relIndex_selfDual hN hN₀' v (hle v) (hle₀ v)]
-      exact local_level_relIndex_at_level_prime_selfDual L v (hT.2 v hv) hv hφ]
+      exact local_level_relIndex_at_level_prime_selfDual L v hc hv hφ]
   · rw [Finset.disjoint_left]
     intro v h0 h1
     exact not_mem_both (hp 0) (hp 1) hne v (by simpa using h0) (by simpa using h1)
@@ -329,13 +387,27 @@ theorem relIndex_level (hp : ∀ i, (gp i).Prime) (hne : gp 0 ≠ gp 1) {f : ℕ
     · exact not_mem_both hT' (hp 0) (hTg 0) v (by simpa using h1) (by simpa using h)
     · exact not_mem_both hT' (hp 1) (hTg 1) v (by simpa using h1) (by simpa using h)
 
+theorem relIndex_level (hp : ∀ i, (gp i).Prime) (hne : gp 0 ≠ gp 1) {f : ℕ}
+    (hg : ∀ i, Nat.card {v : HeightOneSpectrum (𝓞 F) // (gp i : 𝓞 F) ∈ v.asIdeal} = f ∧
+      ∀ v : HeightOneSpectrum (𝓞 F), (gp i : 𝓞 F) ∈ v.asIdeal → Nat.card (𝓞 F ⧸ v.asIdeal) = gp i)
+    (hT : Nat.card {v : HeightOneSpectrum (𝓞 F) // (A.T : 𝓞 F) ∈ v.asIdeal} = f ∧
+      ∀ v : HeightOneSpectrum (𝓞 F), (A.T : 𝓞 F) ∈ v.asIdeal → Nat.card (𝓞 F ⧸ v.asIdeal) = A.T)
+    (hfr : ∀ N, IsSelfDualLat (sp.cm.sig : E →+* E) sp.gram0 N → HasFrames sp N)
+    (H : HasOverLattice L) {N : Submodule (𝓞 E) (Fin R.k → E)}
+    (hN₁ : IsSelfDualLat (sp.cm.sig : E →+* E) sp.gram0 N) (hUK : L.U ≤ levelAfL sp.cm.sig sp.gram0 N) :
+    ((L.U.relIndex (levelAfL sp.cm.sig sp.gram0 N) : ℕ) : ℝ) =
+      idxColLoc (gp 0) R.k ^ f * idxColLoc (gp 1) R.k ^ f * ((A.T : ℝ) ^ R.k - 1) ^ f := by
+  rw [relIndex_level_residue L hp hne hfr H hN₁ hUK,
+    auxiliaryIndex_of_split (hp 0) R.k (hg 0).1 (hg 0).2,
+    auxiliaryIndex_of_split (hp 1) R.k (hg 1).1 (hg 1).2, hT.1]
+
 end Record
 
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SelfDualStabiliserIndex GlobalTheory.IndefiniteRowSideFullHecke.SplittingProjection in
 theorem indexKU_of_selfDualOverBase (H : SelfDualOverBase) : IndexKU := by
   intro D Lv u
-  letI := D.host.cmStar
+  let := D.host.cmStar
   intro hg hT N hN hUK
   exact relIndex_level (Lv u) D.host.g_prime D.host.g_ne hg hT
     (fun N hN => ⟨hN.1, hN.2.1, fun v => GlobalTheory.SelfDualFrame.exists_frame D N v hN⟩) (H D Lv u hT) hN hUK
