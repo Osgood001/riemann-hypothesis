@@ -6,10 +6,7 @@ public import Development.WeilBound.CoreStatements.SesquilinearFractions.PureTyp
 
 @[expose] public section
 
-open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
-open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
-open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
-open scoped ComplexOrder
+open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.CompanionTheory.Ar.Fl
 
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
