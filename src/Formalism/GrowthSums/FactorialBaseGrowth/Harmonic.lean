@@ -20,11 +20,10 @@ theorem le_padicValRat_sum_of_pos {p : ℕ} [Fact p.Prime] (s : ℤ) {F : ℕ �
 
 theorem padicValNat_le_of_lt_pow {p t y : ℕ} [hp : Fact p.Prime] (hy : 1 ≤ y)
     (hyP : y < p ^ (t + 1)) : padicValNat p y ≤ t := by
-  by_contra h
-  push Not at h
+  by_contra! h
   have hdvd : p ^ (t + 1) ∣ y :=
-    (pow_dvd_pow p (Nat.succ_le_of_lt h)).trans (_root_.Dvd.intro_left _ (_root_.Nat.divMaxPow_mul_pow_padicValNat _ _))
-  exact absurd (Nat.le_of_dvd (by omega) hdvd) (not_le.2 hyP)
+    (Nat.pow_dvd_iff_le_multiplicity hp.out.ne_one (by omega)).2 (by rwa [← Nat.padicValNat_def])
+  exact hyP.not_ge (Nat.le_of_dvd hy hdvd)
 
 theorem padicValHarmonicPowerSum : HarmonicVal := by
   intro p t s hp
