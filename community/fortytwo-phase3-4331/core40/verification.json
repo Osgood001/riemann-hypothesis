@@ -1,14 +1,14 @@
 {
   "core": 40,
-  "candidate": "core40-domain6d7dec76d629",
+  "candidate": "core40-domaind5a650ee2fc4",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
   "submitted_files": 1,
-  "local_normalized_tokens": 509,
+  "local_normalized_tokens": 505,
   "published_baseline_tokens": 1031987,
-  "proof_tree_sha256": "b719803921690fd3fb6fa5829d36ce30167bc9a9103bdbc89c021eb4672e504c",
+  "proof_tree_sha256": "dfb519018aa6e48994d8a900b933b1acd5faba5e946e4a30a1f922e857e83181",
   "modified_files": {},
   "attribution": {
     "original_author": "Levent Alpöge",
@@ -37,13 +37,13 @@
     "native_contribution_note": "Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators shortened the torus and Haar arguments in #103701 and explicitly credit Fortytwo #103322. Codex applied the equality of the complete mapped matrix. For a second fundamental domain the proof now uses absolute continuity of additive Haar measures directly. The positive Haar scalar is used only to provide the nonzero proportionality factor. The unchanged target and formalization are by Levent Alpöge. The Borel identification for adelic block coordinates is applied directly to the constant-term equation.",
     "public_source_note": "Core 40. Fortytwo’s native DeepSeek session supplied the entrywise diagonal and unipotent coordinate arguments in the published Fortytwo lineage. Mikko Nyman and collaborators shortened the torus and Haar arguments in #103701 and explicitly credit Fortytwo #103322. Codex applied the equality of the complete mapped matrix. For a second fundamental domain the proof now uses absolute continuity of additive Haar measures directly. The positive Haar scalar is used only to provide the nonzero proportionality factor. The unchanged target and formalization are by Levent Alpöge. The Borel identification for adelic block coordinates is applied directly to the constant-term equation. [Published starting proof](https://riemann.verifytask.cn/api/attempt/103701)",
     "prior_public_lineage": "Pi / Gemini 4 Neon via Antigravity published the earlier one-file proof in #102851. Fortytwo and Codex revised it in #103322, which Mikko Nyman expressly credits in #103701.",
-    "parent_candidate": "core40-domain670a87bc8f71",
+    "parent_candidate": "core40-domain6d7dec76d629",
     "direct_witness_reduction": {
       "native_model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
       "visible_native_events": 98,
       "visible_trace_sha256": "a862c45038c037422d364ac4e97976264409cb9ed2a23e08063685c0be8a82f9",
       "native_tool_call": "call_95c78cb8fab84d17933c177d656dcc50_0",
-      "prior_source_sha256": "daf95b5b2dadb2c5dbc2f381921b017724cd86a323c611a7eb7d4314076d8631",
+      "prior_source_sha256": "6afcc00152bf8c8abccb89c88e04d25df7f03b5df5797339bd8bc0f5a84b5fac",
       "native_contribution": "DeepSeek supplied the direct fundamental-domain witness and eliminated the dependent existential with rintro.",
       "supervisor_contribution": "Codex combined those two steps with the accepted diagonal argument, the explicit field type, and the function equality proof."
     },
@@ -58,15 +58,16 @@
       "supervisor_repair": "Codex preserved the preliminary change/simp normalizations and used the native unfolding with reflexivity."
     },
     "supervisor_haar_scalar": "Codex moved the local scalar definition after the Haar equality theorem.",
-    "supervisor_domain_inference": "Codex inferred the specific fundamental domain from its explicit original domain proof."
+    "supervisor_domain_inference": "Codex inferred the specific fundamental domain from its explicit original domain proof.",
+    "supervisor_constant_term": "Codex unfolded ctn and normalized the mass of the unipotent fundamental domain once before both constant-term claims."
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-25T01:01:34.802966+00:00",
-    "elapsed_seconds": 145.671,
+    "completed_utc": "2026-11-25T01:14:49.854024+00:00",
+    "elapsed_seconds": 181.96,
     "frozen_files": 1405,
-    "log_sha256": "c0d4c696b41867dc2dfca5f97d312bee37ef55c077fa9c76dbb964ffc1ee0d03",
+    "log_sha256": "f3c6d22ca6e231b4a45ea0576442139655d0dae8779adcf515ec9797cdf6f94f",
     "comparator_executable_sha256": "ba4b7f1ca0a6cb10bd0f73e1110f954209cd4377ef477ed6715f6072cfc80daf",
     "exporter_executable_sha256": "e775ccfbe86c08fa9fea1ec1fe45c46ed168cf48236ff8ba429aa28b05c0623e",
     "permitted_axioms": [
@@ -80,5 +81,5 @@
   "source_kind": "pinned_git_checkout",
   "target_sha256": "db42504120a3ee7af320c76aa8b682751b0a5d8b1ce67e7421c8712da699851f",
   "pinned_source_files": {},
-  "proof_id": "6d7dec76d629a6dc39f0272aefb58ddd936456a01d9163406889e518949706be"
+  "proof_id": "d5a650ee2fc4f40615c69e65a1eee3756937f605d300972f790f77fa20e03002"
 }

@@ -36,13 +36,14 @@ theorem AlpogeRHCore40.residualSpectrumConstantTermDict : Dict := by
     fun φ hφ r _ _ => ?_⟩
   set ν := unipMeasure E N r
   have hunip (X : UPos N r → Ad E) : unipGL X = unip X := Units.ext rfl
+  unfold ctn
+  simp [measureReal_def, unipMeasure_unipFundamentalDomain]
   unfold IsCT
   rw [← BorelSpace.measurable_eq (α := BlockIx N r → Ad E)]
-  refine ⟨⟨ν, _, inferInstance, isAddFundamentalDomain_unipFundamentalDomain, by ext g; simp [ct, ctn, measureReal_def, unipMeasure_unipFundamentalDomain, constantTerm, hunip, ν]⟩, ?_⟩
+  refine ⟨⟨ν, _, inferInstance, isAddFundamentalDomain_unipFundamentalDomain, by ext g; simp [ct, constantTerm, hunip, ν]⟩, ?_⟩
   rintro F ⟨μ, 𝓕, hμ, h𝓕, rfl⟩
   have e := isAddLeftInvariant_eq_smul μ ν
   set s := addHaarScalarFactor μ ν
   refine ⟨s, by exact_mod_cast (addHaarScalarFactor_pos_of_isAddHaarMeasure μ ν).ne', funext fun g => ?_⟩
   simp [ct, e, restrict_smul, integral_smul_nnreal_measure, ← hunip, NNReal.smul_def,
-    real_smul, ctn, measureReal_def, unipMeasure_unipFundamentalDomain,
-    constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ absolutelyContinuous_isAddHaarMeasure ν μ) g, ν]
+    real_smul, constantTerm_eq_setIntegral hφ.left (h𝓕.mono $ absolutelyContinuous_isAddHaarMeasure ν μ) g, ν]
