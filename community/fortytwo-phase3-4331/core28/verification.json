@@ -1,58 +1,122 @@
 {
   "core": 28,
-  "candidate": "core28-fastquotientforms3e8f5adf2a",
+  "candidate": "core28-native041b10fc2ede",
   "organizer_source_revision": "40e56bab026552e089d7afcfeff08d2defb9c005",
   "verified_source_revision": "af705e0d9a5904326eb0693310e36d9484df7f8f",
   "lean": "leanprover/lean4:v4.33.1",
   "mathlib": "0df444a360eaa60ab8c11dca51a86af692955474",
-  "submitted_files": 151,
-  "local_normalized_tokens": 260150,
+  "submitted_files": 150,
+  "local_normalized_tokens": 260070,
   "published_baseline_tokens": 920317,
-  "proof_tree_sha256": "3f0bf06c4de6829ac8325af3c28efa4fd5848fe70037607e878f9bdc553df8ba",
+  "proof_tree_sha256": "9c67ec8a2446c844c890f0f1951d6e14251ff1ec0124d4b5e51e04ec9b44794f",
   "modified_files": {
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
-      "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
-      "after": "eb36319eb4b1ea4b6f1080df1fdb8ccc880f064053b20c1a44baed1044e69952"
-    },
-    "ReciprocityTheory/SemistableReduction/LatAll.lean": {
-      "before": "b3ad7388149b404a8691abafebaa8502a2b507961d8e8dad58f1dd744b82651e",
-      "after": "a012cf49ed8172939915e4f69d88b8495f85bb666192f99a12e110b7c9eb8e4a"
-    },
     "ReciprocityTheory/L2DbarEstimates/PlurisubharmonicCharts/GROWCountStatement.lean": {
       "before": "238d4b56550ce08b2f847ff21f3ce23486b5eeb734b71bd89d13ce58f0167c21",
       "after": "e1c1816f9617b22a65d5da8fcff9f58bd8344496bee089b4e3b0d6cf503ac8a6"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": {
+      "before": "bfb00cb2fd8be62544a7d71ea17a0c3602f0bd4ba4343b9ba85b3cac28d1fabd",
+      "after": "57dac87523ee64769f3d5037973dc59a2c0330cda0b434aca3367b80b93a9aed"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BabaiCovering.lean": {
+      "before": "c302192823d9a4eb0e1546aa7c4ac12825652847aca93aef728ca6a2ec326be9",
+      "after": "5cad0972f9891ceac2c166e3e8a6cd656ada35dde8dd7a15bef5dab5509ec7e2"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BfSubRight.lean": {
+      "before": "91712167d4788bb5643a4aa58ee821313d585c5978851d3e51a49828611635c1",
+      "after": "0f5baf64649b54df5972dd095ac31a375a9cd17ecd36967c639a774c4b801aee"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BlockIdentityExpansion.lean": {
+      "before": "c7b0fe94c95d1ea4bcc3f8026a9a53992fb341c54b9847ce4bce1fcfe0e90bdf",
+      "after": "79ce7eb42644bb7a818f2e786cea357c9ac308d5fd5da00d173d7e1829e7bd4e"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BoundedSectionAlgebra.lean": {
       "before": "f33e58f454c2378fd837f714a99a8b0209518dad4c53ec358a368977297fb65e",
       "after": "0a1e08a0be1295cc1d143ab24c981ddc1c2cecda9e267e22b528606f82c2283a"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/SquareIntegrability/ContinuousRl.lean": {
-      "before": "6d7eb637072be3694e6767618e9c629757b5c6ae23cee21d93c9b4365aa4a964",
-      "after": "a4aab5103682ce4a77c25a2eaf988e56eaa22f55acc744832cfd9102a33c027d"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientHeightBoundOfLiftSupportPositivity.lean": {
+      "before": "fc8b7410ec124e173f230c96d4879ff6c18442dc75a4cece49b45aa9581739d1",
+      "after": "db573bd47f236aac7d3894910b2640ea976bf8ebf4cfb89abd45a7bcc6d820e9"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMeanContinuity.lean": {
-      "before": "34dfca5e7663eea4e6d5441863afac233ff5c415e3553f5c7c765264a2ae5e90",
-      "after": "b2eecd17b7fdc812abd3befd535182bf8fca3c71acf28282fb37a48a560ac6f0"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientIndexLowerBound.lean": {
+      "before": "f514607a8a33b2de4eaaf8510b04651042f3b3299907210bba0edc8ceb33746d",
+      "after": "284e59604f0a644a67bbb7b9f72341d74e47fc86287ef3d94726a291427accff"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthogonalComplementLines.lean": {
-      "before": "d31b2bbf7618d398b6212705bfb36bcffdaffae1593ace39845c20ad6692c77f",
-      "after": "a940ac5f994ec9ed4c3e8a6f7bb826e3ad35416f51d85c5e08f62be50c2300ba"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientPositivity.lean": {
+      "before": "66cc27cf9e1ce91d98cca5eea8cd462e0b0437308166dad15beb7d2e09f11341",
+      "after": "c28d42a107cdc6f31fd91adfdf5a1eafc6bde24115bc65b73515ef7a44090de5"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/M3bNormHolds.lean": {
-      "before": "6ee6051224c7843a1fffa6c2570a9d2c47253b56425491c9a91df272c462034c",
-      "after": "69d8b53776b637d140a91950f7268c00205da5197b2e3642de2ce7f3f553bbe4"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ConjugateConjugate.lean": {
+      "before": "97a48f562bbe4b229280e9474cfde1ae2c55c4bbfca67168b705d09975c41ec0",
+      "after": "6ab57213ea8960a03e6a64b7460bcab67f43e04fa98164f75262de5904025ad2"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsIntegralCc.lean": {
-      "before": "4cd337eb6b66d51867d0e63df3790e9f2550f72cd64f4bd2212b0247f8b27b4c",
-      "after": "ea4e025cf237274e733c8372550d91eec2c1f51a3d965e21eef873b56bacc114"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CountingExponentialSumHolds.lean": {
+      "before": "07737c22ff3cd685c3bcc3b59d549f79be4d87c3c9f264419abf926be4746839",
+      "after": "f438aa3386919aa7f773fc036d6d68b4d052ea15d8c72f37179e2447938ef83f"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CuspCoefficientFlow.lean": {
+      "before": "c60a3b46e44a0d6a46518da56a708017bb37b22c557983c80907107a0264136a",
+      "after": "a2b7e4d3e6cf424724f9eaf80d0769ca82e473be2fa09a0c26a84639ec3cb9c8"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscrMulHermitianIntegral.lean": {
+      "before": "d794289b44bc2afadaa1649644788cfec5f477cfef0660ee9af84d93f9f79c20",
+      "after": "ed0b875609460d18ea357d15d3b72ebec57f54882b2b9bd2d96bfbcccf9bf77f"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscreteLatticeMinimum.lean": {
+      "before": "6467e8aa2645d198410800e9b21077292421616f62be3822bc9855c391173cee",
+      "after": "724c45def9499ee19e4a50e1a2c49027a18a58aa4cf581c03b4ecea0742a906a"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscriminantTraceBounds.lean": {
+      "before": "b65a5e8a4847ff861842e3307c4db8dd3aaa9b85d2164fa2dcd742d39bf927c8",
+      "after": "50aa228c9f085bb25850243131eeb8c88f5a43469095957de75d4cdadcfd9534"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/EmbeddingHermitianPairs.lean": {
       "before": "654f4fba35a98e499489ab4cbcbe0297b1e576d51a9aafa636e2bf76326c3514",
       "after": "7d2c4d6f76c0d7a715e1d964c1fe27446756f8bed0a4921cb4ac2b5bcda897f5"
     },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ExponentialGrowthExclusion.lean": {
+      "before": "2410faf28c42efbce94518107bfb9586988c906d1dde50f5be62b0f740107af5",
+      "after": "2039402ae313818458a92fbe0cc9700653ee23641a0299ee636c8235493638be"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FinrankEqTwoMulHalfDegree.lean": {
+      "before": "cf1776fb062fac270870895a7fa6b3be15a53750fa53c4a62d697d453061737e",
+      "after": "4430e3a090d2d704c23b169e354013ba553f859cb2efb11efc4fb41347092b6a"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FinrankRieszBounds.lean": {
+      "before": "f5b8269b1aee0965bd6072a277c42ed2f5d3ec733fa7983af10569214b129478",
+      "after": "0b59cd76f3e20c514c1f4db3cc148685a36a7229c127b5ae05f28d61cc00bcdc"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FixedPointImaginarySpan.lean": {
+      "before": "9995020f76f22998df8508b8fbc145c52c5de4d257ad33650ec4b432962aa335",
+      "after": "8c5e75f6b13a399ae6ca7e3d8803ff035a1141b6023bffcf9c8d7904a1c39b28"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowCoefficientBounds.lean": {
+      "before": "c9c6f58353d1bc482f8412e9e26c1cd46c31e7b54515195702cd6d1aab9a0174",
+      "after": "79c245460d443e888c0a4281949562fc9b5a515c530848b51d35fc8be6d01225"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowCoefficientDecayHolds.lean": {
+      "before": "a00ac253f0102d47d2ee46f2fd31d7b3f0479d327482204ba5fb2eb88894141e",
+      "after": "f8ace5b68a5e0e0310dd42e2d04fa1c8ba946131e1dcc2086d361442f0723b3a"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowIsotropicPairs.lean": {
+      "before": "1783600f147574b5b825b7bbbe6e4f8f73154b39e3d0fd29fbf68b55207543cc",
+      "after": "0194559d09d8b1a740654187ca6ae09902c3b3fd46f6303383d3f26451084c42"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMajorantFlags.lean": {
+      "before": "1157a8624b71df8c8a39b25336be9c2456e97569d8c87a4b30cddc6497aa39d5",
+      "after": "d37b85882e53df3f5ac1fdcb4d7b887b0337332a641fd4974c8950424bd25f24"
+    },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMatMulVec.lean": {
       "before": "e1f4b74846939b0735b413a0c317fd0b4d7c38de72cbf791045ba216666b84cd",
       "after": "19579ddce091cd72a36cb9c26d33f007a17787f8a09c1b4157432e535069cb78"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMeanContinuity.lean": {
+      "before": "34dfca5e7663eea4e6d5441863afac233ff5c415e3553f5c7c765264a2ae5e90",
+      "after": "b2eecd17b7fdc812abd3befd535182bf8fca3c71acf28282fb37a48a560ac6f0"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientDomain.lean": {
+      "before": "c864508055e2f688c41328ef48ab53f82be9f634b60fd028417294c533600e7b",
+      "after": "cd86420140f511ade1b4c11044ad29910a8f3138abbf9b50e1f67fc3c00e148d"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientLattice.lean": {
       "before": "2da69db479213006703f8431316754cfe2eea08e4c59a1748f089e084d469ed0",
@@ -66,6 +130,42 @@
       "before": "b9e760b345c45f7ddd4647e2af3f6452684c3ac505a8c9bd6ab5ae710ad7e483",
       "after": "542e5e59c9e4bc5e97d3794fe408a8be6c4de7f20295428bfc300e9590aa7a0f"
     },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientsOfVectorGroup.lean": {
+      "before": "4eea60c7f58fc8d1e1d0bb789af860ae3041fd154282e17ed9902a9f560fd987",
+      "after": "4605c6033024d57d86cb5623bd1bfca20edd63cbc24e35cebf206eb0d4e89947"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCubeIntegral.lean": {
+      "before": "e8f01a88300c58e56c9e183d325c723232b8667468a503ea696b92e75f2129b6",
+      "after": "b73950b07584af9dcf794019d0eea98a213dabc132a3498a31e97e42311f0828"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCubeVolume.lean": {
+      "before": "89a02a8bf994077c9352d5500ff5dc7029b73641123d299a18f457043386f3e7",
+      "after": "8b4486f7b1536c2abfd4cb8be19989cd9d94eddb6d69ac0243d3519845e3e409"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FractionalSliceDomains.lean": {
+      "before": "06243fdf07d8bf6bb39d6610b424413443957a29dfeae3f4738afbe79b65ca07",
+      "after": "eb36319eb4b1ea4b6f1080df1fdb8ccc880f064053b20c1a44baed1044e69952"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSupOf.lean": {
+      "before": "9cd4b1a48536d397ba749af1f11192866915f903d690f64b42c738edd30d77cd",
+      "after": "e61505d60c9f248d473783d26915b9a1b70d4fe3cece5b5d7ee5320cbef01726"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/Inputs.lean": {
+      "before": "f7b3bacf59b36d3e871c94b5aacb4d30ba2b0a661c76755a7dff3e29b3afecd2",
+      "after": "fbe22f01bbe121003e1cd7d3b203fb90055afcb1a8189365a07d8caf04a82763"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/PointAssembly/DivLeExpOfAbsLogSubLe.lean": {
+      "before": "411d1b572b65c630169670325bd63aef681d131f52d48d248f282ff5b7494dab",
+      "after": "35115e1b774cf7f4b707cd29b4233ceddb5853680f9419e6a3b5a7efb2250963"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/PointAssembly/Frames.lean": {
+      "before": "ad0fbac9bfb0b080644423c3d62ece15ab1b3ce9c975c637d6814759388252ae",
+      "after": "913c6fe4c735463fe2e36dd622be530adf4a808fc9d00cfc2b51035a5297e1fc"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/AprojEqZeroOfUz.lean": {
+      "before": "e0dc4c7fa005aa3454db1248c7d9f39141a16bd82b22c872ff70da7fabe5e2cd",
+      "after": "61e721f31ade0321433d11e5077c7310542d72edde7f24e2d1f10259edcfa8b5"
+    },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/BotMulVecExt.lean": {
       "before": "c2f1fddc8be3b39a6a3359ce65204d0eb33895c0b4563e2683a91a0e5db88081",
       "after": "aef47051c0221eb588d93113f0f692ae7fe776d42d6b40f25ba4c32865f6f2f6"
@@ -78,13 +178,37 @@
       "before": "97fa7d63014885f265aaae99b1b99ba92eae06dfa5dd8757003d1e720cc9cd51",
       "after": "5da06e516b937e10c26ec97b89c9a48ab110852be17e622fc8a1438f5b4b15e3"
     },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/TopOf.lean": {
+      "before": "9e33900fadc4477461f1c6539af623799f6577f084b51e35dbe0445e2fec9ecd",
+      "after": "6470c1ad2eaf5453f18308262b9c54dacc92b792382f265f01b060a3ada7c111"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainOfTransference.lean": {
+      "before": "59827c78fd543d725233a0e571e5f2c342634d2b8478274637e04cd6860643fc",
+      "after": "414da12b7e594823c3e68fc1e143d47919009441dce03e24157e86390985d14c"
+    },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramDeterminantReal.lean": {
       "before": "bfdecae5fdd9fff207323432bcd40d5bbb910e5a678f4d93458c0ad4dde300f5",
       "after": "69165062640318bac668dfbe8a7220e30a55f3f4ee609f5d30a790f0096872ea"
     },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramMatrixExistence.lean": {
+      "before": "33fd21095386ac53e6862f5511ceb9e271f18681870e645cc514e750f8cd5a5a",
+      "after": "842a57779b875ae891633999c1513c4574a15c3387471248226e7a394b5b6418"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramSchmidtEigenframe.lean": {
+      "before": "7d3a2ff41b65607f17028e1445975218b1edadca78b79c96e31db5f447762379",
+      "after": "7510c47bb7df408152c57130131a71fb2cae109e7a7398bc8ef4ce70fc0e3b81"
+    },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HCSumRight.lean": {
       "before": "d5b5eba628f8d2d30cc1cc1630cb0093d972af9f46bdcd70cfd19465121004c3",
       "after": "2b70dd2cebc9c7eaf0d73ecf9af0dcddbdbb20d9f5c56aa106c77bd0e3c1f6c1"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermCOrthonormalCoordinates.lean": {
+      "before": "b7378d68fd628f770a1247fef6bc968d6092a742de4b3fc2bc586ddc8e9eeb34",
+      "after": "271aafe276289930902686d24277266849fb22217bcc5694bdcb6bb367810271"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermEqZeroOfTraceFormVanish.lean": {
+      "before": "93a37e9280abad0ce9c9940aa7196fdb0c73d0c450356883e48835bc50f8dc28",
+      "after": "5c31b776290fe9f000e014cc99a0980543f0d9c6181f1242c83e094591c4b25e"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermitianPairingAlgebra.lean": {
       "before": "0f86ffab95077b6ce867bdbc1a407e2d1174d84455e8a51fe3e82f764bff8ec0",
@@ -94,345 +218,85 @@
       "before": "fdbfe5da990d4d464024f3ca36b67d4d84cd6ee45568f79ccf3804ae05c7f857",
       "after": "73206fc7c42ef0dd954206c725dba72bc7e8b754fef4919f7432de275281a531"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicOutsideLine.lean": {
-      "before": "374a28bb72cbed176287d19a60ee3131ccdfe9f6e0f44fef443bb655c1342344",
-      "after": "f405f47b34bcb030a30ee2f1632a2186f6d4da2d8494c016b90e83334869b3b9"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LminorSubmatrixCastSucc.lean": {
-      "before": "c1860d88b7ebb92cdfa72524bad79d69b4a6627f2fead7cd77e10a38924c78a8",
-      "after": "2197e80bcea6cb5ca35dea56ebf6c0fff546b26203feebe873e92936131baee4"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatMulVec.lean": {
-      "before": "0c4c23cbd69f7697a9f299140033db8de3b1115ecee307fbca5e34ce9c3a3d1a",
-      "after": "5c8b390d7ac09b995b12045ed68151fa915c1b795aa9a97814f65fb6f5ad4266"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpBasisExistence.lean": {
-      "before": "212e81b4daaf54fbaeb710b31dd3b28241e7e34a9b4b73887c7e996b2d6fc9cc",
-      "after": "f4629f47e548428c6422bc8ac97ff5b64c80930721a398ac33ab25c546fa3b2e"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpComponentCombination.lean": {
-      "before": "279f73e574038f0aa6695b9d57dccf0b247e9e5592fc3135c19298577befad74",
-      "after": "2742fed666b90ae871aa83ca8c9a540a9f7e9bd11834d28ceeaf3a377f5210a9"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PositiveSpanMatrices.lean": {
-      "before": "71c12c7d6ab35cd91d7116b0d5d06e6bac4281117d9649eaff917833378a3d36",
-      "after": "09a0d6fe7fafe8a13b340c3f19d55b9b67d9a3c6d4af13a19d8381c63fb4cdaa"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealEmbeddingCharacters.lean": {
-      "before": "906c8be7fe3a649b12c01ec6c2ee7227b4dfd2c007bb58fefe693a02fffa4687",
-      "after": "892e972bc4ba6e254ef60f990a9a6e4c216e793b60d70fc3aa5ac735cddc0c71"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TraceIntegralBasis.lean": {
-      "before": "4c4b15b6fa321f61357567fb6169d93d51d388f236876aa87989e07d65e3a617",
-      "after": "eb743b7b92a8e558a1a5170cf0c68a9169f3078f580d3d4f7b6085e54d28c4bf"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TransvectionPeriodicity.lean": {
-      "before": "d8fed6cfb162bad03d289cac166b5f46c375c477fef6ef3f7e258ff914989474",
-      "after": "2d17665c99e329ebf6cc53ba1a815be7e638322bfed9098f4fae955a8c0623c0"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentVectorEqSmulComponent.lean": {
-      "before": "ed24e8f4477e718f8ad78af40f95c3b3c243ff01cd976b7abe0c413f3d635bad",
-      "after": "372d8a469cdcc6e00971fdb566c1ffa9f7b5aca4ada45d0dfa6baebf2065536b"
-    },
-    "ReciprocityTheory/SemistableReduction/ApproxBasisA.lean": {
-      "before": "02e905db6dc3d03ff5447dfd4f360cec94f29a57c123d28a2b42c2a7a48891be",
-      "after": "659f84e340dc7c5aafd3402251d197f3c4ebbbfe6dfba2c90fd527fe89978edb"
-    },
-    "ReciprocityTheory/SemistableReduction/ApproxGraphA.lean": {
-      "before": "833100586a19fa8098ec6945fc7a4364710e629eb54cabbe2bd7ae933b317b51",
-      "after": "6ace6829c9c429834c44aa3354119b445e380534a6fa5b080fd50cfdfafaa939"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentOnHyperbolicComplement.lean": {
-      "before": "28460692f30865da28ebb8cdaecff678708b9af78a4f8794b50bb0a234498e15",
-      "after": "61cf8278334ea539519613a91b66202884358f672215744bfb2ee411ae1fdf4a"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CuspCoefficientFlow.lean": {
-      "before": "c60a3b46e44a0d6a46518da56a708017bb37b22c557983c80907107a0264136a",
-      "after": "a2b7e4d3e6cf424724f9eaf80d0769ca82e473be2fa09a0c26a84639ec3cb9c8"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BlockIdentityExpansion.lean": {
-      "before": "c7b0fe94c95d1ea4bcc3f8026a9a53992fb341c54b9847ce4bce1fcfe0e90bdf",
-      "after": "79ce7eb42644bb7a818f2e786cea357c9ac308d5fd5da00d173d7e1829e7bd4e"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscriminantTraceBounds.lean": {
-      "before": "b65a5e8a4847ff861842e3307c4db8dd3aaa9b85d2164fa2dcd742d39bf927c8",
-      "after": "50aa228c9f085bb25850243131eeb8c88f5a43469095957de75d4cdadcfd9534"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicIndexSums.lean": {
-      "before": "b0c76a09ba231a638be796ce3410401e511cb65603c669cd95748bb67e928e99",
-      "after": "27f580a393db793ee5bb1f8fdc502657f29694e43b87e4380c44bec27f21f3a3"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealTangentSpace.lean": {
-      "before": "45281a4e0eb835f5aa216f1160dc21edb940fe06999b98bac0a9364be7a56385",
-      "after": "b6e525788aed36e456c4087bbe483f3cdcc14dfd13e5b7c68d272982bbfff391"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowIsotropicPairs.lean": {
-      "before": "1783600f147574b5b825b7bbbe6e4f8f73154b39e3d0fd29fbf68b55207543cc",
-      "after": "0194559d09d8b1a740654187ca6ae09902c3b3fd46f6303383d3f26451084c42"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LowBlock.lean": {
-      "before": "2d0760fdd38ae983d7c69706c832080f9c82c54820dc4f5f066607ed2bc6b70f",
-      "after": "2c0e92ee4f6cca63625947fb7a7d07b52bf15c16de4bdaf54c6d75c404627014"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpLatticeTransfer.lean": {
-      "before": "b08b536dea8c0273095b3d4fd85f004e0b00e4b844393df17b773e3aef4f3c2d",
-      "after": "e159e5f351445b69f01401e2345db201f4cab04a72483edc1f9e1b4807b76ed5"
-    },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HolomorphicPeriodicityExtension.lean": {
       "before": "5b4a2ee0c32621aa03f0adf787e144f68b36e77e9eb0fdfda0b5b678ae08f6a7",
       "after": "778fcaa19c4369e5e4ba67e4fe69f9be0b2f32fbd0e17efecf709dc6820f2c38"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantOperators.lean": {
-      "before": "011d2de3aa72bbca29ac8cebe96c2f0116ee16ade123413eb45265a37ccbcaf4",
-      "after": "9896722aba5b8232991969ea782d9c4445af2cd6c826a43aad7fe703d643222b"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientDomain.lean": {
-      "before": "c864508055e2f688c41328ef48ab53f82be9f634b60fd028417294c533600e7b",
-      "after": "cd86420140f511ade1b4c11044ad29910a8f3138abbf9b50e1f67fc3c00e148d"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalFlagTranslateHolds.lean": {
-      "before": "ec6b87293e7745667a47a51efe891eff84061248f8fc129a53411e46e2dc5a02",
-      "after": "d0821cc1d0fbd8e9f2d98dde3cdda6702d7f93aef847627883c4f4523349a717"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajPos.lean": {
-      "before": "5577ab5c9eba28c4222ff9338e3932f7541797e70cd128b1a951f613cc0e54ce",
-      "after": "f70b0bd438ed5dfd9c5b4d79a850da7b17832926b1a747bcd95be0c81a82b834"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientIndexLowerBound.lean": {
-      "before": "f514607a8a33b2de4eaaf8510b04651042f3b3299907210bba0edc8ceb33746d",
-      "after": "284e59604f0a644a67bbb7b9f72341d74e47fc86287ef3d94726a291427accff"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SchwarzLemmaBallHolds.lean": {
-      "before": "5d23f303b108cdf9f57ca559d25e3e5498c6050ffc813e3ddebda1718ce956c6",
-      "after": "d3935ec94e1c4ff33b626d8d68c546ccfa725bef428e119f66099afadcff8f0a"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalChartNormControlHolds.lean": {
-      "before": "61f19dac11755f317103e8847c02e8323f12dfa396f824c562016d397dcf1c29",
-      "after": "92736cf1f5076705ea822f130bfb94daccd0e1dd44de171a8acf6d82e3170d92"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/FdFjNearSupOf.lean": {
-      "before": "9cd4b1a48536d397ba749af1f11192866915f903d690f64b42c738edd30d77cd",
-      "after": "e61505d60c9f248d473783d26915b9a1b70d4fe3cece5b5d7ee5320cbef01726"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/NearSupremumBounds/Inputs.lean": {
-      "before": "f7b3bacf59b36d3e871c94b5aacb4d30ba2b0a661c76755a7dff3e29b3afecd2",
-      "after": "fbe22f01bbe121003e1cd7d3b203fb90055afcb1a8189365a07d8caf04a82763"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainOfTransference.lean": {
-      "before": "59827c78fd543d725233a0e571e5f2c342634d2b8478274637e04cd6860643fc",
-      "after": "414da12b7e594823c3e68fc1e143d47919009441dce03e24157e86390985d14c"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean": {
-      "before": "5bfea73b18d352fb1bf6ca185c987490fd85f593e4d0f76ac64271c7d76d8dbf",
-      "after": "85075084566a384982d27236cee2e1a87a00eb953eb6eacfe2670c6b86c50932"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantBoundOrthogonalPart.lean": {
-      "before": "15cd6e91a4865f405c324a62ddbcc845ae4cbe4f1ae7291784154bde8624cc1c",
-      "after": "7b35b648881c7d6ff25601b4b1ff79dca1583cfb4bda07834c5feca7971ede4b"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/TopOf.lean": {
-      "before": "9e33900fadc4477461f1c6539af623799f6577f084b51e35dbe0445e2fec9ecd",
-      "after": "6470c1ad2eaf5453f18308262b9c54dacc92b792382f265f01b060a3ada7c111"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LatticeSpanMembership.lean": {
-      "before": "0e1384eb0d8177b8d6d055d10231148a834c7cd6115f40dbac0ab78490d6b379",
-      "after": "33be421a2bc3a1a2ec773b2d5ccd0f0ecbbadce4597acd05224ecbbdcd898231"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientPositivity.lean": {
-      "before": "66cc27cf9e1ce91d98cca5eea8cd462e0b0437308166dad15beb7d2e09f11341",
-      "after": "c28d42a107cdc6f31fd91adfdf5a1eafc6bde24115bc65b73515ef7a44090de5"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCubeIntegral.lean": {
-      "before": "e8f01a88300c58e56c9e183d325c723232b8667468a503ea696b92e75f2129b6",
-      "after": "b73950b07584af9dcf794019d0eea98a213dabc132a3498a31e97e42311f0828"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CoefficientHeightBoundOfLiftSupportPositivity.lean": {
-      "before": "fc8b7410ec124e173f230c96d4879ff6c18442dc75a4cece49b45aa9581739d1",
-      "after": "db573bd47f236aac7d3894910b2640ea976bf8ebf4cfb89abd45a7bcc6d820e9"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowCoefficientDecayHolds.lean": {
-      "before": "a00ac253f0102d47d2ee46f2fd31d7b3f0479d327482204ba5fb2eb88894141e",
-      "after": "f8ace5b68a5e0e0310dd42e2d04fa1c8ba946131e1dcc2086d361442f0723b3a"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/QuadraticOffDiagonalBounds.lean": {
-      "before": "0c7b3471062454926ee367d5a1e87c5b47b4b2363fba31a53b49870a8926a4d4",
-      "after": "a7ff2ee43b2795a489aebb21bf9a261e489f511912f6b5df16feb95e8e942122"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramMatrixExistence.lean": {
-      "before": "33fd21095386ac53e6862f5511ceb9e271f18681870e645cc514e750f8cd5a5a",
-      "after": "842a57779b875ae891633999c1513c4574a15c3387471248226e7a394b5b6418"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermCOrthonormalCoordinates.lean": {
-      "before": "b7378d68fd628f770a1247fef6bc968d6092a742de4b3fc2bc586ddc8e9eeb34",
-      "after": "271aafe276289930902686d24277266849fb22217bcc5694bdcb6bb367810271"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatUnitary.lean": {
-      "before": "d596376c5174b3239d858511edb60be18373f4fbc61f977cff852df474543cb7",
-      "after": "28c5a9f424cc195b121003e5f51f247740f1d3314760094ed4f6588551078459"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/UnipotentMoves/AprojEqZeroOfUz.lean": {
-      "before": "e0dc4c7fa005aa3454db1248c7d9f39141a16bd82b22c872ff70da7fabe5e2cd",
-      "after": "61e721f31ade0321433d11e5077c7310542d72edde7f24e2d1f10259edcfa8b5"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/GramSchmidtEigenframe.lean": {
-      "before": "7d3a2ff41b65607f17028e1445975218b1edadca78b79c96e31db5f447762379",
-      "after": "7510c47bb7df408152c57130131a71fb2cae109e7a7398bc8ef4ce70fc0e3b81"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LowerBlockMatrices.lean": {
-      "before": "48405e62d098559ed7b18bb9066f1c5354def02d6faebd8be258d47624d75ee9",
-      "after": "d94688a03e27f9dbefe593287da39f550e48610c6673bc03230b4d365048a11a"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PosCoordNe.lean": {
-      "before": "ded8a207a9cc3921a2fa61026c815f04fa8c0a3af340fa6ba17b516ce7380a3a",
-      "after": "eeddd8d9cadea2c69f1228e6ddb6e75559f62aa9691454ae311fb6604a0f8ede"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentVectorGroup.lean": {
-      "before": "6854de6717e739a524ed0e2d18abde925a5b5876c53b37b3f2b0977a065207e8",
-      "after": "36cf8d76948e3271edff17f13b0a29f21d0f7e47a2f91ae3db64738348fc8c44"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowCoefficientBounds.lean": {
-      "before": "c9c6f58353d1bc482f8412e9e26c1cd46c31e7b54515195702cd6d1aab9a0174",
-      "after": "79c245460d443e888c0a4281949562fc9b5a515c530848b51d35fc8be6d01225"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnitaryComplementMoveOfIsotropic.lean": {
-      "before": "644c03a7fad51a935b736a92d87bf7eecfac3c88c037e5f562a938312447856e",
-      "after": "78c3f978b4c6945e1e986cdd72d7478b44aa75a7230a986de1b8358926b7fab6"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IntegralTraceNormBounds.lean": {
       "before": "227e6147b8d83ed45734996f64009272a83917371b46f11b26b57b490c3b0195",
       "after": "776bf880d211d88760fe0b8d5e637321dc93d7c2e68c826c60b1b83054709725"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentCoefficientShift.lean": {
-      "before": "87a3ae60031ec6f05a4d6c91cd41a6d14d147a74aeff1e5e41fa94ef94c6c47c",
-      "after": "25fabb1783269cbea961379170e5dfe0a6c87457b3f86e2446662dde93cc0ebf"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentSubOneMajorantBound.lean": {
-      "before": "79511c82f7f8b23ebfda5e42057d8575478b9d805e0d9877724b2ca87362297d",
-      "after": "1b918b393f3cc45dc62136ca267d9e600b0b7df1d48d8587edab63745f8544ee"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FinrankRieszBounds.lean": {
-      "before": "f5b8269b1aee0965bd6072a277c42ed2f5d3ec733fa7983af10569214b129478",
-      "after": "0b59cd76f3e20c514c1f4db3cc148685a36a7229c127b5ae05f28d61cc00bcdc"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UbasisAt.lean": {
-      "before": "95a0bb50fe27b11a4793e59f0673b2cf0500c965f2bb20b95e830e0524dbe708",
-      "after": "f24e59786a8c7457a2ad001f51cb12269c47aa2058167d8b1ebd3001718710fb"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantFamilyNorms.lean": {
-      "before": "6393090023b0a87aac79786eaba087196bfbd9a4e1600e3331224b47310a33fe",
-      "after": "78a7f1bcb5451485c7bd9d1ce4623397ef196169b749a73c0dd897ba16d731ab"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FlowMajorantFlags.lean": {
-      "before": "1157a8624b71df8c8a39b25336be9c2456e97569d8c87a4b30cddc6497aa39d5",
-      "after": "d37b85882e53df3f5ac1fdcb4d7b887b0337332a641fd4974c8950424bd25f24"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpSpanRight.lean": {
-      "before": "5ce3d8794ac2ea63c5d9433b4493b2effea521bca68afd57df1e1b141effe885",
-      "after": "94a4f3e4fd035a6ea1ca73fc00e5724d4285a89a860225346e4c9848c1c5ffa4"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ReducedLatticeShortBound.lean": {
-      "before": "25853a470340945d012a3d46bd28136c33a969106764d6bd2a85ba173974f3e5",
-      "after": "54540845387ae7c9b12a111da698b0a277ed1a0732d4ca882b0fbaed159f2764"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/CountingExponentialSumHolds.lean": {
-      "before": "07737c22ff3cd685c3bcc3b59d549f79be4d87c3c9f264419abf926be4746839",
-      "after": "f438aa3386919aa7f773fc036d6d68b4d052ea15d8c72f37179e2447938ef83f"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscrMulHermitianIntegral.lean": {
-      "before": "d794289b44bc2afadaa1649644788cfec5f477cfef0660ee9af84d93f9f79c20",
-      "after": "ed0b875609460d18ea357d15d3b72ebec57f54882b2b9bd2d96bfbcccf9bf77f"
-    },
-    "ReciprocityTheory/SemistableReduction/ApproxGraphB.lean": {
-      "before": "1d4fddf70ec60634b11a72b4e4e3b1ae2d166c6335f941359c75588245e5eff3",
-      "after": "1486f2dd5847303cf93062d7889b58acdd91e51faa5979898af238009b9b9e02"
-    },
-    "ReciprocityTheory/SemistableReduction/ApproxGraphC.lean": {
-      "before": "3a8602ff7e879a3ec3888e189ea9b4aa1f39261ec7b3d5171189c77de42585fe",
-      "after": "41a906a07587f171993bf1971e363e12cffa65b88938270995c1933d1eae799e"
-    },
-    "ReciprocityTheory/SemistableReduction/ApproxBasis.lean": {
-      "before": "11dfc5459beae2bfa591c82e7b837b081b78fa7252a05eb1ecf0beff84809a0c",
-      "after": "0e0bdb2aee2135a4b3a4e9f7dfb3b78a5e9ea833ce210e1def8b690893002dbb"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BabaiCovering.lean": {
-      "before": "c302192823d9a4eb0e1546aa7c4ac12825652847aca93aef728ca6a2ec326be9",
-      "after": "5cad0972f9891ceac2c166e3e8a6cd656ada35dde8dd7a15bef5dab5509ec7e2"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/DiscreteLatticeMinimum.lean": {
-      "before": "6467e8aa2645d198410800e9b21077292421616f62be3822bc9855c391173cee",
-      "after": "724c45def9499ee19e4a50e1a2c49027a18a58aa4cf581c03b4ecea0742a906a"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PeriodLatticeCountable.lean": {
-      "before": "00ee4ebe6490a6eb1607297f13243e29e9246474d5abeca9971da6cbb5b4f868",
-      "after": "642d170fbd66c2f8434938f0c4517d473415ea0e6b86156e4d747f5a7d9cd9d2"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ExponentialGrowthExclusion.lean": {
-      "before": "2410faf28c42efbce94518107bfb9586988c906d1dde50f5be62b0f740107af5",
-      "after": "2039402ae313818458a92fbe0cc9700653ee23641a0299ee636c8235493638be"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalShortVectorBoundOf.lean": {
-      "before": "593bd6d41c63713b65baec0b452c6b81801bc2d105169c57a8ba300422998615",
-      "after": "240fae0b191c2aa92b558c844035a2805b5f2211b416976753444ad23e070bc4"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LatticeMinorExistence.lean": {
-      "before": "b210c0f7ac1706c5c362989b05423478523807c441ed599b97929565b9673196",
-      "after": "7fee27b7672017f145c7bc0721d4c743f50c31044da46b9b5b7e9396c3008a50"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ShortVectorBoundOfCoefficientBounds.lean": {
-      "before": "f2eba61b6f14dcf749b97a116360695843cb3c6742ec2c38d3f7bbf44346bfe7",
-      "after": "4ba4c94cc123120e7ffebbf6587e5a5b3abe35dbbd18c8e5221233e2a73072bb"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/HeightTheory/Transference.lean": {
-      "before": "6dca678d8e4fcc26ae09fb7fc2a4334a685753f78cc1e390321f317917856ad6",
-      "after": "092593f72fe97ccf5ed746c6b808288833a2e09c0202981f6b86ec370887957d"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/BfSubRight.lean": {
-      "before": "91712167d4788bb5643a4aa58ee821313d585c5978851d3e51a49828611635c1",
-      "after": "0f5baf64649b54df5972dd095ac31a375a9cd17ecd36967c639a774c4b801aee"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SignTypeCancelIdentity.lean": {
-      "before": "311ab7a6a5614e689185c1a6c9bb4db6260d7fec27476574fc6f39a569df2a16",
-      "after": "cd3c00f13572cd00aaee1b061bbaaa43527ef3452aecbdc5c48c1bf561948345"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/AdmissibleHermitianColumns.lean": {
-      "before": "bfb00cb2fd8be62544a7d71ea17a0c3602f0bd4ba4343b9ba85b3cac28d1fabd",
-      "after": "57dac87523ee64769f3d5037973dc59a2c0330cda0b434aca3367b80b93a9aed"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/HermEqZeroOfTraceFormVanish.lean": {
-      "before": "93a37e9280abad0ce9c9940aa7196fdb0c73d0c450356883e48835bc50f8dc28",
-      "after": "5c31b776290fe9f000e014cc99a0980543f0d9c6181f1242c83e094591c4b25e"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/HeightTheory/TransferenceA.lean": {
-      "before": "e34eb78b237c5d1177be8ed12421c92cbde7dfba4ef37f72a1324ea4018014d2",
-      "after": "f963acabce3a52c6fc903d0694dfec6ba83e964ddb0f97689c006044c6b8485f"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/QuadraticCoefficientForms.lean": {
-      "before": "23e6037609cfa0f786c21fd967155306953dbcff1ec1cee12e9c2e638669609d",
-      "after": "3ea5c35ec0f3599b6d243ab2f6439c9953b86234f23ca5de76c4c4e44212b018"
-    },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SpanColsMul.lean": {
-      "before": "27f696eb5d923cf24b7b6682f0848608aafdb56f1af9fd61598a228aed589b71",
-      "after": "707595f6af7dbf429118d4d63768c0d70073837d53a5196046b40b7ad3191cdf"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsIntegralCc.lean": {
+      "before": "4cd337eb6b66d51867d0e63df3790e9f2550f72cd64f4bd2212b0247f8b27b4c",
+      "after": "ea4e025cf237274e733c8372550d91eec2c1f51a3d965e21eef873b56bacc114"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicCombinations.lean": {
       "before": "01284413fc950bbc73650f3ef6781193434fa1b01413fe48c5cbec30429ea4c5",
       "after": "f1176f7f5ebf9a8cbf024de556f6314657884e30a20cf5437095e2048d03e419"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FixedPointImaginarySpan.lean": {
-      "before": "9995020f76f22998df8508b8fbc145c52c5de4d257ad33650ec4b432962aa335",
-      "after": "8c5e75f6b13a399ae6ca7e3d8803ff035a1141b6023bffcf9c8d7904a1c39b28"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicIndexSums.lean": {
+      "before": "b0c76a09ba231a638be796ce3410401e511cb65603c669cd95748bb67e928e99",
+      "after": "27f580a393db793ee5bb1f8fdc502657f29694e43b87e4380c44bec27f21f3a3"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FinrankEqTwoMulHalfDegree.lean": {
-      "before": "cf1776fb062fac270870895a7fa6b3be15a53750fa53c4a62d697d453061737e",
-      "after": "4430e3a090d2d704c23b169e354013ba553f859cb2efb11efc4fb41347092b6a"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/IsotropicOutsideLine.lean": {
+      "before": "374a28bb72cbed176287d19a60ee3131ccdfe9f6e0f44fef443bb655c1342344",
+      "after": "f405f47b34bcb030a30ee2f1632a2186f6d4da2d8494c016b90e83334869b3b9"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCoefficientsOfVectorGroup.lean": {
-      "before": "4eea60c7f58fc8d1e1d0bb789af860ae3041fd154282e17ed9902a9f560fd987",
-      "after": "4605c6033024d57d86cb5623bd1bfca20edd63cbc24e35cebf206eb0d4e89947"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LatticeMinorExistence.lean": {
+      "before": "b210c0f7ac1706c5c362989b05423478523807c441ed599b97929565b9673196",
+      "after": "7fee27b7672017f145c7bc0721d4c743f50c31044da46b9b5b7e9396c3008a50"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ConjugateConjugate.lean": {
-      "before": "97a48f562bbe4b229280e9474cfde1ae2c55c4bbfca67168b705d09975c41ec0",
-      "after": "6ab57213ea8960a03e6a64b7460bcab67f43e04fa98164f75262de5904025ad2"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LatticeSpanMembership.lean": {
+      "before": "0e1384eb0d8177b8d6d055d10231148a834c7cd6115f40dbac0ab78490d6b379",
+      "after": "33be421a2bc3a1a2ec773b2d5ccd0f0ecbbadce4597acd05224ecbbdcd898231"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LminorSubmatrixCastSucc.lean": {
+      "before": "c1860d88b7ebb92cdfa72524bad79d69b4a6627f2fead7cd77e10a38924c78a8",
+      "after": "2197e80bcea6cb5ca35dea56ebf6c0fff546b26203feebe873e92936131baee4"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LogDOfPosBound.lean": {
+      "before": "6bb6c9c4f69fccf5309fdc1c6bbd9473659c660205eac60123a78c8b96372a56",
+      "after": "a2cf55da246234c1239523180bb2269f2811e8c2da8f31c13319c55af9519457"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LowBlock.lean": {
+      "before": "2d0760fdd38ae983d7c69706c832080f9c82c54820dc4f5f066607ed2bc6b70f",
+      "after": "2c0e92ee4f6cca63625947fb7a7d07b52bf15c16de4bdaf54c6d75c404627014"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LowerBlockMatrices.lean": {
+      "before": "48405e62d098559ed7b18bb9066f1c5354def02d6faebd8be258d47624d75ee9",
+      "after": "d94688a03e27f9dbefe593287da39f550e48610c6673bc03230b4d365048a11a"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/M3bNormHolds.lean": {
+      "before": "6ee6051224c7843a1fffa6c2570a9d2c47253b56425491c9a91df272c462034c",
+      "after": "69d8b53776b637d140a91950f7268c00205da5197b2e3642de2ce7f3f553bbe4"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajPos.lean": {
+      "before": "5577ab5c9eba28c4222ff9338e3932f7541797e70cd128b1a951f613cc0e54ce",
+      "after": "f70b0bd438ed5dfd9c5b4d79a850da7b17832926b1a747bcd95be0c81a82b834"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantBoundOrthogonalPart.lean": {
+      "before": "15cd6e91a4865f405c324a62ddbcc845ae4cbe4f1ae7291784154bde8624cc1c",
+      "after": "7b35b648881c7d6ff25601b4b1ff79dca1583cfb4bda07834c5feca7971ede4b"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantFamilyNorms.lean": {
+      "before": "6393090023b0a87aac79786eaba087196bfbd9a4e1600e3331224b47310a33fe",
+      "after": "78a7f1bcb5451485c7bd9d1ce4623397ef196169b749a73c0dd897ba16d731ab"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MajorantOperators.lean": {
+      "before": "011d2de3aa72bbca29ac8cebe96c2f0116ee16ade123413eb45265a37ccbcaf4",
+      "after": "9896722aba5b8232991969ea782d9c4445af2cd6c826a43aad7fe703d643222b"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MinimumGrowthBounds.lean": {
+      "before": "5bfea73b18d352fb1bf6ca185c987490fd85f593e4d0f76ac64271c7d76d8dbf",
+      "after": "85075084566a384982d27236cee2e1a87a00eb953eb6eacfe2670c6b86c50932"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatMulVec.lean": {
+      "before": "0c4c23cbd69f7697a9f299140033db8de3b1115ecee307fbca5e34ce9c3a3d1a",
+      "after": "5c8b390d7ac09b995b12045ed68151fa915c1b795aa9a97814f65fb6f5ad4266"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/MmatUnitary.lean": {
+      "before": "d596376c5174b3239d858511edb60be18373f4fbc61f977cff852df474543cb7",
+      "after": "28c5a9f424cc195b121003e5f51f247740f1d3314760094ed4f6588551078459"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/NoShortVectorLowerBoundHolds.lean": {
       "before": "3257241911e588cd682536a0544a7f7126a54355627a1e359e62533d75070c5b",
@@ -442,41 +306,173 @@
       "before": "dbfc5b067828943fc3be3845e90d7e8497d39d7bf449969c9da5ae38331b5345",
       "after": "4e422edd44a9b3f59195fec8a1d43ac08d833f2cc46b916295df8d7e71bc3f69"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PosDefOfBound.lean": {
-      "before": "229432f30f27e5c54e82a9f8b1b82b88616013ab01f7ca30c438c2c8fb405973",
-      "after": "fa1135a65fca7ce787151fab9dc81bdaecbea08f303348118c6f1e9ce886b3a6"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalChartNormControlHolds.lean": {
+      "before": "61f19dac11755f317103e8847c02e8323f12dfa396f824c562016d397dcf1c29",
+      "after": "92736cf1f5076705ea822f130bfb94daccd0e1dd44de171a8acf6d82e3170d92"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalFlagTranslateHolds.lean": {
+      "before": "ec6b87293e7745667a47a51efe891eff84061248f8fc129a53411e46e2dc5a02",
+      "after": "d0821cc1d0fbd8e9f2d98dde3cdda6702d7f93aef847627883c4f4523349a717"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalShortVectorBoundOf.lean": {
+      "before": "593bd6d41c63713b65baec0b452c6b81801bc2d105169c57a8ba300422998615",
+      "after": "240fae0b191c2aa92b558c844035a2805b5f2211b416976753444ad23e070bc4"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PeriodLatticeCountable.lean": {
+      "before": "00ee4ebe6490a6eb1607297f13243e29e9246474d5abeca9971da6cbb5b4f868",
+      "after": "642d170fbd66c2f8434938f0c4517d473415ea0e6b86156e4d747f5a7d9cd9d2"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpBasisExistence.lean": {
+      "before": "212e81b4daaf54fbaeb710b31dd3b28241e7e34a9b4b73887c7e996b2d6fc9cc",
+      "after": "491fd8bc827dd3146b9760171f0135cbb34222819f40a13bf9264ac2b0538369"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpComponentCombination.lean": {
+      "before": "279f73e574038f0aa6695b9d57dccf0b247e9e5592fc3135c19298577befad74",
+      "after": "2742fed666b90ae871aa83ca8c9a540a9f7e9bd11834d28ceeaf3a377f5210a9"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpLatticeTransfer.lean": {
+      "before": "b08b536dea8c0273095b3d4fd85f004e0b00e4b844393df17b773e3aef4f3c2d",
+      "after": "e159e5f351445b69f01401e2345db201f4cab04a72483edc1f9e1b4807b76ed5"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpSpanRight.lean": {
+      "before": "5ce3d8794ac2ea63c5d9433b4493b2effea521bca68afd57df1e1b141effe885",
+      "after": "94a4f3e4fd035a6ea1ca73fc00e5724d4285a89a860225346e4c9848c1c5ffa4"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PivotNeg.lean": {
       "before": "bdf210822c5b7ef5cd7a3ed6e9eda6477853e5417a62f2d5c7363ff59cd9c29a",
       "after": "f9ede59f0f688ab0f5c426c46c16fe78bf763e85260ac31b9eb15257c93ef09f"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FourierCubeVolume.lean": {
-      "before": "89a02a8bf994077c9352d5500ff5dc7029b73641123d299a18f457043386f3e7",
-      "after": "8b4486f7b1536c2abfd4cb8be19989cd9d94eddb6d69ac0243d3519845e3e409"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PosCoordNe.lean": {
+      "before": "ded8a207a9cc3921a2fa61026c815f04fa8c0a3af340fa6ba17b516ce7380a3a",
+      "after": "eeddd8d9cadea2c69f1228e6ddb6e75559f62aa9691454ae311fb6604a0f8ede"
     },
-    "ReciprocityTheory/SemistableReduction/ApproxBasisB.lean": {
-      "before": "19c99540675dc0a1f26b5ecc4c0b34d6b94bf72e658dcd3682ddff44f3478e0d",
-      "after": "96a9482fea238c6c31d7ef3ff4e4eaace4b7fc89a54c58457060b15cb22b4e1e"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PosDefOfBound.lean": {
+      "before": "229432f30f27e5c54e82a9f8b1b82b88616013ab01f7ca30c438c2c8fb405973",
+      "after": "fa1135a65fca7ce787151fab9dc81bdaecbea08f303348118c6f1e9ce886b3a6"
     },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PositiveMinorUnits.lean": {
       "before": "d4b33b92a77b399edc0e3965df05c825d29fba874642cb5d4062dfe5d51bdb87",
       "after": "ae3419249d11f8d73f885cb8d921b27f8a47dbbf5ebe20587ee34fd90cd112a5"
     },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PositiveSpanMatrices.lean": {
+      "before": "71c12c7d6ab35cd91d7116b0d5d06e6bac4281117d9649eaff917833378a3d36",
+      "after": "09a0d6fe7fafe8a13b340c3f19d55b9b67d9a3c6d4af13a19d8381c63fb4cdaa"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/QuadraticCoefficientForms.lean": {
+      "before": "23e6037609cfa0f786c21fd967155306953dbcff1ec1cee12e9c2e638669609d",
+      "after": "3ea5c35ec0f3599b6d243ab2f6439c9953b86234f23ca5de76c4c4e44212b018"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/QuadraticOffDiagonalBounds.lean": {
+      "before": "0c7b3471062454926ee367d5a1e87c5b47b4b2363fba31a53b49870a8926a4d4",
+      "after": "a7ff2ee43b2795a489aebb21bf9a261e489f511912f6b5df16feb95e8e942122"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealEmbeddingCharacters.lean": {
+      "before": "906c8be7fe3a649b12c01ec6c2ee7227b4dfd2c007bb58fefe693a02fffa4687",
+      "after": "892e972bc4ba6e254ef60f990a9a6e4c216e793b60d70fc3aa5ac735cddc0c71"
+    },
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealLower2.lean": {
       "before": "2bbd47d993139636100d7a06acea907d70815b5094f80d2b1d6bb406dd3ebe02",
       "after": "8ca8d22519b9eea857a88b70dd06b37766b802cbabfdcd34898ee0c2da3c70db"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/LogDOfPosBound.lean": {
-      "before": "6bb6c9c4f69fccf5309fdc1c6bbd9473659c660205eac60123a78c8b96372a56",
-      "after": "a2cf55da246234c1239523180bb2269f2811e8c2da8f31c13319c55af9519457"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/RealTangentSpace.lean": {
+      "before": "45281a4e0eb835f5aa216f1160dc21edb940fe06999b98bac0a9364be7a56385",
+      "after": "b6e525788aed36e456c4087bbe483f3cdcc14dfd13e5b7c68d272982bbfff391"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/PointAssembly/DivLeExpOfAbsLogSubLe.lean": {
-      "before": "411d1b572b65c630169670325bd63aef681d131f52d48d248f282ff5b7494dab",
-      "after": "35115e1b774cf7f4b707cd29b4233ceddb5853680f9419e6a3b5a7efb2250963"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ReducedLatticeShortBound.lean": {
+      "before": "25853a470340945d012a3d46bd28136c33a969106764d6bd2a85ba173974f3e5",
+      "after": "54540845387ae7c9b12a111da698b0a277ed1a0732d4ca882b0fbaed159f2764"
     },
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/FundamentalDomainExtension/PointAssembly/Frames.lean": {
-      "before": "ad0fbac9bfb0b080644423c3d62ece15ab1b3ce9c975c637d6814759388252ae",
-      "after": "913c6fe4c735463fe2e36dd622be530adf4a808fc9d00cfc2b51035a5297e1fc"
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SchwarzLemmaBallHolds.lean": {
+      "before": "5d23f303b108cdf9f57ca559d25e3e5498c6050ffc813e3ddebda1718ce956c6",
+      "after": "d3935ec94e1c4ff33b626d8d68c546ccfa725bef428e119f66099afadcff8f0a"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/ShortVectorBoundOfCoefficientBounds.lean": {
+      "before": "f2eba61b6f14dcf749b97a116360695843cb3c6742ec2c38d3f7bbf44346bfe7",
+      "after": "4ba4c94cc123120e7ffebbf6587e5a5b3abe35dbbd18c8e5221233e2a73072bb"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SignTypeCancelIdentity.lean": {
+      "before": "311ab7a6a5614e689185c1a6c9bb4db6260d7fec27476574fc6f39a569df2a16",
+      "after": "cd3c00f13572cd00aaee1b061bbaaa43527ef3452aecbdc5c48c1bf561948345"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/SpanColsMul.lean": {
+      "before": "27f696eb5d923cf24b7b6682f0848608aafdb56f1af9fd61598a228aed589b71",
+      "after": "707595f6af7dbf429118d4d63768c0d70073837d53a5196046b40b7ad3191cdf"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TraceIntegralBasis.lean": {
+      "before": "4c4b15b6fa321f61357567fb6169d93d51d388f236876aa87989e07d65e3a617",
+      "after": "eb743b7b92a8e558a1a5170cf0c68a9169f3078f580d3d4f7b6085e54d28c4bf"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/TransvectionPeriodicity.lean": {
+      "before": "d8fed6cfb162bad03d289cac166b5f46c375c477fef6ef3f7e258ff914989474",
+      "after": "2d17665c99e329ebf6cc53ba1a815be7e638322bfed9098f4fae955a8c0623c0"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UbasisAt.lean": {
+      "before": "95a0bb50fe27b11a4793e59f0673b2cf0500c965f2bb20b95e830e0524dbe708",
+      "after": "f24e59786a8c7457a2ad001f51cb12269c47aa2058167d8b1ebd3001718710fb"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentCoefficientShift.lean": {
+      "before": "87a3ae60031ec6f05a4d6c91cd41a6d14d147a74aeff1e5e41fa94ef94c6c47c",
+      "after": "25fabb1783269cbea961379170e5dfe0a6c87457b3f86e2446662dde93cc0ebf"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentOnHyperbolicComplement.lean": {
+      "before": "28460692f30865da28ebb8cdaecff678708b9af78a4f8794b50bb0a234498e15",
+      "after": "61cf8278334ea539519613a91b66202884358f672215744bfb2ee411ae1fdf4a"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentSubOneMajorantBound.lean": {
+      "before": "79511c82f7f8b23ebfda5e42057d8575478b9d805e0d9877724b2ca87362297d",
+      "after": "1b918b393f3cc45dc62136ca267d9e600b0b7df1d48d8587edab63745f8544ee"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentVectorEqSmulComponent.lean": {
+      "before": "ed24e8f4477e718f8ad78af40f95c3b3c243ff01cd976b7abe0c413f3d635bad",
+      "after": "372d8a469cdcc6e00971fdb566c1ffa9f7b5aca4ada45d0dfa6baebf2065536b"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnipotentVectorGroup.lean": {
+      "before": "6854de6717e739a524ed0e2d18abde925a5b5876c53b37b3f2b0977a065207e8",
+      "after": "36cf8d76948e3271edff17f13b0a29f21d0f7e47a2f91ae3db64738348fc8c44"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/UnitaryComplementMoveOfIsotropic.lean": {
+      "before": "644c03a7fad51a935b736a92d87bf7eecfac3c88c037e5f562a938312447856e",
+      "after": "78c3f978b4c6945e1e986cdd72d7478b44aa75a7230a986de1b8358926b7fab6"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/HeightTheory/Transference.lean": {
+      "before": "6dca678d8e4fcc26ae09fb7fc2a4334a685753f78cc1e390321f317917856ad6",
+      "after": "092593f72fe97ccf5ed746c6b808288833a2e09c0202981f6b86ec370887957d"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/HeightTheory/TransferenceA.lean": {
+      "before": "e34eb78b237c5d1177be8ed12421c92cbde7dfba4ef37f72a1324ea4018014d2",
+      "after": "f963acabce3a52c6fc903d0694dfec6ba83e964ddb0f97689c006044c6b8485f"
+    },
+    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/SquareIntegrability/ContinuousRl.lean": {
+      "before": "6d7eb637072be3694e6767618e9c629757b5c6ae23cee21d93c9b4365aa4a964",
+      "after": "a4aab5103682ce4a77c25a2eaf988e56eaa22f55acc744832cfd9102a33c027d"
+    },
+    "ReciprocityTheory/SemistableReduction/ApproxBasis.lean": {
+      "before": "11dfc5459beae2bfa591c82e7b837b081b78fa7252a05eb1ecf0beff84809a0c",
+      "after": "0e0bdb2aee2135a4b3a4e9f7dfb3b78a5e9ea833ce210e1def8b690893002dbb"
+    },
+    "ReciprocityTheory/SemistableReduction/ApproxBasisA.lean": {
+      "before": "02e905db6dc3d03ff5447dfd4f360cec94f29a57c123d28a2b42c2a7a48891be",
+      "after": "659f84e340dc7c5aafd3402251d197f3c4ebbbfe6dfba2c90fd527fe89978edb"
+    },
+    "ReciprocityTheory/SemistableReduction/ApproxBasisB.lean": {
+      "before": "19c99540675dc0a1f26b5ecc4c0b34d6b94bf72e658dcd3682ddff44f3478e0d",
+      "after": "96a9482fea238c6c31d7ef3ff4e4eaace4b7fc89a54c58457060b15cb22b4e1e"
+    },
+    "ReciprocityTheory/SemistableReduction/ApproxGraphA.lean": {
+      "before": "833100586a19fa8098ec6945fc7a4364710e629eb54cabbe2bd7ae933b317b51",
+      "after": "6ace6829c9c429834c44aa3354119b445e380534a6fa5b080fd50cfdfafaa939"
+    },
+    "ReciprocityTheory/SemistableReduction/ApproxGraphB.lean": {
+      "before": "1d4fddf70ec60634b11a72b4e4e3b1ae2d166c6335f941359c75588245e5eff3",
+      "after": "1486f2dd5847303cf93062d7889b58acdd91e51faa5979898af238009b9b9e02"
+    },
+    "ReciprocityTheory/SemistableReduction/ApproxGraphC.lean": {
+      "before": "3a8602ff7e879a3ec3888e189ea9b4aa1f39261ec7b3d5171189c77de42585fe",
+      "after": "41a906a07587f171993bf1971e363e12cffa65b88938270995c1933d1eae799e"
+    },
+    "ReciprocityTheory/SemistableReduction/LatAll.lean": {
+      "before": "b3ad7388149b404a8691abafebaa8502a2b507961d8e8dad58f1dd744b82651e",
+      "after": "a012cf49ed8172939915e4f69d88b8495f85bb666192f99a12e110b7c9eb8e4a"
     }
   },
   "attribution": {
@@ -608,12 +604,27 @@
         "ReciprocityTheory.SemistableReduction.ApproxGraphC",
         "ReciprocityTheory.SemistableReduction.LatAll"
       ]
+    },
+    "prior_candidate": "core28-fastquotientforms3e8f5adf2a",
+    "alias_reduction": {
+      "native_model": "Fortytwo Engine: Deepseek Flash V4.1 1017",
+      "source": "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/PerpBasisExistence.lean",
+      "source_sha256": "491fd8bc827dd3146b9760171f0135cbb34222819f40a13bf9264ac2b0538369",
+      "removed_source": "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthogonalComplementLines.lean",
+      "native_session": "1795560773-slot15-core28-1795561683434207000",
+      "native_tool_call": "call_ea796a8d071a411ebcada2a513841334_0",
+      "visible_trace_sha256": "c9b1d6343d1f24a1643eaf7c118dd4dac0a809dca6e6e3f59b546b0efd367b38",
+      "visible_events": 92,
+      "parent_attempt": 103706,
+      "contribution": "DeepSeek verified the unused ppos_sub alias and removed its import in PerpBasisExistence."
     }
   },
   "local_replay": {
     "comparator_exit": 0,
     "lean_default_kernel_accepted": true,
-    "completed_utc": "2026-11-24T08:06:47.800695+00:00",
+    "completed_utc": "2026-11-25T03:22:43.879466+00:00",
+    "receipt_sha256": "c09dce988ca03dc832f54bfd15ddc86456b806bac64f58cf645cc318958b0287",
+    "log_sha256": "1b3256b86c79c7551a30c88587d3513d71a0d3f43bb39166e4b68bbd4fb415ce",
     "permitted_axioms": [
       "propext",
       "Quot.sound",
@@ -721,7 +732,6 @@
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/NonvanishingCoefficientPositivity.lean": "2edf18fa47e3ed7604145a376d90433ca98b33c3477b884fb77b026e3193b447",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/NsqMulVecLeOpN.lean": "dbfc5b067828943fc3be3845e90d7e8497d39d7bf449969c9da5ae38331b5345",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OnbPerp.lean": "aa9061197899017ea37764a14d57dda6f829e04dca9637e903950593d395f601",
-    "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthogonalComplementLines.lean": "d31b2bbf7618d398b6212705bfb36bcffdaffae1593ace39845c20ad6692c77f",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthogonalLatticeDecomposition.lean": "559be978ac4031a0e6cde8ab4196a21c17a82a68984c7b0b4c03b26ede060e80",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalChartNormControlHolds.lean": "61f19dac11755f317103e8847c02e8323f12dfa396f824c562016d397dcf1c29",
     "ReciprocityTheory/ReductiveGroups/ArithmeticGeometry/FundamentalDomains/OrthonormalFlagTranslateHolds.lean": "ec6b87293e7745667a47a51efe891eff84061248f8fc129a53411e46e2dc5a02",
@@ -775,5 +785,6 @@
     "ReciprocityTheory/SemistableReduction/ApproxGraphB.lean": "1d4fddf70ec60634b11a72b4e4e3b1ae2d166c6335f941359c75588245e5eff3",
     "ReciprocityTheory/SemistableReduction/ApproxGraphC.lean": "3a8602ff7e879a3ec3888e189ea9b4aa1f39261ec7b3d5171189c77de42585fe",
     "ReciprocityTheory/SemistableReduction/LatAll.lean": "b3ad7388149b404a8691abafebaa8502a2b507961d8e8dad58f1dd744b82651e"
-  }
+  },
+  "proof_id": "041b10fc2edeb205e0356054bcd7cb22e2851575f519fc4ef97ea581b5298b34"
 }
