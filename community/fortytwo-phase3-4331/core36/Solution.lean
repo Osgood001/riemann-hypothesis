@@ -19,7 +19,7 @@ theorem AlpogeRHCore36.pureFamilyDecomposition
   rintro ⟨hp, hm⟩ hn
   have := disjoint_lat hP (show H.rt0 ≠ -H.rt0 by grind [H.sqrt_neg_disc_sq, H.d_mod, Nat.cast_eq_zero])
 
-  simp only [← mem_coe, ← range_subset_iff, ← span_le] at hp hm
+  simp [← mem_coe, ← range_subset_iff, ← span_le] at hp hm
   simp_all [disjoint_def, range_eq, mem_sup, SetLike.le_def, comp_def]
 
   and_intros
