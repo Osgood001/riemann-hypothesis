@@ -4,27 +4,24 @@ public import Mathlib
 
 @[expose] public section
 
-theorem UpperTheory.Reformulated.B.AevalIntertwining.aeval_intertwine :
-    ∀ {K : Type} [inst : Field K] {M N : Type} [inst_1 : AddCommGroup M]
-    [inst_2 : _root_.Module K M] [inst_3 : AddCommGroup N] [inst_4 : _root_.Module K N] (φ : M →ₗ[K] N)
-    (f : Module.End K M) (f' : Module.End K N),
-    (∀ (x : M), (φ : M → N) ((f : M → M) x) = (f' : N → N) ((φ : M → N) x)) →
-      ∀ (p : Polynomial K) (x : M),
-        (φ : M → N) (((Polynomial.aeval f : Polynomial K → Module.End K M) p : M → M) x) =
-          ((Polynomial.aeval f' : Polynomial K → Module.End K N) p : N → N) ((φ : M → N) x) := by
-  intro K _ M N _ _ _ _ φ f f' h p
-  have hpow : ∀ (n : ℕ) (x : M), φ ((f ^ n) x) = (f' ^ n) (φ x) := by
-    intro n
-    induction n with
-    | zero => intro x; simp
-    | succ n ih =>
-      intro x
-      rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]
-  induction p using Polynomial.induction_on' with
-  | add p q hp hq =>
-    intro x
-    simp only [map_add (f := _), LinearMap.add_apply, hp, hq]
-  | monomial n a =>
-    intro x
-    simp only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply,
-      map_smul, hpow]
+namespace UpperTheory.Reformulated.B.AevalIntertwining
+
+/-- A linear map intertwining two operators also intertwines their polynomial evaluations. -/
+theorem map_aeval {K M N : Type*} [CommSemiring K] [AddCommMonoid M] [Module K M]
+    [AddCommMonoid N] [Module K N] (φ : M →ₗ[K] N) (f : Module.End K M) (g : Module.End K N)
+    (h : ∀ x, φ (f x) = g (φ x)) (p : Polynomial K) (x : M) :
+    φ (Polynomial.aeval f p x) = Polynomial.aeval g p (φ x) := by
+  let ψ := (Module.AEval'.of g).toLinearMap.comp φ
+  have hψ (m : M) : ψ (f m) = (Polynomial.X : Polynomial K) • ψ m :=
+    (congrArg (Module.AEval'.of g) (h m)).trans (Module.AEval'.X_smul_of g _).symm
+  exact (LinearMap.ofAEval f ψ hψ).map_smul p (Module.AEval'.of f x)
+
+end UpperTheory.Reformulated.B.AevalIntertwining
+
+theorem UpperTheory.Reformulated.B.AevalIntertwining.aeval_intertwine
+    {K : Type} [inst : Field K] {M N : Type} [inst_1 : AddCommGroup M] [inst_2 : Module K M]
+    [inst_3 : AddCommGroup N] [inst_4 : Module K N]
+    (φ : M →ₗ[K] N) (f : Module.End K M) (f' : Module.End K N)
+    (h : ∀ x, φ (f x) = f' (φ x)) (p : Polynomial K) (x : M) :
+    φ (Polynomial.aeval f p x) = Polynomial.aeval f' p (φ x) :=
+  UpperTheory.Reformulated.B.AevalIntertwining.map_aeval φ f f' h p x
