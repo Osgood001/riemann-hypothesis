@@ -92,13 +92,7 @@ theorem map_cyclotomic_comp {O LL : Type} [CommRing O] [Field LL] [CharZero LL] 
     (ρ : PowerSeries O →ₐ[O] PowerSeries LL) (ζ : LL) (hρ : 1 + ρ X = C ζ * exp LL) (m : ℕ) :
     ρ (((Polynomial.cyclotomic m O).comp (Polynomial.X + 1) : Polynomial O) : PowerSeries O) =
       Polynomial.aeval (C ζ * exp LL) (Polynomial.cyclotomic m LL) := by
-  have key : ∀ p : Polynomial O, ρ (p : PowerSeries O) = Polynomial.aeval (ρ X) p := by
-    intro p
-    have h := Polynomial.algHom_ext (f := ρ.comp (Polynomial.coeToPowerSeries.algHom O))
-      (g := Polynomial.aeval (ρ X)) (by simp)
-    have hp := AlgHom.congr_fun h p
-    simpa using hp
-  rw [key, Polynomial.aeval_comp]
+  rw [LevelStatements.Lv.algHom_coe_eq_aeval, Polynomial.aeval_comp]
   have h1 : Polynomial.aeval (ρ X) (Polynomial.X + 1 : Polynomial O) = C ζ * exp LL := by
     rw [map_add (f := _), Polynomial.aeval_X, map_one, add_comm, hρ]
   rw [h1, ← Polynomial.map_cyclotomic m (algebraMap O LL), Polynomial.aeval_map_algebraMap]
